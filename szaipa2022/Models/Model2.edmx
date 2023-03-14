@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TongouModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TongouAtrist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="WorksCount" Type="int" Nullable="false" />
+          <Property Name="Aboutid" Type="int" Nullable="false" />
+          <Property Name="AboutText" Type="nvarchar(max)" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="HeardPath" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="TongouWorks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Atristid" Type="int" Nullable="false" />
+          <Property Name="AtristidName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" />
+          <Property Name="ImgPath" Type="nvarchar(max)" />
+          <Property Name="Size" Type="nvarchar" MaxLength="255" />
+          <Property Name="VisityCount" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+          <Property Name="CreationDate" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityContainer Name="TongouModelStoreContainer">
+          <EntitySet Name="TongouAtrist" EntityType="Self.TongouAtrist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TongouWorks" EntityType="Self.TongouWorks" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TongouModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TongouAtrist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WorksCount" Type="Int32" Nullable="false" />
+          <Property Name="Aboutid" Type="Int32" Nullable="false" />
+          <Property Name="AboutText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HeardPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TongouWorks">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Atristid" Type="Int32" Nullable="false" />
+          <Property Name="AtristidName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VisityCount" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="TongouEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TongouAtrist" EntityType="Self.TongouAtrist" />
+          <EntitySet Name="TongouWorks" EntityType="Self.TongouWorks" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TongouModelStoreContainer" CdmEntityContainer="TongouEntities">
+          <EntitySetMapping Name="TongouAtrist">
+            <EntityTypeMapping TypeName="TongouModel.TongouAtrist">
+              <MappingFragment StoreEntitySet="TongouAtrist">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="WorksCount" ColumnName="WorksCount" />
+                <ScalarProperty Name="Aboutid" ColumnName="Aboutid" />
+                <ScalarProperty Name="AboutText" ColumnName="AboutText" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="HeardPath" ColumnName="HeardPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TongouWorks">
+            <EntityTypeMapping TypeName="TongouModel.TongouWorks">
+              <MappingFragment StoreEntitySet="TongouWorks">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Atristid" ColumnName="Atristid" />
+                <ScalarProperty Name="AtristidName" ColumnName="AtristidName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="VisityCount" ColumnName="VisityCount" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

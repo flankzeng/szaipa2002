@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "CompanyAdd";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md3">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <i class="layui-icon"></i>
+                <p>(会员头像)点击上传，或将文件拖拽到此处</p>
+                <div class="layui-hide" id="uploadDemoView">
+                    <hr>
+                    <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                </div>
+            </div>
+            <hr />
+            <div class="layui-upload-drag" id="uploadDemo2">
+                <i class="layui-icon"></i>
+                <p>(会员文件)pdf、ppt、word格式均可</p>
+                <div class="layui-hide" id="uploadDemoView2">
+                    <hr>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-col-md9">
+            <form class="layui-form" action="CompanyAdd" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">中文名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="NameCN" required lay-verify="required" placeholder="请输入企业中文名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">英文名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="NameEN" required lay-verify="required" placeholder="请输入企业中文名称（如果有）" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">法人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="CEO" required lay-verify="required" placeholder="公司法人" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+              
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Address" required lay-verify="required" placeholder="企业所在城市" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">经营范围</label>
+                    <div class="layui-input-block">
+                        <textarea name="Business" placeholder="企业经范围、主要业务等，一句介绍" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+               
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+     , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+     , done: function (res) {
+
+         layer.msg('上传成功');
+         layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+         console.log(res)
+     }
+     , before: function () {
+         layer.msg('上传中', { icon: 16, time: 0 });
+     }
+    });
+    upload.render({
+        elem: '#uploadDemo2'
+      , accept: 'file'
+     , url: '/Staff/TempFilmeSave/' //改成您自己的上传接口
+     , done: function (res) {
+
+         layer.msg('上传成功');
+         var txt1 = "<p>文件名：" + res.files.file + ".</p>";
+         layui.$('#uploadDemoView2').removeClass('layui-hide').empty().append(txt1);
+         console.log(res)
+     }
+     , before: function () {
+         layer.msg('上传中', { icon: 16, time: 0 });
+     }
+    });
+
+
+
+</script>

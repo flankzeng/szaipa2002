@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "WorkAdd";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md3">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <i class="layui-icon"></i>
+                <p>(会员头像)点击上传，或将文件拖拽到此处</p>
+                <div class="layui-hide" id="uploadDemoView">
+                    <hr>
+                    <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="layui-col-md9">
+            <form class="layui-form" action="WorkAdd" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">作品名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Title" required lay-verify="required" placeholder="请输入作品的名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">作者ID</label>
+                    <div class="layui-input-inline"style="margin-left:30px;">
+                        @if (ViewBag.Artistid == null)
+                        {
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required" placeholder="作者ID" autocomplete="off" class="layui-input">
+                        }
+                        else
+                        {
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required" placeholder="作者ID" autocomplete="off" class="layui-input" value="@Model">
+                        }
+
+                    </div>
+                    <div class="layui-form-mid layui-word-aux" id="def"> 会员名 </div>
+                    <div class="layui-form-mid layui-word-aux" id="login" style="display:none;"><i class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop" style="font-size: 30px; color: #958e71;display: inline-block;"></i></div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">简介</label>
+                    <div class="layui-input-block">
+                        <textarea name="Content" placeholder="作品简介，一句介绍" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">标签</label>
+                    <div class="layui-input-block">
+                        <textarea name="Tags" placeholder="用空格来区分多个标签" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">参展历史与事件</label>
+                    <div class="layui-input-block">
+                        <textarea name="Deeds" placeholder="（获得的荣誉与头衔）" id="demo" style="display: none;"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+     , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+     , done: function (res) {
+
+         layer.msg('上传成功');
+         layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+         console.log(res)
+     }
+     , before: function () {
+         layer.msg('上传中', { icon: 16, time: 0 });
+     }
+    });
+
+    $(document).ready(function () {
+        $("#ArtistId").blur(function () {
+            var val = $(this).val();
+            var def = $("#def");
+            var log = $("#login");
+            def.hide();
+            log.show();
+            
+            $.ajax({
+                url: "/Staff/ArtTOF/?id=" + val,
+                type: "post",
+                dataType: "json",
+                async:false,           
+                success: function (data) {
+                    log.hide();
+                    if (data.data != null)
+                    {
+                        def.text(data.data)                      
+                        def.show();
+
+                    } else
+                    {
+                        def.text("请输入正确的会员ID号!");
+                        def.show();
+                    }
+
+                }
+            });
+        });
+    });
+
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.build('demo',
+            {
+                height: 500 //设置编辑器高度
+                , tool: [
+                     'strong' //加粗
+                     , 'italic' //斜体
+                     , 'underline' //下划线
+                     , 'del' //删除线
+
+                     , '|' //分割线
+
+                     , 'left' //左对齐
+                     , 'center' //居中对齐
+                     , 'right' //右对齐
+                     , 'link' //超链接
+                     , 'unlink' //清除链接
+
+                ]
+            }
+
+            ); //建立编辑器
+    });
+</script>

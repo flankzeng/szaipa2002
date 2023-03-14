@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewBag.Title = "ArtAdd";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md3">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <i class="layui-icon"></i>
+                <p>(会员头像)点击上传，或将文件拖拽到此处</p>
+                <div class="layui-hide" id="uploadDemoView">
+                    <hr>
+                    <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                </div>
+            </div>
+            <hr />
+            <div class="layui-upload-drag" id="uploadDemo2">
+                <i class="layui-icon"></i>
+                <p>(会员文件)pdf、ppt、word格式均可</p>
+                <div class="layui-hide" id="uploadDemoView2">
+                    <hr>
+                    
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-col-md9">
+            <form class="layui-form" action="ArtAdd" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">中文名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="CnName" required lay-verify="required" placeholder="请输入会员中文名字（如果有）" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">英文名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="EnName" required lay-verify="required" placeholder="请输入会员英文名字（如果有）" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">国家</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Nation" required lay-verify="required" placeholder="所在国家" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">城市</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="City" required lay-verify="required" placeholder="常驻城市" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">级别</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Title" required lay-verify="required" placeholder="例如：会员、高级会员、资深会员" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="Sex" value="1" title="男" checked>
+                        <input type="radio" name="Sex" value="0" title="女" >
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">简介</label>
+                    <div class="layui-input-block">
+                        <textarea name="UserContent" placeholder="个人简介，一句介绍" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">履历（个人履历、参展经历)</label>
+                    <div class="layui-input-block">
+                        <textarea name="Deeds" placeholder="（个人履历、参展经历)" id="demo" style="display: none;"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">荣誉<small>获得的荣誉与头衔</small></label>
+                    <div class="layui-input-block">
+                        <textarea name="Honor" placeholder="（获得的荣誉与头衔）" id="demo1" style="display: none;"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+     , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+     , done: function (res) {
+      
+         layer.msg('上传成功');
+         layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+         console.log(res)
+     }
+     , before: function () {
+         layer.msg('上传中', { icon: 16, time: 0 });
+     }
+    });
+    upload.render({
+        elem: '#uploadDemo2'
+      , accept: 'file'
+     , url: '/Staff/TempFilmeSave/' //改成您自己的上传接口
+     , done: function (res) {
+       
+         layer.msg('上传成功');
+         var txt1 = "<p>文件名：" + res.files.file + ".</p>";
+         layui.$('#uploadDemoView2').removeClass('layui-hide').empty().append(txt1);
+         console.log(res)
+     }
+     , before: function () {
+         layer.msg('上传中', { icon: 16, time: 0 });
+     }
+    });
+
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.build('demo',
+            {
+                height: 200 //设置编辑器高度
+                , tool: [
+                     'strong' //加粗
+                     , 'italic' //斜体
+                     , 'underline' //下划线
+                     , 'del' //删除线
+
+                     , '|' //分割线
+
+                     , 'left' //左对齐
+                     , 'center' //居中对齐
+                     , 'right' //右对齐
+                     , 'link' //超链接
+                     , 'unlink' //清除链接
+
+                ]
+            }
+
+            ); //建立编辑器
+
+        var layedit1 = layui.layedit;
+        layedit1.build('demo1',
+            {
+                height: 200 //设置编辑器高度
+                , tool: [
+                     'strong' //加粗
+                     , 'italic' //斜体
+                     , 'underline' //下划线
+                     , 'del' //删除线
+
+                     , '|' //分割线
+
+                     , 'left' //左对齐
+                     , 'center' //居中对齐
+                     , 'right' //右对齐
+                     , 'link' //超链接
+                     , 'unlink' //清除链接
+
+                ]
+            }
+
+            ); //建立编辑器
+
+    });
+
+</script>

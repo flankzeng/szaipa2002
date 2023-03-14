@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "Tags";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tagimgbox">
+    <div class="infbox">
+        <p>找到件 @ViewBag.count  作品，包括标签：</p>
+        @foreach (var tag in ViewBag.tags)
+        {
+            <a href="~/Home/Tags/?keyword=@tag.Title">@tag.Title</a>
+        }
+    </div>
+    <div class="allworksbox">
+        <ul>
+            @foreach (var w in ViewBag.works)
+            {
+            <li>
+                <a href="~/Home/works/@w.Id">
+                    <div class="imgboxs">
+                        <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="@w.Title"/>
+                    </div>
+                </a>
+                <div class="imginf">
+                    <h5>
+                        <a href="~/Home/works/@w.Id"> @w.Title</a> <br />
+
+                        <a href="~/Home/Art/@w.ArtistId"> <small>@w.ArtisName</small></a>
+                    </h5>
+
+
+                </div>
+
+            </li>
+            }
+           
+        </ul>
+        <div class="clearfix"></div>
+        <script>
+            $(window).load(function () {
+                $(".imgboxs img").each(function () {
+                    var image = $(this);
+                    if (image.width() > image.height()) {
+                        var height = (200 * image.height()) / image.width();
+                        var h = (200 - height) / 2;
+                        image.css({ "margin-top": h, "width": 200, "height": height })
+                    } else {
+                        var width = (200 * image.width()) / image.height();
+                        var w = (200 - width) / 2;
+                        image.css({ "margin-left": w, "margin-top": 0, "height": 200, "width": width })
+                    }
+                });
+            });
+        </script>
+    </div>
+</div>
+
+<style>
+    .allworksbox {
+        width: 100%;
+        height: auto;
+        min-height: 250px;
+        margin: 20px auto;
+    }
+        .allworksbox a {
+        color:#958e71;
+        }
+            .allworksbox a :hover {
+            
+            color:#D0C9AE;
+            }
+        .allworksbox ul {
+            height: auto;
+            min-height: 250px;
+        }
+
+            .allworksbox ul li {
+                width: 20%;
+                height: 250px;
+                float: left;
+                margin: 10px auto;
+            }
+                .allworksbox ul li h5 {
+                text-align:center;
+                line-height:20px;
+                }
+                .allworksbox ul li .imginf {
+                margin-top:5px;
+                
+                }
+                .allworksbox ul li .imgboxs {
+                    width: 200px;
+                    height: 200px;
+                    background-color: #fff;
+                }
+
+    .tagimgbox .infbox {
+        width: 90%;
+        height: 20px;
+        margin-left: 10px;
+    }
+
+        .tagimgbox .infbox p {
+            float: left;
+        }
+
+        .tagimgbox .infbox a {
+            float: left;
+            margin-left: 20px;
+            color: #958e71;
+        }
+
+    .tagimgbox {
+        width: 1120px;
+        height: auto;
+        min-height: 200px;
+        margin: 20px auto;
+        background-color: rgb(245, 245, 245);
+        padding: 20px;
+    }
+</style>

@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = Model.Title + "-艺术产业促进会-会员作品";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="artnva">
+    <a href="#">作者名 >></a>
+    <a>@Model.Title</a>
+    <h5 style="float:right;margin-right:10px;"><span style="color:#D0C9AE;" class="glyphicon glyphicon-eye-open"></span> @Model.VisitCount</h5>
+</div>
+<div class="workimgbox">
+    <img class="img-responsive" src="~/Content/ArtImg/Artist/Works/@Model.Path" alt="@Model.Title" />
+</div>
+<div class="workinfbox">
+    <h2> @Model.Title" </h2>
+    <h5> @Model.Content" </h5>
+
+    <br />
+    @if (ViewBag.Tags != null)
+    {
+        <div class="tagbox">
+            @foreach (var t in ViewBag.Tags)
+            {
+                <a href="#">@t.Title</a>
+            }
+
+
+        </div>
+    }
+    @if (Model.Deeds != null)
+    {
+        <br />
+        <h3> 展出历史与事件：</h3>
+        <br />
+        @Html.Raw(Model.Deeds);
+    }
+
+</div>
+<div class="otherbox">
+    <div class="inf">
+        <h4>艺术家的其它作品:</h4>
+    </div>
+    <ul>
+        @foreach (var w in ViewBag.works)
+        {
+
+            <li>
+                <a href="@w.Id">
+                    <div class="imgboxs">
+                        <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="@w.Title" />
+                    </div>
+                    <div class="imginf">
+                        <h5>@w.Title</h5>
+                    </div>
+                </a>
+            </li>
+        }
+
+
+    </ul>
+</div>
+
+<script>
+    $(window).load(function () {
+        $(".imgboxs img").each(function () {
+            var image = $(this);
+            if (image.width() > image.height()) {
+                var height = (200 * image.height()) / image.width();
+                var h = (200 - height) / 2;
+                image.css({ "margin-top": h, "width": 200, "height": height })
+            } else {
+                var width = (200 * image.width()) / image.height();
+                var w = (200 - width) / 2;
+                image.css({ "margin-left": w, "margin-top": 0, "height": 200, "width": width })
+            }
+        });
+    });
+</script>

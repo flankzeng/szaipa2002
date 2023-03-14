@@ -1,0 +1,90 @@
+﻿@model List<_2022szaipa.Models.TongouWorks>
+@{
+    Layout = null;
+}
+
+@* 目录页面 *@
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <title>@ViewBag.Name - 参展作品</title>
+    @* （姓名） - 参展作品 *@
+    <script src="/Content/js/jquery-2.1.4.min.js"></script>
+    <link href="~/Content/CSS/Site.css" rel="stylesheet" />
+    <link rel="icon" href="~/Content/123/szaipa.ico" type="image/x-icon" />
+</head>
+
+<body>
+
+    @foreach (var work in Model)
+    {
+        <a href="/Project_Tongou/Work/@work.id">
+            <div style="margin-top: 30px;">
+                <div class="tupian">
+                    <img src="@work.ImgPath" alt="@work.Title">
+                </div>
+                <div class=" zuopin">
+                    @work.Title
+                </div>
+                <div class="jiantou">></div>
+            </div>
+        </a>
+        <div class="hr"></div>
+    }
+
+
+
+    @* 这里是一个A标签配一个div.hr分割线，要是能实现最后一个作品不加div.hr功能会更好 *@
+
+
+    <style>
+        .hr {
+            height: 2px;
+            width: 100%;
+            background-color: #ecedea;
+            float: left;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* div列表 */
+
+        .tupian {
+            height: 100px;
+            width: 30%;
+            float: left;
+        }
+
+            .tupian img {
+                height: 90px;
+                width: 90px;
+                margin-top: 5px;
+                margin-left: 20px;
+            }
+
+        .zuopin {
+            width: 200px;
+            float: left;
+            font-family: 'sansLight';
+            word-break: break-all;
+            word-wrap: normal;
+            margin-top: 35px;
+            padding-right: 20px;
+        }
+
+        .jiantou {
+            height: 100px;
+            width: 10%;
+            line-height: 100px;
+            float: right;
+            font-family: 'sansMedium';
+        }
+    </style>
+
+
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="~/Content/CSS/component.css" />
+    <link href="~/Content/CSS/Layout.css" rel="stylesheet" />
+    <link href="~/Content/CSS/Home.css" rel="stylesheet" />
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link rel="icon" href="~/Content/123/szaipa.ico" type="image/x-icon" />
+
+    <!--css-->
+    <link href="~/Content/CSS/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/CSS/Staff.css" rel="stylesheet" />
+    <!--coustom css-->
+    <!--default-js-->
+    <script src="~/Content/js/jquery-2.1.4.min.js"></script>
+    <!--bootstrap-js-->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.form.js"></script>
+    <script src="~/Content/js/jquery.minicolors.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/js/echarts.min.js"></script>
+</head>
+<body>
+    @if (Model != null)
+    {
+
+                <ul class="layui-nav" lay-filter="">
+                    @{
+                        if (ViewBag.StaffIndex != null)
+                        {
+                            <li class="layui-nav-item layui-this"><a href="~/Staff/Index">后台综合</a></li>
+                        }
+                        else
+                        {
+                            <li class="layui-nav-item"><a href="~/Staff/Index">后台综合</a></li>
+                        }
+                            <li class="layui-nav-item"><a href="~/Staff/CNv">访问数据分布</a></li>                       
+
+                        if (ViewBag.StaffEdit != null)
+                        {
+                            <li class="layui-nav-item  layui-this" style="z-index:5;">
+                                <a href="javascript:;">列表与操作</a>
+                                <dl class="layui-nav-child">
+                                    <!-- 二级菜单 -->
+                                    <dd><a href="~/Staff/Artist">会员列表</a></dd>
+                                    <dd><a href="~/Staff/Company">会员企业列表</a></dd>
+                                    <dd><a href="~/Staff/Works">作品列表</a></dd>
+                                    <dd><a href="~/Staff/News">新闻列表</a></dd>
+
+                                </dl>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="layui-nav-item" style="z-index:5;">
+                                <a href="javascript:;">数据列表与操作</a>
+                                <dl class="layui-nav-child">
+                                    <!-- 二级菜单 -->
+                                    <dd><a href="~/Staff/Artist">会员列表</a></dd>
+                                    <dd><a href="~/Staff/Company">会员企业列表</a></dd>
+                                    <dd><a href="~/Staff/Works">作品列表</a></dd>
+                                    <dd><a href="~/Staff/News">新闻列表</a></dd>
+                                   
+                                </dl>
+                            </li>
+                        }
+
+                        if (ViewBag.add != null)
+                        {
+                        <li class="layui-nav-item  layui-this" style="z-index:5;">
+                                <a href="javascript:;">创建新资料</a>
+                                <dl class="layui-nav-child">
+                                    <!-- 二级菜单 -->
+                                    <dd><a href="~/Staff/ArtAdd">添加新会员</a></dd>
+                                    <dd><a href="~/Staff/CompanyAdd">添加新企业</a></dd>
+                                    <dd><a href="~/Staff/WorkAdd">添加新作品</a></dd>
+                                    <dd><a href="~/Staff/NewsAdd">添加新闻</a></dd>
+
+                                </dl>
+                            </li>
+                        }
+                        else
+                        {
+                        <li class="layui-nav-item" style="z-index:5;">
+                            <a href="javascript:;">创建新资料</a>
+                            <dl class="layui-nav-child">
+                                <!-- 二级菜单 -->
+                                <dd><a href="~/Staff/ArtAdd">添加新会员</a></dd>
+                                <dd><a href="~/Staff/CompanyAdd">添加新企业</a></dd>
+                                <dd><a href="~/Staff/WorkAdd">添加新作品</a></dd>
+                                <dd><a href="~/Staff/NewsAdd">添加新闻</a></dd>
+
+                            </dl>
+                        </li>
+                        }
+                        if (ViewBag.tongou != null)
+                        {
+                            <li class="layui-nav-item layui-this" style="z-index:5;">
+                                <a href="javascript:;">同构艺术家与作品</a>
+                                <dl class="layui-nav-child">
+                                    <!-- 二级菜单 -->
+                                    <dd><a href="~/Staff/TongouAtristList">作者列表</a></dd>                                   
+                                    <dd><a href="~/Staff/TongouWorksList">作品列表</a></dd>
+                                    <dd><a id="TongouAtristZxing" href="/Project_Tongou/TongouAtristZxing">下载艺术家二维码</a></dd>   
+                                    <dd><a id="TongouWorkZxing" href="/Project_Tongou/TongouWorkZxing">下载作品二维码</a></dd>
+                                </dl>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="layui-nav-item" style="z-index:5;">
+                                <a href="javascript:;">同构艺术家与作品</a>
+                                <dl class="layui-nav-child">
+                                    <!-- 二级菜单 -->
+                                    <dd><a href="~/Staff/TongouAtristList">作者列表</a></dd>                                  
+                                    <dd><a href="~/Staff/TongouWorksList">作品列表</a></dd>
+                                    <dd><a id="TongouAtristZxing" href="/Project_Tongou/TongouAtristZxing">下载艺术家二维码</a></dd>
+                                    <dd><a id="TongouWorkZxing" href="/Project_Tongou/TongouWorkZxing">下载作品二维码</a></dd>
+                                </dl>
+                            </li>
+                        }
+
+                        
+                        <li class="layui-nav-item pull-right">
+                            <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="~/Staff/PasswordChange">修改密码</a></dd>
+                                <dd><a href="~/Staff/OperationRecord">操作记录</a></dd>
+                                <dd><a href="~/Staff/Logoff">退出登录</a></dd>
+                            </dl>
+                        </li>
+                        <li class="layui-nav-item pull-right">
+                            <a href="/Home/Index"><img src="~/Content/images/LOGOimg.png" class="layui-nav-img">返回官网主页</a>
+                            
+                        </li>
+
+
+                        }
+
+                </ul>
+
+                <div class="layui-col-md12">
+                    <img src="~/Content/123/长logo.jpg" />
+                </div>
+                        }
+
+   
+
+    @RenderBody()
+
+</body>
+</html>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+        $('#TongouAtristZxing').click(function () {
+           
+                    layer.msg('艺术家二维码生成中');
+                        
+        });
+
+        $('#TongouWorkZxing').click(function () {
+            layer.msg('已下二维码生成中');
+        });
+        //…
+    });
+</script>

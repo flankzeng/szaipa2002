@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "添加新闻";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+    Page.validateRequest = "false";
+}
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md4">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <i class="layui-icon"></i>
+                <p>(新闻封面)点击上传，或将文件拖拽到此处，文件尺寸1150px*450px</p>
+                <div class="layui-hide" id="uploadDemoView">
+                    <hr>
+                    <img src="" alt="上传成功后渲染" style="max-width: 100%">
+                </div>
+            </div>
+        </div>
+        <form class="layui-form" action="NewsAdd" method="post">
+            <div class="layui-col-md8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">主标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Title" required lay-verify="required" placeholder="新闻的主标题" autocomplete="off" class="layui-input">
+                    </div>
+                </div>               
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="original" value="1" title="原创" checked>
+                        <input type="radio" name="original" value="0" title="转载">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="linkform">
+                    <label class="layui-form-label">连接</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Link" placeholder="新闻来源连接（如果有）" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">简介</label>
+                <div class="layui-input-block">
+                    <textarea name="Subtitle" placeholder="短篇幅介绍" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-col-md12">
+              
+                <textarea id="demo" style="display: none;" name="content"></textarea>
+            </div>
+            <br />
+            <div class="layui-col-md12">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<script>
+
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.set({
+            uploadImage: {
+                url: '/Staff/TempImgIntervalSave' //接口url
+              , type: '' //默认post
+            }
+        });
+        layedit.build('demo',
+            {
+                height: 580 //设置编辑器高度
+            }
+
+            ); //建立编辑器
+    });
+    //上传
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+      , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+      , done: function (res) {
+          layer.msg('上传成功');
+          layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src',"/Content/TempFile/"+ res.files.file);
+          console.log(res)
+      }
+      , before: function () {
+          layer.msg('上传中', { icon: 16, time: 0 });
+      }
+    });
+
+
+
+</script>

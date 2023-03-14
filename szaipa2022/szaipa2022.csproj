@@ -43,11 +43,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -90,18 +100,195 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model2.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model2.edmx</DependentUpon>
+      <LastGenOutput>Model2.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model2.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model2.edmx</DependentUpon>
+      <LastGenOutput>Model2.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\ZXingLibs.cs" />
+    <Compile Include="Controllers\AwardController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Project_TongouController.cs" />
+    <Compile Include="Controllers\PublicationController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccessData.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Activity.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Artist.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Company.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Diary.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model2.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model2.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model2.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MonthData.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\News.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Staff.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tag.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TongouAtrist.cs">
+      <DependentUpon>Model2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TongouWorks.cs">
+      <DependentUpon>Model2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ViewModel.cs" />
+    <Compile Include="Models\Works.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorksTag.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="Views\Award\Index.cshtml" />
+    <Content Include="Views\Award\WapIndex.cshtml" />
+    <Content Include="Views\Home\about.cshtml" />
+    <Content Include="Views\Home\All.cshtml" />
+    <Content Include="Views\Home\Art.cshtml" />
+    <Content Include="Views\Home\company.cshtml" />
+    <Content Include="Views\Home\Constitution.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index1.cshtml" />
+    <Content Include="Views\Home\Index_activity.cshtml" />
+    <Content Include="Views\Home\Index_news.cshtml" />
+    <Content Include="Views\Home\link.cshtml" />
+    <Content Include="Views\Home\membership.cshtml" />
+    <Content Include="Views\Home\news.cshtml" />
+    <Content Include="Views\Home\newsread.cshtml" />
+    <Content Include="Views\Home\Tags.cshtml" />
+    <Content Include="Views\Home\vip.cshtml" />
+    <Content Include="Views\Home\vip_debi.cshtml" />
+    <Content Include="Views\Home\work.cshtml" />
+    <Content Include="Views\Home\works.cshtml" />
+    <Content Include="Views\Project_Tongou\Atrist.cshtml" />
+    <Content Include="Views\Project_Tongou\AtristAdd.cshtml" />
+    <Content Include="Views\Project_Tongou\AtristEdit.cshtml" />
+    <Content Include="Views\Project_Tongou\beini.cshtml" />
+    <Content Include="Views\Project_Tongou\beiniTD.cshtml" />
+    <Content Include="Views\Project_Tongou\gaodaqing2.cshtml" />
+    <Content Include="Views\Project_Tongou\mengboshen.cshtml" />
+    <Content Include="Views\Project_Tongou\mouliqiao.cshtml" />
+    <Content Include="Views\Project_Tongou\mouliqiao2.cshtml" />
+    <Content Include="Views\Project_Tongou\QRcode.cshtml" />
+    <Content Include="Views\Project_Tongou\Work.cshtml" />
+    <Content Include="Views\Project_Tongou\WorkAdd.cshtml" />
+    <Content Include="Views\Project_Tongou\WorkEdit.cshtml" />
+    <Content Include="Views\Project_Tongou\WorkList.cshtml" />
+    <Content Include="Views\Publication\chunyu.cshtml" />
+    <Content Include="Views\Publication\zengfeng.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Shared\Search_Layout.cshtml" />
+    <Content Include="Views\Shared\Staff_Layout.cshtml" />
+    <Content Include="Views\Shared\Test_Layout.cshtml" />
+    <Content Include="Views\Shared\_AwardLayout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_WapAwardLayout.cshtml" />
+    <Content Include="Views\Staff\ArtAdd.cshtml" />
+    <Content Include="Views\Staff\ArtEdit.cshtml" />
+    <Content Include="Views\Staff\Artist.cshtml" />
+    <Content Include="Views\Staff\CNv.cshtml" />
+    <Content Include="Views\Staff\Company.cshtml" />
+    <Content Include="Views\Staff\CompanyAdd.cshtml" />
+    <Content Include="Views\Staff\CompanyEdit.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\Login.cshtml" />
+    <Content Include="Views\Staff\News.cshtml" />
+    <Content Include="Views\Staff\NewsAdd.cshtml" />
+    <Content Include="Views\Staff\NewsEdit.cshtml" />
+    <Content Include="Views\Staff\OperationRecord.cshtml" />
+    <Content Include="Views\Staff\PasswordChange.cshtml" />
+    <Content Include="Views\Staff\P_CN_visity.cshtml" />
+    <Content Include="Views\Staff\StaffData.cshtml" />
+    <Content Include="Views\Staff\TongouAtristList.cshtml" />
+    <Content Include="Views\Staff\TongouWorksList.cshtml" />
+    <Content Include="Views\Staff\WorkAdd.cshtml" />
+    <Content Include="Views\Staff\WorkEdit.cshtml" />
+    <Content Include="Views\Staff\Works.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\Model2.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model2.edmx.diagram">
+      <DependentUpon>Model2.edmx</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -111,8 +298,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,48 @@
+﻿@model _2022szaipa.Models.TongouAtrist
+
+@{
+    ViewBag.Title = "AtristAdd";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+<div class="layui-row" style="margin-top:30px;">
+    <div class=" layui-col-md2"></div>
+    <div class=" layui-col-md8">
+        <form class="layui-form" action="/Project_Tongou/AtristAdd" method="post"> 
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Name" required lay-verify="required" placeholder="参加艺术家姓名" autocomplete="off" class="layui-input" value="@Model.Name">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">头衔</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Title" required lay-verify="required" placeholder="头衔,可以不填" autocomplete="off" class="layui-input" value="@Model.Title">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">头像图片地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="HeardPath" required lay-verify="required" placeholder="https://********/" autocomplete="off" class="layui-input" value="@Model.HeardPath">
+                </div>
+            </div>
+           
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">简介</label>
+                <div class="layui-input-block">
+                    <textarea name="AboutText" placeholder="个人简介" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            @Html.ValidationSummary(false)
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                </div>
+            </div>
+        </form>       
+    </div>
+</div>

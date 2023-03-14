@@ -1,0 +1,73 @@
+﻿@model _2022szaipa.Models.Artist
+@{
+    ViewBag.Title = Model.ArtistNameCN + "-艺术产业促进会" + Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="artist">
+    <div class="art-imgbox">
+        <img src="~/Content/ArtImg/Artist/@Model.Path" class="img-responsive" alt="@Model.ArtistNameCN" />
+    </div>
+    <div class="art-infbox">
+        <div class="textbox-1">
+            <h2>@Model.ArtistNameCN &nbsp;&nbsp;&nbsp;&nbsp;<small>@Model.ArtistNameEN</small></h2>
+            <h5><small>&nbsp;@Model.Title</small></h5>
+            <br />
+            @Model.UserContent
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    @if (Model.FlieInf != null)
+    {
+    <div class="art-infbox-bottom">
+        <a href="" download="/Conten/Filme/@Model.FlieInf" style="float:right;">资料下载</a>
+    </div>
+    }
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="artist-2">
+    <div class="pull-left">
+        <h3>参展（策展）经历</h3>
+        <br />
+        <p>
+            @Html.Raw(Model.Deeds)
+        </p>
+    </div>
+    <div class="pull-left" >
+        <h3>荣誉</h3>
+        @Html.Raw(Model.Honor)
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+@if (ViewBag.work != null)
+{
+    <div class="workbox">
+        <div class="titlebox">
+            <h3 class="pull-left">作品精选</h3>
+            <a href="#" class="pull-right" style="margin-top:13px">查看更多作品 ></a>
+            <div class="clearfix"></div>
+        </div>
+        <div class="worksbox">
+
+            <ul>
+                @foreach (var w in ViewBag.work)
+                {
+                    <li class="li-1">
+                        <a href="~/Home/works/@w.Id">
+                            <div class="imgbox">
+                                <img class="img-responsive" src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="@w.Title">
+                            </div>
+                            <div class="textbox"><p>@w.Title</p></div>
+                        </a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+}
+

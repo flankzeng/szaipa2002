@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Test_Layout.cshtml";
+}
+
+
+<div class="gun-nav">
+    <div id="myCarousel" class="carousel slide">
+        <!-- 轮播（Carousel）指标 -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- 轮播（Carousel）项目 -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="left">
+                    <div class="top-inf">
+                        <h3>深圳国际艺术大奖</h3>
+                        <h3><small>国内第一个当代艺术国际大奖</small></h3>
+                    </div>
+                    <div class="bottom-inf">
+                        <a href="#">
+                            查看详情
+                        </a>
+                    </div>
+                </div>
+                <div class="right">
+                    <img src="~/Content/newsImg/12313131321.jpg" />
+                </div>
+            </div>
+            <div class="item">
+                <div class="left">
+                    <div class="top-inf">
+                        <h3>深圳市艺术产业促进会艺术家向罗湖美术馆捐赠作品</h3>
+                        <h3><small>近日，为表达对罗湖区文化广电旅游体育局、罗湖美术馆对艺术产业发展、对深圳市艺术产业促进会《同构——当代艺术作品展》的支持，艺术家、深圳市……</small></h3>
+                    </div>
+                    <div class="bottom-inf">
+                        <a href="#">
+                            查看详情
+                        </a>
+                    </div>
+                </div>
+                <div class="right">
+                    <img src="~/Content/newsImg/fd8203b9cc03fdc504de0b1ff21d4994.jpg" />
+                </div>
+            </div>
+            <div class="item">
+                <div class="left">
+                    <div class="top-inf">
+                        <h3>深圳市艺术产业促进会与水贝珠宝集团达成战略合作</h3>
+                        <h3><small>2021年6月22日，深圳市艺术产业促进会（简称“深圳艺促会”）与水贝珠宝集团达成战略合作。</small></h3>
+                    </div>
+                    <div class="bottom-inf">
+                        <a href="#">
+                            查看详情
+                        </a>
+                    </div>
+                </div>
+                <div class="right">
+                    <img src="~/Content/newsImg/ecd0572518d64633fbf0ad739bfd17aa.jpg" />
+                </div>
+            </div>
+        </div>
+        <!-- 轮播（Carousel）导航 -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" style="width:0;">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" style="width:0;">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<div class="focus-nav row">
+    <div style="background:#D0C9AE;border-right:10px solid #ffffff;" class="col-lg-4">
+        <a href="#">
+            <div class="imgbox">
+                <img  src="~/Content/testfile/12313131321.png"/>
+            </div>
+        </a>
+    </div>
+    <div style="background:#D0C9AE;border-left:10px solid #ffffff;border-right:10px solid #ffffff;" class="col-lg-4"></div>
+    <div style="background:#D0C9AE;border-left:10px solid #ffffff;" class="col-lg-4"></div>
+</div>
+<div class="">
+
+</div>
+<style>
+    .focus-nav {
+        width: 1200px;
+        height: 280px;       
+        margin:70px auto;
+    }
+        .focus-nav .col-lg-4 {
+        height:250px;
+        margin-top:15px;
+        padding:50px;
+        }
+            .focus-nav .col-lg-4 .imgbox {
+            width:80%;
+            height:auto;
+            margin:10px auto;
+            }
+             .focus-nav .col-lg-4 .imgbox img
+             {
+                 width:100%;
+             }
+    .gun-nav {
+        width: 1200px;
+        height: auto;
+        margin: 50px auto;
+        position: relative;
+    }
+
+        .gun-nav .item {
+            width: 100%;
+            height: 400px;
+        }
+
+            .gun-nav .item .left {
+                width: 375px;
+                height: 400px;
+                float: left;
+                position: relative;
+            }
+
+                .gun-nav .item .left .top-inf {
+                    width: 350px;
+                    height: auto;
+                    margin: 30px auto;
+                }
+
+                .gun-nav .item .left .bottom-inf {
+                    width: 350px;
+                    height: 20px;
+                    margin: 30px auto;
+                    position: absolute;
+                    bottom: 0px;
+                    left: 15px;
+                }
+
+                    .gun-nav .item .left .bottom-inf a {
+                        border: 1px solid #000000;
+                        background-color:#000000;
+                        border-radius: 15px;
+                        padding: 2px 30px;
+                        color: #ffffff;
+                        font-size: 16px;
+                    }
+
+            .gun-nav .item .right {
+                width: 800px;
+                height: 400px;
+                float: right;
+            }
+
+                .gun-nav .item .right img {
+                    width: 100%;
+                }
+
+        .gun-nav ol {
+            position: absolute;
+            bottom: -40px;
+        }
+
+    .carousel-indicators .active {
+        background-color: #958e71;
+        height: 8px;
+        width: 30px;
+        margin: 0 10px;
+    }
+
+    .carousel-indicators li {
+        border: 1px solid #958e71;
+        height: 8px;
+        width: 30px;
+        margin: 0 10px;
+    }
+
+   
+</style>

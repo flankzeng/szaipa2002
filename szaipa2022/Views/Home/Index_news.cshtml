@@ -1,0 +1,26 @@
+﻿
+<div class="news">
+    <div class="container">
+        <div class="news-text" style="background-color: #958e71;height:50px">
+            <h3 style="color:#fff;font-size: 28px;padding: 10px;">新闻动态</h3>
+        </div>
+        <div class="news-grids" style="margin-top:2em">
+            @foreach (var n in ViewBag.n)
+            {
+                <div class="col-md-3 news-grid zaipa-md-2">
+                    <a href="~/Home/newsread/@n.Id"><h4>@n.Title</h4></a>
+                    <span>@n.DateM 月 @n.DateD 日 </span>
+                    <a href="~/Home/newsread/@n.Id" class="mask"><img src="~/Content/newsImg/@n.ImgTitle" alt="@n.Title" class="img-responsive zoom-img"></a>
+                    <div class="news-info">
+                        <p>@n.Subtitle</p>
+                    </div>
+                   
+                </div>   
+          
+            }
+
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SzaipaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccessData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Ip" Type="nvarchar" MaxLength="50" />
+          <Property Name="Nation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Porvince" Type="nvarchar" MaxLength="50" />
+          <Property Name="Ctiy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DC" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="int" Nullable="false" />
+          <Property Name="Class" Type="nvarchar" MaxLength="200" />
+          <Property Name="RArt" Type="nvarchar(max)" />
+          <Property Name="RWork" Type="nvarchar(max)" />
+          <Property Name="RNews" Type="nvarchar(max)" />
+          <Property Name="CoverTitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="ImgsTitle" Type="nvarchar(max)" />
+          <Property Name="Add" Type="nvarchar" MaxLength="200" />
+          <Property Name="OtherInf" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtistNameCN" Type="nvarchar" MaxLength="30" />
+          <Property Name="ArtistNameEN" Type="nvarchar" MaxLength="30" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="Path" Type="nvarchar" MaxLength="500" />
+          <Property Name="UserContent" Type="nvarchar(max)" />
+          <Property Name="Nation" Type="nvarchar" MaxLength="30" />
+          <Property Name="City" Type="nvarchar" MaxLength="30" />
+          <Property Name="Title" Type="nvarchar" MaxLength="30" />
+          <Property Name="WorkCount" Type="int" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="Deeds" Type="nvarchar(max)" />
+          <Property Name="Honor" Type="nvarchar(max)" />
+          <Property Name="AddDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="FlieInf" Type="nvarchar" MaxLength="500" />
+          <Property Name="VisitCount" Type="int" />
+          <Property Name="Activity" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameCN" Type="nvarchar" MaxLength="200" />
+          <Property Name="NameEN" Type="nvarchar" MaxLength="200" />
+          <Property Name="Business" Type="nvarchar(max)" />
+          <Property Name="CEO" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImgPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="int" />
+          <Property Name="FirstDate" Type="datetime" />
+          <Property Name="LastDate" Type="datetime" />
+          <Property Name="Activity" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Diary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="VistiTotal" Type="int" Nullable="false" />
+          <Property Name="NewsVisit" Type="int" Nullable="false" />
+          <Property Name="ArtVisit" Type="int" Nullable="false" />
+          <Property Name="WorksVisit" Type="int" Nullable="false" />
+          <Property Name="CompanyVisit" Type="int" Nullable="false" />
+          <Property Name="OperationRecord" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MonthData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Data" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="Subtitle" Type="nvarchar(max)" />
+          <Property Name="Autor" Type="nvarchar" MaxLength="50" />
+          <Property Name="original" Type="bit" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="500" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="ReadCount" Type="int" Nullable="false" />
+          <Property Name="ImgTitle" Type="nvarchar(max)" />
+          <Property Name="Activity" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StaffName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="OperationRecord" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="WorksCount" Type="int" Nullable="false" />
+          <Property Name="SerachHot" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Works">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Path" Type="nvarchar(max)" />
+          <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Record" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="int" />
+          <Property Name="FirstDate" Type="datetime" />
+          <Property Name="LastDate" Type="datetime" />
+          <Property Name="Width" Type="int" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
+          <Property Name="transverse" Type="bit" Nullable="false" />
+          <Property Name="long" Type="bit" Nullable="false" />
+          <Property Name="Activity" Type="nvarchar(max)" />
+          <Property Name="Tags" Type="nvarchar(max)" />
+          <Property Name="Deeds" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="WorksTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="SzaipaModelStoreContainer">
+          <EntitySet Name="AccessData" EntityType="Self.AccessData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Diary" EntityType="Self.Diary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorksTag" EntityType="Self.WorksTag" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SzaipaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccessData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Porvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Ctiy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" Nullable="false" />
+          <Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RArt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RNews" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CoverTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ImgsTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Add" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OtherInf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtistNameCN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ArtistNameEN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nation" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="WorkCount" Type="Int32" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deeds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Honor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="FlieInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
+          <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameCN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NameEN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Business" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CEO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FilePath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
+          <Property Name="FirstDate" Type="DateTime" Precision="3" />
+          <Property Name="LastDate" Type="DateTime" Precision="3" />
+          <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Diary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="VistiTotal" Type="Int32" Nullable="false" />
+          <Property Name="NewsVisit" Type="Int32" Nullable="false" />
+          <Property Name="ArtVisit" Type="Int32" Nullable="false" />
+          <Property Name="WorksVisit" Type="Int32" Nullable="false" />
+          <Property Name="CompanyVisit" Type="Int32" Nullable="false" />
+          <Property Name="OperationRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MonthData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Subtitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Autor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="original" Type="Boolean" Nullable="false" />
+          <Property Name="link" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReadCount" Type="Int32" Nullable="false" />
+          <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StaffName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OperationRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="WorksCount" Type="Int32" Nullable="false" />
+          <Property Name="SerachHot" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Works">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Record" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
+          <Property Name="FirstDate" Type="DateTime" Precision="3" />
+          <Property Name="LastDate" Type="DateTime" Precision="3" />
+          <Property Name="Width" Type="Int32" Nullable="false" />
+          <Property Name="Height" Type="Int32" Nullable="false" />
+          <Property Name="transverse" Type="Boolean" Nullable="false" />
+          <Property Name="long" Type="Boolean" Nullable="false" />
+          <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deeds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="WorksTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkId" Type="Int32" Nullable="false" />
+          <Property Name="TagId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="SzaipaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccessData" EntityType="Self.AccessData" />
+          <EntitySet Name="Activity" EntityType="Self.Activity" />
+          <EntitySet Name="Artist" EntityType="Self.Artist" />
+          <EntitySet Name="Company" EntityType="Self.Company" />
+          <EntitySet Name="Diary" EntityType="Self.Diary" />
+          <EntitySet Name="MonthData" EntityType="Self.MonthData" />
+          <EntitySet Name="News" EntityType="Self.News" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" />
+          <EntitySet Name="Works" EntityType="Self.Works" />
+          <EntitySet Name="WorksTag" EntityType="Self.WorksTag" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SzaipaModelStoreContainer" CdmEntityContainer="SzaipaEntities">
+          <EntitySetMapping Name="AccessData">
+            <EntityTypeMapping TypeName="SzaipaModel.AccessData">
+              <MappingFragment StoreEntitySet="AccessData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Nation" ColumnName="Nation" />
+                <ScalarProperty Name="Porvince" ColumnName="Porvince" />
+                <ScalarProperty Name="Ctiy" ColumnName="Ctiy" />
+                <ScalarProperty Name="DC" ColumnName="DC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Activity">
+            <EntityTypeMapping TypeName="SzaipaModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="RArt" ColumnName="RArt" />
+                <ScalarProperty Name="RWork" ColumnName="RWork" />
+                <ScalarProperty Name="RNews" ColumnName="RNews" />
+                <ScalarProperty Name="CoverTitle" ColumnName="CoverTitle" />
+                <ScalarProperty Name="ImgsTitle" ColumnName="ImgsTitle" />
+                <ScalarProperty Name="Add" ColumnName="Add" />
+                <ScalarProperty Name="OtherInf" ColumnName="OtherInf" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artist">
+            <EntityTypeMapping TypeName="SzaipaModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ArtistNameCN" ColumnName="ArtistNameCN" />
+                <ScalarProperty Name="ArtistNameEN" ColumnName="ArtistNameEN" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="UserContent" ColumnName="UserContent" />
+                <ScalarProperty Name="Nation" ColumnName="Nation" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="WorkCount" ColumnName="WorkCount" />
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+                <ScalarProperty Name="Deeds" ColumnName="Deeds" />
+                <ScalarProperty Name="Honor" ColumnName="Honor" />
+                <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="FlieInf" ColumnName="FlieInf" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Company">
+            <EntityTypeMapping TypeName="SzaipaModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NameCN" ColumnName="NameCN" />
+                <ScalarProperty Name="NameEN" ColumnName="NameEN" />
+                <ScalarProperty Name="Business" ColumnName="Business" />
+                <ScalarProperty Name="CEO" ColumnName="CEO" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+                <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diary">
+            <EntityTypeMapping TypeName="SzaipaModel.Diary">
+              <MappingFragment StoreEntitySet="Diary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="VistiTotal" ColumnName="VistiTotal" />
+                <ScalarProperty Name="NewsVisit" ColumnName="NewsVisit" />
+                <ScalarProperty Name="ArtVisit" ColumnName="ArtVisit" />
+                <ScalarProperty Name="WorksVisit" ColumnName="WorksVisit" />
+                <ScalarProperty Name="CompanyVisit" ColumnName="CompanyVisit" />
+                <ScalarProperty Name="OperationRecord" ColumnName="OperationRecord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthData">
+            <EntityTypeMapping TypeName="SzaipaModel.MonthData">
+              <MappingFragment StoreEntitySet="MonthData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="SzaipaModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Subtitle" ColumnName="Subtitle" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+                <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staff">
+            <EntityTypeMapping TypeName="SzaipaModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StaffName" ColumnName="StaffName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="OperationRecord" ColumnName="OperationRecord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tag">
+            <EntityTypeMapping TypeName="SzaipaModel.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="WorksCount" ColumnName="WorksCount" />
+                <ScalarProperty Name="SerachHot" ColumnName="SerachHot" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Works">
+            <EntityTypeMapping TypeName="SzaipaModel.Works">
+              <MappingFragment StoreEntitySet="Works">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+                <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+                <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="transverse" ColumnName="transverse" />
+                <ScalarProperty Name="long" ColumnName="long" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="Deeds" ColumnName="Deeds" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorksTag">
+            <EntityTypeMapping TypeName="SzaipaModel.WorksTag">
+              <MappingFragment StoreEntitySet="WorksTag">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WorkId" ColumnName="WorkId" />
+                <ScalarProperty Name="TagId" ColumnName="TagId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

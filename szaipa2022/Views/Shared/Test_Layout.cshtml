@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>首页测试</title>
+    <!--css-->
+    <link href="~/Content/CSS/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/CSS/Staff.css" rel="stylesheet" />
+    <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
+    <!--coustom css-->
+    <!--default-js-->
+    <script src="~/Content/js/jquery-2.1.4.min.js"></script>
+    <!--bootstrap-js-->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery.form.js"></script>
+    <script src="~/Content/js/jquery.minicolors.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/js/echarts.min.js"></script>
+</head>
+<body>
+    <style>
+       
+        a {
+            color:#333;
+            text-decoration: none;
+        }
+            a:hover {
+                text-decoration: none;
+                color: #D0C9AE;
+            }
+
+        .n-top-nav {
+            height: 80px;
+            width: 100%;
+        }
+
+            .n-top-nav .box-1 {
+                height: 120px;
+                width: 1200px;
+                margin: 0 auto;
+            }
+
+                .n-top-nav .box-1 .left {
+                    float: left;
+                    height: 80px;
+                    width: 340px;
+                    margin: 15px;
+                }
+
+                    .n-top-nav .box-1 .left .imgbox {
+                        width: 150px;
+                        height: 50px;
+                        float: left;
+                    }
+
+                    .n-top-nav .box-1 .left .infbox {
+                        width: 160px;
+                        height: 40px;
+                        float: right;
+                        margin-top: 20px;
+                        border-left: 1px solid #bababa;
+                    }
+
+                        .n-top-nav .box-1 .left .infbox p {
+                            width: 100%;
+                            height: 40px;
+                            font-size: 15px;
+                            color: #958e71;
+                            text-align: center;
+                        }
+
+                    .n-top-nav .box-1 .left img {
+                        width: 100%;
+                        margin-top: 15px;
+                    }
+
+                .n-top-nav .box-1 .right {
+                    float: right;
+                    width: 800px;
+                    height: 30px;
+                    margin-top: 39px;
+                }
+
+                    .n-top-nav .box-1 .right ul li {
+                        list-style: none;
+                        display: block;
+                        width: auto;
+                        height: 25px;
+                        padding:2px 15px;
+                        float: right;
+                        font-size: 15px;
+                    }
+                    .n-top-nav .box-1 .right ul .active > a {                   
+                    background-color:#958e71;
+                     color:#ffffff;
+                      width: auto;
+                     height: 27px;
+                    padding:3px 20px;
+                    border-radius:15px;
+                    }
+                    .n-top-nav .box-1 .right ul .focus > a {
+                     color:#958e71;
+                     border-radius:15px;
+                     border:1px solid #958e71;
+                     padding:3px 20px;
+                    }
+    </style>
+    <div class="n-top-nav">
+        <div class="box-1">
+            <div class="left">
+                <div class="imgbox">
+                    <a href="#">
+                        <img src="~/Content/123/LogoAndName.png" />
+                    </a>
+                </div>
+                <div>
+
+                </div>
+                <div class="infbox">
+                    <p>
+                        <span class="glyphicon glyphicon-phone-alt"></span>&nbsp; 联系我们
+                        <br />
+                        +86-0755-????????
+                    </p>
+                </div>
+
+            </div>
+            <div class="right">
+                <ul>
+                    <li class="focus"><a href="#">入会申请 </a> </li>
+                    <li><a href="#">关于我们 </a> </li>
+                    <li><a href="#">服务基地 </a> </li>
+                    <li><a href="#">会员风采 </a> </li>
+                    <li><a href="#">协会活动 </a> </li>
+                    <li><a href="#">新闻动态 </a> </li>
+                    <li class="active"><a href="#">首页</a> </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

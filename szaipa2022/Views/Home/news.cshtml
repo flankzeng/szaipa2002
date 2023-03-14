@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "新闻动态";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="banner banner5">
+    <div  class="container">
+        <h2>新闻动态</h2>
+    </div>
+</div>
+<!--blog-->
+<!--blog -->
+<div class="blog">
+    <div class="container">
+        <div class="single-inline wow fadeInLeft animated" data-wow-delay="0.4s" style="visibility: visible; -webkit-animation-delay: 0.4s;">
+            @foreach (var n in Model)
+            {
+                <div class="blog-to">
+                <a href="~/Home/newsread/@n.Id"><img class="img-responsive sin-on" src="~/Content/newsImg/@n.ImgTitle" alt="@n.Title" /></a>
+                <div class="blog-top">
+                    <div class="blog-left">
+                        <b>@n.DateD</b>
+                        <span>@n.DateM 月</span>
+                    </div>
+                    <div class="top-blog">
+                        <a class="fast" href="~/Home/newsread/@n.Id">@n.Title</a>
+                        @if (n.or)
+                        {  
+                            <p>文章<a href="@n.link">阅读原文</a> 阅读数：@n.ReadCount</p>
+                        }
+                        else
+                        {
+                            <p>文章源于<a href="single.html">艺术产业促进会</a> 阅读数：@n.ReadCount</p>
+                        }
+                      
+                        <p class="sed">
+                            @n.Subtitle
+                        </p>
+                        <a href="~/Home/newsread/@n.Id" class="hvr-shutter-in-horizontal">查看详情</a>
+
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            }
+     
+
+           
+
+
+            <div class="blog-to">
+
+                <a href="single.html"><img class="img-responsive sin-on" src="/Content/images/sin2.jpg" alt="" /></a>
+                <div class="blog-top">
+                    <div class="blog-left">
+                        <b>19</b>
+                        <span>July</span>
+                    </div>
+                    <div class="top-blog">
+                        <a class="fast" href="single.html">Sed ut perspiciatis unde omnis iste natus error sit voluptatem</a>
+                        <p>Posted by <a href="single.html">Admin</a> in <a href="#">General</a> | <a href="single.html">10 Comments</a></p>
+                        <p class="sed">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap.
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500
+                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap.
+                        </p>
+                        <a href="single.html" class="hvr-shutter-in-horizontal">Read More</a>
+
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+
+     
+        </div>
+        <nav>
+            <ul class="pagination" style="display:none">
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">2 <span class="sr-only"></span></a></li>
+                <li><a href="#">3 <span class="sr-only"></span></a></li>
+                <li><a href="#">4 <span class="sr-only"></span></a></li>
+                <li><a href="#">5 <span class="sr-only"></span></a></li>
+                <li> <a href="#" aria-label="Next"><span aria-hidden="true">»</span> </a> </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- //blog -->
+<!--/blog-->
+

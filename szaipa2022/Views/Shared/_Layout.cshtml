@@ -1,0 +1,285 @@
+﻿
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
+    <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link rel="icon" href="~/Content/123/favicon.ico" type="image/x-icon" />
+    <!--webfont-->
+    <!--/webfont-->
+    <!-- Bootstrap core JavaScript-->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--bootstrap-->
+    <link rel="stylesheet" type="text/css" href="~/Content/CSS/component.css" />
+    <link href="~/Content/CSS/Home.css" rel="stylesheet" />
+    <!--css-->
+    <link href="~/Content/CSS/bootstrap.css" rel="stylesheet" type="text/css">
+    <!--coustom css-->
+    <link href="~/Content/CSS/style.css" rel="stylesheet" type="text/css" />
+
+    <link href="~/Content/CSS/Layout.css" rel="stylesheet" />
+
+    <!--default-js-->
+    <script src="~/Content/js/jquery-2.1.4.min.js"></script>
+    <!--bootstrap-js-->
+    <script src="~/Content/js/bootstrap.min.js"></script>
+
+    <!-- js -->
+    <script type="text/javascript" src="~/Content/js/move-top.js"></script>
+    <script type="text/javascript" src="~/Content/js/easing.js"></script>
+    <script src="~/Content/js/modernizr.custom.js"></script>
+    <!--/script-->
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 900);
+            });
+        });
+
+    </script>
+
+
+</head>
+<body>
+    <div class="laynav">
+        <div class="out">
+            <div class="top-b">
+                <div class="center">
+                    <div class="textbox">
+                        <p>您好，欢迎来到深圳市艺术产业促进会的官方网站！</p>
+                    </div>
+                    <div class="navbox">
+                        <ul>
+                            <li>
+                                <a id="pubbtn" href="#">&nbsp;公众号&nbsp;|</a>
+                                <ul>
+                                    <li>
+                                        <div class="ewmbox">
+                                            <img src="~/Content/123/EWM.jpg" />
+                                            <p style="color:rgb(129,109,84);text-align:center;margin-top:-10px;">深圳艺术产促进会公众号</p>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </li>
+                            <li> <a href="#" onclick="window.external.AddFavorite(location.href,document.title);">|&nbsp;收藏网站&nbsp;|</a>   </li>                            
+                        </ul><div class="clearfix"></div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="se-box">
+                <div class="imgbox img-responsive">
+                    <img src="~/Content/123/长logo.jpg" />
+                </div>
+                <div class="searchbox">
+
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            
+
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="container">
+            <div class="header-nav">
+                <!-- navigation -->
+                <div class="navigation">
+                    <nav class="navbar navbar-default">
+
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse nav-wil collapse in" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav" style="margin:0 0;width:100%;">
+                                @{
+                                    if (@ViewBag.Index != null)
+                                    {
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/Index">首页 <span class="sr-only">(current)</span></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="hvr-bounce-to-bottom "><a href="~/Home/Index">首页</a></li>
+                                    }
+                                    if (@ViewBag.news != null)
+                                    {
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/news">新闻资讯<span class="sr-only">(current)</span></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/news">新闻资讯</a></li>
+
+                                    }
+                                  
+                                    if (@ViewBag.about != null)
+                                    {
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/about">关于我们<span class="sr-only">(current)</span></a></li>}
+                                    else
+                                    {
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/about">关于我们</a></li>}
+                                    if (@ViewBag.vip != null)
+                                    {
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/vip">会员风采<span class="sr-only">(current)</span></a></li> }
+                                    else
+                                    {
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/vip">会员风采</a></li> }
+
+                                    if (@ViewBag.link != null)
+                                    {
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/link">联系我们<span class="sr-only">(current)</span></a></li> }
+                                    else
+                                    {
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/link">联系我们</a></li>
+                                    }
+                                   
+                                }
+                                <li class="pull-right"style="width:30%;">
+                                    <div class="col-lg-12 in-gp-tb">
+                                        <div class="input-group">
+                                            <input type="text" id="keyword" class="form-control" placeholder="作品与相关信息"                                                  
+                                                   >
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" id="search"data-toggle="tooltip"data-placement="right"title="右侧的 Tooltip">
+                                                        
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </button> 
+                                            </span>
+                                        <script>
+                                            $(document).ready(function () {
+                                              
+                                                $("#search").click(function () {
+                                                    var keyword = $("#keyword").val();
+                                                    window.location.href = "/Home/Tags/?keyword="+keyword;
+                                                   
+                                                });
+                                            });
+
+
+                                        </script>
+                                        </div><!-- /input-group -->
+                                    </div>
+                                </li>
+                            </ul>
+                            
+
+                            <div class="clearfix"></div>
+                        </div><!-- /.navbar-collapse -->
+                    </nav>
+                </div>
+            </div>
+            <!-- //navigation -->
+            <!-- script-for-menu -->
+            <script>
+
+                $(document).ready(function () {
+                    $("#pubbtn").hover(function () {
+                        $(".ewmbox").show();
+                    }, function () {
+                        $(".ewmbox").hide();
+                    })
+
+                });
+
+                $("span.menu").click(function () {
+                    $(".top-nav ul").slideToggle("slow", function () {
+                    });
+                });
+            </script>
+            <!-- script-for-menu -->
+        </div>
+    </div>
+    @RenderBody()
+
+    <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+    <a href="~/home/ReturnStaff" class="returnico"></a>
+
+    <style>
+        .returnico {
+        display:none;    
+        width:75px;
+        height:61px;
+        position:fixed;
+        right:3%;
+        top:250px;
+        background-image:url("/Content/images/return-1.png")
+        }
+            .returnico:hover {
+            background-image:url("/Content/images/return-2.png")
+            }
+    </style>
+    <div class="footer">
+        <div class="container">
+            <div class="footer-grids">
+                <div class="col-md-4 recent-posts">
+                    <h4>资料下载</h4>
+                    <div class="recent-posts-text">
+                        <h5>深圳市艺术产业促进会章程</h5>
+                        <a href="/Content/Filme/深圳艺术产业促进会章程.pdf" download="深圳艺术产业促进会章程"><p>点击此处下载(PDF格式)</p></a>
+                    </div>
+                    <div class="recent-posts-text">
+                        <h5>艺术产业促进会介绍</h5>
+                        <a href="#" download="艺术产业促进会介绍"><p>点击此处下载(PDF格式)</p></a>
+                    </div>
+                    <div class="recent-posts-text">
+                        <h5>合作案例</h5>
+                        <a href="#" download="合作项目"><p>点击此处下载(PDF格式)</p></a>
+                    </div>
+                </div>
+                <div class="col-md-4 recent-posts">
+                    <h4>网络安全信息</h4>
+                    <style>
+                        .recent-posts-text p img {
+                        margin-top:-10px;
+                        }
+                    </style>
+                    <div class="recent-posts-text">
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889"><h5>公安局备案</h5></a>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889"><p><img src="~/Content/images/备案图标.png" />   粤公网安备 44030402004889号</p></a>
+                    </div>
+                   
+                   
+                    <div class="recent-posts-text">
+                        <a href="https://beian.miit.gov.cn/"><h5>工信部备案</h5></a>
+                        <a href="https://beian.miit.gov.cn/"><p>粤ICP备2021095230号</p></a>
+                    </div>
+                    <div class="recent-posts-text">
+                        <a href="#"><h5>最后更新时间：<span>2021.7.28</span> </h5></a>
+                        <a href="~/Staff/Index"><p>管理员后台</p></a>
+                    </div>
+                </div>
+                <div class="col-md-4 recent-posts">
+                    <h4>联系我们</h4>
+                    <p class="adrs">
+                        广东省 深圳市 福田区 南园街道
+                    </p>
+                    <ul>
+                        <li><span></span>滨河大道2001号T-PARK深港影视创意园7楼07单元</li>
+                        <li><span class="ph-no"></span>+00 (86) 0755 11111111</li>
+                        <li><span class="mail"></span><a href="mailto:industry@szaipa.com">industry@szaipa.com</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

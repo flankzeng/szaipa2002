@@ -1,0 +1,106 @@
+﻿@model _2022szaipa.Models.TongouAtrist
+@{ 
+    Layout = null;
+}
+
+@* 艺术家介绍页面 *@
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <title>艺术家介绍 - @Model.Name</title>
+    @* 艺术家介绍 - （姓名） *@
+    <script src="/Content/js/jquery-2.1.4.min.js"></script>
+    <link href="~/Content/CSS/Site.css" rel="stylesheet" />
+    <link rel="icon" href="~/Content/123/szaipa.ico" type="image/x-icon" />
+</head>
+
+
+<body>
+
+    <div class="die">
+        <div class="imgCon" style="background-image: url('@Model.HeardPath') ;">
+            @* 艺术家个人照片 *@
+            <a href="/Project_Tongou/WorkList/@Model.id">
+                @* 相应目录页面 *@
+                <div class="btn">参展作品</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="text">
+        <!-- &#12288; 1em占位符，&#8194; 0.5em占位符 -->
+        <h1>@Model.Name</h1>
+        @* 姓名⬆️ *@
+        @* 简介⬇️ *@
+        <p>@Model.AboutText
+        </p>
+    </div>
+
+
+    <style>
+        .die {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .imgCon {
+            width: 96%;
+            margin-left: 2%;
+            margin-right: 2%;
+            border-radius: 35px;
+            height: 550px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: bottom bottom;
+            position: relative;
+        }
+
+        .btn {
+            height: 30px;
+            width: 100px;
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            box-shadow: 3px 3px 10px #00000010;
+            cursor: pointer;
+            line-height: 22pt;
+            font-size: 11pt;
+            font-family: 'sansLight';
+            text-align: center;
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        .text {
+            width: 85%;
+            margin: 0 auto;
+            font-size: 11pt;
+            font-family: 'sansLight';
+            text-align: justify;
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .text h1 {
+            font-size: 16pt;
+            font-family: 'sansBold';
+            color: #1a4eb5;
+            margin-bottom: 30px;
+        }
+
+        .text p {
+            white-space: pre-line;
+            font-family: 'sansRegular';
+            font-size: 13pt;
+            line-height: 2.1em;
+        }
+    </style>
+
+</body>
+
+</html>

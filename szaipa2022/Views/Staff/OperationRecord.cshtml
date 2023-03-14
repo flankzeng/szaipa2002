@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "个人操作记录";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space30">
+        <div class="layui-col-md-offset3 layui-col-md6">
+            @if (Model != null)
+            {
+                <ul class="layui-timeline">
+                    @foreach (var a in Model)
+                {
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">@a.date</h3>
+                                @foreach (var b in a.or)
+                                {
+                                    <p>
+                                        @b
+                                    <i class="layui-icon"></i>
+                                </p>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <h3>暂无操作记录</h3>
+            }
+
+        </div>
+    </div>
+</div>

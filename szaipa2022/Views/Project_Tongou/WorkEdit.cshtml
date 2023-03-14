@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "WorkEdit";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+<div class="layui-row" style="margin-top:30px;">
+    <div class=" layui-col-md2"></div>
+    <div class=" layui-col-md8">
+        <form class="layui-form" action="/Project_Tongou/WorkEdit" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">作品标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Title" required lay-verify="required" placeholder="作品标题" autocomplete="off" class="layui-input" value="@Model.Title">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">作者名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="AtristidName" required lay-verify="required" placeholder="艺术家姓名" autocomplete="off" class="layui-input" value="@Model.AtristidName">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">尺寸</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Size" required lay-verify="required" placeholder="作品尺寸" autocomplete="off" class="layui-input" value="@Model.Size">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Type" required lay-verify="required" placeholder="作品分类如：油画、丙烯" autocomplete="off" class="layui-input" value="@Model.Type">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">创作日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="CreationDate" required lay-verify="required" placeholder="创作年份" autocomplete="off" class="layui-input" value="@Model.CreationDate">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">头像图片地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ImgPath" required lay-verify="required" placeholder="https://********/" autocomplete="off" class="layui-input" value="@Model.ImgPath">
+                </div>
+            </div>
+
+
+            <input type="hidden" name="id" class="layui-input" value="@Model.id">
+            @Html.ValidationSummary(false)
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
