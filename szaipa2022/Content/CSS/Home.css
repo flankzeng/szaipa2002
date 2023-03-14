@@ -1,0 +1,77 @@
+﻿
+.index-t-box {
+    height: 500px;
+    width: 1080px;
+    margin: 30px auto;
+}
+
+    .index-t-box .leftbox {
+        height: 500px;
+        width: 375px;
+    }
+
+    .index-t-box .rightbox {
+        height: 500px;
+        width: 65%;
+    }
+
+        .index-t-box .rightbox .ibox {
+            width: 95%;
+            height: 120px;
+            margin: 5px auto;
+            background-color: rgb(248, 248, 248);
+        }
+
+            .index-t-box .rightbox .ibox .textp {
+                width:80%;
+                height:100%;
+                float:left;    
+              
+            }
+
+            .index-t-box .rightbox .ibox .imgp {
+                width:20%;
+                height:100%;
+                float:right;   
+               
+            }
+            .index-t-box .rightbox .ibox .imgp  img{
+            height:100%;
+            width:auto;
+            float:right;
+            }
+            .index-t-box .rightbox .ibox a {
+                text-decoration: none;
+                color: rgb(0, 0, 0);
+            }
+
+                .index-t-box .rightbox .ibox a:hover {
+                    color: rgb(129,109,84);
+                    text-decoration: none;
+                }
+
+            .index-t-box .rightbox .ibox h3 {
+                text-align: left;
+            }
+
+            .index-t-box .rightbox .ibox h5 {
+            }
+
+        .index-t-box .rightbox .morebtn {
+            text-align: center;
+        }
+
+            .index-t-box .rightbox .morebtn a {
+                color: #808080;
+                text-decoration: none;
+            }
+
+                .index-t-box .rightbox .morebtn a:hover {
+                    color: rgb(229,209,184);
+                    text-decoration: none;
+                }
+.index-s-box {
+     height: 500px;
+    width: 1080px;
+    margin: 30px auto;
+}

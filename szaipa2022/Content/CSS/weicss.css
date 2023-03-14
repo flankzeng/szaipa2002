@@ -1,0 +1,57 @@
+﻿        .re {
+            border: 1px solid red;
+        }
+
+        .imgCon {
+            height: 300px;
+            width: 300px;
+            margin: 20% auto;
+        }
+
+        body {
+            text-align: center;
+            font-family: 'sansLight';
+        }
+
+        div {
+            font-size: 18pt;
+        }
+
+
+
+        /* 思源黑字体家族 */
+
+        @font-face {
+            font-family: "sansExtraLight";
+            src: url("fonts/SourceHanSansCN-ExtraLight.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansLight";
+            src: url("fonts/SourceHanSansCN-Light.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansNormal";
+            src: url("fonts/SourceHanSansCN-Normal.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansRegular";
+            src: url("fonts/SourceHanSansCN-Regular.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansMedium";
+            src: url("fonts/SourceHanSansCN-Medium.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansBold";
+            src: url("fonts/SourceHanSansCN-Bold.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "sansHeavy";
+            src: url("fonts/SourceHanSansCN-Heavy.woff") format("woff")
+        }
