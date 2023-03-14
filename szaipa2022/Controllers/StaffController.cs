@@ -1,5 +1,4 @@
 ﻿
-using _2022szaipa.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +7,7 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using Szaipa.Models;
+using szaipa2022.Models;
 
 namespace Szaipa_artbox.Controllers
 {

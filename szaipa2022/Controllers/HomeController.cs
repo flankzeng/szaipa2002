@@ -1,5 +1,4 @@
 ﻿
-using _2022szaipa.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Szaipa.Models;
-
+using szaipa2022.Models;
 
 namespace Szaipa_artbox.Controllers
 {

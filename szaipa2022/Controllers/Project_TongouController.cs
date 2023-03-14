@@ -1,5 +1,4 @@
 ﻿using _2022szaipa.App_Start;
-using _2022szaipa.Models;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Szaipa.Models;
+using szaipa2022.Models;
 
 namespace Szaipa.Controllers
 {
