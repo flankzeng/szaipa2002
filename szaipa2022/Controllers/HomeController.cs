@@ -47,7 +47,6 @@ namespace Szaipa.Controllers
             return View();
         }
 
-
         public ActionResult All(string keyword)
         {
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据

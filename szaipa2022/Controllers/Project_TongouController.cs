@@ -1,5 +1,4 @@
-﻿using _2022szaipa.App_Start;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,9 +8,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Szaipa.Models;
+using Szaipa.App_Start;
 using szaipa2022.Models;
 
 namespace Szaipa.Controllers

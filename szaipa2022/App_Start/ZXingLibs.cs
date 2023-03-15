@@ -8,7 +8,7 @@ using ZXing.QrCode;
 using ZXing.QrCode.Internal;
 
 
-namespace _2022szaipa.App_Start
+namespace Szaipa.App_Start
 {
     class ZXingLibs
     {

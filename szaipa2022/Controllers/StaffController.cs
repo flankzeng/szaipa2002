@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using Szaipa.Models;
 using szaipa2022.Models;
 
-namespace Szaipa_artbox.Controllers
+namespace Szaipa.Controllers
 {
     public class StaffController : Controller
     {

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace szaipa2022
+namespace Szaipa2022
 {
     public class RouteConfig
     {
