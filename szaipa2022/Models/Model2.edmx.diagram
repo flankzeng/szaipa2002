@@ -7,6 +7,7 @@
       <Diagram DiagramId="98eff588f66e4ddf916f15320b3ebb6e" Name="Diagram1">
         <EntityTypeShape EntityType="TongouModel.TongouAtrist" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TongouModel.TongouWorks" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TongouModel.Project" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

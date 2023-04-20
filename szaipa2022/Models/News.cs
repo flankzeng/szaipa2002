@@ -27,5 +27,6 @@ namespace szaipa2022.Models
         public int ReadCount { get; set; }
         public string ImgTitle { get; set; }
         public string Activity { get; set; }
+        public Nullable<bool> Important { get; set; }
     }
 }

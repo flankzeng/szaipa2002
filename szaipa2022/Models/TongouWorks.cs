@@ -23,5 +23,6 @@ namespace szaipa2022.Models
         public int VisityCount { get; set; }
         public string Type { get; set; }
         public string CreationDate { get; set; }
+        public int HotCount { get; set; }
     }
 }

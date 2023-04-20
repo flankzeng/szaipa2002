@@ -27,5 +27,6 @@ namespace szaipa2022.Models
     
         public virtual DbSet<TongouAtrist> TongouAtrist { get; set; }
         public virtual DbSet<TongouWorks> TongouWorks { get; set; }
+        public virtual DbSet<Project> Project { get; set; }
     }
 }

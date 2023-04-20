@@ -12,15 +12,13 @@ namespace szaipa2022.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TongouAtrist
+    public partial class Project
     {
         public int id { get; set; }
-        public string Name { get; set; }
-        public int WorksCount { get; set; }
-        public int Aboutid { get; set; }
-        public string AboutText { get; set; }
-        public string Title { get; set; }
-        public string HeardPath { get; set; }
-        public int HotCount { get; set; }
+        public string Project1 { get; set; }
+        public string VisityData { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public string Content { get; set; }
     }
 }

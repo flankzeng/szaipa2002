@@ -358,8 +358,13 @@ namespace Szaipa.Controllers
             var works = tongou.TongouWorks.ToList();
             foreach (var w in works)
             {
-                string filename = w.id + w.Title;
-                if (filename == "133环/ring") filename = "133环,ring";
+                string name = w.Title;
+                if (name.Contains("/"))
+                {
+                    name.Replace("/", ",");
+                }
+                string filename = w.id +"《"+ name + "》"+w.AtristidName;
+                
                 string h = "http://www.szaipa.com/Project_Tongou/Work/" + w.id;
                 Bitmap zxin = ZXingLibs.GetQRCode(h, width, height);
                 string p = tempFolder + "\\" + filename + ".png";
@@ -637,6 +642,40 @@ namespace Szaipa.Controllers
         {
 
         }
+        /// <summary>
+        /// 项目结束后数据统计
+        /// </summary>
+        /// <param name="id"></param>
+        public void ProjectFilish(int id)
+        {
+            var project = tongou.Project.FirstOrDefault(d => d.id == id);
+            var works = tongou.TongouWorks.Where(d => d.VisityCount != 0).ToList();
+
+            string data = "";
+
+            foreach (var itme in works)
+            {
+                if (data != "")
+                {
+                    data = data + "," + itme.VisityCount;
+                }
+                else
+                {
+                    data = itme.VisityCount.ToString();;
+                }
+                var work = tongou.TongouWorks.FirstOrDefault(d => d.id == itme.id);
+                var arties = tongou.TongouAtrist.FirstOrDefault(d => d.id == work.Atristid);
+                work.HotCount = work.HotCount + work.VisityCount;
+                arties.HotCount = arties.HotCount+ work.VisityCount;
+                work.VisityCount = 0;
+                tongou.SaveChanges();  
+            }
+            project.VisityData = data;
+            tongou.SaveChanges();
+        }
+        
+
+
 
         private static ImageCodecInfo GetEncoderInfo(String mimeType)
         {
