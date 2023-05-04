@@ -18,5 +18,20 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+
+        public ActionResult zhongyi()
+        {
+            return View();
+        }
+
+        public ActionResult tonggou()
+        {
+            return View();
+        }
+
+        public ActionResult tonggou2()
+        {
+            return View();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model szaipa2022.Models.TongouWorks
+﻿@model _2022szaipa.Models.TongouWorks
 @{
     Layout = null;
 }
@@ -80,7 +80,11 @@
         $(function () {
             var zhanshi = $(".zhanshi");
             var datu = $(".datu");
+            var remind = $(".remind");
             zhanshi.click(function () { //全屏图片功能
+                datu.css("display", "block");
+            });
+            remind.click(function () { //全屏图片功能
                 datu.css("display", "block");
             });
 
@@ -147,15 +151,16 @@
             background-color: #000000db;
             z-index: 3;
             position: fixed;
-            overflow: auto;
+overflow:scroll;
             display: none;
             cursor: pointer;
         }
 
         .zhanshi0 {
-            height: 500px;
+            height:250px;
             width: 100%;
-            padding-top: 30%;
+            padding-top: 20%;
+	
             object-fit: cover;
             align-content: center;
             object-position: center;
@@ -201,6 +206,12 @@
             .newpage p {
                 margin: 0;
             }
+
+	.newpage a{
+color:black;
+text-decoration:none;
+-webkit-tap-highlight-color: transparent;
+}
 
         .block {
             font-family: 'sansRegular';

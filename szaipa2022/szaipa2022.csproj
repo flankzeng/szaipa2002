@@ -133,6 +133,16 @@
       <LastGenOutput>Model2.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
+    <Content Include="Views\Publication\chunyu_bak.cshtml" />
+    <Content Include="Views\Publication\tonggou.cshtml" />
+    <Content Include="Views\Publication\tonggou2.cshtml" />
+    <Content Include="Views\Publication\zhongyi.cshtml" />
+    <Content Include="Views\Home\Constitution_bak.cshtml" />
+    <Content Include="Views\Home\newIndex.cshtml" />
+    <Content Include="Views\Home\newnews.cshtml" />
+    <Content Include="Views\Home\newnewsread.cshtml" />
+    <Content Include="Views\Home\vip_new.cshtml" />
+    <Content Include="Views\Shared\_newLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />

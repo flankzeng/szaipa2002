@@ -1,0 +1,425 @@
+﻿@{
+    ViewBag.Title = "新闻动态";
+    Layout = "~/Views/Shared/_newLayout.cshtml";
+}
+
+
+<style>
+    #bread {
+        margin-top: 1vh;
+        display: none;
+    }
+
+    #bread a {
+        color: black;
+    }
+
+    #bread * {
+        font-size: 1.3rem;
+        text-decoration: none;
+        /* color: #bf272d; */
+    }
+
+    ul {
+        padding-inline-start: 0px;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .xinwenzhanshi {
+        /* 新闻动态 */
+        height: 100%;
+        width: 100vw;
+        position: relative;
+        margin-top: var(--newsTop);
+        margin-bottom: 15vh;
+    }
+
+    .important .col-lg1 .enter {
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+    }
+
+    .important:hover {
+        background-color: #00000003;
+    }
+
+    .normal:hover {
+        background-color: #00000003;
+    }
+
+    .news {
+        /* 重要新闻的样式 */
+        color: #bf272d;
+        font-family: 'sansLight';
+        font-size: var(--newsFontsize);
+        overflow: hidden;
+    }
+
+    .news h1 {
+        font-family: 'dinLightI', 'JhengBold';
+        font-size: var(--title);
+        margin-top: 0;
+    }
+
+    .news ul {
+        /* 每个新闻信息的上下边距 */
+        padding-bottom: var(--newsPadding);
+        border-bottom: var(--normalNewsLine);
+
+        /* 单独页面新增 */
+        /* 单独页面新增 */
+        /* 单独页面新增 */
+        margin: 0px;
+    }
+
+    .news ul>a>li {
+        /* 普通新闻的样式 */
+        margin-top: 2vh;
+        color: #bf272d;
+        font-family: 'sansLight';
+        font-size: var(--newsFontsize);
+    }
+
+    .date {
+        cursor: auto !important;
+        margin-top: 2vh;
+        color: #bf272d;
+        font-family: var(--fontLight);
+        font-size: var(--newsFontsize);
+        padding-left: var(--dateLeft);
+    }
+
+    .hr {
+        /* 普通分割线 */
+        height: 0.5px;
+        width: 100%;
+        margin-top: 4vh;
+        border-bottom: var(--normalNewsLine);
+    }
+
+    .enter {
+        /* 确认按钮 */
+        height: auto;
+        width: var(--newsEnter);
+        vertical-align: middle;
+    }
+
+    .normal:hover,
+    .date,
+    .title,
+    .enter {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .normal:hover,
+    .normal:active,
+    .normal:focus,
+    .date,
+    .title,
+    .enter {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .important {
+        /* 标记为重要的下划线 */
+        border-top: 1.5px solid #b2b2b2 !important;
+        border-bottom: 1.5px solid #b2b2b2 !important;
+        padding: 3vh 0 3vh 0 !important;
+    }
+
+    .important .date {
+        margin-top: 0;
+        /* padding-inline-start: 40px; */
+    }
+
+    .important:hover,
+    .date,
+    .importantTXT {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .importantTXT {
+        position: relative;
+    }
+
+    .importantTXT .enter {
+        position: absolute;
+        bottom: 0;
+        right: -1.4vw;
+    }
+
+    .importantTXT a {
+        color: #bf272d;
+        text-decoration: none;
+    }
+
+    .importantTXT p {
+        /* 标记为重要的h2、VIEW MORE以及设定img */
+        color: black;
+        margin-top: 20px;
+        padding-right: 15%;
+        text-align: justify;
+        font-family: 'sansExtraLight';
+        font-size: var(--newsPtag);
+        /* white-space: pre-wrap; */
+    }
+
+    .importantTXT div {
+        width: 80%;
+        height: 80%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: left;
+        justify-content: left;
+        overflow: hidden;
+    }
+
+    .importantTXT div>img {
+        /* 使div内img实现类似bgimage的对齐效果 */
+        width: 50%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .importantTXT span {
+        font-family: var(--fontLight);
+        font-size: var(--newsSpantag);
+        border-bottom: 1px solid #bf272d;
+        padding-bottom: 2px;
+        margin-bottom: 30px;
+    }
+</style>
+
+<article class="xinwenzhanshi col-sm20 col-md20 col-lg20">
+
+    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-sm16 col-md16 col-lg16 news">
+        <h1>
+            新闻动态&emsp;<i style="font-style: normal;font-family: 'sansLight';vertical-align: top;">|</i>&emsp;NEWS
+        </h1>
+        <div id="bread">
+            <el-breadcrumb separator=">">
+
+                <el-breadcrumb-item :to="{ path: '>' }"><a href="~/Home/newIndex">首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item>新闻动态</el-breadcrumb-item>
+
+            </el-breadcrumb>
+        </div>
+
+        <script>
+            Vue.createApp({}).use(ElementPlus).mount('#bread');
+        </script>
+
+        <!-- 第一行才有的border-top，用分割线代替 -->
+        <div class="hr"></div>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.03.31</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1050" target="_blank">
+                    展讯丨“灵性咏叹——刘东风艺术作品展”于罗湖美术馆开幕！
+                    <p>3月29日由深圳市罗湖区文化广电旅游体育局主办、罗湖美术馆承办、深圳市艺术产业促进会、深圳市仓颉通文化传播有限公司协办的“灵性咏叹——刘东风艺术作品展”在罗湖美术馆开幕。此次展出艺术家刘东风所创作的当代艺术作品58件，涵盖油画、雕塑、影像等多种形式，集中呈现其近三年来的艺术创新硕果。展期将至4月9日。
+                    </p>
+                    <div>
+                        <img src="../../content/newsImg/yongtan-live-post.jpg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.03.28</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1047" target="_blank">
+                    灵性咏叹——刘东风艺术作品展 即将拉开帷幕
+                    <p>灵性的本质是重新审视，或许每人都有自己的生命密码，而东风所创作的作品是在编织密码的通道中打开了另外一扇门，重新定义，昂首向前。
+                    </p>
+                    <div>
+                        <img src="../../content/newsImg/yongtan-post.jpeg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.03.27</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1046" target="_blank">
+                    深圳市艺术产业促进会向罗湖美术馆捐赠作品
+                    <p>3月24日，为表达对罗湖区文化广电旅游体育局、罗湖美术馆对艺术产业发展、对深圳市艺术产业促进会（以下简称“艺促会”）《同构（第二季）——当代艺术展》的支持，艺促会副会长兼秘书长张岚芊女士，艺促会副秘书长王玉波先生携艺促会理事李苑女士，向深圳市罗湖美术馆捐赠作品。
+                    </p>
+                    <div>
+                        <img src="../../content/newsImg/juanzeng-post.jpeg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.03.09</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1041" target="_blank">
+                    “色界——2023曾风当代艺术展”在深圳动漫园艺术空间开幕
+                    <p>3月8日，由深圳市仓颉通文化传播有限公司主办、动漫园·艺术空间承办、深圳市艺术产业促进会（以下简称艺促会）协办的“色界——2023曾风当代艺术展”在深圳动漫园艺术空间开幕。
+                    </p>
+                    <div>
+                        <img src="../../content/newsImg/zengfeng-post.jpg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.02.18</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1036" target="_blank">
+                    深圳市艺术产业促进会举办“同构 · 未来——当代艺术沙龙”
+                    <p>2月14日，由深圳市艺术产业促进会主办、深圳市仓颉通文化传播有限公司承办的“同构 ·
+                        未来——当代艺术沙龙”在深圳动漫园艺术空间举行，特邀嘉宾——著名批评家、深圳市艺术产业促进会顾问栗宪庭先生亲临现场，与市艺促会副会长兼秘书长张岚芊等众多艺术家开展了一场别开生面的艺术对谈。
+                    </p>
+                    <div>
+                        <img src="../../content/images/Article/tonggouweilai.png" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2023.02.13</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="Javascript:;;" target="_blank">
+                    深圳市艺术产业促进会助力乡建，参加大埔北塘艺术柚仓、翰林草堂落成揭幕活动
+                    <p>2月11日，由中共大埔县委宣传部、梅州市林风眠研究会、梅州市美术家协会、梅州市中国画学会、大埔县文化广电旅游体育局、大埔县西河镇人民政府主办，深圳市艺术产业促进会协办的北塘艺术柚仓、翰林草堂落成揭幕仪式暨山水青华当代艺术邀请展、“清风雅韵”翰林草堂全国扇面作品集萃展系列活动在大埔县西河镇北塘村举行。
+                    </p>
+                    <div>
+                        <img src="../../content/images/Article/dabubeitang.jpg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2022.12.31</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1031" target="_blank">
+                    “同构(第二季)——当代艺术展”在罗湖美术馆开幕
+                    <p>由深圳市罗湖区文化广电旅游体育局主办，罗湖美术馆、深圳市艺术产业促进会承办的深圳市的2022年深圳创意十二月入围项目的“同构（第二季）——当代艺术展”于2022年12月29日至2023年1月28日在罗湖美术馆展出。
+                    </p>
+                    <div>
+                        <img src="../../content/images/sample01.jpg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" class="enter">
+            </li>
+        </ul>
+
+
+        <ul class="col-sm20 col-md20 col-lg20 important">
+            <li class="col-sm5 col-md5 col-lg5 date">2022.12.13</li>
+            <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                <a href="~/Home/newnewsread/1030" target="_blank">
+                    《同构》第二季——当代艺术展即将拉开帷幕
+                    <p>展览时间：2022年12月29日 - 2023年01月28日</p>
+                    <div>
+                        <img src="../../content/images/sample02.jpg" alt="">
+                    </div>
+                    <span>查看全部 VIEW MORE</span>
+
+                    <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </a>
+            </li>
+            <li class="col-sm1 col-md1 col-lg1">
+                <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+            </li>
+
+
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 normal">
+            <li class="col-sm5 col-md5 col-lg5 date">2022.09.08</li>
+            <a href="~/Home/newnewsread/1027" target="_blank">
+                <li class="col-sm14 col-md13 col-lg13 tite">富诺得首拍 ｜ 森罗万象——当代艺术专场</li>
+                <li class="col-sm1 col-md1 col-lg1"><img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </li>
+            </a>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 normal">
+            <li class="col-sm5 col-md5 col-lg5 date">2022.08.03</li>
+            <a href="~/Home/newnewsread/1026" target="_blank">
+                <li class="col-sm14 col-md13 col-lg13 title">当代先锋艺术家唐宋先生逝世</li>
+                <li class="col-sm1 col-md1 col-lg1"><img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </li>
+            </a>
+        </ul>
+
+        <ul class="col-sm20 col-md20 col-lg20 normal">
+            <li class="col-sm5 col-md5 col-lg5 date">2022.05.05</li>
+            <a href="~/Home/newnewsread/1025" target="_blank">
+                <li class="col-sm14 col-md13 col-lg13 title">艺促会艺术与科技作品亮相首届大国工匠创新交流大会</li>
+                <li class="col-sm1 col-md1 col-lg1"><img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                </li>
+            </a>
+        </ul>
+
+
+    </div>
+    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+</article>
