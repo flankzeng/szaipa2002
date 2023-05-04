@@ -1,0 +1,483 @@
+/* SHARED，NAV & FOOTER */
+
+:root {
+    /* section01 导航栏 */
+    --logo1: 16.6vh;
+    --navFontsize: 1.5rem;
+    --navTop: 10.5vh;
+    --navRight: 0.7vw;
+
+    /* section08 留邮箱 */
+    --email: 1rem;
+    --jieshou: 1rem;
+
+    /* section09 底栏 */
+    --footerBorder: 0.7px solid #939393;
+    --footerFontsize: 1.4rem;
+    --footerLineheight: 1.8em;
+}
+
+/* 初始化页面与响应式标准字号的设置 */
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+@media only screen and (min-width: 3840px) {
+
+    /* 4K 分辨率 */
+    html {
+        font-size: 36px !important;
+    }
+}
+
+@media only screen and (min-width: 2560px) and (max-width: 3839px) {
+
+    /* 1440p 分辨率 */
+    html {
+        font-size: 24px !important;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+
+    /* 1080p */
+    html {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width:1399px) {
+
+    html {
+        font-size: 12px !important;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+
+    /* 手机尺寸 */
+    html {
+        font-size: 26px !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 首页开始 -- INDEX START */
+
+/* 首页Index的var()元素 - 已整理.2023.03.07 */
+/* PC通用元素 - 开始 */
+@media only screen and (min-width:768px) {
+
+    /* 除手机屏外全局相同的var()值 */
+    :root {
+        /* section01 导航栏 */
+        /* section02 轮播 */
+        --carouselTXT: 1.9rem !important;
+
+        /* section04 章程 */
+        --chapterFontsize: 1.3rem !important;
+        --chapterBottom: 10vh;
+
+
+        /* section05 核心成员 */
+        /* section06 新闻 */
+        --newsRadius: .4vw !important;
+        --dateLeft: 2em;
+
+        /* section07 展会活动 */
+        --buttonRadius: .5vw !important;
+        --zhuangtai: .9rem !important;
+
+        /* section08 留邮箱 */
+        --emailLine: 20vw !important;
+        --enterButton: 1.5vw;
+
+        /* 通用 */
+        --pubSonHeight: 100vh;
+    }
+}
+
+/* PC通用元素 - 结束 */
+
+/* 手机通用元素 - 开始 */
+@media screen and (min-width:768px) and (max-width:991px) {
+    :root {
+        /* section01 导航栏 */
+        --logo1: 10vh;
+        --navFontsize: 1.3rem;
+        --navTop: 6vh;
+
+        /* section06 新闻 */
+        --dateLeft: 0;
+
+        /* section08 留邮箱 */
+        --email: 1rem;
+        --jieshou: 1rem;
+
+        /* section09 底栏 */
+        --footerBorder: 0.7px solid #939393;
+        --footerFontsize: 1rem !important;
+        --footerLineheight: 1.8em;
+    }
+}
+
+/* 手机通用元素 - 结束 */
+
+/* 通用开始 */
+:root {
+    /* section02 轮播 */
+    --carouselH: 65vh;
+    --carouselTXT: 1.7rem;
+    --logoTXT: 19.5vh;
+    --sectionHeight: 100vh;
+
+    /* section04 章程 */
+    --chapterTop: 15vh;
+    --zhangcheng: 57vh;
+    --chapterFontsize: 1.1rem;
+
+    /* section05 核心成员 */
+    --carouselHeight: 100vh;
+    --imgIntroduce: 30vh;
+    --imgIntroduceSingle: 30vh;
+    --coreCN: 4rem;
+    --coreEN: 1.7rem;
+    --huizhangWorld: 90vh;
+    --introduceTXT: 45%;
+    --introduceImg: 48%;
+    --swiper4L: 12vw;
+    --advMem: right;
+    --multiIntroduce: 10vw;
+
+    /* section06 新闻 */
+    --newsFontsize: 1.2rem;
+    --newsEnter: 1.4vw;
+    --newsPtag: 1rem;
+    --newsSpantag: 1rem;
+    --newsRadius: .7vw;
+    --normalNewsLine: 0.5px solid #cccccc;
+    --newsPadding: 2vh;
+    --newsHoverValue: scale(1.01);
+    --newsHoverAnime: 200ms;
+
+    /* section07 展会活动 */
+    --zhuangtai: 1rem;
+    --exhibitionH1: 1.7rem;
+    --exhibitionH3: 1rem;
+    --exhibitionMore: 1rem;
+    --cardHeight: 55vh;
+    --cardWidth: 20.8vw;
+    --cardTXT: 1.1rem;
+
+    /* 通用 */
+    --title: 2.2rem;
+    --fontLight: 'JhengLight';
+}
+
+/* 通用结束 */
+
+
+
+/* 非通用元素 - 开始 */
+
+/* 手机的var()元素 */
+@media screen and (min-width:768px) and (max-width:991px) {
+
+    /* var() 首页专用 */
+
+    :root {
+        /* section02 轮播 */
+        --carouselH: 25vh;
+        --carouselTXT: 1rem !important;
+        --sectionHeight: 40vh;
+        --logoTXT: 5.5vh;
+
+        /* section04 章程 */
+        --chapterTop: 0;
+        --chapterBottom: 10vh;
+        --zhangcheng: 20vh;
+        --chapterFontsize: 1.3rem !important;
+
+        /* section05 核心成员 */
+        --carouselHeight: 100vh;
+        --imgIntroduce: 30vh;
+        --imgIntroduceSingle: 30vh;
+        --coreCN: 4rem;
+        --coreEN: 1.7rem;
+        --huizhangWorld: 90vh;
+        --introduceTXT: 45%;
+        --introduceImg: 48%;
+        --swiper4L: 12vw;
+        --advMem: right;
+        --multiIntroduce: 10vw;
+
+        /* section06 新闻 */
+        --newsFontsize: 1.3rem;
+        --newsEnter: 3vw;
+        --newsPtag: 1.1rem;
+        --newsRadius: 1.5vw !important;
+
+        /* section07 展会活动 */
+        --buttonRadius: 1.5vw !important;
+        --cardHeight: 50vh;
+        --cardWidth: 80vw;
+        --cardTXT: 1.5rem;
+    }
+
+    /* section02轮播 */
+
+    .mySwiper .swiper-pagination-bullet {
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .swiper-horizontal>.swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal,
+    .swiper-pagination-custom,
+    .swiper-pagination-fraction {
+        bottom: 1vh;
+    }
+
+    /* section04章程 */
+
+    .chapterTXT {
+        margin-top: 5vh !important;
+    }
+
+    .chapterAll {
+        top: auto !important;
+        bottom: -5vh;
+    }
+
+    /* section06新闻动态 */
+    .news h1 {
+        padding-top: 5vh !important;
+    }
+
+    .date {
+        padding-left: 0 !important;
+    }
+
+    .allNews {
+        margin-top: 3vh !important;
+        margin-bottom: 4vh !important;
+    }
+
+    .allNews a {
+        padding: .6vh 2vw !important;
+    }
+
+    /* Section07 展会活动 */
+    .mob07 {
+        padding-top: 8vh !important;
+    }
+
+    .processing-lunbo {
+        height: 40vh !important;
+        padding-bottom: 8vh;
+    }
+
+    #ended {
+        padding-bottom: 8vh;
+    }
+}
+
+/* 首页动画预设 */
+
+@keyframes zoomDot1 {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes zoomDot04 {
+    from {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        transform: translate(-50%, -50%) scale(1.04);
+    }
+}
+
+/* 首页结束 -- INDEX END */
+
+
+
+
+/* 其余页面开始 */
+@media only screen and (min-width:768px) {
+
+    :root {
+        /* section04 Constitution */
+        --sec04_h1: 3.3rem;
+        --sec04_fuzhuTop: -4%;
+        --sec04_fuzhuBottom: 10vh;
+        --sec04_fuzhuWidth: 45vw;
+
+        --newsTop: 10vh;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+    :root {
+        /* section04 Constitution */
+        --sec04_h1: 2.2rem;
+        --sec04_fuzhuTop: -19%;
+        --sec04_fuzhuBottom: 4vh;
+        --sec04_fuzhuWidth: 78vw;
+
+        --newsTop: 0vh;
+
+    }
+
+    /* Section04打开后 - Constitution页面开始 */
+
+
+    /* Section06打开后 - NEWSREAD页面开始 */
+    .article {
+        padding: 1vh 0 5vh 0 !important;
+        border: none !important;
+    }
+
+    .article p {
+        font-size: .6rem !important;
+
+        line-height: 5em !important;
+        margin-bottom: 3vh;
+        padding: 0 2vw;
+    }
+
+    .article img {
+        margin: 1vh 0 2vh 0 !important;
+    }
+
+    .zhushi {
+        font-size: .5rem !important;
+        margin-bottom: 3vh;
+    }
+
+    /* NEWSREAD页面结束 */
+
+    /* Section07打开后 - 活动展示子类目页面开始 */
+
+    .elementPub {
+        height: 6vh;
+        bottom: -5%;
+    }
+
+    .titlePub {
+        padding-top: 7vh !important;
+    }
+
+    .imgCon_Pub {
+        padding-top: 5vh !important;
+    }
+
+    .imgCon_PubSon {
+        margin-top: -25% !important;
+    }
+
+    .imgCon_PubMobCon {
+        transform: translateX(-9%) !important;
+    }
+
+    .imgCon_PubMob {
+        transform: translateX(7%) !important;
+    }
+
+    /* Publication中的重要页面 */
+
+    .mob {
+        transform: translate3d() translateY(10%) !important;
+    }
+
+    .trading {
+        height: 2vh !important;
+        position: relative;
+        padding-left: 10%;
+    }
+
+    .mySwiper2 {
+        width: 100% !important;
+    }
+
+    .mySwiper2 .swiper-slide {
+        width: auto;
+    }
+
+    /* Publication页面展开后的样式 */
+    .type1 {
+        margin-top: 0;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .type2 {
+        margin-top: 0;
+        width: 100% !important;
+        max-height: none !important;
+        max-width: none !important;
+    }
+
+    .btn1 input,
+    .btn1 button {
+        width: 80vw !important;
+    }
+
+    .btn2 input,
+    .btn2 button {
+        width: 80vw !important;
+    }
+
+    .btn1 button {
+        margin-bottom: 2vh;
+    }
+
+    .btn2 button {
+        margin-bottom: 10vh !important;
+    }
+
+    .introCon .msg p {
+        padding-top: 0 !important;
+    }
+
+    .trading-copyright {
+        bottom: 0 !important;
+    }
+
+    /* Publication */
+    :root {
+        --pubSonHeight: 80vh;
+    }
+
+}

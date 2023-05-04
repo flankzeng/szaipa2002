@@ -1,0 +1,590 @@
+﻿body {
+    margin: 0;
+}
+
+.re {
+    border: 1px solid red !important;
+}
+
+.relative {
+    position: relative !important;
+}
+
+/* @media (prefers-color-scheme: dark) {
+    body {
+        background-color: black;
+        color: white !important;
+    }
+} */
+
+/* 响应式栅格系统 */
+
+
+/* 1.xs,手机屏幕 */
+@media screen and (max-width:767px) {
+    .xs-hide {
+        display: none !important;
+    }
+
+    .col-xs1 .col-xs2 .col-xs3 .col-xs4 .col-xs5 .col-xs6 .col-xs7 .col-xs8 .col-xs9 .col-xs10 .col-xs11 .col-xs12 .col-xs13 .col-xs14 .col-xs15 .col-xs16 .col-xs17 .col-xs18 .col-xs19 .col-xs20 {
+        float: left;
+    }
+
+    .col-xs20 {
+        width: 100%;
+        float: left;
+    }
+
+    .col-xs19 {
+        width: 95%;
+        float: left;
+    }
+
+    .col-xs18 {
+        width: 90%;
+        float: left;
+    }
+
+    .col-xs17 {
+        width: 85%;
+        float: left;
+    }
+
+    .col-xs16 {
+        width: 80%;
+        float: left;
+    }
+
+    .col-xs15 {
+        width: 75%;
+        float: left;
+    }
+
+    .col-xs14 {
+        width: 70%;
+        float: left;
+    }
+
+    .col-xs13 {
+        width: 65%;
+        float: left;
+    }
+
+    .col-xs12 {
+        width: 60%;
+        float: left;
+    }
+
+    .col-xs11 {
+        width: 55%;
+        float: left;
+    }
+
+    .col-xs10 {
+        width: 50%;
+        float: left;
+    }
+
+    .col-xs9 {
+        width: 45%;
+        float: left;
+    }
+
+    .col-xs8 {
+        width: 40%;
+        float: left;
+    }
+
+    .col-xs7 {
+        width: 35%;
+        float: left;
+    }
+
+    .col-xs6 {
+        width: 30%;
+        float: left;
+    }
+
+    .col-xs5 {
+        width: 25%;
+        float: left;
+    }
+
+    .col-xs4 {
+        width: 20%;
+        float: left;
+    }
+
+    .col-xs3 {
+        width: 15%;
+        float: left;
+    }
+
+    .col-xs2 {
+        width: 10%;
+        float: left;
+    }
+
+    .col-xs1 {
+        width: 5%;
+        float: left;
+    }
+}
+
+/* 2.sm,平板屏幕 */
+@media screen and (min-width:768px) and (max-width:991px) {
+    .sm-hide {
+        display: none !important;
+    }
+
+    .col-sm1 .col-sm2 .col-sm3 .col-sm4 .col-sm5 .col-sm6 .col-sm7 .col-sm8 .col-sm9 .col-sm10 .col-sm11 .col-sm12 .col-sm13 .col-sm14 .col-sm15 .col-sm16 .col-sm17 .col-sm18 .col-sm19 .col-sm20 {
+        float: left;
+    }
+
+    .col-sm20 {
+        width: 100%;
+        float: left;
+    }
+
+    .col-sm19 {
+        width: 95%;
+        float: left;
+    }
+
+    .col-sm18 {
+        width: 90%;
+        float: left;
+    }
+
+    .col-sm17 {
+        width: 85%;
+        float: left;
+    }
+
+    .col-sm16 {
+        width: 80%;
+        float: left;
+    }
+
+    .col-sm15 {
+        width: 75%;
+        float: left;
+    }
+
+    .col-sm14 {
+        width: 70%;
+        float: left;
+    }
+
+    .col-sm13 {
+        width: 65%;
+        float: left;
+    }
+
+    .col-sm12 {
+        width: 60%;
+        float: left;
+    }
+
+    .col-sm11 {
+        width: 55%;
+        float: left;
+    }
+
+    .col-sm10 {
+        width: 50%;
+        float: left;
+    }
+
+    .col-sm9 {
+        width: 45%;
+        float: left;
+    }
+
+    .col-sm8 {
+        width: 40%;
+        float: left;
+    }
+
+    .col-sm7 {
+        width: 35%;
+        float: left;
+    }
+
+    .col-sm6 {
+        width: 30%;
+        float: left;
+    }
+
+    .col-sm5 {
+        width: 25%;
+        float: left;
+    }
+
+    .col-sm4 {
+        width: 20%;
+        float: left;
+    }
+
+    .col-sm3 {
+        width: 15%;
+        float: left;
+    }
+
+    .col-sm2 {
+        width: 10%;
+        float: left;
+    }
+
+    .col-sm1 {
+        width: 5%;
+        float: left;
+    }
+}
+
+/* 3.md，电脑屏幕 */
+@media screen and (min-width:992px) and (max-width:1199px) {
+    .md-hide {
+        display: none !important;
+    }
+
+    .col-md1 .col-md2 .col-md3 .col-md4 .col-md5 .col-md6 .col-md7 .col-md8 .col-md9 .col-md10 .col-md11 .col-md12 .col-md13 .col-md14 .col-md15 .col-md16 .col-md17 .col-md18 .col-md19 .col-md20 {
+        float: left;
+    }
+
+    .col-md20 {
+        width: 100%;
+        float: left;
+    }
+
+    .col-md19 {
+        width: 95%;
+        float: left;
+    }
+
+    .col-md18 {
+        width: 90%;
+        float: left;
+    }
+
+    .col-md17 {
+        width: 85%;
+        float: left;
+    }
+
+    .col-md16 {
+        width: 80%;
+        float: left;
+    }
+
+    .col-md15 {
+        width: 75%;
+        float: left;
+    }
+
+    .col-md14 {
+        width: 70%;
+        float: left;
+    }
+
+    .col-md13 {
+        width: 65%;
+        float: left;
+    }
+
+    .col-md12 {
+        width: 60%;
+        float: left;
+    }
+
+    .col-md11 {
+        width: 55%;
+        float: left;
+    }
+
+    .col-md10 {
+        width: 50%;
+        float: left;
+    }
+
+    .col-md9 {
+        width: 45%;
+        float: left;
+    }
+
+    .col-md8 {
+        width: 40%;
+        float: left;
+    }
+
+    .col-md7 {
+        width: 35%;
+        float: left;
+    }
+
+    .col-md6 {
+        width: 30%;
+        float: left;
+    }
+
+    .col-md5 {
+        width: 25%;
+        float: left;
+    }
+
+    .col-md4 {
+        width: 20%;
+        float: left;
+    }
+
+    .col-md3 {
+        width: 15%;
+        float: left;
+    }
+
+    .col-md2 {
+        width: 10%;
+        float: left;
+    }
+
+    .col-md1 {
+        width: 5%;
+        float: left;
+    }
+}
+
+/* 4.lg大屏幕 */
+@media screen and (min-width:1200px) {
+    .lg-hide {
+        display: none !important;
+    }
+
+    .col-lg1 .col-lg2 .col-lg3 .col-lg4 .col-lg5 .col-lg6 .col-lg7 .col-lg8 .col-lg9 .col-lg10 .col-lg11 .col-lg12 .col-lg13 .col-lg14 .col-lg15 .col-lg16 .col-lg17 .col-lg18 .col-lg19 .col-lg20 {
+        float: left;
+    }
+
+    .col-lg20 {
+        width: 100%;
+        float: left;
+    }
+
+    .col-lg19 {
+        width: 95%;
+        float: left;
+    }
+
+    .col-lg18 {
+        width: 90%;
+        float: left;
+    }
+
+    .col-lg17 {
+        width: 85%;
+        float: left;
+    }
+
+    .col-lg16 {
+        width: 80%;
+        float: left;
+    }
+
+    .col-lg15 {
+        width: 75%;
+        float: left;
+    }
+
+    .col-lg14 {
+        width: 70%;
+        float: left;
+    }
+
+    .col-lg13 {
+        width: 65%;
+        float: left;
+    }
+
+    .col-lg12 {
+        width: 60%;
+        float: left;
+    }
+
+    .col-lg11 {
+        width: 55%;
+        float: left;
+    }
+
+    .col-lg10 {
+        width: 50%;
+        float: left;
+    }
+
+    .col-lg9 {
+        width: 45%;
+        float: left;
+    }
+
+    .col-lg8 {
+        width: 40%;
+        float: left;
+    }
+
+    .col-lg7 {
+        width: 35%;
+        float: left;
+    }
+
+    .col-lg6 {
+        width: 30%;
+        float: left;
+    }
+
+    .col-lg5 {
+        width: 25%;
+        float: left;
+    }
+
+    .col-lg4 {
+        width: 20%;
+        float: left;
+    }
+
+    .col-lg3 {
+        width: 15%;
+        float: left;
+    }
+
+    .col-lg2 {
+        width: 10%;
+        float: left;
+    }
+
+    .col-lg1 {
+        width: 5%;
+        float: left;
+    }
+}
+
+/* 01.12轮播字组合 */
+@font-feature-values doubleLight {
+    @styleset {
+        font-variant-east-asian: jis78;
+        font-family: 'sansLight';
+    }
+
+    @styleset {
+        font-variant-east-asian: jis78;
+        font-family: 'dinLight';
+    }
+
+    @styleset {
+        font-variant-east-asian: jis78;
+        font-family: 'dinLight';
+    }
+}
+
+/* 微软正黑家族 */
+@font-face {
+    font-family: 'JhengBold';
+    src: url("../../fonts/MicrosoftJhengHeiBold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: 'JhengRegular';
+    src: url("../../fonts/MicrosoftJhengHeiRegular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: 'JhengLight';
+    src: url("../../fonts/MicrosoftJhengHeiLight.otf") format("opentype");
+}
+
+/* DIN-Light */
+@font-face {
+    font-family: "dinLight";
+    src: url("../../fonts/DIN-Light.woff") format("woff");
+}
+
+@font-face {
+    font-family: "dinLightI";
+    src: url("../../fonts/DIN-LightItalic.woff") format("woff");
+}
+
+/* 得意黑字体家族 */
+
+@font-face {
+    font-family: "smile";
+    src: url("../../fonts/SmilelySans.woff") format("woff");
+}
+
+/* 思源宋字体家族 */
+@font-face {
+    font-family: "cjkExtraLight";
+    src: url("../../fonts/NotoSerifSC-ExtraLight.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkLight";
+    src: url("../../fonts/NotoSerifSC-Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkRegular";
+    src: url("../../fonts/NotoSerifSC-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkMedium";
+    src: url("../../fonts/NotoSerifSC-Medium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkBold";
+    src: url("../../fonts/NotoSerifSC-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkSemiBold";
+    src: url("../../fonts/NotoSerifSC-SemiBold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "cjkBlack";
+    src: url("../../fonts/NotoSerifSC-Black.otf") format("opentype")
+}
+
+/* 思源黑字体家族 */
+
+@font-face {
+    font-family: "sansExtraLight";
+    src: url("../../fonts/NotoSansSC-Thin.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "sansLight";
+    src: url("../../fonts/NotoSansSC-Light.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "sansNormal";
+    src: url("../../fonts/SourceHanSansCN-Normal.woff") format("woff");
+}
+
+@font-face {
+    font-family: "sansRegular";
+    src: url("../../fonts/NotoSansSC-Regular.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "sansMedium";
+    src: url("../../fonts/NotoSansSC-Medium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "sansBold";
+    src: url("../../fonts/NotoSansSC-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "sansHeavy";
+    src: url("../../fonts/NotoSansSC-Black.otf") format("opentype")
+}

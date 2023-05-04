@@ -1,0 +1,62 @@
+/**
+ * placeholder-loading v0.6.0
+ * Author: Zalog (https://www.zalog.ro/)
+ * License: MIT
+ **/
+.ph-item {
+    background-color: #ced3d9;
+    position: relative;
+}
+
+.ph-item>*,
+.ph-item ul,
+.ph-item li,
+.ph-item a,
+.ph-item p {
+    color: #ced3d9 !important;
+    visibility: hidden;
+}
+
+.ph-item,
+.ph-item *,
+.ph-item :after,
+.ph-item :before {
+    box-sizing: border-box;
+}
+
+.ph-item:before {
+    -webkit-animation: ph-animation .8s linear infinite;
+    animation: ph-animation .8s linear infinite;
+    background: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 46%, hsla(0, 0%, 100%, .35) 50%, hsla(0, 0%, 100%, 0) 54%) 50% 50%;
+    bottom: 0;
+    content: " ";
+    left: 50%;
+    margin-left: -250%;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 500%;
+    z-index: 300
+}
+
+
+@-webkit-keyframes ph-animation {
+    0% {
+        transform: translate3d(-30%, 0, 0)
+    }
+
+    to {
+        transform: translate3d(30%, 0, 0)
+    }
+}
+
+@keyframes ph-animation {
+    0% {
+        transform: translate3d(-30%, 0, 0)
+    }
+
+    to {
+        transform: translate3d(30%, 0, 0)
+    }
+}

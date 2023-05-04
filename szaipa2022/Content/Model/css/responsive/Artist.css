@@ -1,0 +1,34 @@
+/* SHARED，NAV & FOOTER */
+
+:root {
+    --touxiang: 30%;
+}
+
+/* 初始化页面与响应式标准字号的设置 */
+
+body {}
+
+@media only screen and (min-width: 3840px) {
+
+    /* 4K 分辨率 */
+}
+
+@media only screen and (min-width: 2560px) and (max-width: 3839px) {
+
+    /* 1440p 分辨率 */
+}
+
+@media only screen and (min-width: 1920px) {
+
+    /* 1080p */
+}
+
+@media only screen and (min-width: 1200px) and (max-width:1399px) {}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+
+    /* 手机尺寸 */
+    :root {
+        --touxiang: 25%;
+    }
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.34 13.6">
+  <defs>
+    <style>
+      .cls-1 {
+        mix-blend-mode: overlay;
+      }
+
+      .cls-2 {
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g class="cls-2">
+    <g id="_图层_8" data-name="图层 8">
+      <g class="cls-1">
+        <path d="M12.15,1.22L5.15,12.44,2.44,6.84l-1.07,.52-.18-.37,1.63-.8,2.2,4.49L11.76,1.17l.39,.05Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
