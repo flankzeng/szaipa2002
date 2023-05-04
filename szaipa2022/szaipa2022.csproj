@@ -57,7 +57,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>F:\網站測試\2022szaipa\2022szaipa\bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\dggjweb\DggjWde\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
