@@ -1,514 +1,62 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "同构——当代艺术作品邀请展";
+    Layout = "~/Views/Shared/_newLayout.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="zh">
+<style>
+    .titlePub {
+        height: 100px;
+        width: auto;
+        text-align: left;
+        padding-top: 23vh;
+        color: black;
+    }
 
-<head>
-    <meta charset="utf-8" />
-    <title>同构《第二季》·当代艺术展</title>
-    <link rel="icon" href="../../Content/123/tonggou.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../Content/Model/css/responsive.css">
-    <link rel="stylesheet" href="../../Content/Model/css/Site.css">
-    <link rel="stylesheet" href="../../Content/Model/css/bootstrap.css">
-    <script src="../../Content/Model/jquery-3.6.1.min.js"></script>
-    <script src="../../Content/Model/bootstrap.min.js"></script>
-
-    <!-- 引入Vue3和Element Plus -->
-    <script src="../../Content/Model/vue.global.js"></script>
-    <link rel="stylesheet" href="../../Content/Model/css/element-plus.css">
-    <script src="../../Content/Model/element-plus.js"></script>
-
-    <!-- 引入Swiper.js -->
-    <link rel="stylesheet" href="../../Content/Model/css/swiper-bundle.min.css">
-    <script src="../../Content/Model/swiper-bundle.min.js"></script>
-
-
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        #section08 {
-            /* EMAIL */
-            height: 30vh;
-            width: 100%;
-            background-color: white;
-            position: relative;
-            margin-top: 5vh;
-        }
-
-        #section08m {
-            /* EMAIL */
-            height: 80vh;
-            width: 100%;
-            background-color: black;
-            color: white;
-            position: relative;
-            border-top: 1px solid #ededed;
-        }
-
-        /* 08邮箱填写 */
-        .fuzhu {
-            height: 12vh;
-            width: auto;
-            position: absolute;
-            top: 30%;
-            transform: translateY(-50%);
-            right: 10%;
-        }
-
-        .dui {
-            height: 2vh;
-            width: auto;
-            vertical-align: middle;
-        }
-
-        .enter02 {
-            /* 去色 */
-            filter: grayscale(100%);
-
-            /* 去button默认样式 */
-            box-shadow: none;
-            background-color: transparent;
-            border: none;
-
-            float: right;
-            line-height: 4vh;
-            /* position: absolute;
-            top: 35%;
-            right: 0;
-            transform: translateY(-50%); */
-        }
-
-        .enter02 img {
-            width: 1.5vw;
-            height: auto;
-        }
-
-        .emailContainerM {
-            position: relative;
-            height: 100%;
-            width: 100%;
-        }
-
-        .emailPosition h1 {
-            text-align: center;
-            font-family: var(--fontLight);
-        }
-
-        .emailPosition h1 {
-            font-size: 2rem;
-            letter-spacing: 0.1em;
-            margin-bottom: 5vh;
-        }
-
-        .emailPosition p {
-            text-align: justify;
-            color: #939393;
-            margin-top: 3vh;
-            font-weight: 200;
-            font-size: 1.2rem;
-            line-height: 1.8em;
-        }
-
-        .emailPosition {
-            height: auto;
-            width: 80%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #section08m button {
-            display: flex;
-            background-color: transparent;
-            color: white;
-            font-family: var(--fontLight);
-            font-size: 1rem;
-            margin: 5vh auto;
-            box-shadow: none;
-            border: 1px solid white;
-            padding: 0.5vh 2vw 0.5vh 2vw;
-        }
-
-        .guanzhu {
-            width: 8vw;
-            height: auto;
-            margin-right: 3vw;
-        }
-
-        .logoContainerM {
-            height: 100%;
-            width: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-        }
-
-        .logoContainerM a {
-            margin-bottom: 5vh;
-        }
-
-        .email {
-            position: relative;
-            width: 17vw;
-            margin-top: 5vh;
-            margin-bottom: 1.3vh;
-            border-bottom: 1.5px solid black;
-        }
-
-        .email input {
-            height: var(--inputHeight);
-            width: auto;
-            margin-bottom: 0.5vh;
-            padding: 0.5em 0 0.5em 0.1em;
-
-            background-color: transparent;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            letter-spacing: 0.05em;
-        }
-
-        #section08m .email input::placeholder {
-            padding-left: 2vw;
-            color: white;
-            font-size: 1rem;
-            font-family: 'dinLight';
-        }
-
-        #section08m .email input {
-            margin-bottom: 0px;
-        }
-
-        .email input::placeholder {
-            color: black;
-            font-size: var(--emailHolder);
-            font-family: 'dinLight';
-        }
-
-        .jieshou {
-            line-height: 20px;
-            vertical-align: middle;
-            font-size: var(--jieshou);
-        }
-
-
-        /* footer */
-        .footerPC {
-            /* PC */
-            height: 40vh;
-            width: 100%;
-            background-color: black;
-            color: #939393;
-            overflow: hidden;
-        }
-
-        .footerM {
-            /* MOBILE */
-            height: 100%;
-            width: 100%;
-            background-color: black;
-            color: #939393;
-            overflow: hidden;
-            text-align: center;
-            font-family: 'JhengLight';
-            font-size: 1rem;
-            line-height: 1.7em;
-        }
-
-        /* 09 FOOTER */
-
-        .footerPC,
-        .footerM a {
-            text-decoration: none;
-            color: #939393;
-            font-family: 'JhengLight';
-            font-size: 1rem;
-            line-height: 1.7em;
-        }
-
-        .copyrightM {
-            border-top: 1.5px solid #939393;
-            padding: 5vh 0 5vh 0;
-        }
-
-        .footer {
-            width: 100%;
-            height: auto;
-            position: relative;
-            padding-top: 5vh;
-        }
-
-        .footerList {
-            position: relative;
-            border-left: var(--footerBorder);
-            height: 100%;
-            /* padding-left: 3%;
-            padding-top: 12vh; */
-        }
-
-        .copyright {
-            position: relative;
-            height: 100%;
-        }
-
-        .copyright p {
-            position: absolute;
-            top: 55%;
-            transform: translateY(-50%);
-        }
-
-        .copyright p>br {
-            font-size: var(--footerFontsize);
-            line-height: 1.5em;
-        }
-
-        .copyright-container {
-            border-top: var(--footerBorder);
-            height: 35vh;
-        }
-
-        .copyright-container p {
-            position: absolute;
-            top: 55%;
-            transform: translateY(-50%);
-        }
-
-        .copyright-container a,
-        .copyright-container p {
-            color: #939393;
-            text-decoration: none;
-            font-family: 'sansLight';
-            font-size: 1rem;
-            line-height: var(--footerLineheight);
-        }
-    </style>
-
-    <!-- 以上为共享部分 -->
-
-    <style>
-        #topBtn {
-            display: block;
-
-            filter: invert();
-            padding: 0;
-            position: fixed;
-            bottom: 5vh;
-            right: 4vw;
-            z-index: 999;
-            background-color: transparent;
-            border: none;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* section01 banner */
-        .banner {
-            height: 100vh;
-            width: 100vw;
-            position: relative;
-            background: url('../../Content/images/DSC05345-color.jpg');
-            background-size: cover;
-        }
-
-        .banner * {
-            color: white;
-        }
-
-
-        .title {
-            height: 100px;
-            width: auto;
-            position: absolute;
-            left: 7vw;
-            top: 55%;
-            color: white;
-        }
-
-        .title h1 {
+        .titlePub h1 {
             font-family: 'JhengRegular';
             font-size: 2.7rem;
             margin-bottom: 0;
         }
 
-        .title h3 {
+        .titlePub h3 {
             font-family: 'JhengLight';
             letter-spacing: 0.03em;
             margin-top: 2vh;
-            margin-bottom: 3vh;
+            margin-bottom: 28%;
             font-size: 1rem;
+            line-height: 2em;
         }
 
-        .title button {
-            font-size: 1.2rem;
-            letter-spacing: 0.2em;
-            font-family: 'sansLight';
+        .titlePub a {
+            color: black;
+            font-size: 1.5rem;
+            font-family: 'JhengLight';
         }
 
-        button {
-            background: none;
-            border: .2vh solid white;
-            color: white;
-            border-radius: 10px;
-            padding: 1vh 3vw 1vh 3vw;
-            margin: 0;
-            cursor: pointer;
-            outline: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        a {
-            text-decoration: none !important;
-        }
-
-        .nav {
-            list-style: none;
-            display: flex;
-            padding: 0 4vw 0 0;
-
-            position: absolute;
-            right: 0;
-            bottom: 8%;
-        }
-
-        .nav li {
-            margin-right: 3vw;
-            font-size: 1.3rem;
-            font-family: 'sansExtraLight';
-            opacity: 0.7;
-        }
-
-        .active {
-            opacity: 1 !important;
-            font-family: 'sansRegular' !important;
-        }
-
-        .black02 {
-            height: inherit;
-            background-color: black;
-            opacity: 0.2;
-        }
-
-        /* section02 */
-        #section02 {
-            position: relative;
-            height: auto;
-            padding: 0 10vw 10vh 10vw;
-        }
-
-        #section02 h1 {
-            padding: 0;
-            font-family: 'JhengBold';
-            font-size: 3rem;
-            margin-bottom: 2vh;
-            text-align: center;
-        }
-
-        #section02 p {
-            margin: 0;
-            padding: 0;
-            font-size: 1.3rem;
-            font-family: 'sansLight';
-            line-height: 2.7em;
-            text-align: justify;
-            text-indent: 2em;
-        }
-
-        .nameCN {
-            margin-top: 3vh;
-            text-align: right;
-            font-size: 1.3rem;
-            font-family: 'sansRegular';
-        }
-
-        .xu {
-            /* display: flex;
-            justify-content: center;
-            align-items: center; */
-            position: relative;
-            width: 100%;
-            height: 15vh;
-            margin-top: 10vh;
-            margin-bottom: 7vh;
-        }
-
-        .tonggou {
-            height: 15vh;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-
-        .elementPub {
-            height: 8vh;
-            position: absolute;
-            bottom: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* section03 */
-        #section03 {
-            position: relative;
-            color: #f7f7f7;
-            background-color: black;
-            padding-bottom: 10vh;
-        }
+    a {
+        text-decoration: none !important;
+    }
 
 
-        /* section03 目录的介绍以及列表 */
+    /* Swiper */
 
-        #content h1 {
-            margin-top: 10vh;
-            margin-bottom: 3vh;
-            padding: 0;
-            font-family: 'dinLightI', 'JhengBold';
-            font-size: 2.5rem;
-        }
-
-        #swiperAndFilter {
-            margin-bottom: 3vh;
-        }
-
-        .imgFilter {
-            margin-bottom: 5vh;
-        }
-
-        .mySwiper {
-            max-width: 100vw;
-        }
-
-        .swiper {
-            width: 120%;
-            margin-left: -10%;
-            margin-right: -10%;
-            padding-bottom: 4vh;
-        }
-
-        .swiper-slide {
-            height: auto;
-            max-height: 70vh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .swiper-slide {
+        height: auto;
+        max-height: 70vh;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
         .swiper-slide img {
             display: block;
-            margin-bottom: 15vh;
+            /* margin-bottom: 15vh; */
             width: auto;
             height: 75%;
             max-width: 90%;
             object-fit: contain;
-            object-position: center;
+            object-position: center center;
         }
 
         .swiper-slide a {
@@ -519,7 +67,6 @@
             font-family: 'smile', 'dinLightI';
             letter-spacing: 0.2em;
             font-size: 2rem;
-
             height: 100%;
             width: 60%;
             position: absolute;
@@ -528,194 +75,20 @@
             text-decoration: none;
         }
 
+    .swiper-button-next,
+    .swiper-button-prev {
+        height: 100%;
+        width: 4vw;
+        top: 50%;
+        transform: translateY(-45%);
+        outline:none;
+    }
 
-        .swiper-button-next {
-            color: white;
-            /* padding-right: 5vw; */
-            opacity: 0.7;
-            height: 100%;
-            width: 10%;
-            transform: translateY(-50%);
-        }
-
-        .swiper-button-prev {
-            color: white;
-            /* padding-left: 5vw; */
-            opacity: 0.7;
-            height: 100%;
-            width: 10%;
-            transform: translateY(-50%);
-        }
-
-        .swiper-pagination-bullet {
-            background-color: white;
-            outline: none;
-        }
-
-        /* .link:hover {
-            scale: 1.1;
-            transition: 500ms;
-            transform: translateY(-10%);
-        } */
-
-
-        /* .link {
-            border: 0.2vh solid white;
-
-
-            弃用
-            padding: 1vh 5vw;
-            border-radius: 10px;
-        } */
-
-        .remind {
-            height: 10vh;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 2vh;
-            font-family: 'JhengLight';
-            color: #939393;
-        }
-
-        /* 交易页面 */
-        .introCon {
-            padding: 5% 10% 10vh 10%;
-            color: white;
-            background-color: black;
-            position: relative;
-            height: auto;
-            width: 100%;
-
-            /* 清除浮动 */
-            /* display: table; */
-            /* display:table 使元素像表格一样能够自适应内容 */
-            content: "";
-            clear: both;
-        }
-
-        .introCon,
-        .target,
-        .displayInfo {
-            overflow-x: hidden;
-        }
-
-        .target {
-            display: none;
-            overflow: hidden;
-        }
-
-        .displayInfo {
-            display: table;
-        }
-
-        .introCon input {
-            border: 1px solid #f7f7f7;
-            padding: 1vh 1vw;
-            margin-bottom: 2vh;
-            outline: none;
-            background: none;
-            box-shadow: none;
-        }
-
-        .introCon button {
-            border-radius: 0;
-            box-sizing: border-box;
-        }
-
-        .introCon div {
-            float: left;
-        }
-
-        .introCon p {
-            font-size: 3.5rem;
-            font-family: 'JhengBold';
-            white-space: pre-line;
-            height: auto;
-            width: auto;
-        }
-
-        .type1 {
-            /* type1是横着的 */
-            /* max-height: 50vh; */
-            max-width: 50vw;
-            float: right;
-            margin-top: -10vh;
-        }
-
-        .type2 {
-            /* type2是竖着的 */
-            max-width: 40vw;
-            max-height: 65vh;
-            height: auto;
-            float: right;
-            margin-top: -20vh;
-        }
-
-        /* type1和type2的横向竖向输入框不等长 */
-        .btn1 input,
-        .btn1 button {
-            width: 25vw;
-        }
-
-        .btn2 input,
-        .btn2 button {
-            width: 35vw;
-        }
-
-        .msg {
-            /* padding-top: 8vh; */
-            padding-bottom: 15vh;
-            /* margin-top: 5vh; */
-        }
-
-        .msg button {
-            cursor: pointer;
-        }
-
-        .introCon .msg p {
-            font-size: 1rem;
-            font-family: 'JhengLight';
-            letter-spacing: 0.1em;
-            color: #939393;
-            height: auto;
-            padding-top: 10vh;
-            margin: 0 0 2vh 0;
-        }
-
-        .trading {
-            height: 6vh;
-            position: absolute;
-            right: 10%;
-            top: 8%;
-        }
-
-        .trading-copyright {
-            width: 97%;
-            position: absolute;
-            bottom: 10vh;
-            color: #939393;
-        }
-
-        /* section04 现场照片儿 */
-        #section04 {
-            background-color: black;
-            color: white;
-            padding: 5vh 0 10vh 0;
-        }
-
-        #section04 h1 {
-            margin-bottom: 5vh;
-            padding: 0;
-            font-family: 'dinLightI', 'JhengBold';
-            font-size: 2.5rem;
-        }
-
-        .mySwiper3 {
-            height: 75vh;
-            padding-bottom: 0;
-        }
+    .mySwiper3 {
+        height: 50vh;
+        width: 115%;
+        padding-bottom: 0;
+    }
 
         .mySwiper3 .swiper-slide {
             max-width: 100%;
@@ -724,1111 +97,286 @@
             width: auto;
         }
 
-        .mySwiper3 .swiper-slide img {
-            height: 100%;
-            width: auto;
-            object-fit: cover;
-            object-position: center;
-        }
+            .mySwiper3 .swiper-slide img {
+                height: auto;
+                width: 85%;
+                object-fit: cover;
+                object-position: center center;
+            }
 
-        .mySwiper2 {
-            box-sizing: border-box;
-            padding: 0;
-            height: 15vh;
-            width: 85%;
-            margin: 0 auto;
-        }
+    .mySwiper2 {
+        box-sizing: border-box;
+        padding: 0;
+        height: 15vh;
+        width: 90%;
+        margin-left: 0;
+        margin-right: 0;
+        transform: translateX(13%);
+    }
 
         .mySwiper2 .swiper-slide {
             width: 10vw;
         }
 
-        .mySwiper2 .swiper-slide img {
-            margin-bottom: 0;
-            width: 100%;
-        }
-
-        .mySwiper2 .swiper-slide:not(.swiper-slide-thumb-active) img {
-            opacity: 0.5;
-        }
-    </style>
-</head>
-
-<body>
-    <button id="topBtn">
-        <img src="../../Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
-    </button>
-
-    <section id="section01" class="banner">
-        <div class="black02"></div>
-
-
-        <div class="title">
-            <h1>同构《第二季》·当代艺术展</h1>
-            <h3>
-                <!-- 展览时间2022.12.29-2023.01.28 -->
-                The 2nd "isomorphism" Contemporary Art Exhibition of China
-            </h3>
-            <a href="#content">
-                <button>画廊模式</button></a>
-        </div>
-
-        <ul class="nav">
-            <a href="index.html" target="_blank">
-                <li class="nav-item active">首&emsp;页</li>
-            </a>
-            <a href="#section02">
-                <li class="nav-item">序&emsp;章</li>
-            </a>
-
-            <a href="#section03">
-                <li class="nav-item">参展作品</li>
-            </a>
-            <a href="#section04">
-                <li class="nav-item">现场照片</li>
-            </a>
-        </ul>
-    </section>
-
-    <section id="section02">
-
-        <!-- 序章 -->
-
-        <div>
-            <div class="xu">
-                <img class="tonggou" src="../../content/images/tonggou Alpha.png" />
-                <img class="elementPub" src="../../content/images/fuzhu-05.png" />
-            </div>
-
-            <h1>序</h1>
-            <p>时代总是以一种新的视觉方式传递时间信息与观念表达，从而创造“敏锐的感知力”，去启发和引导人们的行为，唤起好奇的、丰富的哲理和情感的内在联系。</p>
-            <p>同构的意义在于不仅仅是指物质形态相关联的元素巧妙地融解，更是将精神指向的共性合二为一，直逼内心。</p>
-            <p>同构是一种想象，有对比、相似、强制、离奇、质疑、重组、支解等不同的表达，它往往打破人们的经验视觉，使抽象的语言具体性，具体的形态抽象化，情绪化的表达总会令人着迷忘返，共鸣同情的世界又是多么的至善至美。
-            </p>
-            <p>我们存在于地球村落，事实上已难分主体或客体，艺术的魅力在于创造一种新的构建方式，你中有我，我中有你，异质同构在艺术本体， 同态映射于我们的心灵。</p>
-            <p>明日的太阳缓缓升起，万物已然苏醒。</p>
-
-
-            <div class="nameCN">
-                姚健伟于清华园<br />
-                2022年12月12日
-            </div>
-        </div>
-
-    </section>
-
-    <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
-
-        <!-- 参展目录 -->
-
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
-        <div class="col-xs16 col-sm16 col-md16 col-lg16">
-
-            <section id="content">
-                <h1>参展作品目录 <i
-                        style="font-style: normal;font-family: 'sansLight';vertical-align: top;font-size: 2rem;">|</i>
-                    CATALOG</h1>
-
-                <!-- filter的格式错误问题暂时解决不了，或许考虑删除filter -->
-
-                <ul class="filterCon">
-                    <li class="filter bold" data-filter="all">所有</li>
-                    <li class="filter" data-filter="paperInk">纸本水墨</li>
-                    <li class="filter" data-filter="oilPainting">布面油画</li>
-                    <li class="filter" data-filter="combine">综合材料</li>
-                    <li class="filter" data-filter="other">其他</li>
-                </ul>
-
-                <style>
-                    .filter {
-                        font-family: 'sansLight';
-                    }
-
-                    .filterCon {
-                        list-style: none;
-                        display: flex;
-                        padding: 0;
-                        margin-bottom: 3vh;
-                    }
-
-                    .filterCon li {
-                        margin-right: 2vw;
-                    }
-
-                    .hidden {
-                        display: none;
-                    }
-
-                    .bold {
-                        font-family: 'sansBold';
-                    }
-                </style>
-
-                <script>
-
-                    // $(function () {
-                    //     $('.filter').click(function () {
-                    //         const value = $(this).attr('data-filter');
-                    //         if (value == 'all') {
-                    //             $('.filterBox').show('1000');
-                    //         }
-                    //         else {
-                    //             $('.filterBox').not('.' + value).hide('1000');
-                    //             $('.filterBox').filter('.' + value).show('1000');
-                    //         }
-                    //     })
-                    // })
-
-                    $(function () {
-                        $('.filter').click(function () {
-                            const value = $(this).attr('data-filter');
-                            if (value == 'all') {
-                                $('.filterBox').removeClass('hidden');
-                            }
-                            else {
-                                $('.filterBox').not('.' + value).addClass('hidden');
-                                $('.filterBox').filter('.' + value).removeClass('hidden');
-                            }
-
-                            // 切换 .bold 类名
-                            const $currentItem = $(this);
-                            const $prevItem = $('.filter.bold');
-                            if (!$currentItem.hasClass('bold')) {
-                                $currentItem.addClass('bold');
-                                $prevItem.removeClass('bold');
-                            }
-                        });
-                    });
-
-
-                </script>
-
-
-
-                <div class="swiper mySwiper">
-                    <div class="swiper-wrapper mob">
-                        <div class="swiper-slide filterBox paperInk">
-                            <img src="../../Content/images/zuopin/我们的世界之二.jpg" />
-
-                            <a href="#num00" class="link">我们的世界No.2</a>
-                        </div>
-                        <div class="swiper-slide filterBox combine">
-                            <img src="../../Content/images/zuopin/大鹏系列-1.jpg" />
-                            <a href="#num01" class="link">大鹏系列-1</a>
-                        </div>
-                        <div class="swiper-slide filterBox paperInk">
-                            <img src="../../Content/images/zuopin/三渡.jpg" />
-                            <a href="#num02" class="link">三渡</a>
-                        </div>
-                        <div class="swiper-slide filterBox other" data-catagory="布面丙烯">
-                            <img src="../../Content/images/zuopin/“山象”系列（叁）-佛面.jpg" />
-                            <a href="#num03" class="link">“山象”系列（叁）-佛面</a>
-
-                        </div>
-                        <div class="swiper-slide filterBox paperInk">
-                            <img src="../../Content/images/zuopin/风月（二联图）.jpg" />
-                            <a href="#num04" class="link">风月（二联图）</a>
-
-                        </div>
-                        <div class="swiper-slide filterBox oilPainting">
-                            <img src="../../Content/images/zuopin/时尚碎片.jpg" />
-                            <a href="#num05" class="link">时尚碎片-梧桐山水</a>
-
-                        </div>
-                        <div class="swiper-slide filterBox oilPainting">
-                            <img src="../../Content/images/zuopin/魔鬼猫家族.jpg" />
-                            <a href="#num06" class="link">魔鬼猫·动物家族</a>
-
-                        </div>
-                        <div class="swiper-slide filterBox combine">
-                            <img src="../../Content/images/zuopin/普罗米修斯.jpg" />
-                            <a href="#num07" class="link">Prometheus, Mixed media on canvas</a>
-
-                        </div>
-                        <div class="swiper-slide filterBox other">
-                            <img src="../../Content/images/zuopin/黑白照.jpg" />
-                            <a href="#num08" class="link">黑白照</a>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-                <p class="remind">
-                    (点击作品名查看更多)</p>
-            </section>
-        </div>
-
-        <!-- type1(横)测试 x3 -->
-
-        <div class="introCon target" id="num00">
-            <p>我们的世界No.2
-                姚健伟
-                68X136cm
-                纸本彩墨
-            </p>
-            <div class="msg btn1">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-
-            <a href="../../content/images/zuopin/我们的世界之二.jpg" target="_blank">
-                <img src="../../content/images/zuopin/我们的世界之二.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num01">
-            <p>大鹏系列-1
-                张岚芊
-                120X180cm
-                综合材料
-            </p>
-            <div class="msg btn1">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-            <a href="../../content/images/zuopin/大鹏系列-1.jpg" target="_blank">
-                <img src="../../content/images/zuopin/大鹏系列-1.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num02">
-            <p>三渡
-                张铁军
-                33X180cm
-                纸本水墨
-            </p>
-            <div class="msg btn1">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-            <a href="../../content/images/zuopin/三渡.jpg" target="_blank">
-                <img src="../../content/images/zuopin/三渡.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num06">
-            <p>魔鬼猫·动物家族
-                猫爹雨海
-                布面油画
-            </p>
-            <div class="msg btn1">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-
-            <a href="../../content/images/zuopin/魔鬼猫家族.jpg" target="_blank">
-                <img src="../../content/images/zuopin/魔鬼猫家族.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num08">
-            <p>黑白照
-                盛伯骥
-                尺寸可变
-                摄影
-            </p>
-            <div class="msg btn1">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-
-            <a href="../../content/images/zuopin/黑白照.jpg" target="_blank">
-                <img src="../../content/images/zuopin/黑白照.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-
-        <!-- type2（竖）测试 x3 -->
-
-        <div class="introCon target" id="num03">
-
-            <p>“山象”系列（叁）-佛面
-                常世江
-                100X100cm
-                布面丙烯
-            </p>
-            <div class="msg btn2">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-
-
-            </div>
-
-            <a href="../../content/images/zuopin/“山象”系列（叁）-佛面.jpg" target="_blank">
-                <img src="../../content/images/zuopin/“山象”系列（叁）-佛面.jpg" class="type2" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num04">
-
-            <p>风月（二联图）
-                农夫
-                82X275*2cm
-                纸本水墨
-            </p>
-            <div class="msg btn2">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-
-
-            </div>
-
-            <a href="../../content/images/zuopin/风月（二联图）.jpg" target="_blank">
-                <img src="../../content/images/zuopin/风月（二联图）.jpg" class="type2" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num05">
-
-            <p>时尚碎片-梧桐山水
-                曾风
-                320X160cm
-                布面油画
-            </p>
-            <div class="msg btn2">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-
-
-            </div>
-
-            <a href="../../content/images/zuopin/时尚碎片.jpg" target="_blank">
-                <img src="../../content/images/zuopin/时尚碎片.jpg" class="type2" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num07">
-
-            <p>Prometheus, Mixed media
-                on canvas
-                栗子
-                90X73cm
-                综合材料
-            </p>
-            <div class="msg btn2">
-                <p>
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-
-
-            </div>
-
-            <a href="../../content/images/zuopin/普罗米修斯.jpg" target="_blank">
-                <img src="../../content/images/zuopin/普罗米修斯.jpg" class="type2" /></a>
-
-            <!-- 固定元素 -->
-            <img src="../../content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
-    </section>
-
-
-
-    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
-        <!-- 现场照片 -->
-
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
-        <div class="col-xs16 col-sm16 col-md16 col-lg16">
-            <h1>现场照片 <i style="font-style: normal;font-family: 'sansLight';vertical-align: top;font-size: 2rem;">|</i>
-                GALLERY</h1>
-
-            <!-- Swiper02 -->
-
-            <section>
-                <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/0.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/1.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/4.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/5.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/6.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/7.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/8.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/9.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/10.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/11.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/12.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/13.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/14.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/15.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/16.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/17.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/18.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/19.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/20.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/21.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/22.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/23.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/24.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/25.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/26.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/27.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/28.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/29.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/30.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/31.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/32.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/33.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/34.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/35.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/36.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/37.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/38.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/39.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/40.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/41.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/42.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/43.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/44.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/45.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/46.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/47.jpg" />
-                        </div>
-
-                    </div>
-                    <div class="swiper-button-next xs-hide sm-hide"></div>
-                    <div class="swiper-button-prev xs-hide sm-hide"></div>
-                </div>
-                <div thumbsSlider="" class="swiper mySwiper2">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/0.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/1.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/4.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/5.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/6.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/7.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/8.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/9.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/10.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/11.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/12.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/13.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/14.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/15.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/16.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/17.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/18.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/19.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/20.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/21.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/22.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/23.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/24.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/25.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/26.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/27.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/28.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/29.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/30.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/31.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/32.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/33.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/34.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/35.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/36.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/37.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/38.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/39.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/40.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/41.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/42.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/43.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/44.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/45.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/46.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="../../Content/images/tonggou/47.jpg" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
-    </section>
-
-
-
-
-    <script>
-        // toTopBtn
-        const toTopButton = document.querySelector('#topBtn');
-        const section01 = document.querySelector('#section01');
-
-        window.addEventListener('scroll', function () {
-            // 获取当前滚动位置
-            const scrollPosition = window.scrollY;
-
-            // 判断是否在 section01 区域内
-            if (scrollPosition >= section01.offsetTop && scrollPosition < section01.offsetTop + section01.offsetHeight) {
-                toTopButton.style.display = 'none';
-            } else {
-                toTopButton.style.display = 'block';
+            .mySwiper2 .swiper-slide img {
+                margin-bottom: 0;
+                width: 100%;
             }
-        });
 
-        toTopButton.addEventListener('click', function () {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth' // 添加这个属性可以平滑地滚动到顶部
-            });
-        });
+            .mySwiper2 .swiper-slide:not(.swiper-slide-thumb-active) img {
+                opacity: 0.5;
+            }
 
+    .imgCon_Pub {
+        padding-top: 10vh;
+        transform: translateX(-10%);
+    }
+</style>
 
-        // 导航点击加粗
-        $(function () {
-            $(".nav-item").click(function () {
-                $(".nav-item").removeClass("active");
-                $(this).addClass("active");
-            });
-        });
+<section id="section01" style="height: var(--pubSonHeight);">
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+    <div class="col-xs17 col-sm17 col-md7 col-lg7">
+        <div class="titlePub">
+            <h1>同构——当代艺术作品邀请展</h1>
+            <h3>
+                <!-- 展览时间2021.9.24- -->
+                "isomorphism" Contemporary Art Exhibition of China
+                <br />
+                结束时间：2021.02.26
+            </h3>
 
-        // section01的go gray
-        // $(function () {
-        //     var section01Height = $('#section01').height();
-        //     var maxScrollTop = $(document).height() - $(window).height();
-        //     $(window).scroll(function () {
-        //         var currentScrollTop = $(this).scrollTop();
-        //         var scrollPercent = (currentScrollTop / (maxScrollTop - section01Height)) * 130;
-        //         var grayPercent = Math.max(0, Math.min(100, scrollPercent));
-        //         var alpha = Math.max(0, Math.min(1, scrollPercent / 500));
-        //         // var scrollPercent = (currentScrollTop / (maxScrollTop - section01Height)) * 900;
-        //         // var alpha = Math.max(0, Math.min(1, scrollPercent / 900));
-        //         $('#section01').css('filter', 'grayscale(' + grayPercent + '%) brightness(' + (1 - alpha) + ')');
-        //     });
-        // });
-
-
-        // sectino03的swiper，coverflow+rotateEffect
-        var swiper = new Swiper(".mySwiper", {
-            effect: "coverflow",
-            // 设置初始显示的幻灯片索引为0
-            initialSlide: 1,
-            grabCursor: true,
-            centeredSlides: true,
-            slidesPerView: "auto",
-            loop: true,
-            // 启用懒加载
-            lazy: true,
-            // preloadImages: false, // 禁用预加载
-            // updateOnImagesReady: true, // 等待所有图片加载完成后更新swiper
-            coverflowEffect: {
-                rotate: 20,
-                stretch: 0,
-                depth: 100,
-                modifier: 1,
-                slideShadows: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            keyboard: {
-                enabled: true,
-                onlyInViewport: true,
-            },
-            on: {
-                //扩大点击范围
-                click: function (e) {
-                    // 获取被点击的slide的索引
-                    var clickedIndex = e.clickedIndex;
-                    // 切换到被点击的slide
-                    this.slideTo(clickedIndex);
-                }
-            },
-        });
-
-        // section03显示Info
-
-        // 获取所有链接
-        var links = document.querySelectorAll('.link');
-
-        // 遍历链接，并为每个链接添加事件监听器
-        for (var i = 0; i < links.length; i++) {
-            links[i].addEventListener('click', function (event) {
-                // 阻止链接的默认行为
-                event.preventDefault();
-
-                // 获取目标元素
-                var target = document.querySelector(this.getAttribute('href'));
-
-                // 移除所有目标元素的 'show' 类
-                var targets = document.querySelectorAll('.target');
-                for (var j = 0; j < targets.length; j++) {
-                    targets[j].classList.remove('displayInfo');
-                }
-
-                // 添加 'show' 类到目标元素
-                target.classList.add('displayInfo');
-
-                // 将页面滚动到目标元素的位置
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        }
-
-
-        // section04的双swiper,02是子，03是父
-
-        var swiper2 = new Swiper(".mySwiper2", {
-            loop: true,
-            grabCursor: true,
-            spaceBetween: 3,
-            slidesPerView: 7,
-            freeMode: true,
-            watchSlidesProgress: true,
-        });
-        var swiper3 = new Swiper(".mySwiper3", {
-            loop: true,
-            spaceBetween: 0,
-            grabCursor: true,
-            // slidesPerView: 0,
-            // 启用懒加载
-            lazy: true,
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            thumbs: {
-                swiper: swiper2,
-            },
-            keyboard: {
-                enabled: true,
-                onlyInViewport: true,
-            },
-        });
-
-    </script>
-
-    <!-- 以下为共享部分 -->
-
-
-
-
-
-    <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20" style="border-bottom: 1px solid #ededed;">
-        <div class="emailContainerM">
-            <div class="emailPosition">
-
-                <h1>深圳市艺术产业新闻邮件</h1>
-
-
-                <div class="email" style="width: 90%;margin: 0 auto;border:1px solid white;color: white;">
-                    <input type="email" placeholder="EMAIL">
-                </div>
-                <button type="submit" class="dingyue">订&#12288;阅</button>
-
-                <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
-                    <br />
-                    一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
-                </p>
-            </div>
-            <div class="logoContainerM">
-                <a href="Javascript:;;">
-                    <img src="../../Content/icon/wechat.svg" class="guanzhu" alt=""></a>
-                <a href="Javascript:;;">
-                    <img src="../../Content/icon/douyin.svg" class="guanzhu" alt=""></a>
-            </div>
-
-            <!-- <img class="undraggable" src="../../content/images/fuzhu-05.png" alt="" /> -->
+            <a class="xs-hide sm-hide" href="javascript:history.back()">
+                < 返回
+            </a>
         </div>
-    </section>
+    </div>
+    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
 
-    <!-- FOOTER - PC -->
-    <footer class="xs-hide sm-hide footerPC">
-        <div class="footer">
-            <div class="copyright-container">
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                <div class="col-sm7 col-md7 col-lg7 copyright">
-                    <p>
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-                        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-                        深圳市艺术产业促进会
-                    </p>
+    <div class="col-xs20 col-sm20">
+        <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+        <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
+            <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10001.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10002.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10003.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10004.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10005.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10006.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10007.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10008.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10009.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10010.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10011.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10012.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10013.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10014.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10015.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10016.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10017.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10018.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10019.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10020.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10021.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10022.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10023.jpg" />
+                    </div>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="news.html"> 新闻动态</a><br />
-                        <a href="Constitution.html"> 展会动态</a><br />
-                        &#12288;<br />
-                        &#12288;<br />
-                        &#12288;
-                    </p>
+                <div class="swiper-button-next xs-hide sm-hide"></div>
+                <div class="swiper-button-prev xs-hide sm-hide"></div>
+            </div>
 
+
+
+
+            <div thumbsSlider="" class="swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10001.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10002.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10003.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10004.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10005.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10006.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10007.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10008.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10009.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10010.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10011.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10012.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10013.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10014.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10015.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10016.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10017.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10018.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10019.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10020.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10021.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10022.jpg" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggou/10023.jpg" />
+                    </div>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">我们的团队</a><br />
-                        <a href="Javascript:;;">合作案例 </a><br />
-                        <a href="Javascript:;;">艺术家个人页</a>
-                        <br />&#12288; <br />&#12288;
-                    </p>
-                </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">联系我们</a><br />
-                        <a href="http://www.szaipa.com">切换旧版</a><br />
-                        <a href="Javascript:;;">后台登陆</a><br />
-                        &#12288;<br />
-                        &#12288;
-                    </p>
-                </div>
-
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-
-
-
-
-                <!-- 
-                <p class="re">
-                    <a href="Javascript:;;">
-                        粤公网安备 44030402004889号 </a>｜ <a href="Javascript:;;">粤ICP备2021095230号</a><br />
-                    合作邮箱：industry@szaipa.com ｜ 滨海大道2001号T-PARK深港影视创意园7楼07单元<br />
-                    Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-                    深圳市艺术产业促进会
-                </p> -->
-
-
             </div>
         </div>
-    </footer>
+        <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+    </div>
+
+</section>
 
 
-    <!-- FOOTER - MOBILE -->
-    <footer class="md-hide lg-hide copyrightM footerM">
-        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-        深圳市艺术产业促进会<br />
-        <br />
-        <a href="http://www.szaipa.com">切换旧版</a><br />
-        <a href="Javascript:;;">后台登陆</a>
-    </footer>
 
 
-</body>
+<script>// section04的双swiper,02是子，03是父
+
+    var swiper2 = new Swiper(".mySwiper2", {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 3,
+        slidesPerView: 7,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+    var swiper3 = new Swiper(".mySwiper3", {
+        loop: true,
+        spaceBetween: 0,
+        grabCursor: true,
+        // slidesPerView: 0,
+        // 启用懒加载
+        lazy: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper2,
+        },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+    });</script>
+
+<!-- 以下为共享部分 -->
 
 
-</html>
+
+
+
+<section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
+    <div class="emailContainerM">
+        <div class="emailPosition">
+
+            <h1>深圳市艺术产业新闻邮件</h1>
+
+
+            <input class="emailM" type="email" placeholder="EMAIL">
+            <button type="submit">订&#12288;阅</button>
+
+            <p>
+                订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
+                <br />
+                一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
+            </p>
+        </div>
+        <div class="logoContainerM">
+            <a href="Javascript:;;">
+                <img src="../../Content/icon/wechat.svg" class="guanzhu" alt="">
+            </a>
+            <a href="Javascript:;;">
+                <img src="../../Content/icon/douyin.svg" class="guanzhu" alt="">
+            </a>
+        </div>
+
+    </div>
+</section>
+
