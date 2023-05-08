@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SzaipaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AccessData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Ip" Type="nvarchar" MaxLength="50" />
+    <Property Name="Nation" Type="nvarchar" MaxLength="50" />
+    <Property Name="Porvince" Type="nvarchar" MaxLength="50" />
+    <Property Name="Ctiy" Type="nvarchar" MaxLength="50" />
+    <Property Name="DC" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Activity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="200" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="int" Nullable="false" />
+    <Property Name="Class" Type="nvarchar" MaxLength="200" />
+    <Property Name="RArt" Type="nvarchar(max)" />
+    <Property Name="RWork" Type="nvarchar(max)" />
+    <Property Name="RNews" Type="nvarchar(max)" />
+    <Property Name="CoverTitle" Type="nvarchar" MaxLength="200" />
+    <Property Name="ImgsTitle" Type="nvarchar(max)" />
+    <Property Name="Add" Type="nvarchar" MaxLength="200" />
+    <Property Name="OtherInf" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Artist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArtistNameCN" Type="nvarchar" MaxLength="30" />
+    <Property Name="ArtistNameEN" Type="nvarchar" MaxLength="30" />
+    <Property Name="Sex" Type="nvarchar" MaxLength="2" Nullable="false" />
+    <Property Name="Path" Type="nvarchar" MaxLength="500" />
+    <Property Name="UserContent" Type="nvarchar(max)" />
+    <Property Name="Nation" Type="nvarchar" MaxLength="30" />
+    <Property Name="City" Type="nvarchar" MaxLength="30" />
+    <Property Name="Title" Type="nvarchar" MaxLength="30" />
+    <Property Name="WorkCount" Type="int" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="Deeds" Type="nvarchar(max)" />
+    <Property Name="Honor" Type="nvarchar(max)" />
+    <Property Name="AddDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="FlieInf" Type="nvarchar" MaxLength="500" />
+    <Property Name="VisitCount" Type="int" />
+    <Property Name="Activity" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NameCN" Type="nvarchar" MaxLength="200" />
+    <Property Name="NameEN" Type="nvarchar" MaxLength="200" />
+    <Property Name="Business" Type="nvarchar(max)" />
+    <Property Name="CEO" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImgPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="200" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="int" />
+    <Property Name="FirstDate" Type="datetime" />
+    <Property Name="LastDate" Type="datetime" />
+    <Property Name="Activity" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Diary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="VistiTotal" Type="int" Nullable="false" />
+    <Property Name="NewsVisit" Type="int" Nullable="false" />
+    <Property Name="ArtVisit" Type="int" Nullable="false" />
+    <Property Name="WorksVisit" Type="int" Nullable="false" />
+    <Property Name="CompanyVisit" Type="int" Nullable="false" />
+    <Property Name="OperationRecord" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="MonthData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Data" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="500" />
+    <Property Name="Subtitle" Type="nvarchar(max)" />
+    <Property Name="Autor" Type="nvarchar" MaxLength="50" />
+    <Property Name="original" Type="bit" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="500" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="ReadCount" Type="int" Nullable="false" />
+    <Property Name="ImgTitle" Type="nvarchar(max)" />
+    <Property Name="Activity" Type="nvarchar(max)" />
+    <Property Name="Important" Type="bit" />
+  </EntityType>
+  <EntityType Name="Staff">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StaffName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="OperationRecord" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="200" />
+    <Property Name="WorksCount" Type="int" Nullable="false" />
+    <Property Name="SerachHot" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Works">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" />
+    <Property Name="Path" Type="nvarchar(max)" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="Record" Type="nvarchar(max)" />
+    <Property Name="VisitCount" Type="int" />
+    <Property Name="FirstDate" Type="datetime" />
+    <Property Name="LastDate" Type="datetime" />
+    <Property Name="Width" Type="int" Nullable="false" />
+    <Property Name="Height" Type="int" Nullable="false" />
+    <Property Name="transverse" Type="bit" Nullable="false" />
+    <Property Name="long" Type="bit" Nullable="false" />
+    <Property Name="Activity" Type="nvarchar(max)" />
+    <Property Name="Tags" Type="nvarchar(max)" />
+    <Property Name="Deeds" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="WorksTag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="WorkId" Type="int" Nullable="false" />
+    <Property Name="TagId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="SzaipaModelStoreContainer">
+    <EntitySet Name="AccessData" EntityType="Self.AccessData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Diary" EntityType="Self.Diary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WorksTag" EntityType="Self.WorksTag" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

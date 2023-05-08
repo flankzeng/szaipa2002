@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TongouModelStoreContainer" CdmEntityContainer="TongouEntities">
+    <EntitySetMapping Name="TongouAtrist">
+      <EntityTypeMapping TypeName="TongouModel.TongouAtrist">
+        <MappingFragment StoreEntitySet="TongouAtrist">
+          <ScalarProperty Name="HotCount" ColumnName="HotCount" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="WorksCount" ColumnName="WorksCount" />
+          <ScalarProperty Name="Aboutid" ColumnName="Aboutid" />
+          <ScalarProperty Name="AboutText" ColumnName="AboutText" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="HeardPath" ColumnName="HeardPath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TongouWorks">
+      <EntityTypeMapping TypeName="TongouModel.TongouWorks">
+        <MappingFragment StoreEntitySet="TongouWorks">
+          <ScalarProperty Name="HotCount" ColumnName="HotCount" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Atristid" ColumnName="Atristid" />
+          <ScalarProperty Name="AtristidName" ColumnName="AtristidName" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="VisityCount" ColumnName="VisityCount" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Project">
+      <EntityTypeMapping TypeName="TongouModel.Project">
+        <MappingFragment StoreEntitySet="Project">
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="VisityData" ColumnName="VisityData" />
+          <ScalarProperty Name="Project1" ColumnName="Project" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

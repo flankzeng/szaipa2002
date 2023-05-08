@@ -238,6 +238,11 @@ namespace Szaipa.Controllers
             return View(art);
         }
 
+        public ActionResult artistZLQ()
+        {
+            return View();
+        }
+
 
         public ActionResult newsread(int id)
         {

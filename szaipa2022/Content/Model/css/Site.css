@@ -1,6 +1,5 @@
 ﻿body {
     margin: 0;
-    font-display:swap;
 }
 
 .re {
@@ -9,6 +8,16 @@
 
 .relative {
     position: relative !important;
+}
+
+.padding {
+    background-color: red;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: .4;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -486,17 +495,17 @@
 /* 微软正黑家族 */
 @font-face {
     font-family: 'JhengBold';
-    src: url("../../fonts/MicrosoftJhengHeiBold.otf") format("opentype");
+    src: url("../../fonts/MicrosoftJhengHeiBold.woff2") format("woff2");
 }
 
 @font-face {
     font-family: 'JhengRegular';
-    src: url("../../fonts/MicrosoftJhengHeiRegular.otf") format("opentype");
+    src: url("../../fonts/MicrosoftJhengHeiRegular.woff2") format("woff2");
 }
 
 @font-face {
     font-family: 'JhengLight';
-    src: url("../../fonts/MicrosoftJhengHeiLight.otf") format("opentype");
+    src: url("../../fonts/MicrosoftJhengHeiLight.woff2") format("woff2");
 }
 
 /* DIN-Light */
@@ -520,49 +529,49 @@
 /* 思源宋字体家族 */
 @font-face {
     font-family: "cjkExtraLight";
-    src: url("../../fonts/NotoSerifSC-ExtraLight.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-ExtraLight.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkLight";
-    src: url("../../fonts/NotoSerifSC-Light.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-Light.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkRegular";
-    src: url("../../fonts/NotoSerifSC-Regular.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-Regular.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkMedium";
-    src: url("../../fonts/NotoSerifSC-Medium.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-Medium.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkBold";
-    src: url("../../fonts/NotoSerifSC-Bold.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-Bold.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkSemiBold";
-    src: url("../../fonts/NotoSerifSC-SemiBold.otf") format("opentype");
+    src: url("../../fonts/NotoSerifSC-SemiBold.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "cjkBlack";
-    src: url("../../fonts/NotoSerifSC-Black.otf") format("opentype")
+    src: url("../../fonts/NotoSerifSC-Black.woff2") format("woff2")
 }
 
 /* 思源黑字体家族 */
 
 @font-face {
     font-family: "sansExtraLight";
-    src: url("../../fonts/NotoSansSC-Thin.otf") format("opentype");
+    src: url("../../fonts/NotoSansSC-Thin.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "sansLight";
-    src: url("../../fonts/NotoSansSC-Light.otf") format("opentype");
+    src: url("../../fonts/NotoSansSC-Light.woff2") format("woff2");
 }
 
 @font-face {
@@ -572,20 +581,20 @@
 
 @font-face {
     font-family: "sansRegular";
-    src: url("../../fonts/NotoSansSC-Regular.otf") format("opentype");
+    src: url("../../fonts/NotoSansSC-Regular.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "sansMedium";
-    src: url("../../fonts/NotoSansSC-Medium.otf") format("opentype");
+    src: url("../../fonts/NotoSansSC-Medium.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "sansBold";
-    src: url("../../fonts/NotoSansSC-Bold.otf") format("opentype");
+    src: url("../../fonts/NotoSansSC-Bold.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "sansHeavy";
-    src: url("../../fonts/NotoSansSC-Black.otf") format("opentype")
+    src: url("../../fonts/NotoSansSC-Black.woff2") format("woff2")
 }

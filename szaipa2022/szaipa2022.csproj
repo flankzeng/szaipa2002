@@ -143,6 +143,7 @@
     <Content Include="Views\Home\newnewsread.cshtml" />
     <Content Include="Views\Home\vip_new.cshtml" />
     <Content Include="Views\Shared\_newLayout.cshtml" />
+    <Content Include="Views\Home\artistZLQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />

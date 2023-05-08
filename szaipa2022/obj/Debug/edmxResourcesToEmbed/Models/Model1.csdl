@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SzaipaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AccessData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Nation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Porvince" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Ctiy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Activity">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" Nullable="false" />
+    <Property Name="Class" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="RArt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RNews" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CoverTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ImgsTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Add" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="OtherInf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Artist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ArtistNameCN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ArtistNameEN" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="UserContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Nation" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="WorkCount" Type="Int32" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Deeds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Honor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="FlieInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
+    <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameCN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="NameEN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Business" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CEO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImgPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="FilePath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
+    <Property Name="FirstDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDate" Type="DateTime" Precision="3" />
+    <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Diary">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="VistiTotal" Type="Int32" Nullable="false" />
+    <Property Name="NewsVisit" Type="Int32" Nullable="false" />
+    <Property Name="ArtVisit" Type="Int32" Nullable="false" />
+    <Property Name="WorksVisit" Type="Int32" Nullable="false" />
+    <Property Name="CompanyVisit" Type="Int32" Nullable="false" />
+    <Property Name="OperationRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="MonthData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="News">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Subtitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Autor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="original" Type="Boolean" Nullable="false" />
+    <Property Name="link" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReadCount" Type="Int32" Nullable="false" />
+    <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Important" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Staff">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StaffName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OperationRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="WorksCount" Type="Int32" Nullable="false" />
+    <Property Name="SerachHot" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Works">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Record" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
+    <Property Name="FirstDate" Type="DateTime" Precision="3" />
+    <Property Name="LastDate" Type="DateTime" Precision="3" />
+    <Property Name="Width" Type="Int32" Nullable="false" />
+    <Property Name="Height" Type="Int32" Nullable="false" />
+    <Property Name="transverse" Type="Boolean" Nullable="false" />
+    <Property Name="long" Type="Boolean" Nullable="false" />
+    <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Deeds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="WorksTag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WorkId" Type="Int32" Nullable="false" />
+    <Property Name="TagId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="SzaipaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AccessData" EntityType="Self.AccessData" />
+    <EntitySet Name="Activity" EntityType="Self.Activity" />
+    <EntitySet Name="Artist" EntityType="Self.Artist" />
+    <EntitySet Name="Company" EntityType="Self.Company" />
+    <EntitySet Name="Diary" EntityType="Self.Diary" />
+    <EntitySet Name="MonthData" EntityType="Self.MonthData" />
+    <EntitySet Name="News" EntityType="Self.News" />
+    <EntitySet Name="Staff" EntityType="Self.Staff" />
+    <EntitySet Name="Tag" EntityType="Self.Tag" />
+    <EntitySet Name="Works" EntityType="Self.Works" />
+    <EntitySet Name="WorksTag" EntityType="Self.WorksTag" />
+  </EntityContainer>
+</Schema>

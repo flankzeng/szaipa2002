@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TongouModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Project" Type="nvarchar(max)" />
+    <Property Name="VisityData" Type="nvarchar(max)" />
+    <Property Name="StartDate" Type="date" />
+    <Property Name="EndDate" Type="date" />
+    <Property Name="Content" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="TongouAtrist">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" />
+    <Property Name="WorksCount" Type="int" Nullable="false" />
+    <Property Name="Aboutid" Type="int" Nullable="false" />
+    <Property Name="AboutText" Type="nvarchar(max)" />
+    <Property Name="Title" Type="nvarchar" MaxLength="255" />
+    <Property Name="HeardPath" Type="nvarchar" MaxLength="255" />
+    <Property Name="HotCount" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TongouWorks">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Atristid" Type="int" Nullable="false" />
+    <Property Name="AtristidName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Title" Type="nvarchar" MaxLength="255" />
+    <Property Name="ImgPath" Type="nvarchar(max)" />
+    <Property Name="Size" Type="nvarchar" MaxLength="255" />
+    <Property Name="VisityCount" Type="int" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="255" />
+    <Property Name="CreationDate" Type="nvarchar" MaxLength="255" />
+    <Property Name="HotCount" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="TongouModelStoreContainer">
+    <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TongouAtrist" EntityType="Self.TongouAtrist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TongouWorks" EntityType="Self.TongouWorks" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

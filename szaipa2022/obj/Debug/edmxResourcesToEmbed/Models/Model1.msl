@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SzaipaModelStoreContainer" CdmEntityContainer="SzaipaEntities">
+    <EntitySetMapping Name="AccessData">
+      <EntityTypeMapping TypeName="SzaipaModel.AccessData">
+        <MappingFragment StoreEntitySet="AccessData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Ip" ColumnName="Ip" />
+          <ScalarProperty Name="Nation" ColumnName="Nation" />
+          <ScalarProperty Name="Porvince" ColumnName="Porvince" />
+          <ScalarProperty Name="Ctiy" ColumnName="Ctiy" />
+          <ScalarProperty Name="DC" ColumnName="DC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Activity">
+      <EntityTypeMapping TypeName="SzaipaModel.Activity">
+        <MappingFragment StoreEntitySet="Activity">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+          <ScalarProperty Name="Class" ColumnName="Class" />
+          <ScalarProperty Name="RArt" ColumnName="RArt" />
+          <ScalarProperty Name="RWork" ColumnName="RWork" />
+          <ScalarProperty Name="RNews" ColumnName="RNews" />
+          <ScalarProperty Name="CoverTitle" ColumnName="CoverTitle" />
+          <ScalarProperty Name="ImgsTitle" ColumnName="ImgsTitle" />
+          <ScalarProperty Name="Add" ColumnName="Add" />
+          <ScalarProperty Name="OtherInf" ColumnName="OtherInf" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Artist">
+      <EntityTypeMapping TypeName="SzaipaModel.Artist">
+        <MappingFragment StoreEntitySet="Artist">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ArtistNameCN" ColumnName="ArtistNameCN" />
+          <ScalarProperty Name="ArtistNameEN" ColumnName="ArtistNameEN" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="UserContent" ColumnName="UserContent" />
+          <ScalarProperty Name="Nation" ColumnName="Nation" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="WorkCount" ColumnName="WorkCount" />
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+          <ScalarProperty Name="Deeds" ColumnName="Deeds" />
+          <ScalarProperty Name="Honor" ColumnName="Honor" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="FlieInf" ColumnName="FlieInf" />
+          <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Company">
+      <EntityTypeMapping TypeName="SzaipaModel.Company">
+        <MappingFragment StoreEntitySet="Company">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="NameCN" ColumnName="NameCN" />
+          <ScalarProperty Name="NameEN" ColumnName="NameEN" />
+          <ScalarProperty Name="Business" ColumnName="Business" />
+          <ScalarProperty Name="CEO" ColumnName="CEO" />
+          <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+          <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+          <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+          <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+          <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Diary">
+      <EntityTypeMapping TypeName="SzaipaModel.Diary">
+        <MappingFragment StoreEntitySet="Diary">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="VistiTotal" ColumnName="VistiTotal" />
+          <ScalarProperty Name="NewsVisit" ColumnName="NewsVisit" />
+          <ScalarProperty Name="ArtVisit" ColumnName="ArtVisit" />
+          <ScalarProperty Name="WorksVisit" ColumnName="WorksVisit" />
+          <ScalarProperty Name="CompanyVisit" ColumnName="CompanyVisit" />
+          <ScalarProperty Name="OperationRecord" ColumnName="OperationRecord" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MonthData">
+      <EntityTypeMapping TypeName="SzaipaModel.MonthData">
+        <MappingFragment StoreEntitySet="MonthData">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Data" ColumnName="Data" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News">
+      <EntityTypeMapping TypeName="SzaipaModel.News">
+        <MappingFragment StoreEntitySet="News">
+          <ScalarProperty Name="Important" ColumnName="Important" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Subtitle" ColumnName="Subtitle" />
+          <ScalarProperty Name="Autor" ColumnName="Autor" />
+          <ScalarProperty Name="original" ColumnName="original" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+          <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+          <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Staff">
+      <EntityTypeMapping TypeName="SzaipaModel.Staff">
+        <MappingFragment StoreEntitySet="Staff">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StaffName" ColumnName="StaffName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="OperationRecord" ColumnName="OperationRecord" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tag">
+      <EntityTypeMapping TypeName="SzaipaModel.Tag">
+        <MappingFragment StoreEntitySet="Tag">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="WorksCount" ColumnName="WorksCount" />
+          <ScalarProperty Name="SerachHot" ColumnName="SerachHot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Works">
+      <EntityTypeMapping TypeName="SzaipaModel.Works">
+        <MappingFragment StoreEntitySet="Works">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="Record" ColumnName="Record" />
+          <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
+          <ScalarProperty Name="FirstDate" ColumnName="FirstDate" />
+          <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+          <ScalarProperty Name="Width" ColumnName="Width" />
+          <ScalarProperty Name="Height" ColumnName="Height" />
+          <ScalarProperty Name="transverse" ColumnName="transverse" />
+          <ScalarProperty Name="long" ColumnName="long" />
+          <ScalarProperty Name="Activity" ColumnName="Activity" />
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="Deeds" ColumnName="Deeds" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WorksTag">
+      <EntityTypeMapping TypeName="SzaipaModel.WorksTag">
+        <MappingFragment StoreEntitySet="WorksTag">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="WorkId" ColumnName="WorkId" />
+          <ScalarProperty Name="TagId" ColumnName="TagId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

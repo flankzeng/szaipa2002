@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TongouModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TongouAtrist">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="WorksCount" Type="Int32" Nullable="false" />
+    <Property Name="Aboutid" Type="Int32" Nullable="false" />
+    <Property Name="AboutText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HeardPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HotCount" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TongouWorks">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Atristid" Type="Int32" Nullable="false" />
+    <Property Name="AtristidName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ImgPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Size" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="VisityCount" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="HotCount" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="TongouEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TongouAtrist" EntityType="Self.TongouAtrist" />
+    <EntitySet Name="TongouWorks" EntityType="Self.TongouWorks" />
+    <EntitySet Name="Project" EntityType="TongouModel.Project" />
+  </EntityContainer>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Project1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisityData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="DateTime" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Precision="0" />
+    <Property Name="Content" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+</Schema>
