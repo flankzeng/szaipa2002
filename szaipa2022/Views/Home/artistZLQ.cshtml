@@ -209,8 +209,15 @@
         .section09 {
             height: 40vh;
             width: 100%;
-            background-color: black;
-            color: #939393;
+            @*background-color:black;*@color: #939393;
+            overflow: hidden;
+        }
+
+        .section09m {
+            /* FOOTER */
+            height: 100%;
+            width: 100%;
+            @*background-color:black;*@color: #939393;
             overflow: hidden;
         }
 
@@ -228,7 +235,7 @@
         }
 
         .copyrightM {
-            border-top: 1.5px solid #939393;
+            border-top: 1.5px solid white;
             padding: 5vh 0 5vh 0;
             line-height: var(--footerLineheight);
             text-align: center;
@@ -238,7 +245,7 @@
         }
 
         .copyrightM a {
-            color: #939393;
+            color: white;
             text-decoration: none;
         }
 
@@ -271,7 +278,7 @@
 
         .copyright-container a,
         .copyright-container p {
-            color: #939393;
+            color: white;
             text-decoration: none;
             font-family: 'sansLight';
             font-size: 1rem;
@@ -321,9 +328,9 @@
         #section04 {
             /* 展讯 */
             position: relative;
-            height: 125vh;
+            height: auto;
             color: white;
-            padding-bottom: 60vh;
+            /* padding-bottom: 60vh; */
         }
 
         #section05 {
@@ -397,6 +404,7 @@
         .introduce a {
             color: white;
             text-decoration: none;
+            cursor: grab;
             /* font-family: 'JhengBold'; */
         }
 
@@ -436,7 +444,7 @@
             right: 0;
             bottom: -30%;
             transform: translateY(100%) rotate(90deg) !important;
-            background-image: url('../../content/icon/arrow-right-bottom.svg');
+            background-image: url('~../../../../content/icon/arrow-right-bottom.svg');
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center center;
@@ -604,23 +612,23 @@
 
                 switch (index) {
                     case 0:
-                        bgImg = '/content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
                         break;
                     case 1:
-                        bgImg = '/content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
                         break;
                     case 2:
-                        bgImg = '/content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
                         break;
                     case 3:
-                        bgImg = '/content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
                         break;
 
                 }
 
                 $('#section01').css('background-image', 'url("' + bgImg + '")');
             }, function () {
-                $('#section01').css('background-image', 'url("/content/ArtImg/Artist/Works/zhanglanqian-01.jpg")');
+                $('#section01').css('background-image', 'url("../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg")');
             });
         });
 
@@ -704,7 +712,21 @@
                 },
             });
 
-        });</script>
+            // Swiper3
+            var swiper3 = new Swiper(".mySwiper3", {
+                spaceBetween: 0,
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+            });
+
+        });
+    </script>
 
     <nav id="ArtistNav">
 
@@ -769,7 +791,7 @@
                     收藏捐赠
                     <div class="moreInfo">
                         <!-- 固定模板 -->
-                        机构/个人收藏&#12288;捐赠作品
+                        机构/个人收藏&#12288;捐赠罗湖美术馆
                         <span class="arrow-right"></span>
                     </div>
                 </li>
@@ -964,7 +986,7 @@
 
                 <button class="collapsible defaultActive">
                     2022
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content">
                     <p>
@@ -975,7 +997,7 @@
 
                 <button class="collapsible defaultActive">
                     2021
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content">
                     <p>同构—当代艺术作品邀请展 ，罗湖美术馆，深圳</p>
@@ -983,7 +1005,7 @@
 
                 <button class="collapsible defaultActive">
                     2020
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content">
                     <p>"Woman, an infinite wor/ld" 主题 9人国际邀请展， SK画廊，纽约</p>
@@ -991,7 +1013,7 @@
 
                 <button class="collapsible defaultActive">
                     2019
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content">
                     <p>
@@ -1003,7 +1025,7 @@
 
                 <button class="collapsible">
                     2018
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1015,7 +1037,7 @@
 
                 <button class="collapsible">
                     2017
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1029,7 +1051,7 @@
 
                 <button class="collapsible">
                     2016
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1041,7 +1063,7 @@
 
                 <button class="collapsible">
                     2015
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1053,7 +1075,7 @@
 
                 <button class="collapsible">
                     2013
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1064,7 +1086,7 @@
 
                 <button class="collapsible">
                     2012
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>《天涯》发表系列诗歌与散文；</p>
@@ -1072,7 +1094,7 @@
 
                 <button class="collapsible">
                     2009
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>
@@ -1082,7 +1104,7 @@
 
                 <button class="collapsible">
                     2006
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>发布长篇小说《围城里的处女》；</p>
@@ -1090,7 +1112,7 @@
 
                 <button class="collapsible">
                     1993
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>7月创立了深圳十大名牌“芊”牌时装，担任总设计师，个人时装发布会前后十多次，央视，深圳电视台多次专题报道； </p>
@@ -1098,7 +1120,7 @@
 
                 <button class="collapsible">
                     1989
-                    <span><img class="arrow02" src="../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
                 </button>
                 <div class="content" style="max-height:0;">
                     <p>毕业于长沙理工大学艺术院校</p>
@@ -1220,7 +1242,7 @@
                         <div class="swiper-slide">
                             <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
                             <div class="material">120 X 180cm 综合材料</div>
-                            <img src="../../Content/ArtImg/Artist/Works/zhanglanqian-01.jpg" alt="">
+                            <img src="../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg" alt="">
 
                             <div class="blankspace"></div>
 
@@ -1238,7 +1260,7 @@
                         <div class="swiper-slide">
                             <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
                             <div class="material">尺寸cm 材料类型</div>
-                            <img src="../../Content/ArtImg/Artist/Works/zhanglanqianzuopin/10001.jpg" alt="">
+                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10001.jpg" alt="">
 
                             <div class="blankspace"></div>
 
@@ -1259,7 +1281,7 @@
                         <div class="swiper-slide">
                             <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
                             <div class="material">尺寸cm 材料类型</div>
-                            <img src="../../Content/ArtImg/Artist/Works/zhanglanqianzuopin/10009.jpg" alt="">
+                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10009.jpg" alt="">
 
                             <div class="blankspace"></div>
 
@@ -1294,7 +1316,7 @@
                         <div class="swiper-slide">
                             <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
                             <div class="material">尺寸cm 材料类型</div>
-                            <img src="../../Content/ArtImg/Artist/Works/zhanglanqianzuopin/10002.jpg" alt="">
+                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10002.jpg" alt="">
 
                             <div class="blankspace"></div>
 
@@ -1313,7 +1335,7 @@
                         <div class="swiper-slide">
                             <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
                             <div class="material">尺寸cm 材料类型</div>
-                            <img src="../../Content/ArtImg/Artist/Works/zhanglanqianzuopin/10010.jpg" alt="">
+                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10010.jpg" alt="">
 
                             <div class="blankspace"></div>
 
@@ -1344,25 +1366,126 @@
         <!--展讯 -->
         <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
 
+            <style>
+                .mySwiper3 {
+                    margin-bottom: 3vh;
+                }
+
+                .exhibition {
+                    height: 83vh;
+                    width: 100%;
+                }
+
+                .exhibition>.swiper-slide {
+                    border: none;
+                    height: inherit;
+                    width: 100%;
+                    padding: 0;
+                    overflow: hidden;
+                }
+
+                .exhibition>.swiper-slide img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    position: relative;
+                    top: 0;
+                    left: 0;
+                    transform: translate(0, 0);
+                    filter: grayscale(40%) brightness(90%);
+                    transition: all 0.3s ease-out;
+                }
+
+                .exhibition>.swiper-slide img:hover {
+                    scale: 1.02;
+                }
+
+                .mySwiper3>.swiper-pagination>.swiper-pagination-bullet {
+                    margin-top: 3vh;
+                    background-color: white;
+                }
+
+                .information {
+                    color: white;
+                    position: absolute;
+                    left: 5em;
+                    bottom: 10em;
+
+                    font-size: 1.2rem;
+                    letter-spacing: .1em;
+                    font-family: 'smile';
+                }
+
+                .information span {
+                    font-size: 2.8rem;
+                    width: 30em;
+
+                    position: absolute;
+                    bottom: 1.4em;
+                    left: 0;
+                }
+            </style>
+
             <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
                 <span>相<span style="font-family: 'sansLight';">关</span>展览</span>
                 <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;EXHIBITION </span>
             </div>
 
-            <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+            <div class="col-xs20 col-sm20 col-md20 col-lg20">
+                <div class="swiper mySwiper3">
+                    <div class="swiper-wrapper exhibition">
+                        <div class="swiper-slide">
+                            <!-- 活动1 春语II -->
+                            <img src="../../Content/images/IMG_9282.jpg" alt="">
+                            <a href="Javascript:;;">
+                                <p class="information">
+                                    深圳动漫园·同构艺术空间<br />
+                                    2023.04.21 - 2023.05.28
+                                    <span>“春语”第二季——国际视觉艺术邀请展</span>
+                                </p>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <!-- 活动2 同构II -->
+                            <img src="../../Content/images/_DSF7252.jpg" alt="">
+                            <a href="Javascript:;;">
+                                <p class="information">
+                                    深圳市罗湖美术馆<br />
+                                    2022.12.29 - 2023.01.28
+                                    <span>同构《第二季》·当代艺术展</span>
+                                </p>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <!-- 活动3 春语I -->
+                            <img src="../../Content/images/zhongyi/10000.jpg" alt="">
+                            <a href="Javascript:;;">
+                                <p class="information">
+                                    深圳市动漫园·盛世艺术空间<br />
+                                    2022.03.29
+                                    <span>“春语”——当代艺术名家邀请展</span>
+                                </p>
+                            </a>
+                        </div>
+                        <!-- <div class="swiper-slide">Slide 4</div>
+                        <div class="swiper-slide">Slide 5</div>
+                        <div class="swiper-slide">Slide 6</div>
+                        <div class="swiper-slide">Slide 7</div>
+                        <div class="swiper-slide">Slide 8</div>
+                        <div class="swiper-slide">Slide 9</div> -->
+                    </div>
+                    <div class="swiper-pagination"></div>
 
-            <div class="col-xs18 col-sm18 col-md18 col-lg18">
+                </div>
+
+
+
 
 
 
             </div>
-
-            <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-
-
         </section>
 
-    </div>
 
 
 
@@ -1371,72 +1494,72 @@
 
 
 
+        <!-- 以下为共享部分 -->
+        <!-- FOOTER - PC -->
 
-    <!-- 以下为共享部分 -->
-    <!-- FOOTER - PC -->
 
+        <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+            <div class="footer">
+                <div class="copyright-container">
+                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                    <div class="col-sm7 col-md7 col-lg7 copyright">
+                        <p>
+                            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                                粤公网安备 44030402004889号 
+                            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+                            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                            深圳市艺术产业促进会
+                        </p>
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="~/home/newnews"> 新闻动态</a><br />
+                            <a href="~/home/newConstitution"> 展会动态</a><br />
+                            &#12288;<br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
 
-    <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
-        <div class="footer">
-            <div class="copyright-container">
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                <div class="col-sm7 col-md7 col-lg7 copyright">
-                    <p>
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                            粤公网安备 44030402004889号 
-                        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-                        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-                        深圳市艺术产业促进会
-                    </p>
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="Javascript:;;">合作案例 </a><br />
+                            <a href="Javascript:;;">艺术家首页</a><br />
+                            &#12288;<br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="~/home/newlink">联系我们</a><br />
+                            <a href="~/home/index">切换旧版</a><br />
+                            <a href="~/home/backstage">后台登陆</a><br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
+                    </div>
+
+                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="~/home/newnews"> 新闻动态</a><br />
-                        <a href="~/home/newConstitution"> 展会动态</a><br />
-                        &#12288;<br />
-                        &#12288;<br />
-                        &#12288;
-                    </p>
-
-                </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">合作案例 </a><br />
-                        <a href="Javascript:;;">艺术家首页</a><br />
-                        &#12288;<br />
-                        &#12288;<br />
-                        &#12288;
-                    </p>
-                </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
-                    <p style="padding-left: 10%;">
-                        <a href="~/home/newlink">联系我们</a><br />
-                        <a href="~/home/index">切换旧版</a><br />
-                        <a href="~/home/backstage">后台登陆</a><br />
-                        &#12288;<br />
-                        &#12288;
-                    </p>
-                </div>
-
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
             </div>
-        </div>
-    </footer>
+        </footer>
 
-    <footer class="section09m md-hide lg-hide copyrightM">
+        <footer class="section09m md-hide lg-hide copyrightM">
 
-        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-            粤公网安备 44030402004889号 
-        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-        深圳市艺术产业促进会<br />
-        <br />
-        <a href="~/home/index">切换旧版</a><br />
-        <a href="~/home/backstage">后台登陆</a>
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                粤公网安备 44030402004889号 
+            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+            深圳市艺术产业促进会<br />
+            <br />
+            <a href="~/home/index">切换旧版</a><br />
+            <a href="~/home/backstage">后台登陆</a>
 
-    </footer>
+        </footer>
+    </div>
 
 </body>
 
