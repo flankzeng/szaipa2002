@@ -1,0 +1,414 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+    <title>@ViewBag.Title - 艺术家官网 - 深圳市艺术产业促进会</title>
+    <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
+    <link rel="icon" href="~/Content/123/favicon.ico" type="image/x-icon">
+    <script src="~/Content/Model/jquery-3.6.1.min.js"></script>
+    <script src="~/Content/Model/bootstrap.min.js"></script>
+    <script src="~/Content/Model/layui.js"></script>
+    <script src="~/Content/Model/swiper-bundle.min.js"></script>
+
+    <script src="~/Content/Model/Site.js"></script>
+    <link rel="stylesheet" href="~/Content/Model/css/bootstrap.css">
+    <link rel="stylesheet" href="~/Content/Model/css/layui.css">
+    <link rel="stylesheet" href="~/Content/Model/css/Site.css">
+    <link rel="stylesheet" href="~/content/model/css/responsive/Artist.css">
+    <link rel="stylesheet" href="~/Content/Model/css/responsive.css">
+    <link rel="stylesheet" href="~/Content/Model/css/swiper-bundle.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .bg {
+            background: linear-gradient(to bottom right, #3e47e1, #151965);
+            display: list-item;
+        }
+
+        /* 以下为footer */
+        #section08 {
+            /* EMAIL */
+            height: 30vh;
+            width: 100%;
+            background-color: white;
+            position: relative;
+            margin-top: 5vh;
+        }
+
+        #section08m {
+            /* EMAIL */
+            height: 80vh;
+            width: 100%;
+            background-color: black;
+            color: white;
+            position: relative;
+            border-top: 1px solid #ededed;
+        }
+
+        /* Section08 邮箱填写 */
+
+        .fuzhu {
+            height: 12vh;
+            width: auto;
+            position: absolute;
+            top: 30%;
+            transform: translateY(-50%);
+            right: 10%;
+        }
+
+        .dui {
+            height: 2vh;
+            width: auto;
+            vertical-align: middle;
+        }
+
+        .enter02 {
+            /* 去色 */
+            filter: grayscale(100%);
+            /* 去button默认样式 */
+            box-shadow: none;
+            background-color: transparent;
+            border: none;
+            float: right;
+            transform: translateY(-140%);
+        }
+
+        .enter02 img {
+            width: 1.5vw;
+            height: auto;
+        }
+
+        .emailPosition h1 {
+            text-align: center;
+            font-family: var(--fontLight);
+        }
+
+        .emailPosition h1 {
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 5vh;
+        }
+
+        .emailPosition p {
+            text-align: justify;
+            color: #939393;
+            margin-top: 3vh;
+            font-weight: 200;
+            font-size: 1.2rem;
+            line-height: 1.8em;
+        }
+
+        .emailPosition {
+            height: auto;
+            width: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #section08m button {
+            display: flex;
+            background-color: transparent;
+            color: white;
+            font-family: var(--fontLight);
+            font-size: 1.3rem;
+            margin: 5vh auto;
+            box-shadow: none;
+            border: 1px solid white;
+            padding: .5vh 2vw;
+        }
+
+        .guanzhu {
+            width: 8vw;
+            height: auto;
+            margin-right: 3vw;
+        }
+
+        .logoContainerM {
+            height: 100%;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .email {
+            position: relative;
+            width: var(--emailLine);
+            margin-bottom: 1.3vh;
+            border-bottom: 1.5px solid black;
+        }
+
+        .emailInput {
+            width: var(--emailLine);
+            margin-bottom: 0.5vh;
+            padding-left: 0.1em;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: var(--email);
+            letter-spacing: 0.05em;
+        }
+
+        .emailInput::placeholder {
+            color: black;
+        }
+
+        #section08m .email input::placeholder {
+            padding-left: 2vw;
+            color: white;
+            font-size: 1rem;
+            font-family: 'dinLight';
+        }
+
+        #section08m .email input {
+            margin-bottom: 0px;
+        }
+
+        .email input::placeholder {
+            color: black;
+            font-size: var(--emailHolder);
+            font-family: 'dinLight';
+        }
+
+        .jieshou {
+            line-height: 20px;
+            vertical-align: middle;
+            font-size: var(--jieshou);
+        }
+
+        .emailContainerM {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .emailM {
+            background-color: transparent;
+            width: 100%;
+            height: 2vh;
+            font-size: 1.3rem;
+            outline: none;
+            border: 1px solid white;
+            padding: 1em 1em;
+        }
+
+        .logoContainerM a {
+            margin-bottom: 5vh;
+        }
+
+        /* Section09 版权 */
+        .section09 {
+            height: 40vh;
+            width: 100%;
+        @*background-color:black;*@color: #939393;
+            overflow: hidden;
+        }
+
+        .section09m {
+            /* FOOTER */
+            height: 100%;
+            width: 100%;
+        @*background-color:black;*@color: #939393;
+            overflow: hidden;
+        }
+
+        .footer {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding-top: 5vh;
+        }
+
+        .footerList {
+            position: relative;
+            border-left: var(--footerBorder);
+            height: 100%;
+        }
+
+        .copyrightM {
+            border-top: 1.5px solid white;
+            padding: 5vh 0 5vh 0;
+            line-height: var(--footerLineheight);
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            font-size: var(--footerFontsize);
+        }
+
+        .copyrightM a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .copyright {
+            position: relative;
+            height: 100%;
+        }
+
+        .copyright p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright p>br {
+            font-size: var(--footerFontsize);
+            line-height: 1.5em;
+        }
+
+        .copyright-container {
+            border-top: var(--footerBorder);
+            height: 35vh;
+        }
+
+        .copyright-container p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright-container a,
+        .copyright-container p {
+            color: white;
+            text-decoration: none;
+            font-family: 'sansLight';
+            font-size: 1rem;
+            line-height: var(--footerLineheight);
+        }
+
+
+
+
+
+
+        #ArtistNav {
+            position: fixed;
+            top: 3%;
+            right: 1%;
+            font-size: 1rem;
+            z-index: 999;
+        }
+
+        #ArtistNav a {
+            color: black;
+            background-color: white;
+            border-right: 1px solid black;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            text-decoration: none !important;
+            padding: .5vh 1vw;
+        }
+
+        .activeLink a {
+            color: white !important;
+            background-color: black !important;
+        }
+    </style>
+
+    <!-- 以上共享 -->
+
+</head>
+
+<body>
+    <script>
+        // 导航栏的焦点切换
+        $(window).scroll(function () {
+            var scrollDistance = $(window).scrollTop();
+            $('section').each(function (i) {
+                if ($(this).position().top <= scrollDistance) {
+                    $('#ArtistNav .activeLink').removeClass('activeLink');
+                    $('#ArtistNav td').eq(i + 1).addClass('activeLink');
+                }
+            });
+        }).scroll();
+    </script>
+
+
+
+
+
+        @RenderBody()
+
+
+
+
+
+
+        <!-- 以下为共享部分 -->
+        <!-- FOOTER - PC -->
+
+
+        <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+            <div class="footer">
+                <div class="copyright-container">
+                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                    <div class="col-sm7 col-md7 col-lg7 copyright">
+                        <p>
+                            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                                粤公网安备 44030402004889号 
+                            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+                            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                            深圳市艺术产业促进会
+                        </p>
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="~/home/newnews"> 新闻动态</a><br />
+                            <a href="~/home/newConstitution"> 展会动态</a><br />
+                            &#12288;<br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
+
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="Javascript:;;">合作案例 </a><br />
+                            <a href="Javascript:;;">艺术家首页</a><br />
+                            &#12288;<br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
+                    </div>
+                    <div class="col-sm3 col-md3 col-lg3 footerList">
+                        <p style="padding-left: 10%;">
+                            <a href="~/home/newlink">联系我们</a><br />
+                            <a href="~/home/index">切换旧版</a><br />
+                            <a href="~/home/backstage">后台登陆</a><br />
+                            &#12288;<br />
+                            &#12288;
+                        </p>
+                    </div>
+
+                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                </div>
+            </div>
+        </footer>
+
+        <footer class="section09m md-hide lg-hide copyrightM">
+
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                粤公网安备 44030402004889号 
+            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+            深圳市艺术产业促进会<br />
+            <br />
+            <a href="~/home/index">切换旧版</a><br />
+            <a href="~/home/backstage">后台登陆</a>
+
+        </footer>
+
+
+</body>
+
+</html>

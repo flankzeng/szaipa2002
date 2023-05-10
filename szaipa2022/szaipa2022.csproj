@@ -144,6 +144,7 @@
     <Content Include="Views\Home\vip_new.cshtml" />
     <Content Include="Views\Shared\_newLayout.cshtml" />
     <Content Include="Views\Home\artistZLQ.cshtml" />
+    <Content Include="Views\Shared\_Artist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
