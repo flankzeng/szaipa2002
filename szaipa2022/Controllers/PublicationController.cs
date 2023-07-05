@@ -33,5 +33,15 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+
+        public ActionResult chunyu2()
+        {
+            return View();
+        }
+
+        public ActionResult trio()
+        {
+            return View();
+        }
     }
 }
