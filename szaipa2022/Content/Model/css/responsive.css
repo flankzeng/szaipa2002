@@ -49,7 +49,6 @@ body {
 }
 
 @media only screen and (min-width: 1200px) and (max-width:1399px) {
-
     html {
         font-size: 12px !important;
     }
@@ -97,7 +96,7 @@ body {
     :root {
         /* section01 导航栏 */
         /* section02 轮播 */
-        --carouselTXT: 1.9rem !important;
+        --carouselTXT: 1.5rem !important;
 
         /* section04 章程 */
         --chapterFontsize: 1.3rem !important;
@@ -152,7 +151,7 @@ body {
 :root {
     /* section02 轮播 */
     --carouselH: 65vh;
-    --carouselTXT: 1.7rem;
+    --carouselTXT: 1.5rem;
     --logoTXT: 19.5vh;
     --sectionHeight: 100vh;
 
@@ -213,7 +212,7 @@ body {
     :root {
         /* section02 轮播 */
         --carouselH: 25vh;
-        --carouselTXT: 1rem !important;
+        --carouselTXT: .8rem !important;
         --sectionHeight: 40vh;
         --logoTXT: 5.5vh;
 
