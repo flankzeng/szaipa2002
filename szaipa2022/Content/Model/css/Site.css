@@ -11,7 +11,7 @@
 }
 
 .padding {
-    background-color: red;
+    background-color: red !important;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -496,27 +496,32 @@
 @font-face {
     font-family: 'JhengBold';
     src: url("../../fonts/MicrosoftJhengHeiBold.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'JhengRegular';
     src: url("../../fonts/MicrosoftJhengHeiRegular.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'JhengLight';
     src: url("../../fonts/MicrosoftJhengHeiLight.woff2") format("woff2");
+    font-display: swap;
 }
 
 /* DIN-Light */
 @font-face {
     font-family: "dinLight";
     src: url("../../fonts/DIN-Light.woff") format("woff");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "dinLightI";
     src: url("../../fonts/DIN-LightItalic.woff") format("woff");
+    font-display: swap;
 }
 
 /* 得意黑字体家族 */
@@ -524,42 +529,50 @@
 @font-face {
     font-family: "smile";
     src: url("../../fonts/SmilelySans.woff") format("woff");
+    font-display: swap;
 }
 
 /* 思源宋字体家族 */
 @font-face {
     font-family: "cjkExtraLight";
     src: url("../../fonts/NotoSerifSC-ExtraLight.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkLight";
     src: url("../../fonts/NotoSerifSC-Light.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkRegular";
     src: url("../../fonts/NotoSerifSC-Regular.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkMedium";
     src: url("../../fonts/NotoSerifSC-Medium.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkBold";
     src: url("../../fonts/NotoSerifSC-Bold.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkSemiBold";
     src: url("../../fonts/NotoSerifSC-SemiBold.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "cjkBlack";
-    src: url("../../fonts/NotoSerifSC-Black.woff2") format("woff2")
+    src: url("../../fonts/NotoSerifSC-Black.woff2") format("woff2");
+    font-display: swap;
 }
 
 /* 思源黑字体家族 */
@@ -567,34 +580,41 @@
 @font-face {
     font-family: "sansExtraLight";
     src: url("../../fonts/NotoSansSC-Thin.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansLight";
     src: url("../../fonts/NotoSansSC-Light.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansNormal";
     src: url("../../fonts/SourceHanSansCN-Normal.woff") format("woff");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansRegular";
     src: url("../../fonts/NotoSansSC-Regular.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansMedium";
     src: url("../../fonts/NotoSansSC-Medium.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansBold";
     src: url("../../fonts/NotoSansSC-Bold.woff2") format("woff2");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "sansHeavy";
-    src: url("../../fonts/NotoSansSC-Black.woff2") format("woff2")
+    src: url("../../fonts/NotoSansSC-Black.woff2") format("woff2");
+    font-display: swap;
 }

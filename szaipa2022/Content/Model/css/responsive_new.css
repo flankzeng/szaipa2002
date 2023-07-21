@@ -1,0 +1,214 @@
+body {
+    /* 初始化页面 */
+    margin: 0px;
+    padding: 0px;
+}
+
+/* 响应式 */
+
+/* 一般尺寸 手机、平板、PC */
+
+@media screen and (min-width:768px) and (max-width:991px) {
+
+    /* 手机尺寸 */
+    html {
+        font-size: 26px;
+    }
+
+    /* Publication页面section02 */
+
+    #section02 p {
+        line-height: 1.8em !important;
+    }
+
+
+    /* Publication页面section03 */
+
+    .mob {
+        transform: translate3d() translateY(10%) !important;
+    }
+
+    .trading {
+        height: 2vh !important;
+        position: relative;
+        padding-left: 10%;
+    }
+
+    .mySwiper2 {
+        height: 10vh !important;
+        width: 100% !important;
+    }
+
+    .mySwiper2 .swiper-slide {
+        width: 20vw !important;
+    }
+
+    /* Publication页面展开后的样式 */
+    .type1 {
+        margin-top: 0;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    .type2 {
+        margin-top: 0;
+        width: 100% !important;
+        max-height: none !important;
+        max-width: none !important;
+    }
+
+    .btn1 input,
+    .btn1 button {
+        width: 80vw !important;
+    }
+
+    .btn2 input,
+    .btn2 button {
+        width: 80vw !important;
+    }
+
+    .btn1 button {
+        margin-bottom: 2vh;
+    }
+
+    .btn2 button {
+        margin-bottom: 10vh !important;
+    }
+
+    .introCon .msg p {
+        padding-top: 0 !important;
+    }
+
+    .trading-copyright {
+        bottom: 0 !important;
+    }
+
+
+
+    .article {
+        padding: 1vh 0 5vh 0 !important;
+        border: none !important;
+    }
+
+    .article p {
+        font-size: .8rem !important;
+        line-height: 3.5em !important;
+    }
+
+    .article img {
+        margin: 1vh 0 2vh 0 !important;
+    }
+
+    .zhushi {
+        font-size: .5rem !important;
+    }
+
+    :root {
+        /* nav */
+        --logo1: 8vh !important;
+        --navTop: 4.5vh !important;
+        --navRight: 2vw !important;
+        --searchWidth: 20vw !important;
+
+        /* section08 留邮箱 */
+        --emailLine: 43.5vw !important;
+        --emailHolder: 2rem;
+        --enterButton: 3.5vw !important;
+        --jieshou: 3rem;
+        --inputHeight: 60px;
+        /* 通用 */
+        --title: 6rem !important;
+        --sectionHeight: 100% !important;
+        --fontLight: 'sansNormal' !important;
+    }
+
+
+}
+
+/* @media screen and (min-width:992px) and (max-width:1199px) {
+
+    3.md,电脑屏幕
+
+} */
+
+/* 常规屏幕尺寸 */
+
+@media only screen and (min-width: 1200px) and (max-width:1399px) {
+    /* 1200x720 */
+
+    html {
+        font-size: 12px;
+    }
+
+
+}
+
+/* @media only screen and (min-width: 1400px) and (max-width:1919px) {
+    1400x900
+
+    html {
+        font-size: 10px !important;
+    }
+
+
+
+} */
+
+@media only screen and (min-width: 1920px) {
+
+    /* 1080p */
+    html {
+        font-size: 18px;
+    }
+
+}
+
+@media only screen and (min-width: 2560px) and (max-width: 3839px) {
+
+    /* 1440p 分辨率 */
+    html {
+        font-size: 24px;
+    }
+
+}
+
+@media only screen and (min-width: 3840px) {
+
+    /* 4K 分辨率 */
+    html {
+        font-size: 36px;
+    }
+}
+
+/* Default变量 */
+
+
+:root {
+    /* nav */
+    --logo1: 16.6vh;
+    --navFontsize: 1.2rem;
+    --navTop: 10.5vh;
+    --navRight: 0.7vw;
+    --searchWidth: 10vw;
+
+
+    /* 一些线段粗细，PC通用 */
+
+    --multiIntroduce: 10vw;
+    --normalNewsLine: 0.5px solid #cccccc;
+    --newsPadding: 2vh;
+    --newsHoverValue: scale(1.01);
+    --newsHoverAnime: 200ms;
+    --footerBorder: 0.7px solid #939393;
+    --footerFontsize: 1.4rem;
+    --footerLineheight: 1.8em;
+    --sectionHeight: 100vh;
+}
+
+
+/* 注未完善 2023.2.7 */
+
+/* --ChapterFontsize:章节段落大小 */
+/* --emailHolder:邮箱部份PLACEHOLDER属性 */
+/* --jieshou:email处接收最新消息属性 */
+/* --emailLine:EMAIL底下border的长度 */

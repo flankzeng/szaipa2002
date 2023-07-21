@@ -1,38 +1,29 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/packages.config">
+  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/HomeController.cs">
     <Files>
-      <File FileName="szaipa2022/Controllers/HomeController.cs" Line="234" Column="30" />
-      <File FileName="szaipa2022/Controllers/PublicationController.cs" Line="19" Column="27" />
-      <File FileName="szaipa2022/Controllers/Project_TongouController.cs" />
-      <File FileName="szaipa2022/Views/Shared/_newLayout.cshtml" Line="459" Column="1" />
-      <File FileName="szaipa2022/Content/Model/css/Site.css" Line="6" Column="1" />
-      <File FileName="szaipa2022/Views/Home/artistZLQ.cshtml" Line="1062" Column="25" />
-      <File FileName="szaipa2022/Views/Publication/tonggou2.cshtml" Line="2" Column="1" />
-      <File FileName="szaipa2022/Views/Home/newIndex.cshtml" Line="1636" Column="63" />
-      <File FileName="szaipa2022/packages.config" Line="14" Column="12" />
+      <File FileName="szaipa2022/Controllers/PublicationController.cs" />
+      <File FileName="szaipa2022/Controllers/HomeController.cs" Line="55" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="szaipa2022" expanded="True">
             <Node name="szaipa2022" expanded="True">
+              <Node name="Controllers" expanded="True" />
               <Node name="Views" expanded="True">
                 <Node name="Home" expanded="True" />
+                <Node name="Publication" expanded="True" />
                 <Node name="Shared" expanded="True" />
               </Node>
-              <Node name="packages.config" selected="True" />
             </Node>
           </Node>
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

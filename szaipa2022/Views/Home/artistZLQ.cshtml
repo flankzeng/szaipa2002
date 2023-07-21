@@ -3,6 +3,10 @@
     Layout = "~/Views/Shared/_Artist.cshtml";
 }
 <style>
+    body {
+        overflow-x: hidden;
+    }
+
     button {
         background-color: transparent;
         border: none;
@@ -224,18 +228,6 @@
 
     /* section02 */
 
-    .subNav {
-        height: 25vh;
-        width: 100vw;
-        padding: 8vh 5%;
-        position: relative;
-        border-top: 1px solid white;
-        border-bottom: 1px solid white;
-        font-family: 'dinLight', 'JhengRegular';
-        font-size: 5rem;
-        letter-spacing: .2em;
-    }
-
     .fuzhuImg {
         width: 25vw;
         height: 78vh;
@@ -260,701 +252,772 @@
         /* background-color: #3e47e1; */
         width: 80vw;
     }
+
+    .touxiang {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10% 0 3% 0;
+        width: var(--touxiangW);
+    }
+
+    .jieshao {
+        white-space: pre-line;
+        font-family: 'JhengLight';
+        text-align: center;
+        line-height: 1.8em;
+        font-size: .9rem;
+        overflow: scroll;
+
+        width: var(--touxiangW);
+    }
+
+    .jieshao h1 {
+        font-family: 'JhengBold';
+        font-size: 1.3rem;
+        margin: 1em 0;
+        line-height: 0;
+    }
+
+    /* 年表 */
+
+    .collapsible {
+        position: relative;
+        color: white;
+        cursor: pointer;
+        width: 100%;
+        padding: 0 0 .5em .3em;
+        border-bottom: 1px solid #939393;
+        text-align: left;
+        outline: none;
+        font-size: 1.5rem;
+        letter-spacing: .05em;
+        font-family: 'dinLightI';
+        transition: all 200ms ease-in-out;
+    }
+
+    .collapsible:hover {
+        /* background-color: #00000030; */
+        background-color: #ffffff30;
+        border-radius: 5px;
+    }
+
+    .collapsible span {
+        position: absolute;
+        right: .5em;
+    }
+
+    .content {
+        max-height: none;
+        overflow: hidden;
+        transition: max-height 200ms ease-out;
+        white-space: pre-line;
+        margin-bottom: 2vh;
+        padding-left: 2em;
+        font-size: .9rem;
+        line-height: 1.5em;
+        font-family: 'sansLight';
+        z-index: 10;
+    }
+
+    .content p {
+        margin: 0;
+    }
+
+    .arrow02 {
+        height: 2.2vh;
+        max-height: 40px;
+        opacity: .7;
+        transform: rotate(90deg);
+        transition: all 200ms ease-in-out;
+    }
+
+    .defaultActive .arrow02 {
+        transform: rotate(180deg);
+    }
+
+    .nianbiao {
+        padding: 3% 2em 5% 2em;
+    }
+
+    .line::before {
+        content: "";
+        border-right: 1px solid white;
+        opacity: .4;
+        position: absolute;
+        top: 8%;
+        bottom: 0;
+        left: 0;
+        right: 10%;
+    }
+
+    .sec02-title {
+        margin-bottom: 3em;
+    }
+
+    .sec02-title span {
+        font-family: 'dinLight', 'JhengRegular';
+        font-size: 2rem;
+    }
+
+    #toggleBtn {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        font-size: .9rem;
+        color: #ededed;
+    }
+
+    #toggleBtn:hover {
+        border-bottom: 1px solid white;
+    }
+
+    /* 年表结束 */
+
+    .swiper {
+        width: 100%;
+        height: var(--swiperH);
+    }
+
+    .swiper-slide {
+        position: relative;
+        padding: 3em 5% 3em 5%;
+        /* background-color: #c26739; */
+        border-right: 1px solid white;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: #ededed;
+    }
+
+    .swiper-v {
+        background: transparent;
+    }
+
+    .material {
+        font-family: 'dinLight', 'JhengLight';
+        font-size: 1.3rem;
+        text-align: center;
+        position: absolute;
+        transform: translateX(-50%);
+        left: 50%;
+        top: var(--materialT);
+    }
+
+    .swiper-slide img {
+        display: block;
+        width: auto;
+        height: var(--zuopinjiH);
+        object-fit: contain;
+        position: absolute;
+        top: var(--zuopinTop);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .workInfo {
+        width: 100%;
+        padding: 0 3em 0 5.5em;
+        font-size: .9rem;
+        text-align: justify;
+        line-height: 1.6em;
+        position: relative;
+    }
+
+    .workInfo h2 {
+        line-height: 0;
+        margin-bottom: 1.5em;
+        font-size: 1.5rem;
+    }
+
+    .number {
+        position: absolute;
+        /* NUMBER的位置要和BLANKSPACE对应 */
+        top: 0;
+        left: 3em;
+        transform: translate(-50%, -50%);
+        background-color: black;
+        width: 2em;
+        height: 2em;
+        border-radius: 100%;
+    }
+
+    .number p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'dinLight';
+        font-size: 1.2rem;
+    }
+
+    .blankspace {
+        /* 与NUMBER对应 */
+        width: 100%;
+        height: var(--blankspaceH);
+    }
+
+    .mySwiper3 {
+        margin-bottom: 3vh;
+    }
+
+    .exhibition {
+        height: 83vh;
+        width: 100%;
+    }
+
+    .exhibition>.swiper-slide {
+        border: none;
+        height: inherit;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .exhibition>.swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+        filter: grayscale(40%) brightness(90%);
+        transition: all 0.3s ease-out;
+    }
+
+    .exhibition>.swiper-slide img:hover {
+        scale: 1.02;
+    }
+
+    .mySwiper3>.swiper-pagination>.swiper-pagination-bullet {
+        margin-top: 3vh;
+        background-color: white;
+    }
+
+    .information {
+        color: white;
+        position: absolute;
+        left: 5em;
+        bottom: 10em;
+
+        font-size: 1.2rem;
+        letter-spacing: .1em;
+        font-family: 'smile';
+    }
+
+    .information span {
+        font-size: var(--informationHeader);
+        width: 30em;
+
+        position: absolute;
+        bottom: 1.4em;
+        left: 0;
+    }
 </style>
 
-    <script>
-        // 背景图的悬浮更换
-        $(function () {
-            $('.hoverLine').hover(function () {
-                var index = $('.hoverLine').index(this); // 获取当前 li 元素的下标
-                var bgImg = '';
+<script>
+    // 背景图的悬浮更换
+    $(function () {
+        $('.hoverLine').hover(function () {
+            var index = $('.hoverLine').index(this); // 获取当前 li 元素的下标
+            var bgImg = '';
 
-                switch (index) {
-                    case 0:
-                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
-                        break;
-                    case 1:
-                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
-                        break;
-                    case 2:
-                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
-                        break;
-                    case 3:
-                        bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
-                        break;
+            switch (index) {
+                case 0:
+                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                    break;
+                case 1:
+                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                    break;
+                case 2:
+                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                    break;
+                case 3:
+                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                    break;
 
-                }
+            }
 
-                $('#section01').css('background-image', 'url("' + bgImg + '")');
-            }, function () {
-                $('#section01').css('background-image', 'url("../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg")');
-            });
+            $('#section01').css('background-image', 'url("' + bgImg + '")');
+        }, function () {
+            $('#section01').css('background-image', 'url("../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg")');
+        });
+    });
+
+    // 年表 - 折叠手风琴
+    $(function () {
+        // when page loads, the collapsible is collapsed
+        $('.collapsible').each(function () {
+            // get the content of the collapsible
+            var content = $(this).next('.content');
+            // if the collapsible is not collapsed by default
+            if ($(this).attr('data-collapsed') === 'false') {
+                // expand the collapsible
+                content.css('max-height', content.prop('scrollHeight') + 'px');
+                $(this).addClass('defaultActive');
+            }
         });
 
-        // 年表 - 折叠手风琴
-        $(function () {
-            // when page loads, the collapsible is collapsed
-            $('.collapsible').each(function () {
-                // get the content of the collapsible
-                var content = $(this).next('.content');
-                // if the collapsible is not collapsed by default
-                if ($(this).attr('data-collapsed') === 'false') {
-                    // expand the collapsible
-                    content.css('max-height', content.prop('scrollHeight') + 'px');
-                    $(this).addClass('defaultActive');
-                }
-            });
+        // when the collapsible is clicked
+        $('.collapsible').click(function () {
+            // get the content of the collapsible
+            var content = $(this).next('.content');
+            // if the collapsible is collapsed
+            var collapsed = $(this).attr('data-collapsed') === 'true';
 
-            // when the collapsible is clicked
-            $('.collapsible').click(function () {
+            // toggle the classes of the collapsible
+            $(this).toggleClass('defaultActive');
+            content.toggleClass('active').toggleClass('inactive');
+
+            // expand or collapse the collapsible
+            content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
+            $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
+        });
+
+        // when the toggle button is clicked
+        $('#toggleBtn').click(function () {
+            // toggle all the collapsibles
+            $('.collapsible').each(function () {
                 // get the content of the collapsible
                 var content = $(this).next('.content');
                 // if the collapsible is collapsed
                 var collapsed = $(this).attr('data-collapsed') === 'true';
 
-                // toggle the classes of the collapsible
-                $(this).toggleClass('defaultActive');
-                content.toggleClass('active').toggleClass('inactive');
-
                 // expand or collapse the collapsible
                 content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
+                // toggle the classes of the collapsible
+                $(this).toggleClass('defaultActive', collapsed);
+                // change the collapsed attribute
                 $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
             });
+        });
+    });
 
-            // when the toggle button is clicked
-            $('#toggleBtn').click(function () {
-                // toggle all the collapsibles
-                $('.collapsible').each(function () {
-                    // get the content of the collapsible
-                    var content = $(this).next('.content');
-                    // if the collapsible is collapsed
-                    var collapsed = $(this).attr('data-collapsed') === 'true';
+    // Swiper
+    $(function () {
+        var deviceWidth = $(window).width(); // 获取设备宽度
+        var deviceHeight = $(window).height(); // 获取设备高度
 
-                    // expand or collapse the collapsible
-                    content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
-                    // toggle the classes of the collapsible
-                    $(this).toggleClass('defaultActive', collapsed);
-                    // change the collapsed attribute
-                    $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
-                });
-            });
+        var deviceRatio = deviceWidth / deviceHeight; // 计算设备宽高比
+        var slidesPerView = deviceRatio > 1 ? 2 : 1; // 判断宽高比并设置预览数量
+
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 0,
+            slidesPerView: slidesPerView,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
+            },
         });
 
-        // Swiper
-        $(function () {
-            var swiper = new Swiper(".mySwiper", {
-                spaceBetween: 0,
-                // pagination: {
-                //     el: ".swiper-pagination",
-                //     clickable: true,
-                // },
-                slidesPerView: 2,
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                keyboard: {
-                    enabled: true,
-                    onlyInViewport: true,
-                },
-            });
-            var swiper2 = new Swiper(".mySwiper2", {
-                direction: "vertical",
-                spaceBetween: 50,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-            });
-
-            // Swiper3
-            var swiper3 = new Swiper(".mySwiper3", {
-                spaceBetween: 0,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                autoplay: {
-                    delay: 2500,
-                    disableOnInteraction: false,
-                },
-            });
-
+        var swiper2 = new Swiper(".mySwiper2", {
+            direction: "vertical",
+            spaceBetween: 50,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
         });
-    </script>
 
-    <nav id="ArtistNav">
+        // Swiper3
+        var swiper3 = new Swiper(".mySwiper3", {
+            spaceBetween: 0,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            loop: true,
+        });
 
-        <table>
-            <tr>
-                <td>
-                    <a href="~/Home/Index" style="border-left: 1px solid black;">
-                        首&#12288;页
-                    </a>
-                </td>
-                <td class="activeLink">
-                    <a href="#section01">艺术家首页 </a>
-                </td>
-                <td>
-                    <a href="#section02">简&#12288;介</a>
-                </td>
-                <td>
-                    <a href="#section03">作品集</a>
-                </td>
-                <td>
-                    <a style="margin-right: 1vw;" href="#section04">相关展览</a>
-                </td>
-            </tr>
-        </table>
+    });
+</script>
 
-    </nav>
+<nav id="ArtistNav">
 
-    <!-- 首页 -->
-    <section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
-        <div class="bgBlack"></div>
+    <table>
+        <tr>
+            <td>
+                <a href="~/Home/newIndex" style="border-left: 1px solid black;">
+                    首&#12288;页
+                </a>
+            </td>
+            <td class="activeLink">
+                <a href="#section01">艺术家首页 </a>
+            </td>
+            <td>
+                <a href="#section02">简&#12288;介</a>
+            </td>
+            <td>
+                <a href="#section03">作品集</a>
+            </td>
+            <td>
+                <a style="margin-right: 1vw;" href="#section04">相关展览</a>
+            </td>
+        </tr>
+    </table>
+
+</nav>
+
+<!-- 首页 -->
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
+    <div class="bgBlack"></div>
 
 
 
-        <div id="language">
-            <span class="lang">
-                中&#12288;文&nbsp;
-                <button id="switcher"><img src="~/content/icon/xiala.svg" /></button>
-            </span>
-            <ul class="langSwitcher">
-                <li><a class="langopt" href="Javascript:;;">中&#12288;文</a></li>
-                <li><a class="langopt" href="Javascript:;;">ENGLISH</a></li>
-            </ul>
+    <div id="language">
+        <span class="lang">
+            中&#12288;文&nbsp;
+            <button id="switcher"><img src="~/content/icon/xiala.svg" /></button>
+        </span>
+        <ul class="langSwitcher">
+            <li><a class="langopt" href="Javascript:;;">中&#12288;文</a></li>
+            <li><a class="langopt" href="Javascript:;;">ENGLISH</a></li>
+        </ul>
+
+    </div>
+
+    <ul class="introduce">
+        <li class="name">
+            张岚芊作品 ©️
+        </li>
+        <a href="/Home/artistNews#section01">
+            <li class="hoverLine">
+                艺术家资讯
+                <div class="moreInfo">
+                    <!-- 源自策展情况前两条TITLE -->
+                    回顾 | 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
+                    <span class="arrow-right"></span>
+                </div>
+            </li>
+        </a>
+        <a href="/Home/artistNews#section02">
+            <li class="hoverLine">
+                收藏捐赠
+                <div class="moreInfo">
+                    <!-- 固定模板 -->
+                    机构/个人收藏&#12288;捐赠罗湖美术馆
+                    <span class="arrow-right"></span>
+                </div>
+            </li>
+        </a>
+        <a href="/Home/artistNews#section03">
+            <li class="hoverLine">
+                出版著作
+                <div class="moreInfo">
+                    长篇小说《围城里的处女》
+                    <span class="arrow-right"></span>
+                </div>
+            </li>
+        </a>
+        <a href="/Home/artistNews#section04">
+            <li class="hoverLine">
+                拍卖作品
+                <div class="moreInfo">
+                    远方系列之15&#12288;聚宝盆系列之6
+                    <span class="arrow-right"></span>
+                </div>
+            </li>
+        </a>
+    </ul>
+</section>
+
+<div class="bg col-xs20 col-sm20 col-md20 col-lg20">
+
+
+
+    <!-- 简介 -->
+    <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="col-xs20 col-sm20 col-md7 col-lg7 relative">
+
+            <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
+                <div class="touxiang">
+                    <div class="line xs-hide sm-hide"> </div>
+                    <img src="../../content/images/to black/vip-2zlq.png"
+                        style="width: var(--touxiang);border-radius: 100%;" alt="艺术家头像">
+                </div>
+
+
+                <div class="jieshao">
+                    <div class="padding"></div>
+                    <h1>张岚芊</h1>
+                    1967年出生于长沙，现居中国深圳
+                    1989年毕业于长沙理工大学设计艺术学院
+                    深圳“芊”品牌创始人
+                    长篇小说《围城里的处女》作者
+                    2009年弃商专艺
+                    2015年至2019年旅居欧洲绘画创作、展览
+
+                    <h1>社会职务</h1>
+                    长沙理工大学设计艺术院校客座教授
+                    北京意象油画研究院副院长
+                    深圳市艺术产业促进会副会长，秘书长
+                </div>
+            </div>
 
         </div>
 
-        <ul class="introduce">
-            <li class="name">
-                张岚芊作品 ©️
-            </li>
-            <a href="Javascript:;;">
-                <li class="hoverLine">
-                    艺术家资讯
-                    <div class="moreInfo">
-                        <!-- 源自策展情况前两条TITLE -->
-                        深圳市艺术产业促进会举办“同构 · 未来--当代艺术沙龙”
-                        <span class="arrow-right"></span>
-                    </div>
-                </li>
-            </a>
-            <a href="Javascript:;;">
-                <li class="hoverLine">
-                    收藏捐赠
-                    <div class="moreInfo">
-                        <!-- 固定模板 -->
-                        机构/个人收藏&#12288;捐赠罗湖美术馆
-                        <span class="arrow-right"></span>
-                    </div>
-                </li>
-            </a>
-            <a href="Javascript:;;">
-                <li class="hoverLine">
-                    出版著作
-                    <div class="moreInfo">
-                        长篇小说《围城里的处女》
-                        <span class="arrow-right"></span>
-                    </div>
-                </li>
-            </a>
-            <a href="Javascript:;;">
-                <li class="hoverLine">
-                    拍卖作品
-                    <div class="moreInfo">
-                        远方系列之15&#12288;聚宝盆系列之6
-                        <span class="arrow-right"></span>
-                    </div>
-                </li>
-            </a>
-        </ul>
+        <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
+        <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
+
+            <div class="sec02-title relative">
+                <span>艺术家年表</span>
+                <span style="font-size: 1rem;">&ensp;/&ensp;CHRONOLOGY </span>
+                <button id="toggleBtn">查看全部 / VIEW ALL</button>
+            </div>
+
+            <button class="collapsible defaultActive">
+                2023
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content">
+                <p>三人行——鸥洋/雷双/张岚芊艺术展，木星美术馆，深圳;
+                    《春语》第二季——国际视觉艺术邀请展，同构·艺术空间，深圳</p>
+            </div>
+
+            <button class="collapsible defaultActive">
+                2022
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content">
+                <p>
+                    "春语"--当代艺术名家邀请展；
+                    《同构》第二季——当代艺术展，罗湖美术馆，深圳
+                </p>
+            </div>
+
+            <button class="collapsible defaultActive">
+                2021
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content">
+                <p>同构—当代艺术作品邀请展 ，罗湖美术馆，深圳</p>
+            </div>
+
+            <button class="collapsible defaultActive">
+                2020
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content">
+                <p>"Woman, an infinite wor/ld" 主题 9人国际邀请展， SK画廊，纽约</p>
+            </div>
+
+            <button class="collapsible defaultActive">
+                2019
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content">
+                <p>
+                    “Kunst I'm Dialog”主题开馆展，白立方，荷兰；
+                    第58届威尼斯双年展“personal structures-identities”主题展平行展，意大利；
+                    “100% FEMALE exhibition up-date”主题展，白立方，荷兰
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2018
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    “艺术 IM 对话”主题展，白立方慕尼黑Landshut，德国；
+                    “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展，罗湖美术馆，深圳；
+                    “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展策展人，罗湖美术馆，深圳；
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2017
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    意象油画研究院副院长；
+                    “第十一届佛罗伦萨国际当代艺术双年展”佛罗伦萨，意大利；
+                    “遇见艺术& middot”，香港马会，北京；
+                    “首届深圳当代陶艺大展”，深圳画院，深圳；
+                    深圳画院《首届深圳当代陶艺大展》铜奖；
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2016
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    《中国当代艺术文献》2015年提名艺术家；
+                    “花非花”（Le s fleurs du mal）张岚芊、徐赓良双个展，米兰国际艺术中心，意大利；
+                    “中国.湘潭首届油画展”，齐白石纪念馆，湘潭；
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2015
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    《当代油画》14 女性艺术家专辑-张岚芊；
+                    《中国当代艺术文献》2014年提名艺术家；
+                    “第十届佛罗伦萨国际当代艺术双年展”，佛罗伦萨，意大利；
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2013
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    being invited to be a Visiting Professor at the Art College of Changsha University of Science
+                    &Technology
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2012
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>《天涯》发表系列诗歌与散文；</p>
+            </div>
+
+            <button class="collapsible">
+                2009
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>
+                    9月，弃商从艺，从师于栗宪庭导师；
+                </p>
+            </div>
+
+            <button class="collapsible">
+                2006
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>发布长篇小说《围城里的处女》；</p>
+            </div>
+
+            <button class="collapsible">
+                1993
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>7月创立了深圳十大名牌“芊”牌时装，担任总设计师，个人时装发布会前后十多次，央视，深圳电视台多次专题报道； </p>
+            </div>
+
+            <button class="collapsible">
+                1989
+                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+            </button>
+            <div class="content" style="max-height:0;">
+                <p>毕业于长沙理工大学艺术院校</p>
+            </div>
+
+
+
+        </div>
+        <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+
+
+
     </section>
 
-    <div class="bg col-xs20 col-sm20 col-md20 col-lg20">
 
 
+    <!-- 作品集 -->
+    <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
 
-        <!-- 简介 -->
-        <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+            <span>作品集</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;PORTFOLIO </span>
+        </div>
 
-            <style>
-                .touxiang {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 10% 0 3% 0;
-                    width: 90%;
-                }
+        <div class="xs-hide sm-hide col-md6 col-lg6">
+            <div class="fuzhuImg"></div>
+        </div>
 
-                .jieshao {
-                    white-space: pre-line;
-                    font-family: 'JhengLight';
-                    text-align: center;
-                    line-height: 1.8em;
-                    font-size: .9rem;
-                    @*padding:020%2em10%;*@overflow: scroll;
+        <div class="col-xs20 col-sm20 col-md14 col-lg14">
 
-                    width: 90%;
-                }
+            <div class="swiper mySwiper swiper-h">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
+                        <div class="material">120 X 180cm 综合材料</div>
+                        <img src="../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg" alt="">
 
-                .jieshao h1 {
-                    font-family: 'JhengBold';
-                    font-size: 1.3rem;
-                    margin: 1em 0;
-                    line-height: 0;
-                }
+                        <div class="blankspace"></div>
 
-                /* 年表 */
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>1</p>
+                            </div>
+                            <h2>大鹏系列-1</h2>
+                            <p>
+                                这里是作品文字介绍的案例//或者是放对这个作品的评价:是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
+                                几度夕阳红。白发渔樵江渚上，都付笑谈中。
+                                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
+                        <div class="material">尺寸cm 材料类型</div>
+                        <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10001.jpg" alt="">
 
-                .collapsible {
-                    position: relative;
-                    color: white;
-                    cursor: pointer;
-                    width: 100%;
-                    padding: 0 0 .5em .3em;
-                    border-bottom: 1px solid #939393;
-                    text-align: left;
-                    outline: none;
-                    font-size: 1.5rem;
-                    letter-spacing: .05em;
-                    font-family: 'dinLightI';
-                    transition: all 200ms ease-in-out;
-                }
+                        <div class="blankspace"></div>
 
-                .collapsible:hover {
-                    /* background-color: #00000030; */
-                    background-color: #ffffff30;
-                    border-radius: 5px;
-                }
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>
+                                    <!-- 作品序号 -->
+                                    2
+                                </p>
+                            </div>
+                            <h2>红土堡001</h2>
+                            <p>
+                                这里是作品文字介绍的案例//或者是放对这个作品的评价:是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
+                                几度夕阳红。白发渔樵江渚上，都付笑谈中。
+                                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
+                        <div class="material">尺寸cm 材料类型</div>
+                        <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10009.jpg" alt="">
 
-                .collapsible span {
-                    position: absolute;
-                    right: .5em;
-                }
+                        <div class="blankspace"></div>
 
-                .content {
-                    max-height: none;
-                    overflow: hidden;
-                    transition: max-height 200ms ease-out;
-                    white-space: pre-line;
-                    margin-bottom: 2vh;
-                    padding-left: 2em;
-                    font-size: .9rem;
-                    line-height: 1.5em;
-                    font-family: 'sansLight';
-                    z-index: 10;
-                }
-
-                .content p {
-                    margin: 0;
-                }
-
-                .arrow02 {
-                    height: 2.2vh;
-                    max-height: 40px;
-                    opacity: .7;
-                    transform: rotate(90deg);
-                    transition: all 200ms ease-in-out;
-                }
-
-                .defaultActive .arrow02 {
-                    transform: rotate(180deg);
-                }
-
-                .nianbiao {
-                    padding: 3% 2em 5% 2em;
-                }
-
-                .line::before {
-                    content: "";
-                    border-right: 1px solid white;
-                    opacity: .4;
-                    position: absolute;
-                    top: 8%;
-                    bottom: 0;
-                    left: 0;
-                    right: 10%;
-                }
-
-                .sec02-title {
-                    margin-bottom: 3em;
-                }
-
-                .sec02-title span {
-                    font-family: 'dinLight', 'JhengRegular';
-                    font-size: 2rem;
-                }
-
-                #toggleBtn {
-                    position: absolute;
-                    right: 0;
-                    bottom: 0;
-                    font-size: .9em;
-                    color: #ededed;
-                }
-
-                #toggleBtn:hover {
-                    border-bottom: 1px solid white;
-                }
-
-                /* 年表结束 */
-            </style>
-
-
-            <div class="col-xs20 col-sm20 col-md7 col-lg7 relative">
-                <div class="line">
-                    <div class="touxiang">
-                        <img src="~/content/images/to black/vip-2zlq.png"
-                            style="width: var(--touxiang);border-radius: 100%;" alt="艺术家头像">
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>3</p>
+                            </div>
+                            <h2>金銮湾002</h2>
+                            <p>
+                                这里是作品文字介绍的案例//或者是放对这个作品的评价:是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
+                                几度夕阳红。白发渔樵江渚上，都付笑谈中。
+                                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
+                            </p>
+                        </div>
                     </div>
 
 
-                    <div class="jieshao">
-                        <div class="padding"></div>
-                        <h1>张岚芊</h1>
-                        1967年出生于长沙，现居中国深圳
-                        1989年毕业于长沙理工大学设计艺术学院
-                        深圳“芊”品牌创始人
-                        长篇小说《围城里的处女》作者
-                        2009年弃商专艺
-                        2015年至2019年旅居欧洲绘画创作、展览
-
-                        <h1>社会职务</h1>
-                        长沙理工大学设计艺术院校客座教授
-                        北京意象油画研究院副院长
-                        深圳市艺术产业促进会副会长，秘书长
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
-            <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
-
-                <div class="sec02-title relative">
-                    <span>艺术家年表</span>
-                    <span style="font-size: 1rem;">&ensp;/&ensp;CHRONOLOGY </span>
-                    <button id="toggleBtn">查看全部 / VIEW ALL</button>
-                </div>
-
-
-                <button class="collapsible defaultActive">
-                    2022
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content">
-                    <p>
-                        "春语"--当代艺术名家邀请展；
-                        《同构》第二季——当代艺术展，罗湖美术馆，深圳
-                    </p>
-                </div>
-
-                <button class="collapsible defaultActive">
-                    2021
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content">
-                    <p>同构—当代艺术作品邀请展 ，罗湖美术馆，深圳</p>
-                </div>
-
-                <button class="collapsible defaultActive">
-                    2020
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content">
-                    <p>"Woman, an infinite wor/ld" 主题 9人国际邀请展， SK画廊，纽约</p>
-                </div>
-
-                <button class="collapsible defaultActive">
-                    2019
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content">
-                    <p>
-                        “Kunst I'm Dialog”主题开馆展，白立方，荷兰；
-                        第58届威尼斯双年展“personal structures-identities”主题展平行展，意大利；
-                        “100% FEMALE exhibition up-date”主题展，白立方，荷兰
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2018
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        “艺术 IM 对话”主题展，白立方慕尼黑Landshut，德国；
-                        “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展，罗湖美术馆，深圳；
-                        “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展策展人，罗湖美术馆，深圳；
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2017
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        意象油画研究院副院长；
-                        “第十一届佛罗伦萨国际当代艺术双年展”佛罗伦萨，意大利；
-                        “遇见艺术& middot”，香港马会，北京；
-                        “首届深圳当代陶艺大展”，深圳画院，深圳；
-                        深圳画院《首届深圳当代陶艺大展》铜奖；
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2016
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        《中国当代艺术文献》2015年提名艺术家；
-                        “花非花”（Le s fleurs du mal）张岚芊、徐赓良双个展，米兰国际艺术中心，意大利；
-                        “中国.湘潭首届油画展”，齐白石纪念馆，湘潭；
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2015
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        《当代油画》14 女性艺术家专辑-张岚芊；
-                        《中国当代艺术文献》2014年提名艺术家；
-                        “第十届佛罗伦萨国际当代艺术双年展”，佛罗伦萨，意大利；
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2013
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        being invited to be a Visiting Professor at the Art College of Changsha University of Science
-                        &Technology
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2012
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>《天涯》发表系列诗歌与散文；</p>
-                </div>
-
-                <button class="collapsible">
-                    2009
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>
-                        9月，弃商从艺，从师于栗宪庭导师；
-                    </p>
-                </div>
-
-                <button class="collapsible">
-                    2006
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>发布长篇小说《围城里的处女》；</p>
-                </div>
-
-                <button class="collapsible">
-                    1993
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>7月创立了深圳十大名牌“芊”牌时装，担任总设计师，个人时装发布会前后十多次，央视，深圳电视台多次专题报道； </p>
-                </div>
-
-                <button class="collapsible">
-                    1989
-                    <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
-                </button>
-                <div class="content" style="max-height:0;">
-                    <p>毕业于长沙理工大学艺术院校</p>
-                </div>
-
-
-
-            </div>
-            <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-
-
-
-        </section>
-
-
-
-        <!-- 作品集 -->
-        <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
-            <style>
-                .swiper {
-                    width: 100%;
-                    height: 88vh;
-                }
-
-                .swiper-slide {
-                    position: relative;
-                    padding: 3em 5% 3em 5%;
-                    /* background-color: #c26739; */
-                    border-right: 1px solid white;
-                }
-
-                .swiper-button-prev,
-                .swiper-button-next {
-                    color: #ededed;
-                }
-
-                .swiper-v {
-                    background: transparent;
-                }
-
-                .material {
-                    font-family: 'dinLight', 'JhengLight';
-                    font-size: 1.3rem;
-                    text-align: center;
-                    position: absolute;
-                    transform: translateX(-50%);
-                    left: 50%;
-                    top: 12%;
-                }
-
-                .swiper-slide img {
-                    display: block;
-                    width: auto;
-                    height: 33%;
-                    object-fit: contain;
-                    position: absolute;
-                    top: 20%;
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-
-                .workInfo {
-                    width: 100%;
-                    padding: 0 3em 0 5.5em;
-                    font-size: .9rem;
-                    text-align: justify;
-                    line-height: 1.6em;
-                    position: relative;
-                }
-
-                .workInfo h2 {
-                    line-height: 0;
-                    margin-bottom: 1.5em;
-                    font-size: 1.5rem;
-                }
-
-                .number {
-                    position: absolute;
-                    /* NUMBER的位置要和BLANKSPACE对应 */
-                    top: 0;
-                    left: 3em;
-                    transform: translate(-50%, -50%);
-                    background-color: black;
-                    width: 2em;
-                    height: 2em;
-                    border-radius: 100%;
-                }
-
-                .number p {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    font-family: 'dinLight';
-                    font-size: 1.2rem;
-                }
-
-                .blankspace {
-                    /* 与NUMBER对应 */
-                    width: 100%;
-                    height: 63.5%;
-                }
-            </style>
-
-
-            <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-                <span>作品集</span>
-                <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;PORTFOLIO </span>
-            </div>
-
-            <div class="col-xs8 col-sm8 col-md6 col-lg6">
-                <div class="fuzhuImg"></div>
-            </div>
-
-            <div class="col-xs12 col-sm12 col-md14 col-lg14">
-
-                <div class="swiper mySwiper swiper-h">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                            <div class="material">120 X 180cm 综合材料</div>
-                            <img src="../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg" alt="">
-
-                            <div class="blankspace"></div>
-
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>1</p>
-                                </div>
-                                <h2>大鹏系列-1</h2>
-                                <p>
-                                    是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                                    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                            <div class="material">尺寸cm 材料类型</div>
-                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10001.jpg" alt="">
-
-                            <div class="blankspace"></div>
-
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>
-                                        <!-- 作品序号 -->
-                                        2
-                                    </p>
-                                </div>
-                                <h2>红土堡001</h2>
-                                <p>
-                                    是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                                    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                                </p>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                            <div class="material">尺寸cm 材料类型</div>
-                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10009.jpg" alt="">
-
-                            <div class="blankspace"></div>
-
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>3</p>
-                                </div>
-                                <h2>金銮湾002</h2>
-                                <p>
-                                    是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                                    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                                </p>
-                            </div>
-                        </div>
-
-
-                        <!-- Vertical式样 -->
-                        <!-- <div class="swiper-slide">
+                    <!-- Vertical式样 -->
+                    <!-- <div class="swiper-slide">
                         <div class="swiper mySwiper2 swiper-v">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">Vertical Slide 1</div>
@@ -968,175 +1031,131 @@
                     </div> -->
 
 
-                        <div class="swiper-slide">
-                            <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                            <div class="material">尺寸cm 材料类型</div>
-                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10002.jpg" alt="">
+                    <div class="swiper-slide">
+                        <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
+                        <div class="material">尺寸cm 材料类型</div>
+                        <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10002.jpg" alt="">
 
-                            <div class="blankspace"></div>
+                        <div class="blankspace"></div>
 
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>4</p>
-                                </div>
-                                <h2>重生001</h2>
-                                <p>
-                                    是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                                    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                                </p>
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>4</p>
                             </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                            <div class="material">尺寸cm 材料类型</div>
-                            <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10010.jpg" alt="">
-
-                            <div class="blankspace"></div>
-
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>5</p>
-                                </div>
-                                <h2>花季002</h2>
-                                <p>
-                                    是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                                    滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                                </p>
-                            </div>
+                            <h2>重生001</h2>
+                            <p>
+                                这里是作品文字介绍的案例//或者是放对这个作品的评价:是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
+                                几度夕阳红。白发渔樵江渚上，都付笑谈中。
+                                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
+                            </p>
                         </div>
                     </div>
-                    <!-- <div class="swiper-pagination"></div> -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
+
+                    <div class="swiper-slide">
+                        <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
+                        <div class="material">尺寸cm 材料类型</div>
+                        <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10010.jpg" alt="">
+
+                        <div class="blankspace"></div>
+
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>5</p>
+                            </div>
+                            <h2>花季002</h2>
+                            <p>
+                                这里是作品文字介绍的案例//或者是放对这个作品的评价:是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
+                                几度夕阳红。白发渔樵江渚上，都付笑谈中。
+                                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
+                            </p>
+                        </div>
+                    </div>
                 </div>
-
-
-
-
+                <!-- <div class="swiper-pagination"></div> -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
 
-        </section>
 
-        <!--展讯 -->
-        <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
 
-            <style>
-                .mySwiper3 {
-                    margin-bottom: 3vh;
-                }
 
-                .exhibition {
-                    height: 83vh;
-                    width: 100%;
-                }
+        </div>
 
-                .exhibition>.swiper-slide {
-                    border: none;
-                    height: inherit;
-                    width: 100%;
-                    padding: 0;
-                    overflow: hidden;
-                }
+    </section>
 
-                .exhibition>.swiper-slide img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    position: relative;
-                    top: 0;
-                    left: 0;
-                    transform: translate(0, 0);
-                    filter: grayscale(40%) brightness(90%);
-                    transition: all 0.3s ease-out;
-                }
+    <!--展讯 -->
+    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
 
-                .exhibition>.swiper-slide img:hover {
-                    scale: 1.02;
-                }
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+            <span>相<span style="font-family: 'sansLight';">关</span>展览</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;EXHIBITION </span>
+        </div>
 
-                .mySwiper3>.swiper-pagination>.swiper-pagination-bullet {
-                    margin-top: 3vh;
-                    background-color: white;
-                }
+        <div class="col-xs20 col-sm20 col-md20 col-lg20">
+            <div class="swiper mySwiper3">
+                <div class="swiper-wrapper exhibition">
 
-                .information {
-                    color: white;
-                    position: absolute;
-                    left: 5em;
-                    bottom: 10em;
+                    <div class="swiper-slide">
+                        <!-- 三人行 -->
+                        <img src="../../Content/images/IMG_9282.jpg" alt="">
+                        <a href="/Publication/trio">
+                            <p class="information">
+                                深圳市木星美术馆<br />
+                                2023.06.03 - 2023.07.02
+                                <span> 三人行——鸥洋/雷双/张岚芊艺术展</span>
+                            </p>
+                        </a>
+                    </div>
 
-                    font-size: 1.2rem;
-                    letter-spacing: .1em;
-                    font-family: 'smile';
-                }
+                    <div class="swiper-slide">
+                        <!-- 活动1 春语II -->
+                        <img src="../../Content/images/IMG_9282.jpg" alt="">
+                        <a href="/Publication/chunyu2">
+                            <p class="information">
+                                深圳动漫园·同构艺术空间<br />
+                                2023.04.21 - 2023.05.28
+                                <span>“春语”第二季——国际视觉艺术邀请展</span>
+                            </p>
+                        </a>
+                    </div>
 
-                .information span {
-                    font-size: 2.8rem;
-                    width: 30em;
-
-                    position: absolute;
-                    bottom: 1.4em;
-                    left: 0;
-                }
-            </style>
-
-            <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-                <span>相<span style="font-family: 'sansLight';">关</span>展览</span>
-                <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;EXHIBITION </span>
-            </div>
-
-            <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                <div class="swiper mySwiper3">
-                    <div class="swiper-wrapper exhibition">
-                        <div class="swiper-slide">
-                            <!-- 活动1 春语II -->
-                            <img src="../../Content/images/IMG_9282.jpg" alt="">
-                            <a href="Javascript:;;">
-                                <p class="information">
-                                    深圳动漫园·同构艺术空间<br />
-                                    2023.04.21 - 2023.05.28
-                                    <span>“春语”第二季——国际视觉艺术邀请展</span>
-                                </p>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <!-- 活动2 同构II -->
-                            <img src="../../Content/images/_DSF7252.jpg" alt="">
-                            <a href="Javascript:;;">
-                                <p class="information">
-                                    深圳市罗湖美术馆<br />
-                                    2022.12.29 - 2023.01.28
-                                    <span>同构《第二季》·当代艺术展</span>
-                                </p>
-                            </a>
-                        </div>
-                        <div class="swiper-slide">
-                            <!-- 活动3 春语I -->
-                            <img src="../../Content/images/zhongyi/10000.jpg" alt="">
-                            <a href="Javascript:;;">
-                                <p class="information">
-                                    深圳市动漫园·盛世艺术空间<br />
-                                    2022.03.29
-                                    <span>“春语”——当代艺术名家邀请展</span>
-                                </p>
-                            </a>
-                        </div>
-                        <!-- <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide">
+                        <!-- 活动2 同构II -->
+                        <img src="../../Content/images/_DSF7252.jpg" alt="">
+                        <a href="/Publication/tonggou2">
+                            <p class="information">
+                                深圳市罗湖美术馆<br />
+                                2022.12.29 - 2023.01.28
+                                <span>同构《第二季》·当代艺术展</span>
+                            </p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- 活动3 春语I -->
+                        <img src="../../Content/images/zhongyi/10000.jpg" alt="">
+                        <a href="/Publication/chunyu">
+                            <p class="information">
+                                深圳市动漫园·盛世艺术空间<br />
+                                2022.03.29
+                                <span>“春语”——当代艺术名家邀请展</span>
+                            </p>
+                        </a>
+                    </div>
+                    <!-- <div class="swiper-slide">Slide 4</div>
                         <div class="swiper-slide">Slide 5</div>
                         <div class="swiper-slide">Slide 6</div>
                         <div class="swiper-slide">Slide 7</div>
                         <div class="swiper-slide">Slide 8</div>
                         <div class="swiper-slide">Slide 9</div> -->
-                    </div>
-                    <div class="swiper-pagination"></div>
-
                 </div>
-
-
-
-
-
+                <div class="swiper-pagination"></div>
 
             </div>
-        </section>
+
+
+
+
+
+
+        </div>
+    </section>

@@ -1,27 +1,29 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge Dev.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Views/Home/newIndex.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022.csproj">
     <Files>
-      <File FileName="Views/Home/artistZLQ.cshtml" Line="53" Column="6" IsPinned="True" />
-      <File FileName="Views/Home/newIndex.cshtml" Line="139" Column="14" />
+      <File FileName="Views/Home/artistZLQ.cshtml" Line="53" Column="1" IsPinned="True" />
+      <File FileName="Views/Home/newIndex.cshtml" Line="145" Column="20" />
+      <File FileName="szaipa2022.csproj" Line="339" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="szaipa2022" expanded="True" selected="True">
-            <Node name="szaipa2022" expanded="True" />
+          <Node name="szaipa2022">
+            <Node name="szaipa2022" selected="True">
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge Dev.app" />
 </Properties>

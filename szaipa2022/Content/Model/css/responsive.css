@@ -131,6 +131,9 @@ body {
         --navFontsize: 1.3rem;
         --navTop: 6vh;
 
+        /* section05 核心成员(新) */
+        --memberImgW: 20vw !important;
+
         /* section06 新闻 */
         --dateLeft: 0;
 
@@ -142,6 +145,11 @@ body {
         --footerBorder: 0.7px solid #939393;
         --footerFontsize: 1rem !important;
         --footerLineheight: 1.8em;
+    }
+
+    .after::after {
+        width: 180% !important;
+        height: 110% !important;
     }
 }
 
@@ -160,7 +168,7 @@ body {
     --zhangcheng: 57vh;
     --chapterFontsize: 1.1rem;
 
-    /* section05 核心成员 */
+    /* section05 核心成员  (旧)
     --carouselHeight: 100vh;
     --imgIntroduce: 30vh;
     --imgIntroduceSingle: 30vh;
@@ -171,7 +179,10 @@ body {
     --introduceImg: 48%;
     --swiper4L: 12vw;
     --advMem: right;
-    --multiIntroduce: 10vw;
+    --multiIntroduce: 10vw;*/
+
+    /* section05 核心成员(新) */
+    --memberImgW: 12vw;
 
     /* section06 新闻 */
     --newsFontsize: 1.2rem;
@@ -222,7 +233,7 @@ body {
         --zhangcheng: 20vh;
         --chapterFontsize: 1.3rem !important;
 
-        /* section05 核心成员 */
+        /* section05 核心成员 (旧)
         --carouselHeight: 100vh;
         --imgIntroduce: 30vh;
         --imgIntroduceSingle: 30vh;
@@ -233,7 +244,7 @@ body {
         --introduceImg: 48%;
         --swiper4L: 12vw;
         --advMem: right;
-        --multiIntroduce: 10vw;
+        --multiIntroduce: 10vw;*/
 
         /* section06 新闻 */
         --newsFontsize: 1.3rem;

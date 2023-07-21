@@ -13,6 +13,9 @@
     <script src="~/Content/Model/layui.js"></script>
     <script src="~/Content/Model/swiper-bundle.min.js"></script>
 
+    <!-- 引入MagnifyJS -->
+    <script src="~/Content/Model/jquery.magnify.js"></script>
+
     <script src="~/Content/Model/Site.js"></script>
     <link rel="stylesheet" href="~/Content/Model/css/bootstrap.css">
     <link rel="stylesheet" href="~/Content/Model/css/layui.css">
@@ -20,6 +23,9 @@
     <link rel="stylesheet" href="~/content/model/css/responsive/Artist.css">
     <link rel="stylesheet" href="~/Content/Model/css/responsive.css">
     <link rel="stylesheet" href="~/Content/Model/css/swiper-bundle.min.css">
+
+    <!-- 引入MagnifyJS -->
+    <link rel="stylesheet" href="~/content/Model/css/magnify.css">
 
     <style>
         html {
@@ -29,6 +35,18 @@
         .bg {
             background: linear-gradient(to bottom right, #3e47e1, #151965);
             display: list-item;
+        }
+
+        .subNav {
+            height: var(--subnavH);
+            width: 100vw;
+            padding: var(--subnavPad);
+            position: relative;
+            border-top: 1px solid white;
+            border-bottom: 1px solid white;
+            font-family: 'dinLight', 'JhengRegular';
+            font-size: var(--subnavSize);
+            letter-spacing: .2em;
         }
 
         /* 以下为footer */
@@ -216,7 +234,8 @@
             /* FOOTER */
             height: 100%;
             width: 100%;
-        @*background-color:black;*@color: #939393;
+            background-color: black;
+            color: #939393;
             overflow: hidden;
         }
 
@@ -225,6 +244,7 @@
             height: auto;
             position: relative;
             padding-top: 5vh;
+            background-color: black;
         }
 
         .footerList {
@@ -244,7 +264,7 @@
         }
 
         .copyrightM a {
-            color: white;
+            color: #939393;
             text-decoration: none;
         }
 
@@ -335,78 +355,78 @@
 
 
 
-        @RenderBody()
+    @RenderBody()
 
 
 
 
 
 
-        <!-- 以下为共享部分 -->
-        <!-- FOOTER - PC -->
+    <!-- 以下为共享部分 -->
+    <!-- FOOTER - PC -->
 
 
-        <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
-            <div class="footer">
-                <div class="copyright-container">
-                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                    <div class="col-sm7 col-md7 col-lg7 copyright">
-                        <p>
-                            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                                粤公网安备 44030402004889号 
-                            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-                            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-                            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-                            深圳市艺术产业促进会
-                        </p>
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="~/home/newnews"> 新闻动态</a><br />
-                            <a href="~/home/newConstitution"> 展会动态</a><br />
-                            &#12288;<br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
-
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="Javascript:;;">合作案例 </a><br />
-                            <a href="Javascript:;;">艺术家首页</a><br />
-                            &#12288;<br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="~/home/newlink">联系我们</a><br />
-                            <a href="~/home/index">切换旧版</a><br />
-                            <a href="~/Staff/Index">后台登陆</a><br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
-                    </div>
-
-                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+        <div class="footer">
+            <div class="copyright-container">
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                <div class="col-sm7 col-md7 col-lg7 copyright">
+                    <p>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            粤公网安备 44030402004889号 
+                        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                        深圳市艺术产业促进会
+                    </p>
                 </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newnews"> 新闻动态</a><br />
+                        <a href="~/home/newConstitution"> 展会动态</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="Javascript:;;">合作案例 </a><br />
+                        <a href="Javascript:;;">艺术家首页</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newlink">联系我们</a><br />
+                        <a href="~/home/index">切换旧版</a><br />
+                        <a href="~/Staff/Index">后台登陆</a><br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-        <footer class="section09m md-hide lg-hide copyrightM">
+    <footer class="section09m md-hide lg-hide copyrightM">
 
-            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                粤公网安备 44030402004889号 
-            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-            深圳市艺术产业促进会<br />
-            <br />
-            <a href="~/home/index">切换旧版</a><br />
-            <a href="~/Staff/Index">后台登陆</a>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 
+        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+        深圳市艺术产业促进会<br />
+        <br />
+        <a href="~/home/index">切换旧版</a><br />
+        <a href="~/Staff/Index">后台登陆</a>
 
-        </footer>
+    </footer>
 
 
 </body>
