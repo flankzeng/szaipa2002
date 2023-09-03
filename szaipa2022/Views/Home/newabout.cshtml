@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "关于我们";
+    Layout = "~/Views/Shared/_newLayout.cshtml";
+}
+
+<style>
+    .chapter {
+        font-size: var(--title);
+        margin-bottom: 1em;
+    }
+
+    /* 后续修补 */
+    .entitle {
+        font-style: normal;
+        /* font-family: 'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        vertical-align: text-top;
+        font-size: 1.3rem;
+    }
+
+    .chapterTXT {
+        position: relative;
+        margin-bottom: var(--chapterBottom);
+        margin-top: 0 !important;
+        text-align: justify;
+        /* font-family:'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-size: 1rem;
+        line-height: 2.4em;
+    }
+
+    .chapterTXT span {
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 500;
+    }
+
+    .zhangcheng {
+        display: block;
+        background-color: black;
+        height: 18rem;
+
+        background-image: url('../../content/images/2021.5.30f2-2.jpg');
+        background-size: 100% 85%;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    /* embed {
+        height: 70vh;
+        width: 100%;
+        object-fit: cover;
+        outline: none;
+        border: none;
+    } */
+
+    #section01 button {
+        outline: none;
+        border: 1px solid #bf272d;
+        border-radius: 10px;
+        background-color: transparent;
+        color: #bf272d;
+        font-size: .9rem;
+        padding: .5em 2em;
+        margin-top: 3%;
+
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 300;
+    }
+
+    .partner {
+        text-align: center;
+        padding-top: 1%;
+    }
+
+    #section02 .partner h1 {
+        font-size: 1.2rem;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 400;
+        padding: 1em;
+    }
+
+    #section02 .partner div {
+        margin-bottom: 5%;
+    }
+
+    .partner p {
+        padding: 0 2em;
+        text-align: justify;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 300;
+        font-size: 1rem;
+        white-space: pre-line;
+    }
+
+    .partner img {
+        height: auto;
+        max-height: 20vh;
+        max-width: 30vw;
+    }
+
+    #section03 {
+        height: 80vh;
+    }
+</style>
+
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md16 col-lg16">
+
+        <!-- 关于我们 -->
+        <p class="chapter JhengBold" style="margin-top: 10vh;">关于我们&ensp;<i class="entitle">|</i>
+            <span style="font-family: 'dinLightI';">ABOUT US</span>
+        </p>
+
+        <article class="col-xs12 col-sm12 col-md12 col-lg12 chapterTXT" style="padding-right: 3em;">
+
+
+            <span>性&emsp;&emsp;质：</span>深圳市艺术产业促进会于2020年9月成立，是经市民政局批准注册、由深圳市文化广电旅游体育局主管的具有法人资格的多功能社会团体。
+            <br /><span>愿&emsp;&emsp;景：</span>整合全球高端艺术资源，推动深圳艺术产业链的全面发展。
+            <br /><span>理&emsp;&emsp;念：</span>溯源 增效 创新
+            <br /><span>宗&emsp;&emsp;旨：</span>以国际化视野与创新精神，构建深圳市艺术产业新格局。
+
+            <br />
+            <button
+                onclick="window.open('../../content/images/艺促会介绍.pdf#toolbar=0&navpanes=0&scrollbar=0', '_blank')">查阅详细文档</button>
+
+
+        </article>
+
+        <div class="col-xs8 col-sm8 col-md8 col-lg8 zhangcheng"></div>
+    </div>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+</section>
+
+<section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md16 col-lg16">
+
+        <!-- 合作伙伴 -->
+        <p class="chapter JhengBold">合作伙伴&ensp;<i class="entitle">|</i>
+            <span style="font-family: 'dinLightI';">COLLABORATION PARTNER</span>
+        </p>
+
+
+        <ul class="partner">
+            <div class="col-xs20 col-sm20 col-md20 col-lg20">
+                <li class="col-xs10 col-sm10 col-md5 col-lg5">
+                    <img src="../../content/images/white cube.png" alt="">
+                    <h1>荷兰白立方基金会</h1>
+                    <p class="xs-hide sm-hide">白立方基金会以举办每两年一次的地球村艺术项目而闻名，“会面”是其长久以来的主题，即来自世界各地的艺术家与公众会面。
+
+                        项目于荷兰、法国、德国、丹麦、阿塞拜疆和北马其顿等地举办。
+
+                        除了这个项目，白立方还组织了其他主要在欧盟范围内的展览和项目。促进艺术家与公众之间的文化交流。
+
+                        荷兰白立方拥有全世界1500名专业的艺术家，同时拥有可以接触到24000名艺术家的地球村艺术家网络，以发挥其巨大的艺术影响力。
+
+                </li>
+                <li class="col-xs10 col-sm10 col-md5 col-lg5">
+                    <img src="../../content/images/play room.png" alt="">
+                    <h1>游戏室画廊</h1>
+                    <p class="xs-hide sm-hide">PLAY ROOM 的发起人是荷兰知名策展人Jeroen van Paassen，他在 PLAY room 汇集了20多年在艺术和文化领域的经验。
+
+                        从开发新概念和策划展览到收藏分析和管理。PLAY room 是临近荷兰首都阿姆斯特丹的小城市赞丹市中心的艺术热点。
+
+                        画廊的空间极具特色，展厅风格充满激情，具有幽默感而又平易近人，反差感时常令人感到诧异。
+
+                        画廊每月都有从当代艺术到街头艺术的各种风格迥异的展览。
+                    </p>
+                </li>
+                <li class="xs-hide sm-hide col-md5 col-lg5">
+                    <img src="../../content/images/pinglunjia.png" alt="">
+                    <h1>中国文艺评论家协会</h1>
+                    <p class="xs-hide sm-hide">2021年5月29日“新时代中国特色艺术经济理论体系创新与实践探索”研讨会暨中国文艺评论家协会
+
+                        第二届艺术产业研究委员会成立仪式在京举行。
+
+                        清华大学研究员、深圳市艺术产业促进会会长姚建伟大会上致辞。
+
+                        期间，中国文艺评论家协会与深圳市艺术产业促进会签署战略合 作框架协议。
+                    </p>
+                </li>
+                <li class="xs-hide sm-hide col-md5 col-lg5">
+                    <img src="../../content/images/huahui.png" alt="">
+                    <h1>华汇中艺国际拍卖有限公司</h1>
+                    <p class="xs-hide sm-hide">北京华汇中艺国际拍卖有限公司成立于2017年，是以经营文物艺术品为主的综合性拍卖公司。
+
+                        公司成立以来，已与多家国内顶尖拍卖公司、国内知名艺术品投资机构、大型银行私人银行部建立起良好的合作关系，
+
+                        为其提供艺术品拍卖专场合作、媒体宣传推广、艺术品藏家接洽、艺术品投资讲座等全方位服务。公司主营业务艺术品拍卖、艺术空间运营以及艺术品私人洽购。
+                    </p>
+                </li>
+            </div>
+
+
+
+            <div class="col-xs20 col-sm20 col-md20 col-lg20">
+                <li class="col-sm10 col-xs10 md-hide lg-hide">
+                    <img src="../../content/images/pinglunjia.png" alt="">
+                    <h1>中国文艺评论家协会</h1>
+                </li>
+
+                <li class="col-sm10 col-xs10 md-hide lg-hide">
+                    <img src="../../content/images/huahui.png" alt="">
+                    <h1>华汇中艺国际拍卖有限公司</h1>
+                </li>
+
+
+
+
+
+                <li class="xs-hide sm-hide col-md5 col-lg5">
+                    <img src="../../content/images/buwuzhengye.png" alt="">
+                    <h1>不务正业(深圳)<br />文化传播有限公司</h1>
+
+                    <p class="xs-hide sm-hide">
+                        不误正业（深圳）文化传播有限公司，成立于2020年，作为IP衍生品领域的综合服务方案提供商，集衍生品设计开发、供应链管理、营销推广、品牌授权、IP变现及电商生态综合服务于一体，
+
+                        拥有外观专利、结构专利、实用新型专利和美术著作权5项，成立初始即实现2021年产值过千万的业绩，旨在成为国际化的中国文化输出创新品牌。
+
+                        主营业务：设计开发、品牌授权、供应链管理、IP变现、营销推广、电商生态。
+                    </p>
+                </li>
+
+                <li class="xs-hide sm-hide col-md5 col-lg5">
+                    <img src="../../content/images/fanzhuan.png" alt="">
+                    <h1>深圳反转舞台<br />文化传播有限公司</h1>
+                    <p class="xs-hide sm-hide">深圳反转舞台文化传播有限公司
+                        是一家立足于深圳的舞台剧、影视剧、艺术展览策划企业，倡导多元文化、青年创意、轻文艺生活，努力为公众奉上多样化、高品格的文化娱乐作品。
+
+                        反转舞台亦常年致力于艺术教育，曾与福田文化馆、南山文化馆、深圳滨海艺术中心等单位合作。目前正在运营的课程有即兴喜剧工作坊、多维喜剧创新坊、集体编作戏剧工作坊等。
+                    </p>
+                </li>
+            </div>
+
+
+            <div class="col-xs20 col-sm20 md-hide lg-hide">
+                <li class="col-sm10 col-xs10 md-hide lg-hide">
+                    <img src="../../content/images/buwuzhengye.png" alt="">
+                    <h1>不务正业(深圳)<br />文化传播有限公司</h1>
+                </li>
+
+                <li class="col-sm10 col-xs10 md-hide lg-hide">
+                    <img src="../../content/images/fanzhuan.png" alt="">
+                    <h1>深圳反转舞台<br />文化传播有限公司</h1>
+                </li>
+
+            </div>
+        </ul>
+
+
+        <div class="col-xs8 col-sm8 col-md8 col-lg8">&nbsp;</div>
+    </div>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+</section>
+
+<section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md16 col-lg16">
+
+        <!-- 合作案例 -->
+        <p class="chapter JhengBold">合作案例&ensp;<i class="entitle">|</i>
+            <span style="font-family: 'dinLightI';">COLLABORATION CASE</span>
+        </p>
+    </div>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+</section>

@@ -27,6 +27,18 @@
     <!-- 引入MagnifyJS -->
     <link rel="stylesheet" href="~/content/Model/css/magnify.css">
 
+    <!-- 引入google font CDN站 2023.08.04 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://fonts.font.im/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='https://fonts.font.im/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
+
+
     <style>
         html {
             scroll-behavior: smooth;
@@ -44,7 +56,7 @@
             position: relative;
             border-top: 1px solid white;
             border-bottom: 1px solid white;
-            font-family: 'dinLight', 'JhengRegular';
+            /* font-family: 'dinLight', 'JhengRegular';*/
             font-size: var(--subnavSize);
             letter-spacing: .2em;
         }
@@ -299,7 +311,9 @@
         .copyright-container p {
             color: white;
             text-decoration: none;
-            font-family: 'sansLight';
+            /* font-family: 'sansLight';*/
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -338,18 +352,6 @@
 </head>
 
 <body>
-    <script>
-        // 导航栏的焦点切换
-        $(window).scroll(function () {
-            var scrollDistance = $(window).scrollTop();
-            $('section').each(function (i) {
-                if ($(this).position().top <= scrollDistance) {
-                    $('#ArtistNav .activeLink').removeClass('activeLink');
-                    $('#ArtistNav td').eq(i + 1).addClass('activeLink');
-                }
-            });
-        }).scroll();
-    </script>
 
 
 
@@ -365,6 +367,30 @@
     <!-- 以下为共享部分 -->
     <!-- FOOTER - PC -->
 
+    <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
+        <div class="emailContainerM">
+            <div class="emailPosition">
+
+                <h1>深圳市艺术产业新闻邮件</h1>
+
+
+                <input class="emailM" type="email" placeholder="EMAIL">
+                <button type="submit">订&#12288;阅</button>
+
+                <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
+                    <br />
+                    一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
+                </p>
+            </div>
+            <div class="logoContainerM">
+                <a href="Javascript:;;">
+                    <img src="../../Content/icon/wechat.svg" class="guanzhu" alt=""></a>
+                <a href="Javascript:;;">
+                    <img src="../../Content/icon/douyin.svg" class="guanzhu" alt=""></a>
+            </div>
+
+        </div>
+    </section>
 
     <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
         <div class="footer">
@@ -428,7 +454,14 @@
 
     </footer>
 
-
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+    </script>
 </body>
 
 </html>

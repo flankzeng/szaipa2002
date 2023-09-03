@@ -22,6 +22,7 @@ namespace Szaipa.Models
         public int DateD { get; set; }
         public bool or { get; set; }
         public int ReadCount { get; set; }
+        public int Year { get; set; } // Add this line
     }
     public class NewsViews
     {

@@ -38,7 +38,7 @@ namespace Szaipa.Controllers
             ViewBag.Index = 1;
             var N = db.News.OrderByDescending(d => d.Date).ToList();
             var news = new List<News>();
-            for (int a = 0; a < 4; a++)
+            for (int a = 0; a < 6; a++)
             {
                 news.Add(N[a]);
             }
@@ -63,7 +63,7 @@ namespace Szaipa.Controllers
                 ViewBag.works = ToVieWorks(tm.works);
                 ViewBag.count = tm.works.Count;
             }
-            
+
 
             return View();
         }
@@ -84,12 +84,14 @@ namespace Szaipa.Controllers
 
         public ActionResult newnews(int? page, int? limit, int? count)
         {
-            if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
+            if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
             if (Session["Staff"] != null) ViewBag.staff = 1;
-            //var news = newslist(page, limit, count);
-            var news = db.News.ToList();
+
+            var news = db.News.OrderByDescending(d => d.Date).ToList();
             var ns = newslist(news);
 
+            var newsList = db.News.OrderByDescending(d => d.Date).ToList();
+            ViewBag.NewsList = newsList;
 
             ViewBag.news = 1;
             return View(ns);
@@ -122,7 +124,7 @@ namespace Szaipa.Controllers
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
             if (Session["Staff"] != null) ViewBag.staff = 1;
 
-          
+
 
             ViewBag.vip = 1;
             return View();
@@ -266,14 +268,18 @@ namespace Szaipa.Controllers
         public ActionResult newnewsread(int id)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;
-            if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
+            if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
             ViewBag.news = 1;
+
             var news = db.News.FirstOrDefault(d => d.Id == id);
             news.ReadCount = news.ReadCount + 1;
             var day = today();
             day.NewsVisit = day.NewsVisit + 1;
             db.SaveChanges();
 
+            var newsList = db.News.OrderByDescending(d => d.Date).Take(5).ToList();
+
+            ViewBag.NewsList = newsList; // 将newsList传递给视图
 
             return View(news);
         }
@@ -344,7 +350,7 @@ namespace Szaipa.Controllers
             return View(work);
         }
 
-        public ActionResult works(int? id,int? index)
+        public ActionResult works(int? id, int? index)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
@@ -370,10 +376,10 @@ namespace Szaipa.Controllers
                 works = db.Works.Where(d => d.ArtistId == Id).ToList();
                 ViewBag.Art = db.Artist.FirstOrDefault(d => d.Id == id).ArtistNameCN;
             }
-            
 
 
-            List<ViewWorks> vw = PageWorks(works,Index,30);
+
+            List<ViewWorks> vw = PageWorks(works, Index, 30);
             ViewBag.count = vw.Count;
             return View(vw);
         }
@@ -811,7 +817,7 @@ namespace Szaipa.Controllers
                             List<WorksTag> wt = db.WorksTag.Where(d => d.TagId == tag.Id).ToList();
                             if (wt.Count > 0)//确认此tag有作品
                             {
-                               
+
                                 List<int> twid = new List<int>();
                                 foreach (var b in wt)
                                 {
@@ -860,9 +866,9 @@ namespace Szaipa.Controllers
                         }
                         etags.Add(tag);
                     }
-                    else nulltag = keyword;                    
+                    else nulltag = keyword;
                 }
-                else nulltag = keyword;           
+                else nulltag = keyword;
             }
             tm.works = works;
             tm.nulltags = nulltag;
@@ -887,7 +893,7 @@ namespace Szaipa.Controllers
             }
             return tvw;
         }
-        public List<ViewWorks> PageWorks(List<Works> works, int page,int limit)
+        public List<ViewWorks> PageWorks(List<Works> works, int page, int limit)
         {
             int count = works.Count;
             int fint = (page - 1) * limit;

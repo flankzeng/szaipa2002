@@ -76,7 +76,7 @@
     .name {
         border: none;
         font-size: 1.3rem;
-        font-family: 'JhengLight';
+        /* font-family: 'JhengLight';*/
         margin-bottom: 3vh;
         color: white;
     }
@@ -104,7 +104,7 @@
     }
 
     .hoverLine {
-        font-family: 'JhengBold';
+        /* font-family: 'JhengBold';*/
     }
 
     .hoverLine::before {
@@ -148,7 +148,9 @@
         top: .2vh;
         right: 0;
         display: flex;
-        font-family: 'sansLight' !important;
+        /* font-family: 'sansLight' !important;*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif !important;
         font-size: 1rem;
         opacity: 0;
         transform: translateY(100%);
@@ -165,7 +167,7 @@
         top: 3%;
         left: 2%;
         color: white;
-        font-family: 'dinLight', 'JhengRegular';
+        /* font-family: 'dinLight', 'JhengRegular';*/
         font-size: 1rem;
         z-index: 10;
     }
@@ -263,7 +265,7 @@
 
     .jieshao {
         white-space: pre-line;
-        font-family: 'JhengLight';
+        /* font-family: 'JhengLight'; */
         text-align: center;
         line-height: 1.8em;
         font-size: .9rem;
@@ -273,7 +275,7 @@
     }
 
     .jieshao h1 {
-        font-family: 'JhengBold';
+        /* font-family: 'JhengBold';*/
         font-size: 1.3rem;
         margin: 1em 0;
         line-height: 0;
@@ -316,7 +318,9 @@
         padding-left: 2em;
         font-size: .9rem;
         line-height: 1.5em;
-        font-family: 'sansLight';
+        /* font-family: 'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
         z-index: 10;
     }
 
@@ -356,7 +360,7 @@
     }
 
     .sec02-title span {
-        font-family: 'dinLight', 'JhengRegular';
+        /* font-family: 'dinLight', 'JhengRegular'; */
         font-size: 2rem;
     }
 
@@ -396,7 +400,7 @@
     }
 
     .material {
-        font-family: 'dinLight', 'JhengLight';
+        /* font-family: 'dinLight', 'JhengLight';*/
         font-size: 1.3rem;
         text-align: center;
         position: absolute;
@@ -518,6 +522,17 @@
 </style>
 
 <script>
+    // 导航栏的焦点切换
+    $(window).scroll(function () {
+        var scrollDistance = $(window).scrollTop();
+        $('section').each(function (i) {
+            if ($(this).position().top <= scrollDistance) {
+                $('#ArtistNav .activeLink').removeClass('activeLink');
+                $('#ArtistNav td').eq(i + 1).addClass('activeLink');
+            }
+        });
+    }).scroll();
+
     // 背景图的悬浮更换
     $(function () {
         $('.hoverLine').hover(function () {
@@ -675,23 +690,23 @@
 
 
     <div id="language">
-        <span class="lang">
+        <span class="lang JhengRegular">
             中&#12288;文&nbsp;
             <button id="switcher"><img src="~/content/icon/xiala.svg" /></button>
         </span>
         <ul class="langSwitcher">
-            <li><a class="langopt" href="Javascript:;;">中&#12288;文</a></li>
-            <li><a class="langopt" href="Javascript:;;">ENGLISH</a></li>
+            <li><a class="langopt JhengRegular" href="Javascript:;;">中&#12288;文</a></li>
+            <li><a class="langopt" class="dinLight" href="Javascript:;;">ENGLISH</a></li>
         </ul>
 
     </div>
 
     <ul class="introduce">
-        <li class="name">
+        <li class="name JhengLight" style="color: white;">
             张岚芊作品 ©️
         </li>
         <a href="/Home/artistNews#section01">
-            <li class="hoverLine">
+            <li class="hoverLine JhengBold">
                 艺术家资讯
                 <div class="moreInfo">
                     <!-- 源自策展情况前两条TITLE -->
@@ -701,7 +716,7 @@
             </li>
         </a>
         <a href="/Home/artistNews#section02">
-            <li class="hoverLine">
+            <li class="hoverLine JhengBold">
                 收藏捐赠
                 <div class="moreInfo">
                     <!-- 固定模板 -->
@@ -711,7 +726,7 @@
             </li>
         </a>
         <a href="/Home/artistNews#section03">
-            <li class="hoverLine">
+            <li class="hoverLine JhengBold">
                 出版著作
                 <div class="moreInfo">
                     长篇小说《围城里的处女》
@@ -720,7 +735,7 @@
             </li>
         </a>
         <a href="/Home/artistNews#section04">
-            <li class="hoverLine">
+            <li class="hoverLine JhengBold">
                 拍卖作品
                 <div class="moreInfo">
                     远方系列之15&#12288;聚宝盆系列之6
@@ -748,9 +763,9 @@
                 </div>
 
 
-                <div class="jieshao">
+                <div class="jieshao JhengLight">
                     <div class="padding"></div>
-                    <h1>张岚芊</h1>
+                    <h1 class="JhengBold">张岚芊</h1>
                     1967年出生于长沙，现居中国深圳
                     1989年毕业于长沙理工大学设计艺术学院
                     深圳“芊”品牌创始人
@@ -758,7 +773,7 @@
                     2009年弃商专艺
                     2015年至2019年旅居欧洲绘画创作、展览
 
-                    <h1>社会职务</h1>
+                    <h1 class="JhengBold">社会职务</h1>
                     长沙理工大学设计艺术院校客座教授
                     北京意象油画研究院副院长
                     深圳市艺术产业促进会副会长，秘书长
@@ -771,9 +786,9 @@
         <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
 
             <div class="sec02-title relative">
-                <span>艺术家年表</span>
-                <span style="font-size: 1rem;">&ensp;/&ensp;CHRONOLOGY </span>
-                <button id="toggleBtn">查看全部 / VIEW ALL</button>
+                <span class="JhengRegular">艺术家年表</span>
+                <span style="font-size: 1rem;font-family:dinLight;">&ensp;/&ensp;CHRONOLOGY </span>
+                <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
             </div>
 
             <button class="collapsible defaultActive">
@@ -942,8 +957,8 @@
     <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
 
         <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-            <span>作品集</span>
-            <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;PORTFOLIO </span>
+            <span class="JhengRegular">作品集</span>
+            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;PORTFOLIO </span>
         </div>
 
         <div class="xs-hide sm-hide col-md6 col-lg6">
@@ -956,7 +971,8 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                        <div class="material">120 X 180cm 综合材料</div>
+                        <div class="material JhengLight"><span style="font-family: 'dinLight';">120 X 180cm </span>综合材料
+                        </div>
                         <img src="../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg" alt="">
 
                         <div class="blankspace"></div>
@@ -975,7 +991,7 @@
                     </div>
                     <div class="swiper-slide">
                         <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                        <div class="material">尺寸cm 材料类型</div>
+                        <div class="material JhengLight">尺寸<span style="font-family: 'dinLight';">cm </span>材料类型</div>
                         <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10001.jpg" alt="">
 
                         <div class="blankspace"></div>
@@ -997,7 +1013,7 @@
                     </div>
                     <div class="swiper-slide">
                         <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                        <div class="material">尺寸cm 材料类型</div>
+                        <div class="material JhengLight">尺寸<span style="font-family: 'dinLight';">cm </span>材料类型</div>
                         <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10009.jpg" alt="">
 
                         <div class="blankspace"></div>
@@ -1033,7 +1049,7 @@
 
                     <div class="swiper-slide">
                         <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                        <div class="material">尺寸cm 材料类型</div>
+                        <div class="material JhengLight">尺寸<span style="font-family: 'dinLight';">cm </span>材料类型</div>
                         <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10002.jpg" alt="">
 
                         <div class="blankspace"></div>
@@ -1053,7 +1069,7 @@
 
                     <div class="swiper-slide">
                         <!-- <div class="padding" style="background-color: #c26739;opacity: 1;"></div> -->
-                        <div class="material">尺寸cm 材料类型</div>
+                        <div class="material JhengLight">尺寸<span style="font-family: 'dinLight';">cm </span>材料类型</div>
                         <img src="~/Content/ArtImg/Artist/Works/zhanglanqianzuopin/10010.jpg" alt="">
 
                         <div class="blankspace"></div>
@@ -1087,8 +1103,8 @@
     <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
 
         <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-            <span>相<span style="font-family: 'sansLight';">关</span>展览</span>
-            <span style="font-size: 1rem;letter-spacing: 0;">&ensp;/&ensp;EXHIBITION </span>
+            <span class="JhengRegular">相关展览</span>
+            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;EXHIBITION </span>
         </div>
 
         <div class="col-xs20 col-sm20 col-md20 col-lg20">

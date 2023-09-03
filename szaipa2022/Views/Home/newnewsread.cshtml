@@ -18,6 +18,17 @@
     <script src="../../Content/Model/vue.global.js"></script>
     <script src="../../Content/Model/element-plus.js"></script>
 
+    <!-- 23年优化字体加载地址 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='http://fonts.font.im/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='http://fonts.font.im/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
+
     <style>
         html {
             scroll-behavior: smooth;
@@ -273,7 +284,7 @@
             color: #939393;
             overflow: hidden;
             text-align: center;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight'; */
             font-size: .6rem;
             line-height: 1.7em;
         }
@@ -284,7 +295,7 @@
         .footerM a {
             text-decoration: none;
             color: #939393;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight'; */
             font-size: .6rem;
             line-height: 1.7em;
         }
@@ -340,7 +351,10 @@
         .copyright-container p {
             color: #939393;
             text-decoration: none;
-            font-family: 'sansLight';
+            /* font-family: 'sansLight';*/
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 300;
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -370,7 +384,10 @@
 
         .search::placeholder {
             color: #939393;
-            font-family: 'sansExtraLight';
+            /* font-family: 'sansExtraLight';*/
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 200;
             font-size: 0.8rem;
         }
 
@@ -396,10 +413,11 @@
             /* color: #bf272d; */
             text-align: center;
             font-size: 1.7rem;
-            font-family: 'JhengBold';
+            /* font-family: 'JhengBold';*/
             padding: 0 2vw;
-            margin-top: 5vh;
-            margin-bottom: 5vh;
+            margin: 5vh auto;
+            max-width: 20em;
+            line-height: 1.5em;
         }
 
         #bread {
@@ -409,12 +427,13 @@
 
         #bread * {
             font-size: 1rem;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-weight: 300;
         }
 
         #bread a {
             text-decoration: none;
             color: black;
-            @*font-family:'JhengBold';*@
         }
 
         .el-breadcrumb__item:last-child .el-breadcrumb__inner,
@@ -442,7 +461,10 @@
         .article h1 {
             text-align: center;
             font-size: 1.5rem;
-            font-family: 'sansRegular';
+            /* font-family: 'sansRegular';*/
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 400;
             letter-spacing: .1em;
             margin-top: 2em;
             line-height: 0;
@@ -457,6 +479,10 @@
         .article p {
             text-align: justify;
             font-size: 1.1rem;
+            /* font-family: 'sansLight';*/
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 300;
             line-height: 1.8em;
             text-indent: 2em;
         }
@@ -501,10 +527,11 @@
 
             background-position: center center;
             background-size: cover;
+            background-repeat: no-repeat;
         }
 
         .contentSon:hover {
-            background-size: 130% auto;
+            background-size: 200% auto;
         }
 
         .contentSon::before {
@@ -518,22 +545,27 @@
 
             width: 100%;
             height: 100%;
+            background-position: center center;
+            background-size: cover;
             background-color: #00000095;
         }
 
         .contentSon h3 {
-            font-family: 'JhengRegular';
+            /* font-family: 'JhengRegular'; */
             font-size: 0.8rem;
             letter-spacing: 0.05em;
         }
 
         .contentSon h1 {
-            font-family: 'sansRegular';
+            /* font-family: 'sansRegular';*/
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 400;
             font-size: 1.3rem;
         }
 
         .contentSon h4 {
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight';*/
             margin-top: 5em;
             font-size: 0.7rem;
             letter-spacing: 0.05em;
@@ -566,7 +598,7 @@
                     <!-- <div class="lineR"></div> -->
 
                     <li>
-                        <a href="../../Home/newvip">会员风采</a>
+                        <a href="../../Home/vip">会员风采</a>
                     </li>
                     <!-- <div class="lineR" style="margin-right: 40px;"></div> -->
 
@@ -621,7 +653,7 @@
         <div id="bread">
 
             <el-breadcrumb separator=">">
-                <div class="time">@Model.Date</div>
+                <div class="time">@string.Format("{0:yyyy.MM.dd}", Model.Date)</div>
 
                 <el-breadcrumb-item :to="{ path: '>' }"><a href="../../Home/newIndex">首页</a></el-breadcrumb-item>
                 <el-breadcrumb-item><a href="../../Home/newnews">新闻动态</a></el-breadcrumb-item>
@@ -633,7 +665,7 @@
         </div>
 
 
-        <header>
+        <header class="JhengBold">
             @Model.Title
         </header>
 
@@ -641,7 +673,7 @@
 
         <!-- 正文 -->
 
-            @Html.Raw(Model.Content)
+        @Html.Raw(Model.Content)
 
 
 
@@ -654,30 +686,34 @@
     <section class="content xs-hide sm-hide">
 
         <ul>
-            <a href="Javascript:;;">
-                <li class="contentSon" style="background-image: url('../../content/images/Article/dabubeitang.jpg');">
-                    <h3>2023.02.13</h3>
-                    <h1>深圳市艺术产业促进会助力乡建，参加大埔北塘艺术柚仓、翰林草堂落成揭幕活动</h1>
-                    <h4>查看更多</h4>
-                </li>
-            </a>
+            @foreach (var news in ViewBag.NewsList)
+            {
+                <a href="~/Home/newnewsread/@news.Id">
+                    <li class="contentSon" style="background-image: url('../../content/newsImg/@news.CoverPath');">
+                        <h3 class="JhengRegular">@string.Format("{0:yyyy.MM.dd}", news.Date)</h3>
+                        <h1>@news.Title</h1>
+                        <h4 class="JhengLight">查看更多</h4>
+                    </li>
+                </a>
+            }
 
-            <a href="1031">
+            <!--
+                <a href="1031">
                 <li class="contentSon" style="background-image: url('../../content/images/sample01.jpg');">
-                    <h3>2022.12.31</h3>
+                    <h3 class="JhengRegular">2022.12.31</h3>
                     <h1>同构《第二季》——当代艺术展在罗湖美术馆开幕</h1>
-                    <h4>查看更多</h4>
+                    <h4 class="JhengLight">查看更多</h4>
                 </li>
             </a>
 
             <a href="1030">
                 <li class="contentSon" style="background-image: url('../../content/images/sample02.jpg');">
-                    <h3>2022.12.13</h3>
+                    <h3 class="JhengRegular">2022.12.13</h3>
                     <h1>《同构》第二季——当代艺术展即将拉开帷幕</h1>
-                    <h4>查看更多</h4>
+                    <h4 class="JhengLight">查看更多</h4>
                 </li>
             </a>
-
+                                                                        -->
         </ul>
 
 
@@ -726,44 +762,46 @@
     </section>
 
     <!-- FOOTER - PC -->
-    <footer class="xs-hide sm-hide footerPC">
+    <footer class="xs-hide sm-hide footerPC JhengLight">
         <div class="footer">
             <div class="copyright-container">
                 <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                <div class="col-sm7 col-md7 col-lg7 copyright">
+                <div class="col-sm7 col-md7 col-lg7 copyright JhengLight">
                     <p>
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                        <a class="JhengLight"
+                            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
                             粤公网安备 44030402004889号 
-                        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                        </a>｜ <a class="JhengLight" href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
                         办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
                         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
                         深圳市艺术产业促进会
                     </p>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-sm3 col-md3 col-lg3 footerList JhengLight">
                     <p style="padding-left: 10%;">
-                        <a href="~/home/newnews"> 新闻动态</a><br />
-                        <a href="~/home/newConstitution"> 展会动态</a><br />
+                        <a class="JhengLight" href="~/home/newnews"> 新闻动态</a><br />
+                        <a class="JhengLight" href="~/home/newConstitution"> 展会动态</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
                     </p>
 
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-sm3 col-md3 col-lg3 footerList JhengLight">
                     <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">合作案例 </a><br />
-                        <a href="Javascript:;;">艺术家首页</a><br />
+                        <a class="JhengLight" href="~/home/newabout">合作案例 </a><br />
+                        <a class="JhengLight" href="Javascript:;;">艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
                     </p>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-sm3 col-md3 col-lg3 footerList JhengLight">
                     <p style="padding-left: 10%;">
-                        <a href="~/home/newlink">联系我们</a><br />
-                        <a href="~/home/index">切换旧版</a><br />
-                        <a href="~/Staff/Index">后台登陆</a><br />
+                        <a class="JhengLight" href="~/home/link">联系我们</a><br />
+                        /* <a class="JhengLight" href="~/home/index">切换旧版</a><br /> */
+                        <a class="JhengLight" href="~/Staff/Index">后台登陆</a><br />
+                        &#12288;<br />
                         &#12288;<br />
                         &#12288;
                     </p>
@@ -791,15 +829,16 @@
 
 
     <!-- FOOTER - MOBILE -->
-    <footer class="md-hide lg-hide copyrightM footerM">
-        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+    <footer class="md-hide lg-hide copyrightM footerM JhengLigt">
+        <a class="JhengLight" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 </a>｜ <a class="JhengLight"
+            href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
         办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
         深圳市艺术产业促进会<br />
         <br />
-        <a href="~/home/index">切换旧版</a><br />
-        <a href="~/Staff/Index">后台登陆</a>
+        <a class="JhengLight" href="~/home/index">切换旧版</a><br />
+        <a class="JhengLight" href="~/Staff/Index">后台登陆</a>
     </footer>
 
 
@@ -1174,4 +1213,12 @@
     '香港特别行政区':[114.173825,22.337784],
     '澳门特别行政区':[113.560161,22.214787],*@
 
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+    </script>
 </body>

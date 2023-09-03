@@ -618,3 +618,56 @@
     src: url("../../fonts/NotoSansSC-Black.woff2") format("woff2");
     font-display: swap;
 }
+
+/* 补充外部引入字体规则 */
+
+.notosans {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-display: swap;
+}
+
+.notoserif {
+    font-family: 'Noto Serif SC', serif;
+    font-display: swap;
+}
+
+.JhengLight {
+    font-weight: 200;
+    font-display: swap;
+}
+
+.JhengRegular {
+    font-weight: 400;
+    font-display: swap;
+}
+
+.JhengBold {
+    font-weight: 500;
+    font-display: swap;
+}
+
+.extraLight {
+    font-weight: 200;
+}
+
+.light {
+    font-weight: 300;
+}
+
+.regular {
+    font-weight: 400;
+}
+
+.medium {
+    font-weight: 500;
+}
+
+/* SemiBold 字重600 */
+
+.bold {
+    font-weight: 700;
+}
+
+.heavy {
+    font-weight: 900;
+}

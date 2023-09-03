@@ -4,17 +4,6 @@
 
 <head>
     <meta charset="utf-8" />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKFVX375NX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-WKFVX375NX');
-    </script>
-
     <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
     <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
     <link rel="icon" href="../../Content/123/favicon.ico" type="image/x-icon">
@@ -22,11 +11,23 @@
     <script src="../../Content/Model/bootstrap.min.js"></script>
     <script src="../../Content/Model/layui.js"></script>
     <script src="../../Content/Model/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="http://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
+
     <link rel="stylesheet" href="../../Content/Model/css/bootstrap.css">
     <link rel="stylesheet" href="../../Content/Model/css/layui.css">
     <link rel="stylesheet" href="../../Content/Model/css/Site.css">
     <link rel="stylesheet" href="../../Content/Model/css/responsive.css">
     <link rel="stylesheet" href="../../Content/Model/css/swiper-bundle.min.css">
+
+    <!-- 引入google font CDN站 2023.08.04 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href='https://fonts.font.im/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='https://fonts.font.im/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
 
     <style>
         html {
@@ -342,7 +343,9 @@
         .copyright-container p {
             color: #939393;
             text-decoration: none;
-            font-family: 'sansLight';
+            /* font-family: 'sansLight';*/
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -396,8 +399,8 @@
         }
     </style>
     @*<div class="floating-box">
-        <span class="close-btn">&times;</span>
-        <p>请等待页面完整加载后查看效果，目前的字体加载比较缓慢</p>
+    <span class="close-btn">&times;</span>
+    <p>请等待页面完整加载后查看效果，目前的字体加载比较缓慢</p>
     </div>*@
 
 
@@ -424,12 +427,12 @@
                     <div class="lineR"></div>
 
                     <li>
-                        <a href="~/home/newvip">会员风采</a>
+                        <a href="~/home/vip">会员风采</a>
                     </li>
                     <div class="lineR" style="margin-right: 40px;"></div>
 
                     <li style="padding-right: 1vw;">
-                        <a href="~/home/newabout">关于我们</a>
+                        <a href="~/home/about">关于我们</a>
                     </li>
 
                 </ul>
@@ -451,7 +454,6 @@
     <!-- 以下为共享部分 -->
 
     <!-- FOOTER - PC -->
-
 
     <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
         <div class="footer">
@@ -478,7 +480,7 @@
                 </div>
                 <div class="col-sm3 col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">合作案例 </a><br />
+                        <a href="~/home/about">合作案例 </a><br />
                         <a href="Javascript:;;">艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
@@ -487,9 +489,10 @@
                 </div>
                 <div class="col-sm3 col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="~/home/newlink">联系我们</a><br />
-                        <a href="~/home/index">切换旧版</a><br />
+                        <a href="~/home/link">联系我们</a><br />
+                        <!-- <a href="~/home/index">切换旧版</a><br /> -->
                         <a href="~/Staff/Index">后台登陆</a><br />
+                        &#12288;<br />
                         &#12288;<br />
                         &#12288;
                     </p>
@@ -514,7 +517,14 @@
     </footer>
 
 
-
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+    </script>
 
 </body>
 
