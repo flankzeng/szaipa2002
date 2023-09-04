@@ -1,16 +1,31 @@
-﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|" GitUserInfo="UsingGIT">
+﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/HomeController.cs">
+    <Files>
+      <File FileName="szaipa2022/Controllers/PublicationController.cs" />
+      <File FileName="szaipa2022/Controllers/HomeController.cs" Line="55" Column="40" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="szaipa2022" expanded="True" selected="True" />
+          <Node name="szaipa2022" expanded="True">
+            <Node name="szaipa2022" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+                <Node name="Publication" expanded="True" />
+                <Node name="Shared" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge Dev.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
