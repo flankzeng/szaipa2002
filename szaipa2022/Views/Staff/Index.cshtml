@@ -1,9 +1,13 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "后台综合";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
 
+<style>
+    .layui-col-md12 {
+        padding: 0;
+    }
+</style>
 
 <div class="layui-row layui-col-space30">
     <div class="layui-col-md12">
@@ -15,66 +19,66 @@
                         <fieldset class="layui-field-title" style="margin-top: 10px;">
                             <legend>访问数据(近一个月访问量)</legend>
                         </fieldset>
-                        <div id="main" style="width:100%;height:400px"></div>
+                        <div id="main" style="margin:0 auto;width:80vw;height:400px"></div>
                     </div>
                 </div>
             </div>
             <div class="layui-col-md12">
                 <div class="layui-col-md8">
-                  
+
 
                     <div class="layui-col-md12">
-                            <div class="layui-col-md6">
-                                <div class="layui-panel">
-                                    <div style="padding:30px;">
-                                        <div style="width:100%;height:470px">
-                                            <fieldset class="layui-field-title" style="margin-top: 10px;">
-                                                <legend>上传数据</legend>
-                                            </fieldset>
-                                            <h4>共有0位会员的数据被编辑录入<small> 昨日新增了0位</small></h4>
-                                            <h4>共有0家会员企业的数据被编辑录入<small> 昨日新增了0家</small></h4>
-                                            <h4>共有上传了0副艺术家作品<small> 昨日上传了0副</small></h4>
-                                            <h4>共有0条动态新闻 <small> 昨日编写了0条</small></h4>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                            <div class="layui-col-md6">
-                                <div class="layui-panel">
-                                    <div style="padding:30px;">
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <div style="padding:30px;">
+                                    <div style="width:100%;height:470px">
                                         <fieldset class="layui-field-title" style="margin-top: 10px;">
-                                            <legend>访问项目</legend>
+                                            <legend>上传数据</legend>
                                         </fieldset>
-                                        <div id="main1" style="width:100%;height:400px"></div>
+                                        <h4>共有0位会员的数据被编辑录入<small> 昨日新增了0位</small></h4>
+                                        <h4>共有0家会员企业的数据被编辑录入<small> 昨日新增了0家</small></h4>
+                                        <h4>共有上传了0副艺术家作品<small> 昨日上传了0副</small></h4>
+                                        <h4>共有0条动态新闻 <small> 昨日编写了0条</small></h4>
                                     </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <div style="padding:30px;">
+                                    <fieldset class="layui-field-title" style="margin-top: 10px;">
+                                        <legend>访问项目</legend>
+                                    </fieldset>
+                                    <div id="main1" style="width:100%;height:400px"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="layui-col-md12">
-                            <div class="layui-col-md6">
-                                <div class="layui-panel">
-                                    <div style="padding:30px;">
-                                        <fieldset class="layui-field-title" style="margin-top: 10px;">
-                                            <legend>访问来自(本月)</legend>
-                                        </fieldset>
-                                        <div id="main2" style="width:100%;height:400px"></div>
-                                    </div>
+                    </div>
+                    <div class="layui-col-md12">
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <div style="padding:30px;">
+                                    <fieldset class="layui-field-title" style="margin-top: 10px;">
+                                        <legend>访问来自(本月)</legend>
+                                    </fieldset>
+                                    <div id="main2" style="width:100%;height:400px"></div>
                                 </div>
                             </div>
-                            <div class="layui-col-md6">
-                                <div class="layui-panel">
-                                    <div style="padding:30px;">
-                                        <fieldset class="layui-field-title" style="margin-top: 10px;">
-                                            <legend>访问来自(今年)</legend>
-                                        </fieldset>
-                                        <div id="main3" style="width:100%;height:400px"></div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-panel">
+                                <div style="padding:30px;">
+                                    <fieldset class="layui-field-title" style="margin-top: 10px;">
+                                        <legend>访问来自(今年)</legend>
+                                    </fieldset>
+                                    <div id="main3" style="width:100%;height:400px"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="layui-col-md4">
                     <div class="layui-panel">
@@ -88,21 +92,22 @@
                                         <ul class="layui-timeline">
                                             @foreach (var o in Model)
                                             {
-                                            <li class="layui-timeline-item">
-                                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
-                                                <div class="layui-timeline-content layui-text">
-                                                    <h3 class="layui-timeline-title">@o.date</h3>
-                                                    <p>
-                                                        @foreach (var r in o.or)
+                                                <li class="layui-timeline-item">
+                                                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                                    <div class="layui-timeline-content layui-text">
+                                                        <h3 class="layui-timeline-title">@o.date</h3>
+                                                        <p>
+                                                            @foreach (var r in o.or)
                                                             {
-                                                        @r <br />
+                                                                @r <br />
                                                             }
-                                                    </p>
-                                                </div>
-                                            </li>
+                                                        </p>
+                                                    </div>
+                                                </li>
                                             }
                                             <li class="layui-timeline-item">
-                                                <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+                                                <i
+                                                    class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
                                                 <div class="layui-timeline-content layui-text">
                                                     <div class="layui-timeline-title">更新中！</div>
                                                 </div>
@@ -182,96 +187,96 @@
     option && myChart.setOption(option);
 
 
-   var chartDom1 = document.getElementById('main1');
-   var myChart1 = echarts.init(chartDom1);
-   var option1;
-   option1 = {
-       tooltip: {
-           trigger: 'item'
-       },
-       legend: {
-           top: '5%',
-           left: 'center'
-       },
-       series: [
-           {
-               name: '访问目的',
-               type: 'pie',
-               radius: ['40%', '70%'],
-               avoidLabelOverlap: false,
-               label: {
-                   show: false,
-                   position: 'center'
-               },
-               emphasis: {
-                   label: {
-                       show: true,
-                       fontSize: '40',
-                       fontWeight: 'bold'
-                   }
-               },
-               labelLine: {
-                   show: false
-               },
-               //data: [
-               //    { value: 1048, name: '访问作品' },
-               //    { value: 735, name: '访问会员' },
-               //    { value: 580, name: '访问会员企业' },
-               //    { value: 484, name: '访问动态' },
-               //]
-           }
-       ]
-   };
-   myChart1.showLoading();
-   $.get('/Staff/DataCount').done(function (data) {
-       myChart1.hideLoading();
-       myChart1.setOption({
+    var chartDom1 = document.getElementById('main1');
+    var myChart1 = echarts.init(chartDom1);
+    var option1;
+    option1 = {
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            top: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: '访问目的',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '40',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                //data: [
+                //    { value: 1048, name: '访问作品' },
+                //    { value: 735, name: '访问会员' },
+                //    { value: 580, name: '访问会员企业' },
+                //    { value: 484, name: '访问动态' },
+                //]
+            }
+        ]
+    };
+    myChart1.showLoading();
+    $.get('/Staff/DataCount').done(function (data) {
+        myChart1.hideLoading();
+        myChart1.setOption({
 
-           series: {
+            series: {
 
-               data: data.data
-           }
-       });
-   })
-   option1 && myChart1.setOption(option1);
-
-
-   var chartDom2 = document.getElementById('main2');
-   var myChart2 = echarts.init(chartDom2);
-   var option2 = {
-       series: {
-           type: 'sunburst',
-       }
-   };
-   myChart2.showLoading();
-   $.get('/Staff/visitcityM').done(function (data) {
-       myChart2.hideLoading();
-       myChart2.setOption({
-           series: {
-               data: data.data
-           }
-       });
-   })
-   option2 && myChart2.setOption(option2);
+                data: data.data
+            }
+        });
+    })
+    option1 && myChart1.setOption(option1);
 
 
-   var chartDom3 = document.getElementById('main3');
-   var myChart3 = echarts.init(chartDom3);
-   var option3 = {
-       series: {
-           type: 'sunburst',
-       }
-   };
-   myChart3.showLoading();
-   $.get('/Staff/visitcityY').done(function (data) {
-       myChart3.hideLoading();
-       myChart3.setOption({
-           series: {
-               data: data.data
-           }
-       });
-   })
-   option3 && myChart3.setOption(option3);
+    var chartDom2 = document.getElementById('main2');
+    var myChart2 = echarts.init(chartDom2);
+    var option2 = {
+        series: {
+            type: 'sunburst',
+        }
+    };
+    myChart2.showLoading();
+    $.get('/Staff/visitcityM').done(function (data) {
+        myChart2.hideLoading();
+        myChart2.setOption({
+            series: {
+                data: data.data
+            }
+        });
+    })
+    option2 && myChart2.setOption(option2);
+
+
+    var chartDom3 = document.getElementById('main3');
+    var myChart3 = echarts.init(chartDom3);
+    var option3 = {
+        series: {
+            type: 'sunburst',
+        }
+    };
+    myChart3.showLoading();
+    $.get('/Staff/visitcityY').done(function (data) {
+        myChart3.hideLoading();
+        myChart3.setOption({
+            series: {
+                data: data.data
+            }
+        });
+    })
+    option3 && myChart3.setOption(option3);
 
     //var chartDom = document.getElementById('main');
     //var myChart = echarts.init(chartDom);
@@ -307,4 +312,5 @@
     //})
     //option && myChart.setOption(option);
 </script>
-@*'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'*@
+@*'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21',
+'22', '23', '24', '25', '26', '27', '28', '29', '30'*@
