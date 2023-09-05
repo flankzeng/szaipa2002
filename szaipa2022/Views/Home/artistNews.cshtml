@@ -1,0 +1,1154 @@
+﻿@{
+    ViewBag.Title = "张岚芊 - 艺术家资讯";
+    Layout = "~/Views/Shared/_Artist.cshtml";
+}
+<style>
+    body {
+        overflow-x: hidden !important;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+    }
+
+    #ArtistNav {
+        position: fixed;
+        top: 3%;
+        right: 1.5%;
+        font-size: 1rem;
+        z-index: 999;
+    }
+
+    #ArtistNav a {
+        color: black;
+        background-color: white;
+        border-right: 1px solid black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        text-decoration: none !important;
+        padding: .5vh 1vw;
+    }
+
+    .activeLink a {
+        color: white !important;
+        background-color: black !important;
+    }
+
+    /* 以上为导航栏部分 */
+    /* 以下为正文部分 */
+
+    .header {
+        /* 作品集 */
+        width: 100%;
+        height: auto;
+        position: relative;
+        color: white;
+        /* padding-bottom: 8vh; */
+    }
+
+    .bg {
+        background: linear-gradient(to bottom right, #3e47e1, #151965);
+        display: list-item;
+    }
+
+    /* 添加时间:2023.07.06 */
+
+    #section01 {
+        height: auto;
+        width: 100vw;
+        position: relative;
+    }
+
+    .recent {
+        position: relative;
+        height: 100vh;
+        width: auto;
+        overflow: hidden;
+    }
+
+    .recent::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        height: 100vh;
+        filter: brightness(65%);
+        transition: transform 300ms;
+        background-image: url('../../Content/images/IMG_9282.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50% 50%;
+    }
+
+    .recent:hover::before {
+        transform: scale(1.1);
+    }
+
+    .recent a {
+        padding: 0 10% 0 10%;
+        text-align: center;
+        color: white;
+        text-decoration: none;
+    }
+
+    .now {
+        display: block;
+        width: 100vw;
+        font-size: 5rem;
+        /* font-family: 'cjkBold';*/
+        font-weight: 700;
+        font-family: 'Noto Serif SC', serif;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-decoration: none;
+    }
+
+    .now span {
+        display: block;
+        font-size: 1rem;
+        margin-top: .8em;
+        /* font-family: 'JhengLight';*/
+    }
+
+
+    .news {
+        position: absolute;
+        left: 50%;
+        bottom: 3%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: auto;
+        line-height: 1.5em;
+        color: white;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .news a {
+        width: auto;
+        padding: 0;
+        margin-left: 2em;
+        margin-right: 2em;
+        font-size: .75rem;
+    }
+
+    /* 以上是section01大图的css */
+
+    .more {
+        /* height: 135vh; */
+        height: auto;
+        width: 100vw;
+        overflow-x: hidden;
+        padding: 8% 10% 0% 10%;
+    }
+
+    .more a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        height: var(--xinwenH);
+        position: relative;
+        text-align: justify;
+        margin-bottom: var(--liBottom);
+    }
+
+    .more a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translate(-1.5%, -13%);
+        height: 126%;
+        width: 103%;
+        border: 1px solid #ffffff20;
+    }
+
+    .secondborder {
+        position: absolute;
+        transform: translate(-1.5%, -13%);
+        height: 126%;
+        width: 103%;
+        left: 0;
+    }
+
+    .secondborder::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-top: 1px solid #ffffff50;
+        border-left: 1px solid #ffffff50;
+        width: 2%;
+        height: 13%;
+    }
+
+    .secondborder::after {
+        content: "";
+        position: absolute;
+        top: auto;
+        left: auto;
+        bottom: 0;
+        right: 0;
+        border-bottom: 1px solid #ffffff50;
+        border-right: 1px solid #ffffff50;
+        width: 2%;
+        height: 13%;
+    }
+
+    .mirror {
+        transform: scaleY(-1) translate(-1.5%, 13%) !important;
+    }
+
+    .more img {
+        object-fit: cover;
+        float: left;
+        height: var(--xinwenH);
+        width: var(--xinwenW);
+        transform: translateY(-4%);
+    }
+
+    .more h2 {
+        font-size: 1rem;
+        /* font-family: 'JhengBold';*/
+        margin-bottom: .5em;
+    }
+
+    .more h3 {
+        font-size: .8rem;
+        /* font-family: 'JhengLight';*/
+        margin-bottom: 1em;
+    }
+
+    .more p {
+        border-top: .5px solid white;
+        padding-top: 1em;
+        font-size: .7rem;
+        text-align: justify;
+        /* font-family: 'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .more span {
+        position: absolute;
+        right: 1.3%;
+        bottom: 0;
+        font-size: .8rem;
+        /* font-family: 'JhengLight';*/
+        border: 1px solid #ffffff50;
+        padding: 5px 10px;
+    }
+
+    .more span:hover {
+        border: 1px solid #ffffff60;
+    }
+
+    /* 分页 */
+    #pagination {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5%;
+        font-size: 1rem;
+    }
+
+    #pagination li {
+        display: inline-block;
+        margin-right: .5em;
+    }
+
+    #pagination li a {
+        font-family: 'dinLight';
+        font-size: .9rem;
+        color: white;
+        background-color: #ffffff10;
+        text-decoration: none;
+        padding: .2em .8em;
+        border-radius: 3px;
+    }
+
+    #pagination li.active a {
+        background-color: #ffffff40;
+    }
+
+    .prev,
+    .next {
+        background-color: transparent !important;
+    }
+
+    .disabled {
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    /* 收藏捐赠 */
+    #section02 {
+        min-height: 80vh;
+    }
+
+    .collection {
+        height: auto;
+        padding: 1.3em 0;
+    }
+
+    .infoBox {
+        height: 35vh;
+        width: 100%;
+        position: relative;
+        z-index: 50;
+    }
+
+    .infoBox img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .collection li {
+        height: auto;
+        width: 100%;
+        display: block;
+        position: relative;
+        margin-bottom: 2vh;
+    }
+
+    .collection .infoBox::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #00000050;
+    }
+
+    .collection span {
+        position: absolute;
+        bottom: 5%;
+        right: 8%;
+        color: white;
+        padding-bottom: 2em;
+        cursor: pointer;
+        z-index: 100;
+    }
+
+    .collection span h1 {
+        font-size: 3.2rem;
+        /* font-family: 'JhengLight';*/
+        margin-bottom: 3%;
+    }
+
+    /* 取消了地址时间一起进入的动画 */
+    .foldInfo {
+        text-align: end;
+        /* transform: translateY(100%); */
+        transition: .3s;
+        font-size: 1rem;
+        margin-right: .7%;
+        /* opacity: 0; */
+    }
+
+    .infoBox:hover .foldInfo {
+        /* 已无效化 */
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    .fold {
+        width: 15%;
+        height: 15%;
+        opacity: 0;
+        background-image: url('../../content/icon/xia.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        font-size: 1rem;
+        position: absolute;
+        bottom: -10%;
+        right: 0%;
+        transition: all .3s;
+    }
+
+    .infoBox:hover .fold {
+        bottom: 0%;
+        opacity: .5;
+    }
+
+    .unfolded {
+        position: relative;
+        color: white;
+        height: 0;
+
+        transition: all 600ms;
+        overflow: hidden;
+        transform: translateY(-100%);
+        z-index: -1;
+        opacity: 0;
+    }
+
+    .active {
+        height: auto !important;
+        transform: translateY(0%);
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .magnify {
+        height: 35vh;
+    }
+
+    .xijie div {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        height: var(--infoH);
+    }
+
+    .xijie img {
+        border: var(--xijieBor);
+        height: var(--xijieH);
+        width: 100%;
+        object-fit: cover;
+        margin-left: 10%;
+    }
+
+    .xijie p {
+        /* position: absolute;
+            left: 50%;
+            bottom: var(--xijieBottom);
+            transform: translate(-50%, -50%); */
+        padding-left: 10%;
+        margin-top: var(--xijiePt);
+
+        text-align: center;
+        font-family: 'dinLight';
+        font-size: 1rem;
+    }
+
+    .zuopin {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        white-space: pre-wrap;
+        height: var(--infoH);
+        padding-top: 3%;
+        font-size: 1.1rem;
+        /* font-family: 'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        line-height: 2em;
+    }
+
+    /* Shrink the lens to half size */
+    .magnify>.magnify-lens {
+        /* width: 50%; */
+        /* height: 50%; */
+        border: 1px solid white;
+    }
+
+    .infoBox {
+        background-position: center center;
+        background-size: cover;
+        /* background-attachment: fixed; */
+    }
+
+    /* 出版著作 */
+    #section03 {
+        min-height: 110vh;
+    }
+
+    /* 拍卖行情 */
+    #section04 {
+        min-height: 110vh;
+    }
+
+    .market {
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 3%;
+        display: block;
+    }
+
+    .market tr {
+        max-height: 60vh;
+        color: white;
+        /* font-family: 'sansLight';*/
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .market th {
+        width: 25%;
+    }
+
+    .market p {
+        padding-left: 7%;
+        padding-right: 5%;
+        font-size: .8rem;
+        white-space: pre-line;
+        line-height: 1.5em;
+    }
+
+    .market img {
+        object-fit: cover;
+        object-position: top;
+        width: 100%;
+        padding: 5%;
+        box-sizing: border-box;
+    }
+
+    .market span {
+        font-size: 1.2rem;
+        /* font-family: 'sansRegular';*/
+        font-weight: 400;
+        font-family: 'Noto Sans SC', sans-serif;
+        margin-bottom: 1em;
+    }
+</style>
+
+
+
+<nav id="ArtistNav">
+
+    <table>
+        <tr>
+            <td>
+                <a href="/Home/newIndex" style="border-left: 1px solid black;">
+                    首&#12288;页
+                </a>
+            </td>
+            <td>
+                <a href="/Home/artistZLQ">艺术家首页</a>
+            </td>
+            <td class="xs-hide sm-hide activeLink">
+                <a href="#section01">资&#12288;讯</a>
+            </td>
+            <td class="xs-hide sm-hide">
+                <a href="#section02">收藏捐赠</a>
+            </td>
+            <td class="xs-hide sm-hide">
+                <a href="#section03">出版著作</a>
+            </td>
+            <td class="xs-hide sm-hide">
+                <a href="#section04">拍卖行情</a>
+            </td>
+        </tr>
+    </table>
+
+</nav>
+
+<div class="bg col-xs20 col-sm20 col-md20 col-lg20">
+    <section class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <!-- 最新资讯大图(按所有艺术家自行发布的新闻的最近一期) -->
+        <article class="recent">
+
+            <a class="now" href="Javascript:;;">
+                回顾 | 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
+                <span class="JhengLight">张岚芊&#12288;|&#12288;2023年07月05日</span>
+            </a>
+
+            <div class="news xs-hide sm-hide">
+                <a href="Javascript:;;">张岚芊与鸥洋进行艺术对谈</a>|
+                <a href="Javascript:;;">《三人行》张岚芊与顾振清访谈录系列（三）</a>|
+                <a href="Javascript:;;">#艺术对话 ｜雷双与顾振清《三人行》访谈录系列（二）</a>
+                <br />
+                <a href="Javascript:;;">展会 | 第十九届文博会深圳动漫园分会场盛大启幕</a>|
+                <a href="Javascript:;;">三人行--鸥洋 雷双 张岚芊 艺术展在深圳市木星美术馆举行</a>
+            </div>
+        </article>
+    </section>
+
+    <section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
+        <!-- 可翻页资讯 -->
+
+        <div id="zixun" class="subNav col-xs20 col-sm20 col-md20 col-lg20 header" style="border-top: none;">
+            <span>资讯</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">/&ensp;NEWS</span>
+        </div>
+
+        <ul id="list" class="more col-xs20 col-sm20 col-md20 col-lg20">
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/IMG_4187.jpg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">张岚芊与鸥洋进行艺术对谈</h2>
+                        <h3 class="JhengLight">发布日期:2023年07月05日</h3>
+                        <p>
+                            意象油画是我们多年前才开始提出的。我是从1985年在赵无极的指导下，才开始进行一些油画的探索。原因是由于早期的绘画习惯是按照苏式的艺术观念创作，基本上是写实的
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/9832ffb1-ae20-4482-9aa7-503ee149dab2.jpeg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">《三人行》张岚芊与顾振清访谈录系列（三）</h2>
+                        <h3 class="JhengLight">发布日期:2023年07月05日</h3>
+                        <p>
+                            艺术顾问顾振清：大家可以看到张岚芊的抽象绘画，其实是一个知识结构的反映。她肯定是读了无数个抽象艺术家的作品，才有现在的一种融汇贯通。她的绘画里头你可以感受到一种唐朝宋朝艺术的风度，也可以看到赵无极、朱德群这些中国华人抽象画家风格的一种转化
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/6dcfe184-4488-46b1-8b80-d89df6fcb67b.png" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">#艺术对话 ｜雷双与顾振清《三人行》访谈录系列（二）</h2>
+                        <h3 class="JhengLight">发布日期:2023年06月26日</h3>
+                        <p>
+                            今天我们有幸请来了一位非常重要的嘉宾--雷双，可以说向日葵系列是雷双老师最让我们熟悉的系列作品之一。雷双老师也是我一直仰慕的一位非常优秀有天赋的艺术家，这次展览中的几个系列作品，尤其是我最熟悉的向日葵系列、“向里尔克致意”系列那种非常有人文底蕴的表现主义绘画
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/ebbcd3c4-f388-45f3-baf3-fedce2d77314.jpeg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">展会 | 第十九届文博会深圳动漫园分会场盛大启幕</h2>
+                        <h3 class="JhengLight">发布日期:2023年06月15日</h3>
+                        <p>
+                            6月9日，深圳动漫园迎来了第十九届文博会深圳动漫园分会场的开幕式。该系列活动由润杨集团旗下深圳动漫园携手深圳市仓颉通文化传播有限公司、深圳市艺术产业促进会(以下简称市艺促会)等单位和机构共同主、承办，以数字化赋能时尚产业、高质量提升文化融合为主题
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/29d3d9d9-8085-4a41-a3a5-f74bcb1592af.jpeg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">三人行--鸥洋 雷双 张岚芊 艺术展在深圳市木星美术馆举行</h2>
+                        <h3 class="JhengLight">发布日期:2023年06月08日</h3>
+                        <p>
+                            市艺促会驻会副会长兼秘书长及参展艺术家张岚芊表示：“非常感谢两位我最喜欢的艺术家鸥洋老师、雷双老师，也十分感动能和两位优秀的艺术家前辈一道用作品交流对话，在画面中所传达的心境，用传统的手法表达意象的东西也是自己对画面的把控和对作品和自然的艺术理解。感谢到场的各位嘉宾对艺促会的支持！”
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/ac2ead59-4adf-4c07-ba7b-aca039c3b4a2.png" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">开幕回顾 ｜《三人行》鸥洋/雷双/张岚芊 当代艺术展</h2>
+                        <h3 class="JhengLight">发布日期:2023年06月08日</h3>
+                        <p>
+                            2023年6月3日，由深圳市艺术产业促进会主办，木星美术馆联合主办的《三人行》鸥洋/雷双/张岚芊
+                            艺术展开幕式在木星美术馆前厅顺利举行。此次展览活动由环球夫人全球执行秘书长陈骊璐女士主持，出席此次活动开幕式的领导和嘉宾有：艺促会副秘书长王玉波、参展艺术家雷双、深圳市医疗器械协会执行副会长王斌、深圳市仓颉通文化传播有限公司总经理倪鹤琴博士、深圳市木星美术馆策展总监陈观亨、艺术家黄海军、李坚、李苑、李跃飞、喜儿、
+                            曾风、bobo、前海紫晴国际贸易总裁具商业价值夫人紫晴女士，收藏家张铁民女士、倪红艳女士等。 </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/TrioMain.jpg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">三人行--鸥洋/雷双/张岚芊 艺术展即将拉开帷幕！</h2>
+                        <h3 class="JhengLight">发布日期:2023年06月02日</h3>
+                        <p>
+                            在中国传统文化中，“语境”、“意境” 或
+                            “意象”是创作过程的重要思路，这其实与西方的“抽象”有着异曲同工之妙。中国自古以来就有抽象的表达方式，刘勰（xié）曾在《文心雕龙·物色》中记载：“岁有万物，物有其容；情以物迁，辞以情发。”
+                            又或 “体物为妙，功在密附。”等词句精辟地概括了创作与“物”本源的关系，其本身就是一种抽象化的创作思维方式，在中国的历史长河中，这也早就成为了传统文化中一种感性的认知体系。
+
+                            　　“In Chinese traditional culture， “context，” “mood，” or “imagery” are important ideas
+                            in the creative process. This is similar to the Western concept of “abstraction.” The
+                            expression of abstraction has existed since ancient times. In “Wen Xin Diao Long，” Liu
+                            Xie recorded that “there are ten thousand things in a year， each with its appearance；
+                            emotions change with things， and words express emotions.” Or “Depiction of things is
+                            ingenious， and the skill lies in being closely attached.” These concise statements
+                            summarize the relationship between creation and the origin of “things.” It is itself a
+                            way of thinking about abstract creation. In China‘s long history， this has also become a
+                            perceptual-cognitive system in traditional culture. </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/chunyu2.jpg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">“春语”第二季--国际视觉艺术邀请展，即将启幕</h2>
+                        <h3 class="JhengLight">发布日期:2023年04月21日</h3>
+                        <p>
+                            春天，万物苏醒，我们又到了约定的季节。艺术创作是真诚的，是一种觉醒和反思，是由表及里的自我救赎。阳春的气息有一种特定的形态，或温文尔雅，或热情似火，或缠绵缱绻，在迹象中无限延伸，这是生命的迹象，有迹可寻，无迹亦真，都会在春天的语境中娓娓道来，倾诉了生命最原始的物体语言。贫瘠的土壤需要春风化雨，从此便有了生命赞歌，我们如此热爱自己的家园，无论在地球的哪个角落，会用自己独特的方式来宣示，这便是生命的全部意义。
+
+                            　　这就是春，萌生生命的美好，十里春光，不愠不火，不紧不慢。
+
+                            　　你好，春天，我们来了！
+
+                            　　姚建伟于清华园
+
+                            2023年4月18日
+
+                            PREFACE
+
+                            　　In spring， everything wakes up and we are in the season of engagement again.Art
+                            creation is sincere， an awakening and reflection， a self-redemption from the surface to
+                            the inside. The breath of spring has a specific form， or gentle， or passionate， or
+                            lingering and loving， in the signs of infinite extension， this is the signs of life，
+                            traceable， no trace is also true， will be in the context of spring to speak， pouring out
+                            the language of the most primitive objects of life.Barren soil needs a spring breeze，
+                            from then on there is a hymn to life， we love our homeland so much， no matter where on
+                            earth， will be declared in their own unique way， this is the whole meaning of life.This
+                            is spring， sprouting the beauty of life， many miles of spring light， moderate and
+                            proportionate， calm and quiet.
+
+                            　　Bonjour， Spring， here we come.</p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/8cc6fb92-03e9-4bda-b37b-1b1234b5b54e.png" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">展讯丨“灵性咏叹——刘东风艺术作品展”于罗湖美术馆开幕！ </h2>
+                        <h3 class="JhengLight">发布日期:2023年04月03日</h3>
+                        <p>
+                            3月29日由深圳市罗湖区文化广电旅游体育局主办、罗湖美术馆承办、深圳市艺术产业促进会（以下简称艺促会）、深圳市仓颉通文化传播有限公司协办的“灵性咏叹——刘东风艺术作品展”在罗湖美术馆开幕。此次展出艺术家刘东风所创作的当代艺术作品58件，涵盖油画、雕塑、影像等多种形式，集中呈现其近三年来的艺术创新硕果。展期将至4月9日。
+                        </p>
+
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <a href="Javascript:;;">
+                    <i class="secondborder"></i>
+                    <i class="secondborder mirror"></i>
+
+                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
+                        src="../../content/images/01149784-1c5f-4395-8fbe-72ad664b2663.jpeg" alt="">
+
+                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                        <h2 class="JhengBold">是谁，收藏了那一抹逝去的玫瑰红？</h2>
+                        <h3 class="JhengLight">发布日期:2023年03月27日</h3>
+                        <p>
+                            这不仅是一段佳话，更是一段传奇。2023春冬交替之际，南方乍暖还寒。从深圳驱车近400公里，深圳市艺术产业促进会一干艺术家，应邀来到梅州，城内小栖，直奔北塘。
+                            远远望去，一片柚田映入眼帘。此地产柚，只见昔日的柚仓成了“靖西当代艺术馆”，取名“艺术柚仓”。此地不仅出柚子，而且多出“翰林”，与艺术馆一方鱼塘相隔，对岸即是由猪圈华丽转身的“翰林草堂”，这里正在展出全国扇面展。国风装束，古筝悠远，乐音萦绕于草堂，飘向田野，吸引一批文人墨客艺术家欢聚，也招徕附近村夫俗子好奇的目光。
+                        </p>
+                        <span class="JhengLight">查看更多 ></span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+        <ul class="col-xs16 col-sm16 col-md16 col-lg16" id="pagination">
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+        </ul>
+        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    </section>
+
+    <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20 header">
+            <span>收藏捐赠</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">/&ensp;COLLECTION & DONATION</span>
+        </div>
+
+        <ul class="collection col-xs20 col-sm20 col-md20 col-lg20">
+            <!-- 收藏1 - 罗湖美术馆 -->
+            <li class="col-xs20 col-sm20 col-md20 col-lg20">
+                <div class="infoBox" style="background-image: url('../../Content/images/WechatIMG1665.jpg');">
+                    <span class="info">
+                        <h1 class="JhengLight">右玉·西口人家</h1>
+                        <p class="foldInfo">罗湖美术馆&#12288;|&#12288;2021</p>
+
+                        <!-- 触发折叠button -->
+                        <i class="fold"></i>
+                    </span>
+                    <!-- <img src="../../content/images/WechatIMG1665.jpg" alt=""> -->
+                </div>
+
+                <!-- 折叠 -->
+                <div class="unfolded col-xs20 col-sm20 col-md20 col-lg20">
+
+                    <div class="col-xs7 col-sm7 col-md12 col-lg12 xijie">
+                        <img src="../../content/images/WechatIMG1665.jpg" class="zoom"
+                            data-magnify-src="../../content/images/WechatIMG1665.jpg">
+                        <p>80x80&nbsp;cm</p>
+                    </div>
+
+                    <div class="col-xs13 col-sm13 col-md8 col-lg8">
+
+                        <p class="zuopin">
+                            作&#8195;&#8195;品：《右玉·西口人家》
+                            作&#8195;&#8195;者：张岚芊
+                            作品尺寸：80x80cm
+                            材&#8195;&#8195;质：布面油画
+                            类&#8195;&#8195;别：油画不含丙烯画
+                            收藏机构：罗湖美术馆
+                            地&#8195;&#8195;点：深圳,中国
+                            收藏编号：L2021010001
+                        </p>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 收藏2 - 荷兰白立方 -->
+            <li class="col-xs20 col-sm20 col-md20 col-lg20">
+                <div class="infoBox" style="background-image: url('../../Content/images/yuanfang1.jpg');">
+                    <span class="info">
+                        <h1 class="JhengLight">远方系列 -1</h1>
+                        <p class="foldInfo">荷兰白立方&#12288;|&#12288;2019</p>
+
+                        <!-- 触发折叠button -->
+                        <i class="fold"></i>
+                    </span>
+                    <!-- <img src="../../Content/ArtImg/Artist/works-narrow/2e6379aca36d3074ec7921b8d9830d87.png" alt=""> -->
+                </div>
+
+                <!-- 折叠 -->
+                <div class="unfolded col-xs20 col-sm20 col-md20 col-lg20">
+                    <div class="col-xs7 col-sm7 col-md12 col-lg12 xijie">
+                        <img src="../../Content/images/yuanfang1.jpg" class="zoom"
+                            data-magnify-src="../../Content/images/yuanfang1.jpg">
+                        <p>120x100&nbsp;cm</p>
+                    </div>
+
+                    <div class="col-xs13 col-sm13 col-md8 col-lg8">
+
+                        <p class="zuopin">
+                            作&#8195;&#8195;品：《远方系列 -1》
+                            作&#8195;&#8195;者：张岚芊
+                            作品尺寸：120x100cm
+                            材&#8195;&#8195;质：布面油画
+                            类&#8195;&#8195;别：油画不含丙烯画
+                            收藏机构：荷兰白立方
+                            地&#8195;&#8195;点：阿姆斯特丹,荷兰
+                        </p>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+        <!-- 收藏捐赠 -->
+        <div style="height: 140vh;">&nbsp;</div>
+
+
+    </section>
+
+    <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20 header">
+            <span>出版著作</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">/&ensp;PUBLISHING WORKS</span>
+        </div>
+
+        <!-- 出版著作 左图右文 -->
+
+
+    </section>
+
+    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20 header">
+            <span>拍卖行情</span>
+            <span style="font-size: 1rem;letter-spacing: 0;">/&ensp;AUCTION MARKET</span>
+        </div>
+
+        <!-- 不可点击卡片 -->
+        <table class="col-xs20 col-sm20 col-md20 col-lg20 market">
+            <tr>
+                <th>
+                    <img src="../../Content/images/yuanfang12.jpg">
+                    <p>
+                        <span>2021年作 远方系列</span>
+                        估价:RMB 300,000 - 500,000
+
+                        成交价(RMB):368,000
+                        成交价(HKD):400,126
+                        成交价(USD):50,968
+
+                        <i>拍卖日期:2022-10-05</i>
+                    </p>
+                </th>
+
+                <th>
+                    <img src="../../Content/images/yuanfang15.jpg">
+                    <p>
+                        <span>2021年作 远方系列</span>
+                        估价:RMB 300,000 - 500,000
+
+                        成交价(RMB):368,000
+                        成交价(HKD):400,126
+                        成交价(USD):509,68
+
+                        <i>拍卖日期:2022-10-05</i>
+                    </p>
+                </th>
+
+                <th>
+                    <img src="../../Content/images/jubaopen6.jpg">
+                    <p>
+                        <span>聚宝盆系列之六</span>
+                        估价:RMB 200,000 - 300,000
+
+                        成交价(RMB):365,200
+                        成交价(HKD):437,365
+                        成交价(USD):54,780
+
+                        <i>拍卖日期:2021-02-05</i>
+                    </p>
+                </th>
+
+                <th>
+                    <img src="../../Content/images/yuanfang1.jpg">
+                    <p>
+                        <span>远方系列之一</span>
+                        估价:RMB 80,000 - 100,000
+
+                        成交价(RMB):148,500
+                        成交价(HKD):177,844
+                        成交价(USD):222,75
+
+                        <i>拍卖日期:2021-02-05</i>
+                    </p>
+                </th>
+            </tr>
+
+            <!-- <tr>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                </tr> -->
+        </table>
+    </section>
+
+</div>
+
+<script>
+    // 导航栏的焦点切换
+    $(function () {
+        $(window).scroll(function () {
+            var scrollDistance = $(window).scrollTop();
+            $('#section01, #section02, #section03, #section04').each(function (i) {
+                if ($(this).position().top <= scrollDistance) {
+                    $('#ArtistNav .activeLink').removeClass('activeLink');
+                    $('#ArtistNav td').eq(i + 2).addClass('activeLink');
+                }
+            });
+        }).scroll();
+    });
+
+    // 通过宽高比修改最大字符
+    $(function () {
+
+        var $paragraphs = $("#section01 li p"); // 获取特定元素下的所有p元素
+        var deviceWidth = $(window).width(); // 获取设备宽度
+        var deviceHeight = $(window).height(); // 获取设备高度
+
+        var deviceRatio = deviceWidth / deviceHeight; // 计算设备的宽高比
+        var maxCharCount = deviceRatio > 1 ? 150 : 70; // 根据宽高比决定最大字符数限制
+
+        $paragraphs.each(function () {
+            var $paragraph = $(this);
+            var content = $paragraph.text();
+
+            if (content.length > maxCharCount) {
+                var trimmedContent = content.slice(0, maxCharCount);
+                var truncatedContent = trimmedContent + "......";
+                $paragraph.text(truncatedContent);
+            }
+        });
+    });
+
+    // 新闻分页切换
+    $(function () {
+        var itemsPerPage = 6;           // 每页显示的条目数
+        var currentPage = 1;            // 当前页面
+        var $list = $('#list');         // 绑定#list
+        var $items = $list.children();  // 选中#list的子类
+        var totalItems = $items.length;
+        var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        // 显示当前页的条目
+        function showPage(page) {
+            var startIndex = (page - 1) * itemsPerPage;
+            var endIndex = startIndex + itemsPerPage;
+            $items.hide().slice(startIndex, endIndex).show();
+        }
+
+        // 生成分页导航条
+        function generatePagination() {
+            var $pagination = $("#pagination");
+            $pagination.empty();
+
+            var $prev = $('<li class="prev disabled"><a href="#">上一页</a></li>');
+            if (currentPage > 1) {
+                $prev.removeClass("disabled");
+                $prev.children("a").attr("href", "#");
+            }
+            $pagination.append($prev);
+
+            for (var i = 1; i <= totalPages; i++) {
+                var $li = $('<li><a href="#">' + i + '</a></li>');
+
+                if (i === currentPage) {
+                    $li.addClass("active");
+                }
+
+                $pagination.append($li);
+            }
+
+            var $next = $('<li class="next"><a href="#">下一页</a></li>');
+            if (currentPage < totalPages) {
+                $next.children("a").attr("href", "#");
+            } else {
+                $next.addClass("disabled");
+            }
+            $pagination.append($next);
+        }
+
+        // 初始化显示第一页
+        showPage(currentPage);
+        generatePagination();
+
+        // 点击分页导航条触发事件
+        $("#pagination").on("click", "a", function (e) {
+            e.preventDefault();
+            var targetPage = $(this).text();
+
+            if (targetPage === "上一页" && currentPage > 1) {
+                currentPage--;
+            } else if (targetPage === "下一页" && currentPage < totalPages) {
+                currentPage++;
+            } else {
+                currentPage = parseInt(targetPage);
+            }
+
+            showPage(currentPage);
+            generatePagination();
+
+            // 滚动到章节顶部
+            $("html, body").animate({ scrollTop: $("#zixun").offset().top }, 50);
+        });
+    });
+
+    // Info图像显示
+    $(function () {
+        var info = $('.info');
+        var fold = $('.unfolded');
+
+        info.each(function (index) {
+            var $this = $(this);
+            var $relatedFold = fold.eq(index);
+
+            $this.click(function () {
+                $relatedFold.toggleClass('active').fadeIn(1000);
+            });
+        });
+    });
+
+    // 放大镜
+    $(function () {
+        $('.zoom').magnify({
+            speed: 200,
+            // limitBounds: true,
+            magnifiedWidth: 1000,
+            magnifiedHeight: 1000,
+        })
+    });
+
+    // 模拟bg-attachment
+    $(function () {
+        var $infoBox = $('.infoBox');
+
+        $(window).scroll(function () {
+            var scrollTop = $(this).scrollTop();
+            $infoBox.css('background-position', 'center ' + (-scrollTop) + 'px');
+        });
+    });
+
+</script>

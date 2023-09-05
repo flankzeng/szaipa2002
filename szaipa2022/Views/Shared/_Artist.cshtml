@@ -13,6 +13,9 @@
     <script src="~/Content/Model/layui.js"></script>
     <script src="~/Content/Model/swiper-bundle.min.js"></script>
 
+    <!-- 引入MagnifyJS -->
+    <script src="~/Content/Model/jquery.magnify.js"></script>
+
     <script src="~/Content/Model/Site.js"></script>
     <link rel="stylesheet" href="~/Content/Model/css/bootstrap.css">
     <link rel="stylesheet" href="~/Content/Model/css/layui.css">
@@ -20,6 +23,21 @@
     <link rel="stylesheet" href="~/content/model/css/responsive/Artist.css">
     <link rel="stylesheet" href="~/Content/Model/css/responsive.css">
     <link rel="stylesheet" href="~/Content/Model/css/swiper-bundle.min.css">
+
+    <!-- 引入MagnifyJS -->
+    <link rel="stylesheet" href="~/content/Model/css/magnify.css">
+
+    <!-- 引入google font CDN站 2023.08.04 -->
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href='//fonts.loli.net/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='//fonts.loli.net/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="//cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
+
 
     <style>
         html {
@@ -29,6 +47,18 @@
         .bg {
             background: linear-gradient(to bottom right, #3e47e1, #151965);
             display: list-item;
+        }
+
+        .subNav {
+            height: var(--subnavH);
+            width: 100vw;
+            padding: var(--subnavPad);
+            position: relative;
+            border-top: 1px solid white;
+            border-bottom: 1px solid white;
+            /* font-family: 'dinLight', 'JhengRegular';*/
+            font-size: var(--subnavSize);
+            letter-spacing: .2em;
         }
 
         /* 以下为footer */
@@ -216,7 +246,8 @@
             /* FOOTER */
             height: 100%;
             width: 100%;
-        @*background-color:black;*@color: #939393;
+            background-color: black;
+            color: #939393;
             overflow: hidden;
         }
 
@@ -225,6 +256,7 @@
             height: auto;
             position: relative;
             padding-top: 5vh;
+            background-color: black;
         }
 
         .footerList {
@@ -244,7 +276,7 @@
         }
 
         .copyrightM a {
-            color: white;
+            color: #939393;
             text-decoration: none;
         }
 
@@ -279,7 +311,9 @@
         .copyright-container p {
             color: white;
             text-decoration: none;
-            font-family: 'sansLight';
+            /* font-family: 'sansLight';*/
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -318,97 +352,116 @@
 </head>
 
 <body>
-    <script>
-        // 导航栏的焦点切换
-        $(window).scroll(function () {
-            var scrollDistance = $(window).scrollTop();
-            $('section').each(function (i) {
-                if ($(this).position().top <= scrollDistance) {
-                    $('#ArtistNav .activeLink').removeClass('activeLink');
-                    $('#ArtistNav td').eq(i + 1).addClass('activeLink');
-                }
-            });
-        }).scroll();
-    </script>
 
 
 
 
 
-        @RenderBody()
+    @RenderBody()
 
 
 
 
 
 
-        <!-- 以下为共享部分 -->
-        <!-- FOOTER - PC -->
+    <!-- 以下为共享部分 -->
+    <!-- FOOTER - PC -->
+
+    <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
+        <div class="emailContainerM">
+            <div class="emailPosition">
+
+                <h1>深圳市艺术产业新闻邮件</h1>
 
 
-        <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
-            <div class="footer">
-                <div class="copyright-container">
-                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                    <div class="col-sm7 col-md7 col-lg7 copyright">
-                        <p>
-                            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                                粤公网安备 44030402004889号 
-                            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-                            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-                            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-                            深圳市艺术产业促进会
-                        </p>
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="~/home/newnews"> 新闻动态</a><br />
-                            <a href="~/home/newConstitution"> 展会动态</a><br />
-                            &#12288;<br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
+                <input class="emailM" type="email" placeholder="EMAIL">
+                <button type="submit">订&#12288;阅</button>
 
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="Javascript:;;">合作案例 </a><br />
-                            <a href="Javascript:;;">艺术家首页</a><br />
-                            &#12288;<br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
-                    </div>
-                    <div class="col-sm3 col-md3 col-lg3 footerList">
-                        <p style="padding-left: 10%;">
-                            <a href="~/home/newlink">联系我们</a><br />
-                            <a href="~/home/index">切换旧版</a><br />
-                            <a href="~/Staff/Index">后台登陆</a><br />
-                            &#12288;<br />
-                            &#12288;
-                        </p>
-                    </div>
-
-                    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                </div>
+                <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
+                    <br />
+                    一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
+                </p>
             </div>
-        </footer>
+            <div class="logoContainerM">
+                <a href="Javascript:;;">
+                    <img src="../../Content/icon/wechat.svg" class="guanzhu" alt=""></a>
+                <a href="Javascript:;;">
+                    <img src="../../Content/icon/douyin.svg" class="guanzhu" alt=""></a>
+            </div>
 
-        <footer class="section09m md-hide lg-hide copyrightM">
+        </div>
+    </section>
 
-            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-                粤公网安备 44030402004889号 
-            </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-            办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
-            Copyright © 2023 SZAIPA. All Rights Reserved. <br />
-            深圳市艺术产业促进会<br />
-            <br />
-            <a href="~/home/index">切换旧版</a><br />
-            <a href="~/Staff/Index">后台登陆</a>
+    <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+        <div class="footer">
+            <div class="copyright-container">
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                <div class="col-sm7 col-md7 col-lg7 copyright">
+                    <p>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            粤公网安备 44030402004889号 
+                        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                        深圳市艺术产业促进会
+                    </p>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newnews"> 新闻动态</a><br />
+                        <a href="~/home/newConstitution"> 展会动态</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
 
-        </footer>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="Javascript:;;">合作案例 </a><br />
+                        <a href="Javascript:;;">艺术家首页</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newlink">联系我们</a><br />
+                        <a href="~/home/index">切换旧版</a><br />
+                        <a href="~/Staff/Index">后台登陆</a><br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
 
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+            </div>
+        </div>
+    </footer>
 
+    <footer class="section09m md-hide lg-hide copyrightM">
+
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 
+        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+        深圳市艺术产业促进会<br />
+        <br />
+        <a href="~/home/index">切换旧版</a><br />
+        <a href="~/Staff/Index">后台登陆</a>
+
+    </footer>
+
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+    </script>
 </body>
 
 </html>

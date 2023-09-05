@@ -24,6 +24,16 @@
     <link rel="stylesheet" href="../../Content/Model/css/swiper-bundle.min.css">
     <script src="../../Content/Model/swiper-bundle.min.js"></script>
 
+    <!-- 引入google font CDN站 2023.08.04 -->
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href='//fonts.loli.net/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='//fonts.loli.net/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="//cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
 
     <style>
         html {
@@ -215,7 +225,7 @@
             color: #939393;
             overflow: hidden;
             text-align: center;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight'; */
             font-size: 1rem;
             line-height: 1.7em;
         }
@@ -226,7 +236,7 @@
         .footerM a {
             text-decoration: none;
             color: #939393;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight'; */
             font-size: 1rem;
             line-height: 1.7em;
         }
@@ -282,7 +292,9 @@
         .copyright-container p {
             color: #939393;
             text-decoration: none;
-            font-family: 'sansLight';
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -330,13 +342,13 @@
         }
 
         .title h1 {
-            font-family: 'JhengRegular';
+            /* font-family: 'JhengRegular';*/
             font-size: 2.7rem;
             margin-bottom: 0;
         }
 
         .title h3 {
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight';*/
             letter-spacing: 0.03em;
             margin-top: 2vh;
             margin-bottom: 3vh;
@@ -346,7 +358,8 @@
         .title button {
             font-size: 1.2rem;
             letter-spacing: 0.2em;
-            font-family: 'sansLight';
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
         }
 
         button {
@@ -380,13 +393,15 @@
         .nav li {
             margin-right: 3vw;
             font-size: 1.3rem;
-            font-family: 'sansExtraLight';
+            font-weight: 200;
+            font-family: 'Noto Sans SC', sans-serif;
             opacity: 0.7;
         }
 
         .active {
             opacity: 1 !important;
-            font-family: 'sansRegular' !important;
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif !important;
         }
 
         .black02 {
@@ -404,7 +419,7 @@
 
         #section02 h1 {
             padding: 0;
-            font-family: 'JhengBold';
+            /* font-family: 'JhengBold'; */
             font-size: 3rem;
             margin-bottom: 2vh;
             text-align: center;
@@ -414,7 +429,8 @@
             margin: 0;
             padding: 0;
             font-size: 1.3rem;
-            font-family: 'sansLight';
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
             line-height: 2.7em;
             text-align: justify;
             text-indent: 2em;
@@ -424,7 +440,8 @@
             margin-top: 3vh;
             text-align: right;
             font-size: 1.3rem;
-            font-family: 'sansRegular';
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif;
         }
 
         .xu {
@@ -469,7 +486,9 @@
             margin-top: 10vh;
             margin-bottom: 3vh;
             padding: 0;
-            font-family: 'dinLightI', 'JhengBold';
+            font-family: 'dinLightI'
+                /* 'JhengBold' */
+            ;
             font-size: 2.5rem;
         }
 
@@ -575,7 +594,7 @@
             justify-content: center;
             align-items: flex-start;
             padding-top: 2vh;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight';*/
             color: #939393;
         }
 
@@ -630,7 +649,7 @@
 
         .introCon p {
             font-size: 3.5rem;
-            font-family: 'JhengBold';
+            /* font-family: 'JhengBold';*/
             white-space: pre-line;
             height: auto;
             width: auto;
@@ -676,7 +695,7 @@
 
         .introCon .msg p {
             font-size: 1rem;
-            font-family: 'JhengLight';
+            /* font-family: 'JhengLight';*/
             letter-spacing: 0.1em;
             color: #939393;
             height: auto;
@@ -708,7 +727,9 @@
         #section04 h1 {
             margin-bottom: 5vh;
             padding: 0;
-            font-family: 'dinLightI', 'JhengBold';
+            font-family: 'dinLightI'
+                /*'JhengBold' */
+            ;
             font-size: 2.5rem;
         }
 
@@ -764,8 +785,8 @@
 
 
         <div class="title">
-            <h1>同构《第二季》·当代艺术展</h1>
-            <h3>
+            <h1 class="JhengRegular">同构《第二季》·当代艺术展</h1>
+            <h3 class="JhengLight">
                 <!-- 展览时间2022.12.29-2023.01.28 -->
                 The 2nd "isomorphism" Contemporary Art Exhibition of China
             </h3>
@@ -774,7 +795,7 @@
         </div>
 
         <ul class="nav">
-            <a href="index.html" target="_blank">
+            <a href="../home/newIndex" target="_blank">
                 <li class="nav-item active">首&emsp;页</li>
             </a>
             <a href="#section02">
@@ -800,7 +821,7 @@
                 <img class="elementPub" src="../../content/images/fuzhu-05.png" />
             </div>
 
-            <h1>序</h1>
+            <h1 class="JhengBold">序</h1>
             <p>时代总是以一种新的视觉方式传递时间信息与观念表达，从而创造“敏锐的感知力”，去启发和引导人们的行为，唤起好奇的、丰富的哲理和情感的内在联系。</p>
             <p>同构的意义在于不仅仅是指物质形态相关联的元素巧妙地融解，更是将精神指向的共性合二为一，直逼内心。</p>
             <p>同构是一种想象，有对比、相似、强制、离奇、质疑、重组、支解等不同的表达，它往往打破人们的经验视觉，使抽象的语言具体性，具体的形态抽象化，情绪化的表达总会令人着迷忘返，共鸣同情的世界又是多么的至善至美。
@@ -825,9 +846,10 @@
         <div class="col-xs16 col-sm16 col-md16 col-lg16">
 
             <section id="content">
-                <h1>参展作品目录 <i
-                        style="font-style: normal;font-family: 'sansLight';vertical-align: top;font-size: 2rem;">|</i>
-                    CATALOG</h1>
+                <h1 class="JhengBold">参展作品目录 <i
+                        style="font-style: normal;font-weight: 300;font-family: 'Noto Sans SC', sans-serif;vertical-align: top;font-size: 2rem;">|</i>
+                    <span style="font-family: 'dinLightI';!important">CATALOG</span>
+                </h1>
 
                 <!-- filter的格式错误问题暂时解决不了，或许考虑删除filter -->
 
@@ -841,7 +863,8 @@
 
                 <style>
                     .filter {
-                        font-family: 'sansLight';
+                        font-weight: 300;
+                        font-family: 'Noto Sans SC', sans-serif;
                     }
 
                     .filterCon {
@@ -860,7 +883,8 @@
                     }
 
                     .bold {
-                        font-family: 'sansBold';
+                        font-weight: 700;
+                        font-family: 'Noto Sans SC', sans-serif;
                     }
                 </style>
 
@@ -954,7 +978,7 @@
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
-                <p class="remind">
+                <p class="remind JhengLight">
                     (点击作品名查看更多)</p>
             </section>
         </div>
@@ -962,13 +986,13 @@
         <!-- type1(横)测试 x3 -->
 
         <div class="introCon target" id="num00">
-            <p>我们的世界No.2
+            <p class="JhengBold">我们的世界No.2
                 姚健伟
                 68X136cm
                 纸本彩墨
             </p>
             <div class="msg btn1">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -990,13 +1014,13 @@
         </div>
 
         <div class="introCon target" id="num01">
-            <p>大鹏系列-1
+            <p class="JhengBold">大鹏系列-1
                 张岚芊
                 120X180cm
                 综合材料
             </p>
             <div class="msg btn1">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1017,13 +1041,13 @@
         </div>
 
         <div class="introCon target" id="num02">
-            <p>三渡
+            <p class="JhengBold">三渡
                 张铁军
                 33X180cm
                 纸本水墨
             </p>
             <div class="msg btn1">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1044,12 +1068,12 @@
         </div>
 
         <div class="introCon target" id="num06">
-            <p>魔鬼猫·动物家族
+            <p class="JhengBold">魔鬼猫·动物家族
                 猫爹雨海
                 布面油画
             </p>
             <div class="msg btn1">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1071,13 +1095,13 @@
         </div>
 
         <div class="introCon target" id="num08">
-            <p>黑白照
+            <p class="JhengBold">黑白照
                 盛伯骥
                 尺寸可变
                 摄影
             </p>
             <div class="msg btn1">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1103,13 +1127,13 @@
 
         <div class="introCon target" id="num03">
 
-            <p>“山象”系列（叁）-佛面
+            <p class="JhengBold">“山象”系列（叁）-佛面
                 常世江
                 100X100cm
                 布面丙烯
             </p>
             <div class="msg btn2">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1134,13 +1158,13 @@
 
         <div class="introCon target" id="num04">
 
-            <p>风月（二联图）
+            <p class="JhengBold">风月（二联图）
                 农夫
                 82X275*2cm
                 纸本水墨
             </p>
             <div class="msg btn2">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1165,13 +1189,13 @@
 
         <div class="introCon target" id="num05">
 
-            <p>时尚碎片-梧桐山水
+            <p class="JhengBold">时尚碎片-梧桐山水
                 曾风
                 320X160cm
                 布面油画
             </p>
             <div class="msg btn2">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1196,14 +1220,14 @@
 
         <div class="introCon target" id="num07">
 
-            <p>Prometheus, Mixed media
+            <p class="JhengBold">Prometheus, Mixed media
                 on canvas
                 栗子
                 90X73cm
                 综合材料
             </p>
             <div class="msg btn2">
-                <p>
+                <p class="JhengLight">
                     咨询该作品是否出售：</p>
                 <input type="text" placeholder="请输入您的称呼 / Name" />
                 <br />
@@ -1236,8 +1260,10 @@
 
         <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
         <div class="col-xs16 col-sm16 col-md16 col-lg16">
-            <h1>现场照片 <i style="font-style: normal;font-family: 'sansLight';vertical-align: top;font-size: 2rem;">|</i>
-                GALLERY</h1>
+            <h1 class="JhengBold">现场照片 <i
+                    style="font-style: normal;font-weight: 300;font-family: 'Noto Sans SC', sans-serif;vertical-align: top;font-size: 2rem;">|</i>
+                <span style="font-family: 'dinLightI';!important">GALLERY</span>
+            </h1>
 
             <!-- Swiper02 -->
 
@@ -1754,24 +1780,25 @@
     </section>
 
     <!-- FOOTER - PC -->
-    <footer class="xs-hide sm-hide footerPC">
+    <footer class="xs-hide sm-hide footerPC JhengLight">
         <div class="footer">
             <div class="copyright-container">
                 <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
                 <div class="col-sm7 col-md7 col-lg7 copyright">
                     <p>
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                        <a class="JhengLight"
+                            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
                             粤公网安备 44030402004889号 
                         </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-                        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+                        办公地点：广东省深圳市罗湖区布心路3008号IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
                         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
                         深圳市艺术产业促进会
                     </p>
                 </div>
                 <div class="col-sm3 col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="~/home/newnews"> 新闻动态</a><br />
-                        <a href="~/home/newConstitution"> 展会动态</a><br />
+                        <a class="JhengLight" href="~/home/newnews"> 新闻动态</a><br />
+                        <a class="JhengLight" href="~/home/newConstitution"> 展会动态</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
@@ -1780,8 +1807,8 @@
                 </div>
                 <div class="col-sm3 col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="Javascript:;;">合作案例 </a><br />
-                        <a href="Javascript:;;">艺术家首页</a><br />
+                        <a class="JhengLight" href="Javascript:;;">合作案例 </a><br />
+                        <a class="JhengLight" href="Javascript:;;">艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
@@ -1789,9 +1816,9 @@
                 </div>
                 <div class="col-sm3 col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="~/home/newlink">联系我们</a><br />
-                        <a href="~/home/index">切换旧版</a><br />
-                        <a href="~/Staff/Index">后台登陆</a><br />
+                        <a class="JhengLight" href="~/home/newlink">联系我们</a><br />
+                        <a class="JhengLight" href="~/home/index">切换旧版</a><br />
+                        <a class="JhengLight" href="~/Staff/Index">后台登陆</a><br />
                         &#12288;<br />
                         &#12288;
                     </p>
@@ -1806,7 +1833,7 @@
     <p class="re">
         <a href="Javascript:;;">
             粤公网安备 44030402004889号 </a>｜ <a href="Javascript:;;">粤ICP备2021095230号</a><br />
-        合作邮箱：industry@szaipa.com ｜ 滨海大道2001号T-PARK深港影视创意园7楼07单元<br />
+        合作邮箱：industry@szaipa.com ｜ 广东省深圳市罗湖区布心路3008号IBC环球商务中心B座36层<br />
         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
         深圳市艺术产业促进会
     </p> -->
@@ -1818,18 +1845,26 @@
 
 
     <!-- FOOTER - MOBILE -->
-    <footer class="md-hide lg-hide copyrightM footerM">
-        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
-            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
-        办公地点：滨海大道2001号T-PARK深港影视创意园7楼07单元<br />合作邮箱：industry@szaipa.com <br />
+    <footer class="md-hide lg-hide copyrightM footerM JhengLight">
+        <a class="JhengLight" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 </a>｜ <a class="JhengLight"
+            href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+        办公地点：广东省深圳市罗湖区布心路3008号IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
         深圳市艺术产业促进会<br />
         <br />
-        <a href="~/home/index">切换旧版</a><br />
-        <a href="~/Staff/Index">后台登陆</a>
+        <a class="JhengLight" href="~/home/index">切换旧版</a><br />
+        <a class="JhengLight" href="~/Staff/Index">后台登陆</a>
     </footer>
 
-
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+    </script>
 </body>
 
 

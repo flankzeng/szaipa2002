@@ -42,7 +42,6 @@
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/bin/zh-Hans/System.Web.Webpages.Razor.resources.dll
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/bin/zh-Hans/System.Web.Helpers.resources.dll
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/bin/zh-Hans/System.Web.Mvc.resources.dll
-/Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.AssemblyReference.cache
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.CoreCompileInputs.cache
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.CopyComplete
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.dll

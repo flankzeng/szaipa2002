@@ -2,11 +2,35 @@
 
 :root {
     --touxiang: 30%;
+    --xinwenH: 15vh;
+    --xinwenW: 15vw;
+    --liBottom: 3%;
+
+    /* info */
+    --swiperH: 88vh;
+    --touxiangW: 90%;
+    --zuopinjiH: 33%;
+    --zuopinTop: 25%;
+    --blankspaceH: 70%;
+    --materialT: 15%;
+    --informationHeader: 2.8rem;
+
+    /* news */
+    --subnavH: 25vh;
+    --subnavPad: 8vh 5%;
+    --subnavSize: 5rem;
+    --infoH: 65vh;
+    --xijieH: 100%;
+    --xijieBor: .7em solid white;
+    --xijieBottom: 1%;
+    --xijiePt: -3%;
 }
 
 /* 初始化页面与响应式标准字号的设置 */
 
-body {}
+body {
+    overflow-x: hidden;
+}
 
 @media only screen and (min-width: 3840px) {
 
@@ -30,5 +54,37 @@ body {}
     /* 手机尺寸 */
     :root {
         --touxiang: 25%;
+        --xinwenH: 13vh;
+        --xinwenW: 30vw;
+        --liBottom: 10% !important;
+
+        /* info */
+        --swiperH: 70vh;
+        --touxiangW: 100%;
+        --zuopinjiH: 30%;
+        --zuopinTop: 34%;
+        --blankspaceH: 75%;
+        --materialT: 18%;
+        --informationHeader: 2.4rem;
+
+        /* news */
+        --subnavH: 15vh;
+        --subnavPad: 4vh 5%;
+        --subnavSize: 4rem;
+        --infoH: 30vh;
+        --xijieH: 20vh;
+        --xijieBottom: 7%;
+        --xijiePt: -15%;
+    }
+
+    /* info */
+    .jieshao {
+        margin-bottom: 15%;
+    }
+
+
+    /* news */
+    .xijie img {
+        margin-left: 5%;
     }
 }

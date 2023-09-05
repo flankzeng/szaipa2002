@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "首页";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -15,39 +14,42 @@
     </div>
 </div>
 
+<script>
+    window.location.href = '/home/newIndex';
+</script>
 <!--临时跳转提示-->
 <!-- 弹窗模态框 -->
-<div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
-    <!-- 弹窗内容 -->
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>是否前往新版首页（功能可能不全）</p>
-      </div>
-      <div class="modal-footer">
+@* <div class="modal fade" id="myModal" role="dialog">
+<div class="modal-dialog">
+<!-- 弹窗内容 -->
+<div class="modal-content">
+<div class="modal-body">
+<p>是否前往新版首页（功能可能不全）</p>
+</div>
+<div class="modal-footer">
 
-        <!-- 确认按钮 -->
-        <a href="~/home/newIndex" class="btn btn-primary">是</a>     
-   
-        <!-- 取消按钮 -->
-        <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
-      </div>
-    </div>
-  </div>
+<!-- 确认按钮 -->
+<a href="~/home/newIndex" class="btn btn-primary">是</a>
+
+<!-- 取消按钮 -->
+<button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+</div>
+</div>
+</div>
 </div>
 
 <!-- jQuery代码 -->
 <script>
 $(document).ready(function() {
-  // 显示弹窗
-  $('#myModal').modal('show');
+// 显示弹窗
+$('#myModal').modal('show');
 
-  // 点击确认按钮后跳转到新版首页
-  $('a.btn-primary').click(function() {
-    window.location.href = $(this).attr('href');
-  });
+// 点击确认按钮后跳转到新版首页
+$('a.btn-primary').click(function() {
+window.location.href = $(this).attr('href');
 });
-</script>
+});
+</script> *@
 
 <!--welcome-->
 <div class="welcome">
@@ -82,49 +84,67 @@ $(document).ready(function() {
 
         <div class="news-grids">
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1009"><h4>姚建伟</h4></a>
+                <a href="~/Home/Art/1009">
+                    <h4>姚建伟</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">会长| 教授</span>
-                <a href="~/Home/Art/1009" class="mask"><img src="~/Content/123/vip-1.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1009" class="mask"><img src="~/Content/123/vip-1.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1000"><h4>张岚芊</h4></a>
+                <a href="~/Home/Art/1000">
+                    <h4>张岚芊</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">秘书长| 艺术家</span>
-                <a href="~/Home/Art/1000" class="mask"><img src="~/Content/123/vip-2.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1000" class="mask"><img src="~/Content/123/vip-2.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1011"><h4>徐赓良</h4></a>
+                <a href="~/Home/Art/1011">
+                    <h4>徐赓良</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">副秘书长</span>
-                <a href="~/Home/Art/1011" class="mask"><img src="~/Content/123/vip-4.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1011" class="mask"><img src="~/Content/123/vip-4.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1012"><h4>王玉波</h4></a>
+                <a href="~/Home/Art/1012">
+                    <h4>王玉波</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">副秘书长</span>
-                <a href="~/Home/Art/1012" class="mask"><img src="~/Content/123/vip-5.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1012" class="mask"><img src="~/Content/123/vip-5.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1015"><h4>沈敬东</h4></a>
+                <a href="~/Home/Art/1015">
+                    <h4>沈敬东</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">会员| 艺术家</span>
-                <a href="~/Home/Art/1015" class="mask"><img src="~/Content/123/vip-7.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1015" class="mask"><img src="~/Content/123/vip-7.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1014"><h4>程晓光</h4></a>
+                <a href="~/Home/Art/1014">
+                    <h4>程晓光</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">策展人| 艺术家</span>
-                <a href="~/Home/Art/1014" class="mask"><img src="~/Content/123/vip-6.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1014" class="mask"><img src="~/Content/123/vip-6.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
@@ -132,27 +152,36 @@ $(document).ready(function() {
 
         </div>
         <div class="col-md-3 news-grid zaipa-md-3">
-            <a href="~/Home/Art/1017"><h4>邓国源</h4></a>
+            <a href="~/Home/Art/1017">
+                <h4>邓国源</h4>
+            </a>
             <span style="color: rgb(129,109,82)">会员| 艺术家</span>
-            <a href="~/Home/Art/1017" class="mask"><img src="~/Content/123/vip-9.jpg" alt="image" class="img-responsive zoom-img"></a>
+            <a href="~/Home/Art/1017" class="mask"><img src="~/Content/123/vip-9.jpg" alt="image"
+                    class="img-responsive zoom-img"></a>
             <div class="news-info">
 
             </div>
         </div>
 
         <div class="col-md-3 news-grid zaipa-md-3">
-            <a href="~/Home/Art/1019"><h4>祁志龙</h4></a>
+            <a href="~/Home/Art/1019">
+                <h4>祁志龙</h4>
+            </a>
             <span style="color: rgb(129,109,82)">会员| 艺术家</span>
-            <a href="~/Home/Art/1019" class="mask"><img src="~/Content/123/vip-11.png" alt="image" class="img-responsive zoom-img"></a>
+            <a href="~/Home/Art/1019" class="mask"><img src="~/Content/123/vip-11.png" alt="image"
+                    class="img-responsive zoom-img"></a>
             <div class="news-info">
 
             </div>
         </div>
 
         <div class="col-md-3 news-grid zaipa-md-3">
-            <a href="~/Home/Art/1021"><h4>杨宽</h4></a>
+            <a href="~/Home/Art/1021">
+                <h4>杨宽</h4>
+            </a>
             <span style="color: rgb(129,109,82)">会员|考古学家</span>
-            <a href="~/Home/Art/1021" class="mask"><img src="~/Content/123/vip-12.png" alt="image" class="img-responsive zoom-img"></a>
+            <a href="~/Home/Art/1021" class="mask"><img src="~/Content/123/vip-12.png" alt="image"
+                    class="img-responsive zoom-img"></a>
             <div class="news-info">
 
             </div>
@@ -169,17 +198,23 @@ $(document).ready(function() {
         </div>
         <div class="news-grids">
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1010"><h4>栗宪庭</h4></a>
+                <a href="~/Home/Art/1010">
+                    <h4>栗宪庭</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">策展人| 学术顾问</span>
-                <a href="~/Home/Art/1010" class="mask"><img src="~/Content/123/vip-0.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1010" class="mask"><img src="~/Content/123/vip-0.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
                 </div>
 
             </div>
             <div class="col-md-3 news-grid zaipa-md-3">
-                <a href="~/Home/Art/1013"><h4>黄笃</h4></a>
+                <a href="~/Home/Art/1013">
+                    <h4>黄笃</h4>
+                </a>
                 <span style="color: rgb(129,109,82)">策展人| 评论家</span>
-                <a href="~/Home/Art/1013" class="mask"><img src="~/Content/123/vip-3.jpg" alt="image" class="img-responsive zoom-img"></a>
+                <a href="~/Home/Art/1013" class="mask"><img src="~/Content/123/vip-3.jpg" alt="image"
+                        class="img-responsive zoom-img"></a>
                 <div class="news-info">
 
                 </div>
@@ -200,6 +235,10 @@ $(document).ready(function() {
 </div>
 <!--\testmonials-->
 <!--news-->
-@{ Html.RenderPartial("Index_news"); }
+@{
+    Html.RenderPartial("Index_news");
+}
 <!--news-->
-@{ Html.RenderPartial("Index_activity"); }
+@{
+    Html.RenderPartial("Index_activity");
+}

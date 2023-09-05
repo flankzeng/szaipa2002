@@ -1,4 +1,4 @@
-﻿@model _2022szaipa.Models.TongouWorks
+﻿@model szaipa2022.Models.TongouWorks
 @{
     Layout = null;
 }
@@ -13,7 +13,7 @@
     <title> @Model.AtristidName 作品 - @Model.Title</title>
     @* （姓名）作品 - （作品名称） *@
     <script src="/Content/js/jquery-2.1.4.min.js"></script>
-    <link href="~/Content/CSS/Site.css" rel="stylesheet" />
+    <link href="~/Content/Model/css/Site.css" rel="stylesheet" />
     <link rel="icon" href="~/Content/123/szaipa.ico" type="image/x-icon" />
 </head>
 
@@ -66,12 +66,8 @@
             <p class="block">艺术家简介</p>
             <p class="tubiao"> ></p>
         </a>
-        <div class="hr"></div>
-        <a href="/Project_Tongou/QRcode">
-            @* QRcode共享页面 *@
-            <p class="block">加入群聊</p>
-            <p class="tubiao"> ></p>
-        </a>
+
+
     </div>
 
 
@@ -80,11 +76,7 @@
         $(function () {
             var zhanshi = $(".zhanshi");
             var datu = $(".datu");
-            var remind = $(".remind");
             zhanshi.click(function () { //全屏图片功能
-                datu.css("display", "block");
-            });
-            remind.click(function () { //全屏图片功能
                 datu.css("display", "block");
             });
 
@@ -112,6 +104,10 @@
 
     <style>
         /* 小图展示区 */
+
+.newpage a{
+color:black!important;
+}
 
         .imgCon {
             width: 100%;
@@ -151,16 +147,15 @@
             background-color: #000000db;
             z-index: 3;
             position: fixed;
-overflow:scroll;
+            overflow: auto;
             display: none;
             cursor: pointer;
         }
 
         .zhanshi0 {
-            height:250px;
+            height: 500px;
             width: 100%;
-            padding-top: 20%;
-	
+            padding-top: 30%;
             object-fit: cover;
             align-content: center;
             object-position: center;
@@ -206,12 +201,6 @@ overflow:scroll;
             .newpage p {
                 margin: 0;
             }
-
-	.newpage a{
-color:black;
-text-decoration:none;
--webkit-tap-highlight-color: transparent;
-}
 
         .block {
             font-family: 'sansRegular';
