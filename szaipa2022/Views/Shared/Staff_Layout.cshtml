@@ -24,27 +24,30 @@
     <script src="~/Content/js/jquery.minicolors.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/js/echarts.min.js"></script>
+
+    <link rel="stylesheet" href="../../Content/Model/css/Site.css">
+    <link rel="stylesheet" href="../../Content/Model/css/responsive.css">
 </head>
 
 <body>
     @if (Model != null)
     {
 
-        <ul class="layui-nav" lay-filter="">
+        <ul class="layui-nav col-xs20 col-sm20" lay-filter="">
             @{
                 if (ViewBag.StaffIndex != null)
                 {
-                    <li class="layui-nav-item layui-this"><a href="~/Staff/Index">后台综合</a></li>
+                    <li class="layui-nav-item col-xs10 col-sm10 layui-this"><a href="~/Staff/Index">后台综合</a></li>
                 }
                 else
                 {
-                    <li class="layui-nav-item"><a href="~/Staff/Index">后台综合</a></li>
+                    <li class="layui-nav-item col-xs10 col-sm10"><a href="~/Staff/Index">后台综合</a></li>
                 }
-                <li class="layui-nav-item"><a href="~/Staff/CNv">访问数据分布</a></li>
+                <li class="layui-nav-item col-xs10 col-sm10"><a href="~/Staff/CNv">访问数据分布</a></li>
 
                 if (ViewBag.StaffEdit != null)
                 {
-                    <li class="layui-nav-item  layui-this" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10  layui-this" style="z-index:5;">
                         <a href="javascript:;">列表与操作</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -58,7 +61,7 @@
                 }
                 else
                 {
-                    <li class="layui-nav-item" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10" style="z-index:5;">
                         <a href="javascript:;">数据列表与操作</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -73,7 +76,7 @@
 
                 if (ViewBag.add != null)
                 {
-                    <li class="layui-nav-item  layui-this" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10  layui-this" style="z-index:5;">
                         <a href="javascript:;">创建新资料</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -87,7 +90,7 @@
                 }
                 else
                 {
-                    <li class="layui-nav-item" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10" style="z-index:5;">
                         <a href="javascript:;">创建新资料</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -101,7 +104,7 @@
                 }
                 if (ViewBag.tongou != null)
                 {
-                    <li class="layui-nav-item layui-this" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10 layui-this" style="z-index:5;">
                         <a href="javascript:;">同构艺术家与作品</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -114,7 +117,7 @@
                 }
                 else
                 {
-                    <li class="layui-nav-item" style="z-index:5;">
+                    <li class="layui-nav-item col-xs10 col-sm10" style="z-index:5;">
                         <a href="javascript:;">同构艺术家与作品</a>
                         <dl class="layui-nav-child">
                             <!-- 二级菜单 -->
@@ -127,7 +130,7 @@
                 }
 
 
-                <li class="layui-nav-item pull-right">
+                <li class="layui-nav-item col-xs10 col-sm10 pull-right">
                     <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img">我</a>
                     <dl class="layui-nav-child">
                         <dd><a href="~/Staff/PasswordChange">修改密码</a></dd>
@@ -135,7 +138,7 @@
                         <dd><a href="~/Staff/Logoff">退出登录</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item pull-right">
+                <li class="layui-nav-item col-xs10 col-sm10 pull-right">
                     <a href="/Home/Index"><img src="~/Content/images/LOGOimg.png" class="layui-nav-img">返回官网主页</a>
 
                 </li>
