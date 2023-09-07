@@ -29,7 +29,7 @@ namespace Szaipa.Controllers
             ViewBag.tongou = 1;
             return View(staff);
 
-           
+
         }
         public ActionResult TongouWorksList()
         {
@@ -42,12 +42,12 @@ namespace Szaipa.Controllers
             ViewBag.tongou = 1;
             return View(staff);
 
-           
+
         }
 
-        
 
-        
+
+
         public ActionResult CNv()
         {
 
@@ -319,6 +319,13 @@ namespace Szaipa.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Artist", "Staff");
+        }
+
+        public ActionResult newArtAdd()
+        {
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            return View(staff);
         }
 
 
@@ -2246,7 +2253,7 @@ namespace Szaipa.Controllers
             };
         }
 
-     
+
 
 
         //以下为调用静态数据

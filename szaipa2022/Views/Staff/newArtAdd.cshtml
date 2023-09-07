@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "ArtAdd";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+<style>
+    .layui-upload-drag {
+        width: 100%;
+        min-height: 22vh;
+    }
+
+    .allpadding {
+        /* 把原本layui的padding补回去 */
+        padding: 10px;
+    }
+
+    .icontouxiang {
+        height: 20vh;
+        width: inherit;
+        background: url('../../content/icon/icontouxiang.svg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .remind {
+        padding-top: 1em;
+        font-size: .9rem;
+        text-align: center;
+        color: #484848;
+    }
+
+    .layui-input-block {
+        margin-left: 0;
+    }
+
+    .layui-form-label {
+        padding: 9px 1em 0 0;
+    }
+
+    .layui-form label,
+    .layui-form input {
+        font-size: 1.2rem;
+    }
+
+    .layui-form-item {
+        margin-bottom: 3%;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    ::placeholder {
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+<div class="col-xs12 col-sm12 col-md12 col-lg12">
+    <div class="col-xs20 col-sm20 col-md20 col-lg20">&nbsp;</div>
+
+    <div class="col-xs20 col-sm20 col-md20 col-lg20 allpadding">
+        <div class="col-xs5 col-sm5 col-md5 col-lg5">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <div class="icontouxiang" id="uploadDemoView">
+                    <img src="" style="max-width: 100%">
+                </div>
+                @* <i class="layui-icon"></i> *@
+            </div>
+            <p class="remind">点击上方上传头像</p>
+
+        </div>
+        <div class="col-xs15 col-sm15 col-md15 col-lg15">
+            <form class="layui-form" action="ArtAdd" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">中文名</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="CnName" required lay-verify="required" placeholder="请输入会员中文名字（如果有）"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">英文名</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="EnName" required lay-verify="required" placeholder="请输入会员英文名字（如果有）"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">国&emsp;家</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Nation" required lay-verify="required" placeholder="所在国家"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">城&emsp;市</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="City" required lay-verify="required" placeholder="常驻城市"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">职&emsp;务</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Title" required lay-verify="required" placeholder="例：会员｜艺术家"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">性&emsp;别</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="radio" name="Sex" value="1" title="男" checked>
+                        <input type="radio" name="Sex" value="0" title="女">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简&emsp;介</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <textarea name="UserContent" placeholder="每行最多二十字 请注意换行" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">年&emsp;表
+                    </label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <textarea name="Deeds" placeholder="例:2023 国际视觉艺术邀请展,同构·艺术空间,深圳;" class="layui-textarea"
+                            id="demo"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+<script>
+
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+        , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+        , done: function (res) {
+
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('icontouxiang').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
+    });
+
+
+
+
+</script>
