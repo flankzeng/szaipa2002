@@ -70,11 +70,41 @@
         box-shadow: none;
         margin: 0;
         height: 3vh;
+
+        position: absolute;
+        left: 0;
     }
 
+    #color2 {
+        top: 125%;
+    }
+
+    #hexColor1,
+    #hexColor2 {
+        position: absolute;
+        width: 40%;
+        left: 21%;
+    }
+
+    #hexColor1 {
+        top: 0;
+    }
+
+    #hexColor2 {
+        top: 125%;
+    }
+
+
+
+
+
     #gradient-preview {
-        width: 300px;
-        height: 50px;
+        width: 35%;
+        height: 200%;
+
+        position: absolute;
+        right: 0;
+        top: 0;
     }
 </style>
 
@@ -140,18 +170,18 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="margin-bottom: 9%;">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">主题色</label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18 relative">
 
                         <!-- Color picker and text input -->
                         <p style="display: flex;">
-                            <input type="color" id="color1" value="#FF0000">
-                            <input type="text" id="hexColor1" class="layui-input" value="#FF0000">
+                            <input type="color" id="color1" value="#3e47e1">
+                            <input type="text" id="hexColor1" class="layui-input" value="#3e47e1">
                         </p>
                         <p style="display: flex;">
-                            <input type="color" id="color2" value="#0000FF">
-                            <input type="text" id="hexColor2" class="layui-input" value="#0000FF">
+                            <input type="color" id="color2" value="#151965">
+                            <input type="text" id="hexColor2" class="layui-input" value="#151965">
                         </p>
                         <!-- Gradient preview -->
                         <div id="gradient-preview"></div>
@@ -168,11 +198,61 @@
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">年&emsp;表
                     </label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <textarea name="Deeds" placeholder="例:2023 国际视觉艺术邀请展,同构·艺术空间,深圳;" class="layui-textarea"
-                            id="demo"></textarea>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" id="event-container">
+
+                        <!-- Default Input 1 -->
+                        <div class="event-row">
+                            <input type="number" placeholder="请输入年份" class="layui-input year-input">
+                            <input type="text" placeholder="请输入事件" class="layui-input event-input">
+                        </div>
+                        <!-- Default Input 2 -->
+                        <div class="event-row relative">
+                            <input type="number" placeholder="请输入年份" class="layui-input year-input">
+                            <input type="text" placeholder="请输入事件" class="layui-input event-input">
+                            <br />
+                            <button class="add-button"><i class="add"></i></button>
+                        </div>
+
                     </div>
                 </div>
+
+                <style>
+                    #event-container .layui-input {
+                        display: initial;
+                    }
+
+                    .event-row {
+                        margin-bottom: 1%;
+                    }
+
+                    .year-input {
+                        width: 30%;
+                        margin-right: 2%;
+                    }
+
+                    .event-input {
+                        width: 67%;
+                    }
+
+                    .add-button {
+                        all: initial;
+                        cursor: pointer;
+                    }
+
+                    .add {
+                        background-image: url('../../content/icon/tianjia.svg');
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        width: 35px;
+                        height: 35px;
+                        display: block;
+                        position: absolute;
+                        top: 0%;
+                        right: 0;
+                        transform: translatex(100%);
+                    }
+                </style>
 
                 <div class="layui-form-item">
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
@@ -188,6 +268,7 @@
 </div>
 
 <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
 
 <script>
 
@@ -231,5 +312,25 @@
         updateGradient();
     });
 
+    // 年表
+
+    $(function () {
+        // Function to add a new input row
+        function addEventRow() {
+            const newRow = $('<div class="event-row relative">');
+            newRow.append('<input type="number" placeholder="请输入年份" class="layui-input year-input">');
+            newRow.append('<input type="text" placeholder="请输入事件" class="layui-input event-input">');
+            newRow.append('<button class="add-button"><i class="add"></i></button>');
+            $('#event-container').append(newRow);
+        }
+
+        // Add new input row when '+' button is clicked
+        $('#event-container').on('click', '.add-button', function () {
+            // Remove '+' button from the last row
+            $('.add-button').remove();
+            // Add new input row
+            addEventRow();
+        });
+    });
 
 </script>
