@@ -40,7 +40,7 @@
 
     .layui-form label,
     .layui-form input {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .layui-form-item {
@@ -52,7 +52,29 @@
     }
 
     ::placeholder {
-        font-size: 1.2rem;
+        font-size: 1rem;
+    }
+
+
+
+
+
+
+    #color1,
+    #color2 {
+        all: inherit;
+        width: 20%;
+        height: 2em;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        margin: 0;
+        height: 3vh;
+    }
+
+    #gradient-preview {
+        width: 300px;
+        height: 50px;
     }
 </style>
 
@@ -117,12 +139,32 @@
                         <input type="radio" name="Sex" value="0" title="女">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">主题色</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+
+                        <!-- Color picker and text input -->
+                        <p style="display: flex;">
+                            <input type="color" id="color1" value="#FF0000">
+                            <input type="text" id="hexColor1" class="layui-input" value="#FF0000">
+                        </p>
+                        <p style="display: flex;">
+                            <input type="color" id="color2" value="#0000FF">
+                            <input type="text" id="hexColor2" class="layui-input" value="#0000FF">
+                        </p>
+                        <!-- Gradient preview -->
+                        <div id="gradient-preview"></div>
+                    </div>
+                </div>
+
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简&emsp;介</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
                         <textarea name="UserContent" placeholder="每行最多二十字 请注意换行" class="layui-textarea"></textarea>
                     </div>
                 </div>
+
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">年&emsp;表
                     </label>
@@ -164,7 +206,30 @@
         }
     });
 
+    // 艺术家首页色值
 
+    function updateGradient() {
+        const color1 = $('#color1').val();
+        const color2 = $('#color2').val();
+        $('#gradient-preview').css('background', `linear-gradient(to bottom, ${color1}, ${color2})`);
+    }
+
+    // Initialize gradient
+    updateGradient();
+
+    // Event listener for color pickers
+    $('#color1, #color2').on('input', function () {
+        const hexColorId = `#hex${this.id.charAt(0).toUpperCase() + this.id.slice(1)}`;
+        $(hexColorId).val($(this).val());
+        updateGradient();
+    });
+
+    // Event listener for text inputs
+    $('#hexColor1, #hexColor2').on('input', function () {
+        const colorId = `#${this.id.slice(3).toLowerCase()}`;
+        $(colorId).val($(this).val());
+        updateGradient();
+    });
 
 
 </script>

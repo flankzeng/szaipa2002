@@ -33,17 +33,31 @@ namespace Szaipa.Controllers
         }
         public ActionResult newIndex()
         {
-            if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据\
+            if (Session["Home"] == null) HaveViti();
+
             if (Session["Staff"] != null) ViewBag.staff = 1;
+
             ViewBag.Index = 1;
             var N = db.News.OrderByDescending(d => d.Date).ToList();
+
             var news = new List<News>();
             for (int a = 0; a < 6; a++)
             {
                 news.Add(N[a]);
             }
+
             var l = newslist(news);
+
+            foreach (var n in l)
+            {
+                if (n.Subtitle.Length > 90)
+                {
+                    n.Subtitle = n.Subtitle.Substring(0, 90) + "...";
+                }
+            }
+
             ViewBag.n = l;
+
             return View();
         }
 
