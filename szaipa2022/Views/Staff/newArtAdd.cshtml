@@ -40,7 +40,7 @@
 
     .layui-form label,
     .layui-form input {
-        font-size: 1rem;
+        font-size: .9rem;
     }
 
     .layui-form-item {
@@ -52,7 +52,7 @@
     }
 
     ::placeholder {
-        font-size: 1rem;
+        font-size: .7rem;
     }
 
 
@@ -64,7 +64,6 @@
     #color2 {
         all: inherit;
         width: 20%;
-        height: 2em;
         border: none;
         outline: none;
         box-shadow: none;
@@ -76,13 +75,14 @@
     }
 
     #color2 {
-        top: 125%;
+        top: 3.5vh;
     }
 
     #hexColor1,
     #hexColor2 {
         position: absolute;
         width: 40%;
+        height: 3vh;
         left: 21%;
     }
 
@@ -91,7 +91,7 @@
     }
 
     #hexColor2 {
-        top: 125%;
+        top: 3.5vh;
     }
 
 
@@ -100,11 +100,49 @@
 
     #gradient-preview {
         width: 35%;
-        height: 200%;
+        height: 6.5vh;
 
         position: absolute;
         right: 0;
         top: 0;
+    }
+
+
+
+    #event-container .layui-input {
+        display: initial;
+    }
+
+    .event-row {
+        margin-bottom: 1%;
+    }
+
+    .year-input {
+        width: 30%;
+        margin-right: 2%;
+    }
+
+    .event-input {
+        width: 67%;
+    }
+
+    .add-button {
+        all: initial;
+        cursor: pointer;
+    }
+
+    .add {
+        background-image: url('../../content/icon/tianjia.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 35px;
+        height: 35px;
+        display: block;
+        position: absolute;
+        top: 0%;
+        right: 0;
+        transform: translatex(100%);
     }
 </style>
 
@@ -175,11 +213,11 @@
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18 relative">
 
                         <!-- Color picker and text input -->
-                        <p style="display: flex;">
+                        <p>
                             <input type="color" id="color1" value="#3e47e1">
                             <input type="text" id="hexColor1" class="layui-input" value="#3e47e1">
                         </p>
-                        <p style="display: flex;">
+                        <p>
                             <input type="color" id="color2" value="#151965">
                             <input type="text" id="hexColor2" class="layui-input" value="#151965">
                         </p>
@@ -215,44 +253,6 @@
 
                     </div>
                 </div>
-
-                <style>
-                    #event-container .layui-input {
-                        display: initial;
-                    }
-
-                    .event-row {
-                        margin-bottom: 1%;
-                    }
-
-                    .year-input {
-                        width: 30%;
-                        margin-right: 2%;
-                    }
-
-                    .event-input {
-                        width: 67%;
-                    }
-
-                    .add-button {
-                        all: initial;
-                        cursor: pointer;
-                    }
-
-                    .add {
-                        background-image: url('../../content/icon/tianjia.svg');
-                        background-size: cover;
-                        background-repeat: no-repeat;
-                        background-position: center center;
-                        width: 35px;
-                        height: 35px;
-                        display: block;
-                        position: absolute;
-                        top: 0%;
-                        right: 0;
-                        transform: translatex(100%);
-                    }
-                </style>
 
                 <div class="layui-form-item">
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">

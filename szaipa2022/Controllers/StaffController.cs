@@ -328,6 +328,19 @@ namespace Szaipa.Controllers
             return View(staff);
         }
 
+        public ActionResult newWorkAdd()
+        {
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            return View(staff);
+        }
+
+        public ActionResult newExhibitionAdd()
+        {
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            return View(staff);
+        }
         public ActionResult newArtEdit()
         {
             var staff = Session["Staff"];
