@@ -126,9 +126,24 @@
         width: 67%;
     }
 
-    .add-button {
+    .add-button,
+    .reduce-button {
         all: initial;
         cursor: pointer;
+    }
+
+    #event-container .event-row {
+        display: flex;
+    }
+
+    .shijian {
+        display: block;
+        outline: none;
+        border: 1px solid #ededed;
+        width: 68%;
+        padding-left: .5em;
+        padding-top: .6em;
+        min-height: 7em;
     }
 
     .add {
@@ -140,8 +155,22 @@
         height: 35px;
         display: block;
         position: absolute;
-        top: 0%;
-        right: 0;
+        bottom: 0%;
+        right: -2%;
+        transform: translatex(100%);
+    }
+
+    .reduce {
+        background-image: url('../../content/icon/jianshao.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 35px;
+        height: 35px;
+        display: block;
+        position: absolute;
+        bottom: 0%;
+        right: -10%;
         transform: translatex(100%);
     }
 </style>
@@ -163,7 +192,7 @@
 
         </div>
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="ArtAdd" method="post">
+            <form class="layui-form" action="newArtAdd" method="post">
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">中文名</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
@@ -215,11 +244,11 @@
                         <!-- Color picker and text input -->
                         <p>
                             <input type="color" id="color1" value="#3e47e1">
-                            <input type="text" id="hexColor1" class="layui-input" value="#3e47e1">
+                            <input type="text" name="color1" id="hexColor1" class="layui-input" value="#3e47e1">
                         </p>
                         <p>
                             <input type="color" id="color2" value="#151965">
-                            <input type="text" id="hexColor2" class="layui-input" value="#151965">
+                            <input type="text" name="color2" id="hexColor2" class="layui-input" value="#151965">
                         </p>
                         <!-- Gradient preview -->
                         <div id="gradient-preview"></div>
@@ -239,16 +268,19 @@
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" id="event-container">
 
                         <!-- Default Input 1 -->
-                        <div class="event-row">
-                            <input type="number" placeholder="请输入年份" class="layui-input year-input">
-                            <input type="text" placeholder="请输入事件" class="layui-input event-input">
+                        <div class="event-row relative">
+                            <input type="number" name="DeedsYear" required lay-verify="required" placeholder="请输入年份"
+                                class="layui-input year-input">
+
+                            <textarea name="DeedsThings" placeholder="请输入事件，格式：活动名，具体展馆，城市名" class="shijian"></textarea>
                         </div>
                         <!-- Default Input 2 -->
                         <div class="event-row relative">
-                            <input type="number" placeholder="请输入年份" class="layui-input year-input">
-                            <input type="text" placeholder="请输入事件" class="layui-input event-input">
-                            <br />
-                            <button class="add-button"><i class="add"></i></button>
+                            <input type="number" name="DeedsYear" required lay-verify="required" placeholder="请输入年份"
+                                class="layui-input year-input">
+                            <!-- <input type="text" name="DeedsThings" required lay-verify="required" placeholder="请输入事件"
+                                class="layui-input event-input"> -->
+                            <textarea name="DeedsThings" placeholder="请输入事件，格式：活动名，具体展馆，城市名" class="shijian"></textarea>
                         </div>
 
                     </div>
@@ -313,24 +345,39 @@
     });
 
     // 年表
-
     $(function () {
-        // Function to add a new input row
         function addEventRow() {
             const newRow = $('<div class="event-row relative">');
-            newRow.append('<input type="number" placeholder="请输入年份" class="layui-input year-input">');
-            newRow.append('<input type="text" placeholder="请输入事件" class="layui-input event-input">');
+            newRow.append('<input type="number" name="DeedsYear" placeholder="请输入年份" class="layui-input year-input">');
+            newRow.append('<textarea name="DeedsThings" placeholder="请输入事件" class="shijian"></textarea>');
             newRow.append('<button class="add-button"><i class="add"></i></button>');
+            newRow.append('<button class="reduce-button"><i class="reduce"></i></button>');
             $('#event-container').append(newRow);
         }
 
-        // Add new input row when '+' button is clicked
+        // Initialize first row
+        addEventRow();
+
         $('#event-container').on('click', '.add-button', function () {
-            // Remove '+' button from the last row
-            $('.add-button').remove();
-            // Add new input row
+            // Remove '+' and '-' buttons from the last row
+            $('.event-row:last .add-button').remove();
+            $('.event-row:last .reduce-button').remove();
+            // Add new row
             addEventRow();
         });
+
+        $('#event-container').on('click', '.reduce-button', function () {
+            // Check if more than one row exists
+            if ($('.event-row').length > 1) {
+                // Remove the last row
+                $('.event-row:last').remove();
+                // Add '+' and '-' buttons back to the new last row
+                $('.event-row:last').append('<button class="add-button"><i class="add"></i></button>');
+                $('.event-row:last').append('<button class="reduce-button"><i class="reduce"></i></button>');
+            }
+        });
     });
+
+
 
 </script>
