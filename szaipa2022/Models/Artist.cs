@@ -32,8 +32,8 @@ namespace szaipa2022.Models
         public string FlieInf { get; set; }
         public Nullable<int> VisitCount { get; set; }
         public string Activity { get; set; }
-        public string color1 { get; set; }
-        public string color2 { get; set; }
+        public string Color1 { get; set; }
+        public string Color2 { get; set; }
         public string DeedsYear { get; set; }
         public string DeedsThings { get; set; }
 

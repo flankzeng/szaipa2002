@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "添加新闻";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+    Page.validateRequest = "false";
+}
+
+<div class="col-xs20 col-sm20 col-m20 col-lg20">&nbsp;</div>
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+<div class="col-xs12 col-sm12 col-md12 col-lg12">
+
+
+    <style>
+        .layui-upload-drag {
+            width: 100%;
+            min-height: 12vh;
+        }
+
+        .allpadding {
+            /* 把原本layui的padding补回去 */
+            padding: 10px;
+        }
+
+        .icontouxiang {
+            height: 10vh;
+            width: inherit;
+            background: url('../../content/icon/tupian.svg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .remind {
+            padding-top: 1em;
+            font-size: .7rem;
+            text-align: center;
+            color: #484848;
+        }
+
+        .layui-input-block {
+            margin-left: 0;
+        }
+
+        .layui-form-label {
+            padding: 9px 1em 0 0;
+        }
+
+        .layui-form label,
+        .layui-form input {
+            font-size: .9rem;
+        }
+
+        .layui-form-item {
+            margin-bottom: 3%;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        ::placeholder {
+            font-size: .7rem;
+        }
+    </style>
+    <form class="layui-form" action="NewsAdd" method="post">
+
+        <div class="col-xs6 col-sm6 col-md6 col-lg6">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <div class="icontouxiang" id="uploadDemoView">
+                    <img src="" style="max-width: 100%">
+                </div>
+                @* <i class="layui-icon"></i> *@
+            </div>
+            <p class="remind">新闻封面上传</p>
+        </div>
+
+        <div class="col-xs14 col-sm14 col-md14 col-lg14">
+            <div class="layui-form-item">
+                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">主标题</label>
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <input type="text" name="Title" required lay-verify="required" placeholder="新闻的主标题"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">声明</label>
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <input type="radio" name="original" value="1" title="原创" checked>
+                    <input type="radio" name="original" value="0" title="转载">
+                </div>
+            </div>
+            <div class="layui-form-item" id="linkform">
+                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">连接</label>
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <input type="text" name="Link" placeholder="新闻来源连接（如果有）" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs20 col-sm20 col-md20 col-lg20 layui-form-item layui-form-text">
+            <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简介</label>
+            <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                <textarea name="Subtitle" placeholder="短篇幅介绍" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="col-xs20 col-sm20 col-m20 col-lg20">
+
+            <textarea id="demo" style="display: none;" name="content"></textarea>
+        </div>
+        <br />
+        <div class="col-xs20 col-sm20 col-m20 col-lg20">
+            <div class="layui-form-item">
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+<script>
+
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.set({
+            uploadImage: {
+                url: '/Staff/TempImgIntervalSave' //接口url
+                , type: '' //默认post
+            }
+        });
+        layedit.build('demo',
+            {
+                height: 580 //设置编辑器高度
+            }
+
+        ); //建立编辑器
+    });
+    //上传
+    var upload = layui.upload; //得到 upload 对象
+    upload.render({
+        elem: '#uploadDemo'
+        , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+        , done: function (res) {
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
+    });
+
+
+
+</script>
