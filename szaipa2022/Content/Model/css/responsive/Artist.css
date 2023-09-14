@@ -24,6 +24,10 @@
     --xijieBor: .7em solid white;
     --xijieBottom: 1%;
     --xijiePt: -3%;
+
+    /* NewsRead*/
+    --artistNewsHeader: 40vh;
+    --artistNewsTitle: 3rem;
 }
 
 /* 初始化页面与响应式标准字号的设置 */
@@ -75,6 +79,10 @@ body {
         --xijieH: 20vh;
         --xijieBottom: 7%;
         --xijiePt: -15%;
+
+        /* NewsRead*/
+        --artistNewsHeader: 20vh;
+        --artistNewsTitle: 2rem;
     }
 
     /* info */

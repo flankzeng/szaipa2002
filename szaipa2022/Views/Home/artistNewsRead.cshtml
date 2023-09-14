@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "回顾 ｜ 三人行——鸥洋 / 雷双 / 张岚芊 艺术展";
+    Layout = "~/Views/Shared/_Artist.cshtml";
+}
+<style>
+    body {
+        overflow-x: hidden !important;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+    }
+
+    #ArtistNav {
+        position: fixed;
+        top: 3%;
+        right: 1.5%;
+        font-size: 1rem;
+        z-index: 999;
+    }
+
+    #ArtistNav a {
+        color: black;
+        background-color: white;
+        border-right: 1px solid black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        text-decoration: none !important;
+        padding: .5vh 1vw;
+    }
+
+    .activeLink a {
+        color: white !important;
+        background-color: black !important;
+    }
+
+    /* 以上为导航栏部分 */
+</style>
+
+
+
+<nav id="ArtistNav">
+
+    <table>
+        <tr>
+            <td>
+                <a href="/Home/newIndex" style="border-left: 1px solid black;">
+                    首&#12288;页
+                </a>
+            </td>
+            <td>
+                <a href="/Home/artistZLQ">艺术家首页</a>
+            </td>
+            <td class="activeLink">
+                <a href="#section01">资&#12288;讯</a>
+            </td>
+            <td>
+                <a href="javascript:history.go(-1)">返回</a>
+            </td>
+        </tr>
+    </table>
+
+</nav>
+
+
+<style>
+    header {
+        height: var(--artistNewsHeader);
+    }
+
+    header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: inherit;
+        width: 100%;
+        background-color: #00000040;
+    }
+
+    .header {
+        height: inherit;
+        width: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+
+    article {
+        color: white;
+        padding-bottom: 8%;
+    }
+
+    article h1 {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: var(--artistNewsTitle);
+        padding-top: 1em;
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    article img {
+        width: 100%;
+        max-height: 50vh;
+        object-fit: contain;
+    }
+
+    .times {
+        font-size: .8rem;
+        margin: 3% 0 5% 0;
+
+        display: block;
+    }
+
+    p {
+        font-size: 1.2rem;
+        line-height: 1.8em;
+        margin-bottom: 2em;
+        text-align: justify;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 300;
+    }
+
+    figcaption {
+        font-size: 1rem;
+        text-align: center;
+        color: #ededed;
+        margin: -1em 0 2em 0;
+    }
+</style>
+<div class="bg col-xs20 col-sm20 col-md20 col-lg20" id="section01">
+
+    <header class="col-xs20 col-sm20 col-md20 col-lg20">
+        <img class="header" src="../../Content/images/IMG_9282.jpg" alt="">
+    </header>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+
+    <article class="col-xs16 col-sm16 col-md16 col-lg16">
+        <h1>回顾 ｜ 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
+            <span class="times JhengLight">作者：张岚芊&emsp;&emsp;2023.09.14 15:48</span>
+        </h1>
+        <p>"三人行——鸥洋/雷双/张岚芊
+            艺术展"于2023年6月4日至2023年7月2日在深圳市木星美术馆B、C展厅展出。该展由深圳市艺术产业促进会(以下简称市艺促会)主办、深圳市木星美术馆联合主办、北京意象油画研究院协办，陆蓉之担任学术主持，陈观亨担任策展人，吕红荣担任出品人。
+        </p>
+        <p>展览聚焦于抽象表现方式，并将东方人文思想与西方严谨的艺术语言相融合，呈现出个性鲜明的艺术作品。</p>
+        <p><img src="/Content/newsImg/f23239f02e7704439a829e6b9c45fd68.jpg"
+                alt="f23239f02e7704439a829e6b9c45fd68.jpg"><br /></p>
+        <figcaption>三人行——鸥洋/雷双/张岚芊艺术展 主视觉</figcaption>
+        <p>本次展览分为两个部份：B展厅分别为鸥洋、雷双、张岚芊独立展区，C厅为混合展区。</p>
+        <p><img src="/Content/newsImg/02f23d156620c43c21c5c329748a3fc2.jpg"
+                alt="02f23d156620c43c21c5c329748a3fc2.jpg"><br /></p>
+        <p><img src="/Content/newsImg/4d0fad1b7b16e96f1e3ca44f7f18efba.jpg"
+                alt="4d0fad1b7b16e96f1e3ca44f7f18efba.jpg"><br /></p>
+        <p><img src="/Content/newsImg/8d8056d2b4152e1598520537e337c7e2.jpg"
+                alt="8d8056d2b4152e1598520537e337c7e2.jpg"><br /></p>
+        <figcaption>展览现场</figcaption>
+        <p>作为独立个体的她们，鸥洋的作品是一种中国传统水墨南派写意的婉转，但这并没有掩盖掉其作品中蕴含的张力，她将世间万物归纳为“相”，再通过只可意会不可言传的方式将“相由心生，心生万物”般的气韵反向营造到画面中;雷双的作品充满着对大自然万千宇宙中的敬意，且散发着气吞万象般的能量。通过自我意识与自然规律的对抗去寻求一种不同维度的共振，同时又展现了中国传统大写意水墨中“无形”的魅力；张岚芊则主要是对中国传统文化中的“意象”与“物”本源之间的关系的探究，她的作品很自然的流露着某种人文关怀。
+        </p>
+        <p><img src="/Content/newsImg/9583756cda0017bab433247e80821a0b.jpg"
+                alt="9583756cda0017bab433247e80821a0b.jpg"><br /></p>
+        <p><img src="/Content/newsImg/cc6edaa0f1599cfa57e1f5be502aa923.jpg"
+                alt="cc6edaa0f1599cfa57e1f5be502aa923.jpg"><br /></p>
+        <p><img src="/Content/newsImg/7929150913eb5e68baf71bd46f08a9e1.jpg"
+                alt="7929150913eb5e68baf71bd46f08a9e1.jpg"><br /></p>
+        <p style="text-align: center;">展览现场</p>
+        <p style="text-align: center;">▼</p>
+        <p style="text-align: center;">艺术对谈</p>
+        <p>在本次展览期间，鸥洋、雷双、张岚芊三位艺术家针对意象油画以及作品的创作历程进行了艺术对谈，且特别邀请到了独立策展人顾振清主持此次对谈活动。</p>
+        <p><img src="/Content/newsImg/cc41b246e88b49ceeef3cd87f88cb5ec.jpg"
+                alt="cc41b246e88b49ceeef3cd87f88cb5ec.jpg"><br /></p>
+        <p>在张岚芊与鸥洋的对谈中，讨论了此次《三人行》展览的主题——意象油画的来由。她们将客观事物转化为主观感受的表达，将描绘现实的观念转变为表达内心世界的意象艺术：</p>
+        <p>张岚芊：</p>
+        <p>这一次的《三人行》非常高兴邀请到您来参加，我代表雷双，代表我自己非常感谢鸥洋这次能参加我们的《三人行》的展览。这次主要是以意象油画的这一个概念来展示出来，我想了解一下意象油画的来由。</p>
+        <p>鸥洋：</p>
+        <p>意象油画是我们多年前才开始提出的。我是从1985年在赵无极的指导下，才开始进行一些油画的探索。原因是由于早期的绘画习惯是按照苏式的艺术观念创作，基本上是写实的。赵无极给我最大的影响是他在观念上提出：将所有自然界的、客观的作为一个凭借。这跟我们过去的观念不同，过去是把客观当成画画的主体。而赵无极的观念就是客观触动你想如何表达的一个恁据。
+        </p>
+        <p>画是从客观里所观察之后的表达，达到你心中的一种感觉或灵感，通过艺术表达出来的就是一种意象表达。等于把描绘客观当成对主观的影响，画出你对这个客观事物的一个主观感受，把原来眼中所看客观的、真实的、现在画成心中所想的。我从60年代开始就画了很大一批油画，写实水平受当时美术界多数人的认可，但从80年代开始就觉得有点不满足，这种画法多少还是停留在人云亦云的情况下，独特的个性还没有形成，而我觉得艺术家很重要的就是形成个人独特的观点。
+        </p>
+        <p>赵无极曾说过中囯艺术有非常优秀的传统，每个人都应该好好的去把中国画里面的优秀传统拾起来，找一些让自己喜欢的、合自己性格的东西。因为传统里面包含有很多种形式，一开始我想去找似与不似之间的、写意的艺术表现，这种手法就像画齐白石那种造型上似与不似之间的表达，后来就逐渐发展到表达“意”。
+        </p>
+        <p><img src="/Content/newsImg/bb06b475914050a928d44e823f538e23.jpg"
+                alt="bb06b475914050a928d44e823f538e23.jpg"><br /></p>
+        <figcaption>《天问》 &nbsp;欧洋</figcaption>
+        <p>鸥洋：</p>
+        <p>我习画多年的经历其实一直是在探路的过程，后来对意象的理解它更多是在表达中国的传统审美，早期我的理解其实是很浅薄的，所以我就一边画一边深化对意象的研究和理解，包括后来很多人认为写意就是意象，这点我有不同看法。我认为写意跟意象还是不同的，林木先生曾经写过文章认为中国传统的核心是意象，不是写意。写意只是意象的一个分支（一个局部），当下很多人把中国传统当中的东西总括为写意，写意只是一个部分。意象包括得更深，我们中国的传统审美，比如京剧里面相比西方的（戏剧）它是写实的，他的传统和戏剧、战车和马道具是要上舞台的。而中国的京剧它是意象思维的，见到舞台上将军头上插着很多旗子，手上拿着马鞭子就表现率领了千军万马，它就表达概括到这个程度。所以中国的艺术其实它是一点点在做减法的，我们在画画的表达过程中，通过人家看了我的画，联想到画面里是什么东西，这就叫意在画外——表达自己内心的东西。
+        </p>
+        <p>……</p>
+        <p><img src="/Content/newsImg/3a6685b1ecbebfde1d9d97fcffea5edf.jpg"
+                alt="3a6685b1ecbebfde1d9d97fcffea5edf.jpg"><br /></p>
+        <figcaption>《碎系列--梦在远方》 &nbsp;欧洋</figcaption>
+        <p style="text-align: center;">▼</p>
+        <p><img src="/Content/newsImg/3a2131f959adfc5f6e1f3074c9155374.jpg"
+                alt="3a2131f959adfc5f6e1f3074c9155374.jpg"><br /></p>
+        <p>在顾振清与雷双的对谈中，我们了解到雷双从创作《向里尔克致意》再到《光寂》所经历的转变：</p>
+        <p>顾振清：</p>
+        <p>今天我们有幸请来了一位非常重要的嘉宾——雷双，可以说向日葵系列是雷双老师最让我们熟悉的系列作品之一。雷双老师也是我一直仰慕的一位非常优秀有天赋的艺术家，这次展览中的几个系列作品，尤其是我最熟悉的向日葵系列、"向里尔克致意"系列那种非常有人文底蕴的表现主义绘画，最后还有我最欣赏的光寂系列里头雷双老师特有的一种艺术天赋，她对艺术直觉的一个表达。本次展览特别高兴的是看到了雷双老师的《向里尔克致意》，那两张画在现场是非常耀眼的，同时也可以看到艺术家那种灵与肉的挣扎。所以我想先从《向里尔克致意》的这两张画开始讨论，它是怎么样让雷双老师从向日葵借物喻人这种女性自白派诗人式的表达，过渡到直抒胸臆、心物不二这种新的同频生成式的艺术范式呢？
+        </p>
+        <p>雷双：</p>
+        <p>我是从2005年画玫瑰的,2011年“向里尔克致意的玫瑰”系列至少有八九幅。当我画干枯的玫瑰那种蚀刻般的线条呈现出的形象就如眼睛一般。这让我想起自己在八十年代读里尔克时看到他自撰的墓志铭；“玫瑰，哦，纯粹的矛盾，在你众多的眼睑下，能超然独自地安眠，也是一种喜悦”。
+        </p>
+        <p>从艺以来，我好像没有在阅读中去寻找过形象，而是一些文字塑造的形象、概念沉于心中，作画时与它相遇。比如“玫瑰”与里尔克的诗相遇，才有了“向里尔克致意”的玫瑰。因玫瑰这个“神奇的明珠”在诗人里尔克眼中始终是一块冥思凝神的基石，他自撰的“玫瑰”墓志铭诗句也成为人们企望对诗人存在和本质进行破解的密码。读到里尔克以及自撰的墓志铭“玫瑰”,至今已有三十年……现在画面上有着多重眼睑的玫瑰呈现出来了,那玫瑰眼的面孔上仿佛有诗人的魂灵在闪现。我用绘画的造型手段去体现"纯粹矛盾"的玫瑰,它是否能为故去的诗人做一个存在和本质的解密?哦，在这些天才诗歌的背后，歌手早已“超然独自地安眠”，但愿他在睡梦中能看到，有一个后来者，听到了他的“媚叫”，循着他的歌，用他看重的艺术形式——绘画来呈现那众多的眼睑，体现那纯粹的矛盾。
+        </p>
+        <p><img src="/Content/newsImg/8184b2977e62004fbda5ecfbb684ab7e.jpg"
+                alt="8184b2977e62004fbda5ecfbb684ab7e.jpg"><br /></p>
+        <figcaption>《向里尔克致意》雷双</figcaption>
+        <p>顾振清：</p>
+        <p>雷双老师的《向里尔克致意》作品其实是人文主义的内蕴与底蕴的一种反映。雷双老师的人文修养是非常深厚的，她把西方美术史和中国传统艺术基因融合，使得观者在《向里尔克致意》作品里头可以看到一种范式转移。《向里尔克致意》这个系列其实来自雷双一个非常重要的转型期。她开始把玫瑰这种表达公共美学的物像纳入她的私人经验。所以我觉得《光寂》这样的作品出现跟以前雷双老师的创作履历是有关系的。
+        </p>
+        <p>我今天特意想问的就是《光寂》是什么样的灵感或者什么样的心流，突然像击中了你一样，让你能够走出自己的生命体验，走出你的知识格局，做出这种跟宇宙的信息同鸣共振的的作品。这种试图表述不可见事物、未知的高维世界的作品在国内还是非常少见的。
+        </p>
+        <p>雷双：</p>
+        <p>从2013—2014年画了一系列黑底色上白色形体的作品，我的“日食葵“及“荷系列”即是如此，同时还画了一批白色底子上黑色形体的抽象作品。2016年一天傍晚散步时看到天空的景象，拍了几张天象的照片……也可以说《光寂》的灵感来自变幻的天象吧，那是
+            “我”将自己的心魂联接进无比巨大的存在，仿佛是将孤独的音符植入浩瀚的音乐之中。《光寂》是对无限与绝对的眺望，是在有限的时空中回荡的无限的呼唤。</p>
+        <p>……</p>
+        <p><img src="/Content/newsImg/4215945018b038567d485afe1c96a759.jpg"
+                alt="4215945018b038567d485afe1c96a759.jpg"><br /></p>
+        <figcaption>《光寂》 雷双</figcaption>
+        <p style="text-align: center;">▼</p>
+        <p><img src="/Content/newsImg/a27512548ffcea8e6b3d1256fc85b880.jpg"
+                alt="a27512548ffcea8e6b3d1256fc85b880.jpg"><br /></p>
+        <p>在顾振清与张岚芊的对谈中，讨论了张岚芊的意象油画和对中国文化传统的理解。她将不同艺术形式和文化元素转化为自己的创作语言，对中国文化符号深度的领会、深度的阐述：</p>
+        <p>顾振清：</p>
+        <p>大家可以看到张岚芊的抽象绘画，其实是一个知识结构的反映。她肯定是读了无数个抽象艺术家的作品，才有现在的一种融汇贯通。她的绘画里头你可以感受到一种唐朝宋朝艺术的风度，也可以看到赵无极、朱德群这些中国华人抽象画家风格的一种转化。那么你的绘画为什么试图用抽象的语言去表达中国唐宋这样的一种风度呢？
+        </p>
+        <p>张岚芊：</p>
+        <p>我最早就是源于画意象油画，与雷双老师不同我们是把光省去，在不要光的情况下画形体的写意，这样的表达就是一个做减法的方式。早期我绘制过一段时间的人物画，后来又画户外写生。户外写生画到2015年，内容上便比较写景、写意而非写实。通过提取当地的自然地理特色艺术及人文元素，感悟当下当地环境中的一草一木与人的关系，用意象的手法，抽象地在画面中表现出来。
+        </p>
+        <p><img src="/Content/newsImg/b3424f4167c9a46aa0a913eec327f4a3.jpg"
+                alt="b3424f4167c9a46aa0a913eec327f4a3.jpg"><br /></p>
+        <figcaption>《只此青绿3》 张岚芊</figcaption>
+        <p>顾振清：</p>
+        <p>《只此青绿》这部分作品是有具象的，是通过人物和相对稀薄的色彩组合而成。在画面中，它不再是强调厚度的画面经营。更多的是一种心情的渲染及表达。那么在这方面，张岚芊老师是否开始在画面中做减法，更直接的直抒胸臆呢？还是希望不要拘束在这个抽象范畴里头，无论抽象和意象，只要能表达你的概念和对艺术的理解就可以了呢？
+        </p>
+        <p>张岚芊：</p>
+        <p>作品创作时是以水为题材元素去表达的。源于《只此青绿》这一舞蹈作品的演绎十分震撼我，感觉是充满力量的唯美，它所表达出当下与远古的一种对比，非常有穿越感，我想用很轻的方式来表现这个作品，非常不一样的柔软里深藏着一种力量、一种刚正！便用了湿画法。然我是学习设计出身，在设计里面也有自己的积累与沉淀，不受拘泥，有时候会采用设计中空间的移动，包括色彩的变化来处理画面，从而达到一种对比，包括情感输出。接下来，以水为题材我想再做些减法，创作带有符号性的作品，再往上面延伸扩展。画面其中关键的一点就是包含了中国的传统元素。意象，写心、借景非写景，还是会以意象这一概走向户外，走向大自然，以意象作为根基来诠释未来的作品，抽象只是暂时的，其实意象里面也包含有抽象部分。中国的东西可以很当代、很艺术也可以很潮流，让人有飘起来的感觉。
+        </p>
+        <p>……</p>
+        <p><img src="/Content/newsImg/d2a1d68273a499626a68692a92959263.jpg"
+                alt="d2a1d68273a499626a68692a92959263.jpg"><br /></p>
+        <figcaption>《无题4》 张岚芊</figcaption>
+        <p style="text-align:center;">——</p>
+        <p style="text-align:center;">END</p>
+        <p style="text-align:center;">编辑丨魏嘉梵</p>
+        <p style="text-align:center;">审核丨羌笛 王玉波</p>
+        <p style="text-align:center;">审定丨张岚芊</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </article>
+
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+
+
+</div>
+
+<script>
+
+</script>
