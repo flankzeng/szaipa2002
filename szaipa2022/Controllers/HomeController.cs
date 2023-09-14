@@ -264,6 +264,11 @@ namespace Szaipa.Controllers
             return View();
         }
 
+        public ActionResult artistNewsRead()
+        {
+            return View();
+        }
+
         public ActionResult newsread(int id)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;

@@ -97,9 +97,9 @@
             </div>
         </div>
 
-        <div class="col-xs20 col-sm20 col-md20 col-lg20 layui-form-item layui-form-text">
-            <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简介</label>
-            <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+        <div class="col-xs20 col-sm20 col-md20 col-lg20 layui-form-item layui-form-text" style="margin-top: 2vh;">
+            <label class="layui-form-label col-xs1 col-sm1 col-md1 col-lg1">简介</label>
+            <div class="layui-input-block col-xs19 col-sm19 col-md19 col-lg19">
                 <textarea name="Subtitle" placeholder="短篇幅介绍" class="layui-textarea"></textarea>
             </div>
         </div>
@@ -111,7 +111,8 @@
         <br />
         <div class="col-xs20 col-sm20 col-m20 col-lg20">
             <div class="layui-form-item">
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18"
+                    style="text-align: center;margin-top:2vh;">
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 
@@ -134,7 +135,21 @@
         });
         layedit.build('demo',
             {
-                height: 580 //设置编辑器高度
+                height: 580, //设置编辑器高度
+                tool: [
+                    'strong' //加粗
+                    , 'italic' //斜体
+                    , 'underline' //下划线
+
+                    , '|' //分割线
+
+                    , 'left' //左对齐
+                    , 'center' //居中对齐
+                    , 'right' //右对齐
+
+                    , '|' //分割线
+                    , 'image' //插入图片
+                ]
             }
 
         ); //建立编辑器
