@@ -81,6 +81,7 @@
         .lineL {
             height: inherit;
             border-left: 1px solid #877150;
+            padding-right: 4em;
         }
 
         .lineR {
@@ -406,38 +407,37 @@
 
 
 
-    <nav class="col-xs20 col-sm20 col-md20 col-lg20">
+    <nav class="col-xs20 col-sm20 col-md20 col-lg20 bannerCon" style="margin-bottom:1vh;">
         <!-- 电脑端 -->
-        <div class=" col-xs20 col-sm20 col-md20 col-lg20 bannerCon" style="margin-bottom:1vh;">
-            <a href="~/home/newIndex">
-                <img class="col-sm3 col-md4 col-lg4 logo1" src="../../content/images/LOGO_01.png" alt="" />
-            </a>
-            <div class="col-xs2 col-sm2 col-md4 col-lg8">&nbsp;</div>
-            <div class="col-xs15 col-sm15 col-md12 col-lg8 bannerLink">
-                <ul class="topList">
+        <a href="~/home/newIndex" class="col-sm3 col-md4 col-lg4">
+            &nbsp;
+            <img class="logo1" src="../../content/images/LOGO_01.png" alt="" />
+        </a>
+        <div class="col-xs2 col-sm2 col-md4 col-lg8">&nbsp;</div>
+        <div class="col-xs15 col-sm15 col-md12 col-lg8 bannerLink">
+            <ul class="topList">
 
-                    <div class="lineL"></div>
-                    <li style="margin-left: 50px;">
-                        <a href="~/home/newIndex">首&#12288;&#12288;页</a>
-                    </li>
-                    <div class="lineR"></div>
+                <div class="lineL"></div>
+                <li>
+                    <a href="~/home/newIndex">首&#12288;&#12288;页</a>
+                </li>
+                <div class="lineR"></div>
 
-                    <li>
-                        <a href="~/home/newnews">新闻资讯</a>
-                    </li>
-                    <div class="lineR"></div>
+                <li>
+                    <a href="~/home/newnews">新闻资讯</a>
+                </li>
+                <div class="lineR"></div>
 
-                    <li>
-                        <a href="~/home/vip">会员风采</a>
-                    </li>
-                    <div class="lineR" style="margin-right: 40px;"></div>
+                <li>
+                    <a href="~/home/vip">会员风采</a>
+                </li>
+                <div class="lineR" style="margin-right: 40px;"></div>
 
-                    <li style="padding-right: 1vw;">
-                        <a href="~/home/newabout">关于我们</a>
-                    </li>
+                <li style="padding-right: 1vw;">
+                    <a href="~/home/newabout">关于我们</a>
+                </li>
 
-                </ul>
-            </div>
+            </ul>
         </div>
     </nav>
     @RenderBody()
@@ -459,8 +459,8 @@
     <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
         <div class="footer">
             <div class="copyright-container">
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-                <div class="col-sm7 col-md7 col-lg7 copyright">
+                <div class="col-md2 col-lg2">&nbsp;</div>
+                <div class="col-md7 col-lg7 copyright">
                     <p>
                         <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
                             粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
@@ -469,7 +469,7 @@
                         深圳市艺术产业促进会
                     </p>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
                         <a href="~/home/newnews"> 新闻动态</a><br />
                         <a href="~/home/newConstitution"> 展会动态</a><br />
@@ -479,7 +479,7 @@
                     </p>
 
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
                         <a href="~/home/newabout">合作案例 </a><br />
                         <a href="Javascript:;;">艺术家首页</a><br />
@@ -488,7 +488,7 @@
                         &#12288;
                     </p>
                 </div>
-                <div class="col-sm3 col-md3 col-lg3 footerList">
+                <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
                         <a href="~/home/link">联系我们</a><br />
                         <!-- <a href="~/home/index">切换旧版</a><br /> -->
@@ -499,7 +499,7 @@
                     </p>
                 </div>
 
-                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                <div class="col-md2 col-lg2">&nbsp;</div>
             </div>
         </div>
     </footer>
