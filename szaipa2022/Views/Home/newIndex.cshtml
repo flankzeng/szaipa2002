@@ -876,7 +876,8 @@
     .mySwiper10 .swiper-pagination {
         background-color: transparent;
         top: auto;
-        bottom: 0;
+        bottom: var(--indexProgressBar);
+        height: .5vh;
     }
 
     .mySwiper10 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
@@ -1825,19 +1826,26 @@
 <!-- FOOTER08,09 -->
 <section id="section08" class="xs-hide sm-hide col-md20 col-lg20">
     <div class="col-md2 col-lg2">&nbsp;</div>
-    <div class="col-md16 col-lg16" style="padding-top: 6vh;">
-        <input type="email" placeholder="EMAIL" class="emailInput" />
-        <div class="email">
-            <button class="enter02" title="提交">
-                <img src="../../Content/icon/enter-03.png" alt="" />
-            </button>
-        </div>
+    <div class="col-md4 col-lg4" style="padding-top: 6vh;">
+
 
         <!-- <input type="checkbox" id="checkbox" /> -->
-        <img class="dui undraggable" src="../../content/images/dui-06.png" alt="" />
-        <span class="jieshou">
-            接收深圳市艺术产业促进会最新消息</span>
+        <div class="jieshou">
+            <input type="email" placeholder="EMAIL" class="emailInput" />
+            <div class="email">
+                <button class="enter02" title="提交">
+                    <img src="../../Content/icon/enter-03.png" alt="" />
+                </button>
+            </div>
+            <i class="dui undraggable"></i>
+            <span>接收深圳市艺术产业促进会最新消息</span>
+        </div>
 
+
+
+    </div>
+    <div class="col-md5 col-lg5">&nbsp;</div>
+    <div class="col-md7 col-lg7">
         <img class="fuzhu undraggable xs-hide sm-hide" src="../../content/images/fuzhu-05.png" alt="" />
     </div>
     <div class="col-md2 col-lg2">&nbsp;</div>

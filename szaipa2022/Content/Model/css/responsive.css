@@ -111,6 +111,7 @@ body {
         /* section07 展会活动 */
         --buttonRadius: .5vw !important;
         --zhuangtai: .9rem !important;
+        --indexProgressBar: 0%;
 
         /* section08 留邮箱 */
         --emailLine: 20vw !important;
@@ -136,6 +137,9 @@ body {
 
         /* section06 新闻 */
         --dateLeft: 0;
+
+        /* Section07 展讯轮播 */
+        --indexProgressBar: 11.8%;
 
         /* section08 留邮箱 */
         --email: 1rem;

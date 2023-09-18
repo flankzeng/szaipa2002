@@ -114,18 +114,18 @@
         /* Section08 邮箱填写 */
 
         .fuzhu {
-            height: 12vh;
-            width: auto;
-            position: absolute;
-            top: 30%;
-            transform: translateY(-50%);
-            right: 10%;
+            width: 100%;
+            transform: translateY(25%);
         }
 
         .dui {
-            height: 2vh;
-            width: auto;
-            vertical-align: middle;
+            height: 1em;
+            width: 1em;
+            display: inline-block;
+            background-image: url('../../content/images/dui-06.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
         }
 
         .enter02 {
@@ -243,7 +243,16 @@
         .jieshou {
             line-height: 20px;
             vertical-align: middle;
+            white-space: nowrap;
             font-size: var(--jieshou);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 400;
+        }
+
+        .jieshou span {
+            display: inline-block;
+            transform: translateY(-8%);
         }
 
         .emailContainerM {

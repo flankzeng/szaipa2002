@@ -45,3 +45,4 @@
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.CoreCompileInputs.cache
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.CopyComplete
 /Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.dll
+/Users/arthur/Project/GitClone/szaipa2002/szaipa2022/obj/Debug/szaipa2022.csproj.AssemblyReference.cache
