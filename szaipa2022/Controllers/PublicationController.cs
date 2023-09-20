@@ -9,6 +9,10 @@ namespace Szaipa.Controllers
     public class PublicationController : Controller
     {
         // GET: Publication
+        public ActionResult index()//展会动态
+        {
+            return View();
+        }
         public ActionResult chunyu()//2022年《春雨》 深圳南油动漫园
         {
             return View();

@@ -39,7 +39,13 @@
         .bannerCon {
             /* 最上层 */
             height: var(--logo1);
-            position: relative;
+            /* position: relative; */
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 999;
+
             border-bottom: 1px solid #877150;
         }
 
@@ -364,55 +370,6 @@
 </head>
 
 <body>
-    <!-- 临时警示区 -->
-
-    <script>
-        $(document).ready(function () {
-            $(".floating-box").hide();
-            $(window).on("load", function () {
-                $(".floating-box").show();
-            });
-
-            $(".close-btn").on("click", function () {
-                $(".floating-box").hide();
-            });
-        });
-
-    </script>
-    <style>
-        .floating-box {
-            position: fixed;
-            bottom: 3vh;
-            right: 1vw;
-            background-color: #ededed;
-            padding: 1em 2em;
-            width: 30vw;
-            z-index: 9999;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-60%);
-            right: 1vw;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            color: #ccc;
-        }
-
-        .floating-box p {
-            font-size: 1rem;
-        }
-
-        .close-btn:hover {
-            color: #000;
-        }
-    </style>
-    @*<div class="floating-box">
-    <span class="close-btn">&times;</span>
-    <p>请等待页面完整加载后查看效果，目前的字体加载比较缓慢</p>
-    </div>*@
 
 
 
@@ -449,6 +406,7 @@
             </ul>
         </div>
     </nav>
+
     @RenderBody()
 
     <!-- 以上为共享部分 -->
@@ -481,7 +439,7 @@
                 <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
                         <a href="~/home/newnews"> 新闻动态</a><br />
-                        <a href="~/home/newConstitution"> 展会动态</a><br />
+                        <a href="~/publication/index"> 展会动态</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
@@ -491,7 +449,7 @@
                 <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
                         <a href="~/home/newabout">合作案例 </a><br />
-                        <a href="Javascript:;;">艺术家首页</a><br />
+                        <a href="~/artist/index" target="_blank" `>艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
@@ -533,6 +491,34 @@
         /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
         /*．．．*/
         $webfont.draw();
+
+        $(function () {
+            var lastScrollPosition = $(window).scrollTop();
+            var downThreshold = 10;  // 向下滚动触发的阈值
+            var upThreshold = 5;     // 向上滚动触发的阈值
+
+            $(window).scroll(function () {
+                var currentScrollPosition = $(window).scrollTop();
+                var distanceScrolled = Math.abs(currentScrollPosition - lastScrollPosition);
+
+                if (currentScrollPosition > lastScrollPosition && distanceScrolled >= downThreshold) {
+                    // 向下滚动，并且滚动距离大于或等于向下阈值
+                    $(".bannerCon").css({
+                        "transition": "transform 250ms",
+                        "transform": "translateY(-100%)"
+                    });
+                } else if (currentScrollPosition < lastScrollPosition && distanceScrolled >= upThreshold) {
+                    // 向上滚动，并且滚动距离大于或等于向上阈值
+                    $(".bannerCon").css({
+                        "transition": "transform 250ms",
+                        "transform": "translateY(0)"
+                    });
+                }
+
+                lastScrollPosition = currentScrollPosition;  // 更新最后的滚动位置
+            });
+        });
+
     </script>
 
 </body>
