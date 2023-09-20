@@ -151,6 +151,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ZXingLibs.cs" />
+        <Compile Include="Controllers\ArtistController.cs" />
     <Compile Include="Controllers\AwardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Project_TongouController.cs" />
