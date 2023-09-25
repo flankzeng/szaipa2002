@@ -21,87 +21,31 @@
         line-height: 1.3em;
     }
 
-
-    #section01 {
-        margin-top: 5vh;
+    #section01 ul {
+        display: flex;
     }
 
-    .swiper {
-        width: 100%;
-        height: 70vh;
-    }
-
-    .swiper-slide {
-        width: 100vw;
-    }
-
-
-
-
-    .carouselZoom {
-        width: 100%;
-        height: 70vh;
-    }
-
-    .carouselZoom:hover .imgCon {
-        @*transform:scale(1.04);*@
-    }
-
-    .imgCon {
-        width: 100%;
-        height: 100%;
-
-        object-fit: contain;
-        z-index: -1;
+    #section01 li {
+        width: 50%;
     }
 </style>
 
+<div class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--logo1);">&nbsp;</div>
 <section class="col-xs20 col-sm20 col-md20 col-lg20" id="section01" style="height: 150vh;">
 
-    <div class="col-xs20 col-sm20 col-md20 col-lg20">
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper relative">
-                <div class="swiper-slide">
-                    <a href="Javascript:;;" class="carouselZoom">
-                        <img src="../../Content/images/poster-shuimai.jpg" class="imgCon" alt="">
-                    </a>
-                </div>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md16 col-lg16">
+        <p class="chapter JhengBold">展会动态 &ensp;<i class="entitle">|</i>
+            <span style="font-family: 'dinLightI';">EXHIBITION NEWS</span>
+        </p>
 
-                <div class="swiper-slide">
-                    <a href="/Publication/trio" class="carouselZoom">
-                        <img src="../../Content/images/poster-trio.jpg" class="imgCon" alt="">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/Publication/chunyu2" class="carouselZoom">
-                        <img src="../../Content/images/poster-chunyu.jpg" class="imgCon" alt="">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/Publication/tonggou2" class="carouselZoom">
-                        <img src="../../Content/images/poster-tonggou2.jpg" class="imgCon" alt="">
-                    </a>
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+        </ul>
 
-
-
-
-
-
-
-        </div>
-
-
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
-        <div class="col-xs16 col-sm16 col-md16 col-lg16">
-            <p class="chapter JhengBold">近期展览 &ensp;<i class="entitle">|</i>
-                <span style="font-family: 'dinLightI';">RECENT EXHIBITION</span>
-            </p>
-        </div>
-        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    </div>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
 </section>
 
 
@@ -109,24 +53,7 @@
 
 
 <script>
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: "auto",
-        centeredSlides: true,
-        spaceBetween: 0,
-        loop: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-        },
-    });
+
 </script>
 
 

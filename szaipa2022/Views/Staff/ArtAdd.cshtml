@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ArtAdd";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
@@ -22,7 +21,7 @@
                 <p>(会员文件)pdf、ppt、word格式均可</p>
                 <div class="layui-hide" id="uploadDemoView2">
                     <hr>
-                    
+
                 </div>
             </div>
 
@@ -32,31 +31,36 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">中文名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="CnName" required lay-verify="required" placeholder="请输入会员中文名字（如果有）" autocomplete="off" class="layui-input">
+                        <input type="text" name="CnName" required lay-verify="required" placeholder="请输入会员中文名字（如果有）"
+                            autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">英文名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="EnName" required lay-verify="required" placeholder="请输入会员英文名字（如果有）" autocomplete="off" class="layui-input">
+                        <input type="text" name="EnName" required lay-verify="required" placeholder="请输入会员英文名字（如果有）"
+                            autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">国家</label>
                     <div class="layui-input-block">
-                        <input type="text" name="Nation" required lay-verify="required" placeholder="所在国家" autocomplete="off" class="layui-input">
+                        <input type="text" name="Nation" required lay-verify="required" placeholder="所在国家"
+                            autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">城市</label>
                     <div class="layui-input-block">
-                        <input type="text" name="City" required lay-verify="required" placeholder="常驻城市" autocomplete="off" class="layui-input">
+                        <input type="text" name="City" required lay-verify="required" placeholder="常驻城市"
+                            autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">级别</label>
                     <div class="layui-input-block">
-                        <input type="text" name="Title" required lay-verify="required" placeholder="例如：会员、高级会员、资深会员" autocomplete="off" class="layui-input">
+                        <input type="text" name="Title" required lay-verify="required" placeholder="例如：会员、高级会员、资深会员"
+                            autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
@@ -64,7 +68,7 @@
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-block">
                         <input type="radio" name="Sex" value="1" title="男" checked>
-                        <input type="radio" name="Sex" value="0" title="女" >
+                        <input type="radio" name="Sex" value="0" title="女">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
@@ -104,31 +108,31 @@
     var upload = layui.upload; //得到 upload 对象
     upload.render({
         elem: '#uploadDemo'
-     , url: '/Staff/TempImgSave/' //改成您自己的上传接口
-     , done: function (res) {
-      
-         layer.msg('上传成功');
-         layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
-         console.log(res)
-     }
-     , before: function () {
-         layer.msg('上传中', { icon: 16, time: 0 });
-     }
+        , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+        , done: function (res) {
+
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
     });
     upload.render({
         elem: '#uploadDemo2'
-      , accept: 'file'
-     , url: '/Staff/TempFilmeSave/' //改成您自己的上传接口
-     , done: function (res) {
-       
-         layer.msg('上传成功');
-         var txt1 = "<p>文件名：" + res.files.file + ".</p>";
-         layui.$('#uploadDemoView2').removeClass('layui-hide').empty().append(txt1);
-         console.log(res)
-     }
-     , before: function () {
-         layer.msg('上传中', { icon: 16, time: 0 });
-     }
+        , accept: 'file'
+        , url: '/Staff/TempFilmeSave/' //改成您自己的上传接口
+        , done: function (res) {
+
+            layer.msg('上传成功');
+            var txt1 = "<p>文件名：" + res.files.file + ".</p>";
+            layui.$('#uploadDemoView2').removeClass('layui-hide').empty().append(txt1);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
     });
 
     layui.use('layedit', function () {
@@ -137,46 +141,46 @@
             {
                 height: 200 //设置编辑器高度
                 , tool: [
-                     'strong' //加粗
-                     , 'italic' //斜体
-                     , 'underline' //下划线
-                     , 'del' //删除线
+                    'strong' //加粗
+                    , 'italic' //斜体
+                    , 'underline' //下划线
+                    , 'del' //删除线
 
-                     , '|' //分割线
+                    , '|' //分割线
 
-                     , 'left' //左对齐
-                     , 'center' //居中对齐
-                     , 'right' //右对齐
-                     , 'link' //超链接
-                     , 'unlink' //清除链接
+                    , 'left' //左对齐
+                    , 'center' //居中对齐
+                    , 'right' //右对齐
+                    , 'link' //超链接
+                    , 'unlink' //清除链接
 
                 ]
             }
 
-            ); //建立编辑器
+        ); //建立编辑器
 
         var layedit1 = layui.layedit;
         layedit1.build('demo1',
             {
                 height: 200 //设置编辑器高度
                 , tool: [
-                     'strong' //加粗
-                     , 'italic' //斜体
-                     , 'underline' //下划线
-                     , 'del' //删除线
+                    'strong' //加粗
+                    , 'italic' //斜体
+                    , 'underline' //下划线
+                    , 'del' //删除线
 
-                     , '|' //分割线
+                    , '|' //分割线
 
-                     , 'left' //左对齐
-                     , 'center' //居中对齐
-                     , 'right' //右对齐
-                     , 'link' //超链接
-                     , 'unlink' //清除链接
+                    , 'left' //左对齐
+                    , 'center' //居中对齐
+                    , 'right' //右对齐
+                    , 'link' //超链接
+                    , 'unlink' //清除链接
 
                 ]
             }
 
-            ); //建立编辑器
+        ); //建立编辑器
 
     });
 

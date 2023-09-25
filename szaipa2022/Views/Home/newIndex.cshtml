@@ -257,13 +257,28 @@
         line-height: 2.3em;
     }
 
-    .chapterAll {
+    .autoHidden {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: var(--zhangcheng);
+        padding-top: 1em;
+    }
+
+    .chapterAllmobile {
         position: absolute;
         right: 0;
-        top: -11vh;
+        bottom: -2vh;
         cursor: pointer;
         /* font-family: var(--fontLight);*/
         border-bottom: solid 0.5px black;
+    }
+
+    .chapterAllpc {
+        cursor: pointer;
+        border-bottom: solid .5px black;
+        margin-top: 20vh;
+        width: 4em;
+        transform: translateX(-4em);
     }
 
     .zhangcheng {
@@ -1249,8 +1264,8 @@
 <!-- CHAPTER04 章程 -->
 <section id="section04">
     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-        <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
-        <div class="col-sm16 col-md10 col-lg10">
+        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+        <div class="col-xs16 col-sm16 col-md10 col-lg10">
 
             <!-- 章程标题 -->
             <a href="Constitution" style="color: black;text-decoration: none;">
@@ -1260,26 +1275,29 @@
             </a>
 
             <!-- 章程图片 -->
-            <div class="col-sm20 zhangcheng"></div>
+            <div class="col-xs20 col-sm20 zhangcheng"></div>
 
-            <div class="chapterTXT col-sm20 md-hide lg-hide">
-                <p class="chapterAll JhengLight">查看更多</p>
-                本会以实施深圳市艺术产业创新驱动发展战略，着力构建以艺术为提升产品高度，以企业为主体、市场为导向、艺术以产学研相结合的技术创新体系为目标，努力搭建产学研合作创新平台，引导和支持艺术产品创新要素向产业化集聚，摆脱非产业化作坊手工模式，提高与科技结合创新和协同创新能力，促进艺术与科技成果向现实生产力转化，为企业创新、区域创新、协助低端密集型产业转型服务；联合企业、高等院校和科研院所，建立健全产学研合作创新和共同发展的运行机制……
-            </div>
+            <!-- 章程介绍 / 手机端 -->
+            <a href="Constitution" style="color: black;">
+                <div class="chapterTXT col-xs20 col-sm20 md-hide lg-hide">
+                    <p class="chapterAllmobile JhengLight">查看更多</p>
+                    本会以实施深圳市艺术产业创新驱动发展战略，着力构建以艺术为提升产品高度，以企业为主体、市场为导向、艺术以产学研相结合的技术创新体系为目标，努力搭建产学研合作创新平台，引导和支持艺术产品创新要素向产业化集聚，摆脱非产业化作坊手工模式，提高与科技结合创新和协同创新能力，促进艺术与科技成果向现实生产力转化，为企业创新、区域创新、协助低端密集型产业转型服务；联合企业、高等院校和科研院所，建立健全产学研合作创新和共同发展的运行机制……
+                </div>
+            </a>
         </div>
-        <div class="col-sm2 col-md1 col-lg1">&nbsp;</div>
+        <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
 
-        <!-- 章程介绍 -->
+        <!-- 章程介绍 / PC端 -->
         <a href="Constitution" style="color: black;">
-            <div class="chapterTXT sm-hide col-md5 col-lg5">
-                <p class="chapterAll JhengLight">查看更多</p>
+            <div class="chapterTXT autoHidden sm-hide col-md5 col-lg5">
                 本会以实施深圳市艺术产业创新驱动发展战略，着力构建以艺术为提升产品高度，以企业为主体、市场为导向、艺术以产学研相结合的技术创新体系为目标，努力搭建产学研合作创新平台，引导和支持艺术产品创新要素向产业化集聚，摆脱非产业化作坊手工模式，提高与科技结合创新和协同创新能力，促进艺术与科技成果向现实生产力转化，为企业创新、区域创新、协助低端密集型产业转型服务；联合企业、高等院校和科研院所，建立健全产学研合作创新和共同发展的运行机制……
             </div>
         </a>
+        <div class="col-md2 col-lg2"> &nbsp;<p class="chapterAllpc JhengLight">查看更多</p>
+        </div>
     </div>
 </section>
 
-<div class="clearfix"></div>
 
 <!-- CHAPTER05 核心成员(新) -->
 
@@ -1962,8 +1980,8 @@
         swiper10.slidePrev();
     });
 
-    // 展会轮播
     $(function () {
+        // 展会轮播
         $(".processing-lunbo").each(function () {
             var slides = $(this).find(".exhibitionSlide");
             var currentSlide = 0;
@@ -1976,10 +1994,8 @@
 
             setInterval(showSlide, 2300);
         });
-    });
 
-    // 展会活动激活状态
-    $(function () {
+        // 展会活动激活状态
         $("#btn01").addClass("active");
 
         $("#btn01").click(function () {
@@ -1997,7 +2013,16 @@
             $('#ended').css('display', 'flex')
             $('#ended').css('flex-wrap', 'wrap')
             // $('#section07').css('height', '100vh')
+        });
 
+        // chapter章节文字自动识别转换省略号
+        $('.autoHidden').each(function () {
+            var maxHeight = parseInt($(this).css('max-height'));
+            var text = $(this).text();
+            while ($(this)[0].scrollHeight > maxHeight) {
+                text = text.substr(0, text.length - 4);  // 删除最后一个字符
+                $(this).text(text + '......');
+            }
         });
     })
 </script>
