@@ -13,6 +13,11 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+
+        public ActionResult shuimai()//2023龙游水脉艺术节 浙江衢州龙游
+        {
+            return View();
+        }
         public ActionResult chunyu()//2022年《春雨》 深圳南油动漫园
         {
             return View();
