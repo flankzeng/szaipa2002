@@ -254,14 +254,29 @@
         font-weight: 300;
         font-family: 'Noto Sans SC', sans-serif;
         font-size: var(--chapterFontsize);
-        line-height: 2.3em;
+        line-height: 2em;
     }
 
     .autoHidden {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-height: var(--zhangcheng);
+        height: 25em;
         padding-top: 1em;
+        overflow: hidden;
+    }
+
+    .autoHidden::after {
+        content: "......";
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 4em;
+        height: 2em;
+        text-align: right;
+        color: black;
+
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
     }
 
     .chapterAllmobile {
@@ -279,6 +294,7 @@
         margin-top: 20vh;
         width: 4em;
         transform: translateX(-4em);
+        font-size: 1rem;
     }
 
     .zhangcheng {
@@ -1290,7 +1306,7 @@
         <!-- 章程介绍 / PC端 -->
         <a href="Constitution" style="color: black;">
             <div class="chapterTXT autoHidden sm-hide col-md5 col-lg5">
-                本会以实施深圳市艺术产业创新驱动发展战略，着力构建以艺术为提升产品高度，以企业为主体、市场为导向、艺术以产学研相结合的技术创新体系为目标，努力搭建产学研合作创新平台，引导和支持艺术产品创新要素向产业化集聚，摆脱非产业化作坊手工模式，提高与科技结合创新和协同创新能力，促进艺术与科技成果向现实生产力转化，为企业创新、区域创新、协助低端密集型产业转型服务；联合企业、高等院校和科研院所，建立健全产学研合作创新和共同发展的运行机制……
+                本会以实施深圳艺术产业创新驱动发展战略，着力构建以艺术为提升产品高度，以企业为主体、市场为导向、艺术以产学研相结合的技术创新体系为目标，努力搭建产学研合作创新平台，引导和支持艺术产品创新要素向产业化集聚，摆脱非产业化作坊手工模式，提高与科技结合创新和协同创新能力，促进艺术与科技成果向现实生产力转化，为企业创新、区域创新、协助低端密集型产业转型服务；联合企业、高等院校和科研院所，建立健全产学研合作创新和共同发展的运行机制；以国际当代艺术视野谋划和推动创新,完善艺术衍生品创新体系，梳理本土艺术原生态，对接世界高端展会进深圳，引进消化吸收再创新能力，不断培育文化艺术新的经济增长点。
             </div>
         </a>
         <div class="col-md2 col-lg2"> &nbsp;<p class="chapterAllpc JhengLight">查看更多</p>
@@ -2015,14 +2031,8 @@
             // $('#section07').css('height', '100vh')
         });
 
-        // chapter章节文字自动识别转换省略号
-        $('.autoHidden').each(function () {
-            var maxHeight = parseInt($(this).css('max-height'));
-            var text = $(this).text();
-            while ($(this)[0].scrollHeight > maxHeight) {
-                text = text.substr(0, text.length - 4);  // 删除最后一个字符
-                $(this).text(text + '......');
-            }
-        });
+
     })
+
+
 </script>
