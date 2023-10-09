@@ -118,7 +118,7 @@ body {
         --enterButton: 1.5vw;
 
         /* 通用 */
-        --pubSonHeight: 100vh;
+        --pubSonHeight: 82vh;
     }
 }
 
@@ -349,6 +349,7 @@ body {
 
 
 /* 其余页面开始 */
+/* PC通用元素 */
 @media only screen and (min-width:768px) {
 
     :root {
@@ -359,9 +360,21 @@ body {
         --sec04_fuzhuWidth: 45vw;
 
         --newsTop: 10vh;
+
+        /* publication */
+        --pubHeading: 23vh;
+        --pubTitlePub: 28%;
+        --pubLunbo: inherit;
+        --pubLunboS: 80%;
+    }
+
+    /* publication */
+    .imgCon_Pub {
+        transform: translateY(-20%) !important;
     }
 }
 
+/* 手机通用元素 */
 @media screen and (min-width:768px) and (max-width:991px) {
     :root {
         /* section04 Constitution */
@@ -372,6 +385,11 @@ body {
 
         --newsTop: 0vh;
 
+        /* publication */
+        --pubHeading: 7vh;
+        --pubTitlePub: 0;
+        --pubLunbo: 115%;
+        --pubLunboS: 90%;
     }
 
     /* Section04打开后 - Constitution页面开始 */
@@ -409,20 +427,13 @@ body {
         bottom: -5%;
     }
 
-    .titlePub {
-        padding-top: 7vh !important;
-    }
-
-    .imgCon_Pub {
-        padding-top: 5vh !important;
-    }
-
     .imgCon_PubSon {
-        margin-top: -25% !important;
+        margin-top: -15% !important;
     }
 
     .imgCon_PubMobCon {
         transform: translateX(-9%) !important;
+        margin-bottom: 10vh;
     }
 
     .imgCon_PubMob {
@@ -442,7 +453,7 @@ body {
     }
 
     .mySwiper2 {
-        width: 100% !important;
+        width: 85% !important;
     }
 
     .mySwiper2 .swiper-slide {

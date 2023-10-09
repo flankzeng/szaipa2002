@@ -3,7 +3,9 @@
     Layout = "~/Views/Shared/_newLayout.cshtml";
 }
 
-<section id="section01" style="height: var(--pubSonHeight);">
+<link rel="stylesheet" href="../../Content/css/publication.css">
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--pubSonHeight);">
+
     <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
     <div class="col-xs17 col-sm17 col-md7 col-lg7">
         <div class="titlePub">
@@ -19,11 +21,12 @@
                 < 返回 </a>
         </div>
     </div>
-    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+    <div class="col-xs1 col-sm1 col-md1 col-lg1"> &nbsp;</div>
 
-    <div class="col-xs20 col-sm20">
-        <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
-        <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
+
+    <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
+        <div class="col-md20 col-lg20">
             <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
@@ -121,11 +124,12 @@
                 <div class="swiper-button-next xs-hide sm-hide"></div>
                 <div class="swiper-button-prev xs-hide sm-hide"></div>
             </div>
+            <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
 
 
 
-
-            <div thumbsSlider="" class="swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
+            <div thumbsSlider=""
+                class="col-xs16 col-sm16 col-md20 col-lg20 swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <img src="../../Content/images/shuimai/10001.jpg" />
@@ -221,8 +225,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
     </div>
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
 
 </section>
 

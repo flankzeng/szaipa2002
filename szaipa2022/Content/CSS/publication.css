@@ -1,0 +1,130 @@
+#section01 {
+    padding-top: var(--pubHeading);
+
+}
+
+.titlePub {
+    height: auto;
+    width: auto;
+    text-align: left;
+    color: black;
+}
+
+.titlePub h1 {
+    /* font-family: 'JhengRegular';*/
+    font-size: 2.7rem;
+    margin-bottom: 0;
+}
+
+.titlePub h3 {
+    /* font-family: 'JhengLight';*/
+    letter-spacing: 0.03em;
+    margin-top: 2vh;
+    margin-bottom: var(--pubTitlePub);
+    font-size: 1rem;
+    line-height: 2em;
+}
+
+.titlePub a {
+    color: black;
+    font-size: 1.5rem;
+    /* font-family: 'JhengLight';*/
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+/* Swiper */
+
+.swiper-slide {
+    height: auto;
+    max-height: 70vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    /* margin-bottom: 15vh; */
+    width: auto;
+    height: 75%;
+    max-width: 90%;
+    object-fit: contain;
+    object-position: center center;
+}
+
+.swiper-slide a {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-family: 'smile', 'dinLightI';
+    letter-spacing: 0.2em;
+    font-size: 2rem;
+    height: 100%;
+    width: 60%;
+    position: absolute;
+    bottom: 5%;
+    color: white;
+    text-decoration: none;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    height: 100%;
+    width: 4vw;
+    top: 50%;
+    transform: translateY(-45%);
+    outline: none;
+}
+
+.mySwiper3 {
+    height: 50vh;
+    width: var(--pubLunbo);
+    padding-bottom: 0;
+}
+
+.mySwiper3 .swiper-slide {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+}
+
+.mySwiper3 .swiper-slide img {
+    height: auto;
+    object-fit: cover;
+    object-position: center center;
+    max-height: 40vh;
+}
+
+.mySwiper2 {
+    box-sizing: border-box;
+    padding: 0;
+    height: 15vh;
+    width: var(--pubLunboS);
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateX(13%);
+}
+
+.mySwiper2 .swiper-slide {
+    width: 10vw;
+}
+
+.mySwiper2 .swiper-slide img {
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.mySwiper2 .swiper-slide:not(.swiper-slide-thumb-active) img {
+    opacity: 0.5;
+}
+
+.imgCon_Pub {
+    transform: translateX(-10%);
+}
