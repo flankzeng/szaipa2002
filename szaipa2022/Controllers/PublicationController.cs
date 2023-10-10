@@ -14,6 +14,11 @@ namespace Szaipa.Controllers
             return View();
         }
 
+        public ActionResult tonggouEurope()//同构欧洲
+        {
+            return View();
+        }
+
         public ActionResult shuimai()//2023龙游水脉艺术节 浙江衢州龙游
         {
             return View();
