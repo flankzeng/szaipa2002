@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "同构——欧洲行 当代艺术展";
+    Layout = "~/Views/Shared/_newLayout.cshtml";
+}
+
+<link rel="stylesheet" href="../../Content/css/publication.css">
+
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--pubSonHeight);">
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+    <div class="col-xs17 col-sm17 col-md7 col-lg7">
+        <div class="titlePub">
+            <h1 class="JhengRegular">同构——欧洲行<br />
+                当代艺术展
+            </h1>
+            <h3 class="JhengLight">
+                <!-- 展览时间2022.12.29-2023.01.28 -->
+                Isomorphism - Contemporary Art Exhibition (European Tour)
+                <br />
+                结束时间：2023.10.23
+            </h3>
+
+            <a class="JhengLight xs-hide sm-hide" href="javascript:history.back()">
+                < 返回 </a>
+        </div>
+    </div>
+    <div class="col-xs1 col-sm1 col-md1 col-lg1"> &nbsp;</div>
+
+
+    <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
+        <div class="col-md20 col-lg20">
+            <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggouEurope/poster.jpg" />
+                    </div>
+                </div>
+                <div class="swiper-button-next xs-hide sm-hide"></div>
+                <div class="swiper-button-prev xs-hide sm-hide"></div>
+            </div>
+            <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+
+
+
+            <div thumbsSlider=""
+                class="col-xs16 col-sm16 col-md20 col-lg20 swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="../../Content/images/tonggouEurope/poster.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+
+</section>
+
+
+
+
+<script>
+
+    // section04的双swiper,02是子，03是父
+
+    var swiper2 = new Swiper(".mySwiper2", {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 3,
+        slidesPerView: 7,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+    var swiper3 = new Swiper(".mySwiper3", {
+        loop: true,
+        spaceBetween: 0,
+        grabCursor: true,
+        // slidesPerView: 0,
+        // 启用懒加载
+        lazy: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper2,
+        },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+    });
+
+</script>
+
+<!-- 以下为共享部分 -->
+
+
+
+
+
+<section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
+    <div class="emailContainerM">
+        <div class="emailPosition">
+
+            <h1>深圳市艺术产业新闻邮件</h1>
+
+
+            <input class="emailM" type="email" placeholder="EMAIL">
+            <button type="submit">订&#12288;阅</button>
+
+            <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
+                <br />
+                一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
+            </p>
+        </div>
+        <div class="logoContainerM">
+            <a href="Javascript:;;">
+                <img src="../../Content/icon/wechat.svg" class="guanzhu" alt=""></a>
+            <a href="Javascript:;;">
+                <img src="../../Content/icon/douyin.svg" class="guanzhu" alt=""></a>
+        </div>
+
+    </div>
+</section>
