@@ -210,6 +210,7 @@ body {
 
     /* 通用 */
     --title: 2.2rem;
+    --defaultTop: 15vh;
     /* --fontLight: 'JhengLight';*/
 }
 
@@ -261,6 +262,9 @@ body {
         --cardHeight: 50vh;
         --cardWidth: 80vw;
         --cardTXT: 1.5rem;
+
+        /* 通用 */
+        --defaultTop: 8vh;
     }
 
     /* section02轮播 */
