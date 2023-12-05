@@ -96,7 +96,7 @@ namespace Szaipa.Controllers
             return View(ns);
         }
 
-        public ActionResult newnews(int? page, int? limit, int? count)
+        public ActionResult newnews(int? page, int? limit, int? count, string keyword)
         {
             if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
             if (Session["Staff"] != null) ViewBag.staff = 1;
@@ -110,7 +110,6 @@ namespace Szaipa.Controllers
             ViewBag.news = 1;
             return View(ns);
         }
-
         public ActionResult vip()
         {
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
@@ -303,6 +302,18 @@ namespace Szaipa.Controllers
             return View(news);
         }
 
+        public ActionResult Search(string keyword)
+        {
+            // 调用适当的方法从数据库或其他数据源获取newnews文章的数据，并根据关键字进行筛选
+            // 可以使用LINQ或其他合适的方法进行搜索和筛选，然后将搜索结果传递给cshtml页面进行显示
+
+            // 示例：从数据库获取newnews文章数据，并根据关键字筛选
+            var articles = db.News.Where(n => n.Title.Contains(keyword) || n.Content.Contains(keyword))
+                                  .OrderByDescending(n => n.Date)
+                                  .ToList();
+
+            return View("newnewsread", articles);
+        }
 
         public ActionResult listworks(int? id)
         {
