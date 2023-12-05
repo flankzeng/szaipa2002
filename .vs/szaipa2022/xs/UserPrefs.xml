@@ -1,29 +1,34 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/StaffController.cs">
     <Files>
       <File FileName="szaipa2022/Controllers/HomeController.cs" />
       <File FileName="../../../../../Applications/Visual Studio.app/Contents/MonoBundle/MSBuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
       <File FileName="szaipa2022/Views/Home/Index.cshtml" />
-      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="296" Column="25" />
+      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="261" Column="1" />
       <File FileName="szaipa2022/Views/Staff/newArtAdd.cshtml" />
+      <File FileName="szaipa2022/Models/Model1.edmx" Line="1" Column="1" />
+      <File FileName="szaipa2022/Models/Artist.cs" Line="42" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="szaipa2022" expanded="True" selected="True">
+          <Node name="szaipa2022" expanded="True">
             <Node name="szaipa2022" expanded="True">
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="StaffController.cs" selected="True" />
+              </Node>
+              <Node name="Views" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
 </Properties>
