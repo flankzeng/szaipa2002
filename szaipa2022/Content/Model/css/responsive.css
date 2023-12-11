@@ -119,6 +119,11 @@ body {
 
         /* 通用 */
         --pubSonHeight: 82vh;
+
+        /* 后台 */
+        --loginboxW: 20vw !important;
+        --loginboxH: 50vh !important;
+        --loginboxMG: 20vh auto !important;
     }
 }
 
@@ -149,6 +154,7 @@ body {
         --footerBorder: 0.7px solid #939393;
         --footerFontsize: 1rem !important;
         --footerLineheight: 1.8em;
+
     }
 
     .after::after {
@@ -212,6 +218,11 @@ body {
     --title: 2.2rem;
     --defaultTop: 15vh;
     /* --fontLight: 'JhengLight';*/
+
+    /* 后台 */
+    --loginboxW: 70vw;
+    --loginboxH: 45vh;
+    --loginboxMG: 50% auto;
 }
 
 /* 通用结束 */

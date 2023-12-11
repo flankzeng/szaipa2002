@@ -4,34 +4,43 @@
 
 .btn-art {
     color: #fff;
-    background-color: rgb(129,109,82);
-    border-color: rgb(129,109,82);
+    background-color: rgb(129, 109, 82);
+    border-color: rgb(129, 109, 82);
+}
+
+.img-responsive {
+    margin: 5vh auto;
+    height: 15vh;
+    width: auto;
 }
 
 .loginbox {
-    width: 360px;
-    height: 480px;
+    width: var(--loginboxW);
+    height: var(--loginboxH);
     border-radius: 15px;
     box-shadow: 5px 5px 2px #888888;
     background-color: #fff;
-    margin: 200px auto;
-    border-top:1px ridge;
-    border-left:1px ridge;
+    margin: var(--loginboxMG);
+    border-top: 1px ridge;
+    border-left: 1px ridge;
 }
-    .loginbox ul {
-    width:360px;
-    }
-    .loginbox .validation-summary-errors {
-        width:360px;
-        color:#ff0000;
-    }
-    .logbox360 div {
-        width: 54px;
-        height: 150px;
-        margin: 0 auto;
-    }
+
+.loginbox ul {
+    width: var(--loginboxW);
+}
+
+.loginbox .validation-summary-errors {
+    width: var(--loginboxW);
+    color: #ff0000;
+}
+
+.logbox360 div {
+    width: 54px;
+    height: 150px;
+    margin: 0 auto;
+}
 
 .logbox360 {
-    width: 360px;
+    width: var(--loginboxW);
     height: 180px;
 }
