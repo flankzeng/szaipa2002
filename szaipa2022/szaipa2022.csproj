@@ -151,7 +151,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\ZXingLibs.cs" />
-        <Compile Include="Controllers\ArtistController.cs" />
+    <Compile Include="Controllers\ArtistController.cs" />
     <Compile Include="Controllers\AwardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Project_TongouController.cs" />
@@ -320,6 +320,8 @@
       <DependentUpon>Model2.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
+    <Content Include="Views\Staff\newArtist.cshtml" />
+    <Content Include="Views\Home\newabout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

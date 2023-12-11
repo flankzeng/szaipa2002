@@ -11,7 +11,7 @@ namespace szaipa2022.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Artist
     {
         public int Id { get; set; }
@@ -34,8 +34,7 @@ namespace szaipa2022.Models
         public string Activity { get; set; }
         public string Color1 { get; set; }
         public string Color2 { get; set; }
-        public string DeedsYear { get; set; }
         public string DeedsThings { get; set; }
-
+        public string DeedsYear { get; set; }
     }
 }

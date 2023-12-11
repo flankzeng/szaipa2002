@@ -51,6 +51,10 @@
     <Property Name="FlieInf" Type="nvarchar" MaxLength="500" />
     <Property Name="VisitCount" Type="int" />
     <Property Name="Activity" Type="nvarchar(max)" />
+    <Property Name="Color1" Type="nvarchar" MaxLength="8" />
+    <Property Name="Color2" Type="nvarchar" MaxLength="8" />
+    <Property Name="DeedsThings" Type="nvarchar(max)" />
+    <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -109,6 +113,7 @@
     <Property Name="ImgTitle" Type="nvarchar(max)" />
     <Property Name="Activity" Type="nvarchar(max)" />
     <Property Name="Important" Type="bit" />
+    <Property Name="Year" Type="int" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>

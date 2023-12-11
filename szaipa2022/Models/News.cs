@@ -28,5 +28,6 @@ namespace szaipa2022.Models
         public string ImgTitle { get; set; }
         public string Activity { get; set; }
         public Nullable<bool> Important { get; set; }
+        public Nullable<int> Year { get; set; }
     }
 }

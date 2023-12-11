@@ -56,6 +56,10 @@
           <Property Name="FlieInf" Type="nvarchar" MaxLength="500" />
           <Property Name="VisitCount" Type="int" />
           <Property Name="Activity" Type="nvarchar(max)" />
+          <Property Name="Color1" Type="nvarchar" MaxLength="8" />
+          <Property Name="Color2" Type="nvarchar" MaxLength="8" />
+          <Property Name="DeedsThings" Type="nvarchar(max)" />
+          <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -114,6 +118,7 @@
           <Property Name="ImgTitle" Type="nvarchar(max)" />
           <Property Name="Activity" Type="nvarchar(max)" />
           <Property Name="Important" Type="bit" />
+          <Property Name="Year" Type="int" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -230,6 +235,10 @@
           <Property Name="FlieInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="VisitCount" Type="Int32" />
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Color1" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -288,6 +297,7 @@
           <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Important" Type="Boolean" />
+          <Property Name="Year" Type="Int32" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -389,6 +399,10 @@
           <EntitySetMapping Name="Artist">
             <EntityTypeMapping TypeName="SzaipaModel.Artist">
               <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="DeedsYear" ColumnName="DeedsYear" />
+                <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
+                <ScalarProperty Name="Color2" ColumnName="Color2" />
+                <ScalarProperty Name="Color1" ColumnName="Color1" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ArtistNameCN" ColumnName="ArtistNameCN" />
                 <ScalarProperty Name="ArtistNameEN" ColumnName="ArtistNameEN" />
@@ -455,6 +469,7 @@
           <EntitySetMapping Name="News">
             <EntityTypeMapping TypeName="SzaipaModel.News">
               <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Important" ColumnName="Important" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

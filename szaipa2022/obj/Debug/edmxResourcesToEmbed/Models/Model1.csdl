@@ -51,6 +51,10 @@
     <Property Name="FlieInf" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="VisitCount" Type="Int32" />
     <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Color1" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -109,6 +113,7 @@
     <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Important" Type="Boolean" />
+    <Property Name="Year" Type="Int32" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>

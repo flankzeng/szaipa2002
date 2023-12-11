@@ -7,7 +7,7 @@
       <Diagram DiagramId="244ac92928f14aaea109081e1e6046b8" Name="Diagram1">
         <EntityTypeShape EntityType="SzaipaModel.AccessData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.Activity" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SzaipaModel.Artist" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SzaipaModel.Artist" Width="1.5" PointX="4.625" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.Company" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.Diary" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.MonthData" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />

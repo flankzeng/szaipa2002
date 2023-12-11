@@ -35,6 +35,10 @@
     <EntitySetMapping Name="Artist">
       <EntityTypeMapping TypeName="SzaipaModel.Artist">
         <MappingFragment StoreEntitySet="Artist">
+          <ScalarProperty Name="DeedsYear" ColumnName="DeedsYear" />
+          <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
+          <ScalarProperty Name="Color2" ColumnName="Color2" />
+          <ScalarProperty Name="Color1" ColumnName="Color1" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ArtistNameCN" ColumnName="ArtistNameCN" />
           <ScalarProperty Name="ArtistNameEN" ColumnName="ArtistNameEN" />
@@ -101,6 +105,7 @@
     <EntitySetMapping Name="News">
       <EntityTypeMapping TypeName="SzaipaModel.News">
         <MappingFragment StoreEntitySet="News">
+          <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="Important" ColumnName="Important" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Title" ColumnName="Title" />
