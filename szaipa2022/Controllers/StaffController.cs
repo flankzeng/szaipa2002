@@ -242,7 +242,80 @@ namespace Szaipa.Controllers
             return RedirectToAction("Artist", "Staff");
 
         }
+        public ActionResult ArtAdd()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+            TempData.Clear();
+            return View(staff);
+        }
+        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ArtAdd(FormCollection form)
+        {
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Staff staffer = (Staff)Session["staff"];
 
+
+            var art = new Artist();
+
+            art.AddDate = DateTime.Now;
+            art.EndDate = DateTime.Now;
+            art.ArtistNameCN = Request.Form["CnName"];
+            art.ArtistNameEN = Request.Form["EnName"];
+            art.Nation = Request.Form["Nation"];
+            art.City = Request.Form["City"];
+            art.Title = Request.Form["Title"];
+            string sex = Request.Form["Sex"];
+            if (sex == "1" && sex != "0")
+            {
+                art.Sex = "男";
+            }
+            else
+            {
+                art.Sex = "女";
+            }
+            art.Color1 = Request.Form["Color1"];
+            art.Color2 = Request.Form["Color2"];
+            art.Deeds = Request.Form["Deeds"];
+            art.DeedsYear = Request.Form["DeedsYear"];
+            art.DeedsThings = Request.Form["DeedsThings"];
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/";
+                ImgSave(path, filename);
+                art.Path = filename;
+            }
+            if (TempData["TempFile"] != null)
+            {
+                string filename = TempData["TempFile"].ToString();
+                string path = "/Content/File/";
+                ImgSave(path, filename);
+                art.FlieInf = filename;
+            }
+
+            art.EditRecord = staffer.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 创建了此会员的条目。" + "/";
+
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 创建了" + art.ArtistNameCN + "的条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 创建了 " + art.ArtistNameCN + "的条目。" + "/";
+
+            db.Artist.Add(art);
+            db.SaveChanges();
+
+
+            return RedirectToAction("newArtist", "Staff");
+        }
         public ActionResult newArtAdd()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();

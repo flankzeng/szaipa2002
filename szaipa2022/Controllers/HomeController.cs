@@ -231,6 +231,7 @@ namespace Szaipa.Controllers
 
             return View(art);
         }
+
         public ActionResult newArt(int id)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;
