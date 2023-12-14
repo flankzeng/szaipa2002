@@ -238,7 +238,7 @@ namespace Szaipa.Controllers
             if (Session["Home"] == null) HaveViti();
             var art = db.Artist.FirstOrDefault(d => d.Id == id);
             var work = db.Works.Where(d => d.ArtistId == art.Id).ToList();
-            ViewBag.work = work.Take(8);
+            ViewBag.work = work;
 
 
             if (art.Honor != null && art.Honor.IndexOf("/") > 0)

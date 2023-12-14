@@ -12,6 +12,11 @@
         border: none;
     }
 
+    .bg {
+        background: linear-gradient(to bottom right, #3e47e1, #151965);
+        display: list-item;
+    }
+
     #section01 {
         /* 首页大图 */
         width: 100vw;
@@ -136,7 +141,7 @@
         right: 0;
         bottom: -30%;
         transform: translateY(100%) rotate(90deg) !important;
-        background-image: url('~../../../../content/icon/arrow-right-bottom.svg');
+        background-image: url('/content/icon/arrow-right-bottom.svg');
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center center;
@@ -567,51 +572,51 @@
     });
 
     // 年表 - 折叠手风琴
+    // 23.12.14：完成更改。
     $(function () {
-        // when page loads, the collapsible is collapsed
-        $('.collapsible').each(function () {
-            // get the content of the collapsible
+        // 初始化：默认展开前五个.collapsible
+        $('.collapsible').each(function (index) {
             var content = $(this).next('.content');
-            // if the collapsible is not collapsed by default
-            if ($(this).attr('data-collapsed') === 'false') {
-                // expand the collapsible
+            if (index < 5) { // 前五个
+                $(this).addClass('defaultActive').attr('data-collapsed', 'false');
                 content.css('max-height', content.prop('scrollHeight') + 'px');
-                $(this).addClass('defaultActive');
+            } else {
+                $(this).attr('data-collapsed', 'true');
             }
         });
 
-        // when the collapsible is clicked
+        // .collapsible元素的点击事件处理
         $('.collapsible').click(function () {
-            // get the content of the collapsible
             var content = $(this).next('.content');
-            // if the collapsible is collapsed
-            var collapsed = $(this).attr('data-collapsed') === 'true';
+            var isCollapsed = $(this).attr('data-collapsed') === 'true';
 
-            // toggle the classes of the collapsible
-            $(this).toggleClass('defaultActive');
-            content.toggleClass('active').toggleClass('inactive');
-
-            // expand or collapse the collapsible
-            content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
-            $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
+            // 切换折叠状态
+            if (isCollapsed) {
+                $(this).addClass('defaultActive').attr('data-collapsed', 'false');
+                content.css('max-height', content.prop('scrollHeight') + 'px');
+            } else {
+                $(this).removeClass('defaultActive').attr('data-collapsed', 'true');
+                content.css('max-height', 0);
+            }
         });
 
-        // when the toggle button is clicked
+        // toggleBtn点击事件处理
+        var toggleState = true;
         $('#toggleBtn').click(function () {
-            // toggle all the collapsibles
             $('.collapsible').each(function () {
-                // get the content of the collapsible
                 var content = $(this).next('.content');
-                // if the collapsible is collapsed
-                var collapsed = $(this).attr('data-collapsed') === 'true';
 
-                // expand or collapse the collapsible
-                content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
-                // toggle the classes of the collapsible
-                $(this).toggleClass('defaultActive', collapsed);
-                // change the collapsed attribute
-                $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
+                if (toggleState) {
+                    // 第一次点击：展开所有.collapsible
+                    $(this).addClass('defaultActive').attr('data-collapsed', 'false');
+                    content.css('max-height', content.prop('scrollHeight') + 'px');
+                } else {
+                    // 第二次点击：折叠所有.collapsible
+                    $(this).removeClass('defaultActive').attr('data-collapsed', 'true');
+                    content.css('max-height', 0);
+                }
             });
+            toggleState = !toggleState; // 切换状态
         });
     });
 
@@ -798,7 +803,7 @@
 
             <button class="collapsible defaultActive">
                 2023
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content">
                 <p>三人行——鸥洋/雷双/张岚芊艺术展，木星美术馆，深圳;
@@ -807,18 +812,17 @@
 
             <button class="collapsible defaultActive">
                 2022
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content">
-                <p>
-                    "春语"--当代艺术名家邀请展；
+                <p>"春语"--当代艺术名家邀请展；
                     《同构》第二季——当代艺术展，罗湖美术馆，深圳
                 </p>
             </div>
 
             <button class="collapsible defaultActive">
                 2021
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content">
                 <p>同构—当代艺术作品邀请展 ，罗湖美术馆，深圳</p>
@@ -826,7 +830,7 @@
 
             <button class="collapsible defaultActive">
                 2020
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content">
                 <p>"Woman, an infinite wor/ld" 主题 9人国际邀请展， SK画廊，纽约</p>
@@ -834,11 +838,10 @@
 
             <button class="collapsible defaultActive">
                 2019
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content">
-                <p>
-                    “Kunst I'm Dialog”主题开馆展，白立方，荷兰；
+                <p>“Kunst I'm Dialog”主题开馆展，白立方，荷兰；
                     第58届威尼斯双年展“personal structures-identities”主题展平行展，意大利；
                     “100% FEMALE exhibition up-date”主题展，白立方，荷兰
                 </p>
@@ -846,11 +849,10 @@
 
             <button class="collapsible">
                 2018
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    “艺术 IM 对话”主题展，白立方慕尼黑Landshut，德国；
+                <p>“艺术 IM 对话”主题展，白立方慕尼黑Landshut，德国；
                     “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展，罗湖美术馆，深圳；
                     “有感于斯文”唐宋、杨宽、张岚芊当代艺术主题展策展人，罗湖美术馆，深圳；
                 </p>
@@ -858,11 +860,10 @@
 
             <button class="collapsible">
                 2017
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    意象油画研究院副院长；
+                <p>意象油画研究院副院长；
                     “第十一届佛罗伦萨国际当代艺术双年展”佛罗伦萨，意大利；
                     “遇见艺术& middot”，香港马会，北京；
                     “首届深圳当代陶艺大展”，深圳画院，深圳；
@@ -872,11 +873,10 @@
 
             <button class="collapsible">
                 2016
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    《中国当代艺术文献》2015年提名艺术家；
+                <p>《中国当代艺术文献》2015年提名艺术家；
                     “花非花”（Le s fleurs du mal）张岚芊、徐赓良双个展，米兰国际艺术中心，意大利；
                     “中国.湘潭首届油画展”，齐白石纪念馆，湘潭；
                 </p>
@@ -884,11 +884,10 @@
 
             <button class="collapsible">
                 2015
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    《当代油画》14 女性艺术家专辑-张岚芊；
+                <p>《当代油画》14 女性艺术家专辑-张岚芊；
                     《中国当代艺术文献》2014年提名艺术家；
                     “第十届佛罗伦萨国际当代艺术双年展”，佛罗伦萨，意大利；
                 </p>
@@ -896,18 +895,17 @@
 
             <button class="collapsible">
                 2013
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    being invited to be a Visiting Professor at the Art College of Changsha University of Science
+                <p>being invited to be a Visiting Professor at the Art College of Changsha University of Science
                     &Technology
                 </p>
             </div>
 
             <button class="collapsible">
                 2012
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
                 <p>《天涯》发表系列诗歌与散文；</p>
@@ -915,17 +913,16 @@
 
             <button class="collapsible">
                 2009
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
-                <p>
-                    9月，弃商从艺，从师于栗宪庭导师；
+                <p>9月，弃商从艺，从师于栗宪庭导师；
                 </p>
             </div>
 
             <button class="collapsible">
                 2006
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
                 <p>发布长篇小说《围城里的处女》；</p>
@@ -933,7 +930,7 @@
 
             <button class="collapsible">
                 1993
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
                 <p>7月创立了深圳十大名牌“芊”牌时装，担任总设计师，个人时装发布会前后十多次，央视，深圳电视台多次专题报道； </p>
@@ -941,7 +938,7 @@
 
             <button class="collapsible">
                 1989
-                <span><img class="arrow02" src="../../../../content/icon/arrow-right-bottom.svg" alt=""></span>
+                <span><img class="arrow02" src="/content/icon/arrow-right-bottom.svg" alt=""></span>
             </button>
             <div class="content" style="max-height:0;">
                 <p>毕业于长沙理工大学艺术院校</p>

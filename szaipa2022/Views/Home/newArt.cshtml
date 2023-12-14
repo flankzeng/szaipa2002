@@ -573,51 +573,51 @@
     });
 
     // 年表 - 折叠手风琴
+    // 23.12.14：完成更改。
     $(function () {
-        // when page loads, the collapsible is collapsed
-        $('.collapsible').each(function () {
-            // get the content of the collapsible
+        // 初始化：默认展开前五个.collapsible
+        $('.collapsible').each(function (index) {
             var content = $(this).next('.content');
-            // if the collapsible is not collapsed by default
-            if ($(this).attr('data-collapsed') === 'false') {
-                // expand the collapsible
+            if (index < 5) { // 前五个
+                $(this).addClass('defaultActive').attr('data-collapsed', 'false');
                 content.css('max-height', content.prop('scrollHeight') + 'px');
-                $(this).addClass('defaultActive');
+            } else {
+                $(this).attr('data-collapsed', 'true');
             }
         });
 
-        // when the collapsible is clicked
+        // .collapsible元素的点击事件处理
         $('.collapsible').click(function () {
-            // get the content of the collapsible
             var content = $(this).next('.content');
-            // if the collapsible is collapsed
-            var collapsed = $(this).attr('data-collapsed') === 'true';
+            var isCollapsed = $(this).attr('data-collapsed') === 'true';
 
-            // toggle the classes of the collapsible
-            $(this).toggleClass('defaultActive');
-            content.toggleClass('active').toggleClass('inactive');
-
-            // expand or collapse the collapsible
-            content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
-            $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
+            // 切换折叠状态
+            if (isCollapsed) {
+                $(this).addClass('defaultActive').attr('data-collapsed', 'false');
+                content.css('max-height', content.prop('scrollHeight') + 'px');
+            } else {
+                $(this).removeClass('defaultActive').attr('data-collapsed', 'true');
+                content.css('max-height', 0);
+            }
         });
 
-        // when the toggle button is clicked
+        // toggleBtn点击事件处理
+        var toggleState = true;
         $('#toggleBtn').click(function () {
-            // toggle all the collapsibles
             $('.collapsible').each(function () {
-                // get the content of the collapsible
                 var content = $(this).next('.content');
-                // if the collapsible is collapsed
-                var collapsed = $(this).attr('data-collapsed') === 'true';
 
-                // expand or collapse the collapsible
-                content.css('max-height', collapsed ? content.prop('scrollHeight') + 'px' : 0);
-                // toggle the classes of the collapsible
-                $(this).toggleClass('defaultActive', collapsed);
-                // change the collapsed attribute
-                $(this).attr('data-collapsed', collapsed ? 'false' : 'true');
+                if (toggleState) {
+                    // 第一次点击：展开所有.collapsible
+                    $(this).addClass('defaultActive').attr('data-collapsed', 'false');
+                    content.css('max-height', content.prop('scrollHeight') + 'px');
+                } else {
+                    // 第二次点击：折叠所有.collapsible
+                    $(this).removeClass('defaultActive').attr('data-collapsed', 'true');
+                    content.css('max-height', 0);
+                }
             });
+            toggleState = !toggleState; // 切换状态
         });
     });
 
@@ -716,7 +716,7 @@
         <li class="name JhengLight" style="color: white;">
             @Model.ArtistNameCN 作品 ©️
         </li>
-        <a href="/Home/artistNews">
+        <a href="Javascript:;;">
             <li class="hoverLine JhengBold">
                 艺术家资讯
                 <div class="moreInfo">
@@ -726,7 +726,7 @@
                 </div>
             </li>
         </a>
-        <a href="/Home/artistNews#section02">
+        <a href="Javascript:;;">
             <li class="hoverLine JhengBold">
                 收藏捐赠
                 <div class="moreInfo">
@@ -736,7 +736,7 @@
                 </div>
             </li>
         </a>
-        <a href="/Home/artistNews#section03">
+        <a href="Javascript:;;">
             <li class="hoverLine JhengBold">
                 出版著作
                 <div class="moreInfo">
@@ -745,7 +745,7 @@
                 </div>
             </li>
         </a>
-        <a href="/Home/artistNews#section04">
+        <a href="/Home/Art/@Model.Id">
             <li class="hoverLine JhengBold">
                 拍卖作品
                 <div class="moreInfo">
@@ -777,12 +777,10 @@
                 <div class="jieshao JhengLight">
                     <div class="padding"></div>
                     <h1 class="JhengBold">@Model.ArtistNameCN</h1>
-                    @Model.UserContent
+                    @Model.Introduction
                     @* 加两个项目。1.Introduction; 2.Position; 分别为简介和职务 *@
                     <h1 class="JhengBold">社会职务</h1>
-                    长沙理工大学设计艺术院校客座教授
-                    北京意象油画研究院副院长
-                    深圳市艺术产业促进会副会长，秘书长
+                    @Model.Position
                 </div>
             </div>
 
@@ -797,7 +795,7 @@
                 <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
             </div>
 
-            @Html.Raw(Model.Deeds)
+            @Html.Raw(Model.DeedsThings)
 
         </div>
         <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
@@ -922,12 +920,6 @@
                             </p>
                         </a>
                     </div>
-                    <!-- <div class="swiper-slide">Slide 4</div>
-                        <div class="swiper-slide">Slide 5</div>
-                        <div class="swiper-slide">Slide 6</div>
-                        <div class="swiper-slide">Slide 7</div>
-                        <div class="swiper-slide">Slide 8</div>
-                        <div class="swiper-slide">Slide 9</div> -->
                 </div>
                 <div class="swiper-pagination"></div>
 
