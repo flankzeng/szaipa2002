@@ -605,28 +605,28 @@
                         <a href="../../Home/newabout">关于我们</a>
                     </li>
 
-                    <li style="position: relative;">
-                        @using (Html.BeginForm("Search", "Newnewsread", FormMethod.Get))
-                        {
+                    @* <li style="position: relative;">
+                    @using (Html.BeginForm("Search", "Newnewsread", FormMethod.Get))
+                    {
 
-                            <input type="text" name="keyword" class="search" placeholder="作品与相关信息" />
-                            <button type="submit" class="sousuo"><img src="../../content/icon/search.svg" alt=""></button>
-                        }
-                        @if (Model != null && Model.Any())
-                        {
-                            <p>搜索结果：</p>
-                            <ul>
-                                @foreach (var article in Model)
-                                {
-                                    <li>@article.Title - @article.Content</li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <p>没有找到匹配的文章。</p>
-                        }
-                    </li>
+                    <input type="text" name="keyword" class="search" placeholder="作品与相关信息" />
+                    <button type="submit" class="sousuo"><img src="../../content/icon/search.svg" alt=""></button>
+                    }
+                    @if (Model != null && Model.Any())
+                    {
+                    <p>搜索结果：</p>
+                    <ul>
+                    @foreach (var article in Model)
+                    {
+                    <li>@article.Title - @article.Content</li>
+                    }
+                    </ul>
+                    }
+                    else
+                    {
+                    <p>没有找到匹配的文章。</p>
+                    }
+                    </li> *@
                 </ul>
             </div>
         </div>
