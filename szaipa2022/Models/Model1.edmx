@@ -60,6 +60,8 @@
           <Property Name="Color2" Type="nvarchar" MaxLength="8" />
           <Property Name="DeedsThings" Type="nvarchar(max)" />
           <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
+          <Property Name="Introduction" Type="nvarchar(max)" />
+          <Property Name="Position" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -239,6 +241,8 @@
           <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -399,6 +403,8 @@
           <EntitySetMapping Name="Artist">
             <EntityTypeMapping TypeName="SzaipaModel.Artist">
               <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
                 <ScalarProperty Name="DeedsYear" ColumnName="DeedsYear" />
                 <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
                 <ScalarProperty Name="Color2" ColumnName="Color2" />

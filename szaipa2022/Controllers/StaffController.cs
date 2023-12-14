@@ -287,6 +287,8 @@ namespace Szaipa.Controllers
             art.Deeds = Request.Form["Deeds"];
             art.DeedsYear = Request.Form["DeedsYear"];
             art.DeedsThings = Request.Form["DeedsThings"];
+            art.Introduction = Request.Form["Introduction"];
+            art.Position = Request.Form["Position"];
 
             if (TempData["TempImg"] != null)
             {

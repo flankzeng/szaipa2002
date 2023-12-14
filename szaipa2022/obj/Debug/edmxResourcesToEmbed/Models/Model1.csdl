@@ -55,6 +55,8 @@
     <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
     <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Company">
     <Key>

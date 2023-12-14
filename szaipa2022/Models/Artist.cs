@@ -36,5 +36,7 @@ namespace szaipa2022.Models
         public string Color2 { get; set; }
         public string DeedsThings { get; set; }
         public string DeedsYear { get; set; }
+        public string Introduction { get; set; }
+        public string Position { get; set; }
     }
 }

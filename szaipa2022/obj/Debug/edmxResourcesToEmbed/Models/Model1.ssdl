@@ -55,6 +55,8 @@
     <Property Name="Color2" Type="nvarchar" MaxLength="8" />
     <Property Name="DeedsThings" Type="nvarchar(max)" />
     <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
+    <Property Name="Introduction" Type="nvarchar(max)" />
+    <Property Name="Position" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
