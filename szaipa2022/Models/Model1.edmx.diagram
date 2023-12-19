@@ -16,6 +16,7 @@
         <EntityTypeShape EntityType="SzaipaModel.Tag" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.Works" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.WorksTag" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SzaipaModel.ArtNews" Width="1.5" PointX="11.125" PointY="5.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
