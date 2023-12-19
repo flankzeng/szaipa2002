@@ -1,6 +1,6 @@
 ﻿@model szaipa2022.Models.Artist
 @{
-    ViewBag.Title = Model.ArtistNameCN;
+    ViewBag.Title = Model.ArtistNameCN + " - 艺术家官网";
     Layout = "~/Views/Shared/_Artist.cshtml";
 }
 <style>
@@ -416,6 +416,7 @@
         transform: translateX(-50%);
         left: 50%;
         top: var(--materialT);
+        text-transform: lowercase;
     }
 
     .swiper-slide img {
@@ -829,7 +830,7 @@
                     {
                         <div class="swiper-slide">
                             <div class="material JhengLight">
-                                <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@* @w.Tags *@
+                                <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
                             </div>
                             <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="">
 
