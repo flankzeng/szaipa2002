@@ -36,5 +36,6 @@ namespace szaipa2022.Models
         public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Works> Works { get; set; }
         public virtual DbSet<WorksTag> WorksTag { get; set; }
+        public virtual DbSet<ArtNews> ArtNews { get; set; }
     }
 }
