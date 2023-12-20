@@ -254,6 +254,34 @@ namespace Szaipa.Controllers
             return View(art);
         }
 
+        public ActionResult ArtNews(int id)
+        {
+            if (Session["Staff"] != null) ViewBag.staff = 1;
+            if (Session["Home"] == null) HaveViti();
+            var art = db.Artist.FirstOrDefault(d => d.Id == id);
+            var newnews = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList();
+            ViewBag.newnews = newnews;
+
+            var day = today();
+            day.ArtVisit = day.ArtVisit + 1;
+            db.SaveChanges();
+
+            ViewBag.vip = 1;
+
+            return View(art);
+        }
+        public ActionResult ArtNewsRead(int id)
+        {
+            if (Session["Staff"] != null) ViewBag.staff = 1;
+            if (Session["Home"] == null) HaveViti();
+            var art = db.Artist.FirstOrDefault(d => d.Id == id);
+            var artNews = db.ArtNews.FirstOrDefault(d => d.Id == id);
+
+            var day = today();
+            db.SaveChanges();
+
+            return View(artNews);
+        }
         public ActionResult artistZLQ()
         {
             return View();

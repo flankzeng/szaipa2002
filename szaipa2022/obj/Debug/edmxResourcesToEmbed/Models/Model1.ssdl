@@ -58,6 +58,22 @@
     <Property Name="Introduction" Type="nvarchar(max)" />
     <Property Name="Position" Type="nvarchar(max)" />
   </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="ArtNews">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+      <PropertyRef Name="ReadCount" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="ReadCount" Type="int" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="Title" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="Company">
     <Key>
       <PropertyRef Name="Id" />
@@ -176,5 +192,16 @@
     <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WorksTag" EntityType="Self.WorksTag" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ArtNews" EntityType="Self.ArtNews" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ArtNews].[Id] AS [Id], 
+    [ArtNews].[ArtistId] AS [ArtistId], 
+    [ArtNews].[Date] AS [Date], 
+    [ArtNews].[CoverPath] AS [CoverPath], 
+    [ArtNews].[ReadCount] AS [ReadCount], 
+    [ArtNews].[Content] AS [Content], 
+    [ArtNews].[Title] AS [Title]
+    FROM [dbo].[ArtNews] AS [ArtNews]</DefiningQuery>
+    </EntitySet>
   </EntityContainer>
 </Schema>

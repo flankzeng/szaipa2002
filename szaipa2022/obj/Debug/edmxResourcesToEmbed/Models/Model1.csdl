@@ -176,5 +176,20 @@
     <EntitySet Name="Tag" EntityType="Self.Tag" />
     <EntitySet Name="Works" EntityType="Self.Works" />
     <EntitySet Name="WorksTag" EntityType="Self.WorksTag" />
+    <EntitySet Name="ArtNews" EntityType="SzaipaModel.ArtNews" />
   </EntityContainer>
+  <EntityType Name="ArtNews">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+      <PropertyRef Name="ReadCount" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ReadCount" Type="Int32" Nullable="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

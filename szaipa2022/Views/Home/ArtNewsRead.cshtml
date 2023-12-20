@@ -1,0 +1,164 @@
+﻿@model szaipa2022.Models.ArtNews
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Artist.cshtml";
+}
+
+<style>
+    body {
+        overflow-x: hidden !important;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+    }
+
+    .bg {
+        background: linear-gradient(to bottom right, #3e47e1, #151965);
+        display: list-item;
+    }
+
+    #ArtistNav {
+        position: fixed;
+        top: 3%;
+        right: 1.5%;
+        font-size: 1rem;
+        z-index: 999;
+    }
+
+    #ArtistNav a {
+        color: black;
+        background-color: white;
+        border-right: 1px solid black;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        text-decoration: none !important;
+        padding: .5vh 1vw;
+    }
+
+    .activeLink a {
+        color: white !important;
+        background-color: black !important;
+    }
+
+    /* 以上为导航栏部分 */
+</style>
+
+
+
+
+<nav id="ArtistNav">
+
+    <table>
+        <tr>
+            <td>
+                <a href="/Home/newIndex" style="border-left: 1px solid black;">
+                    首&#12288;页
+                </a>
+            </td>
+            <td>
+                <a href="/Home/artistZLQ">艺术家首页</a>
+            </td>
+            <td class="activeLink">
+                <a href="#section01">资&#12288;讯</a>
+            </td>
+            <td>
+                <a href="javascript:history.go(-1)">返回</a>
+            </td>
+        </tr>
+    </table>
+
+</nav>
+
+
+<style>
+    header {
+        height: var(--artistNewsHeader);
+    }
+
+    header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: inherit;
+        width: 100%;
+        background-color: #00000040;
+    }
+
+    .header {
+        height: inherit;
+        width: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+
+    article {
+        color: white;
+        padding-bottom: 8%;
+    }
+
+    article h1 {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 700;
+        font-size: var(--artistNewsTitle);
+        padding-top: 1em;
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    article img {
+        width: 100%;
+        max-height: 50vh;
+        object-fit: contain;
+    }
+
+    .times {
+        font-size: .8rem;
+        margin: 3% 0 5% 0;
+
+        display: block;
+    }
+
+    p {
+        font-size: 1.2rem;
+        line-height: 1.8em;
+        margin-bottom: 2em;
+        text-align: justify;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-weight: 300;
+    }
+
+    figcaption {
+        font-size: 1rem;
+        text-align: center;
+        color: #ededed;
+        margin: -1em 0 2em 0;
+    }
+</style>
+<div class="bg col-xs20 col-sm20 col-md20 col-lg20" id="section01">
+
+    <header class="col-xs20 col-sm20 col-md20 col-lg20">
+        <img class="header" src="@Model.CoverPath" alt="">
+    </header>
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+
+    <article class="col-xs16 col-sm16 col-md16 col-lg16">
+        <h1>@Model.Title
+            <span class="times JhengLight">作者：张岚芊&emsp;&emsp;@string.Format("{0:yyyy.MM.dd}", Model.Date)</span>
+        </h1>
+        @Html.Raw(Model.Content)
+    </article>
+
+    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+
+
+</div>
+
+<script>
+
+</script>

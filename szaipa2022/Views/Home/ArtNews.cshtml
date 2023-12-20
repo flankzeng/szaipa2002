@@ -49,7 +49,7 @@
     }
 
     .bg {
-        background: linear-gradient(to bottom right, #3e47e1, #151965);
+        background: linear-gradient(to bottom right, @Model.Color1, @Model.Color2);
         display: list-item;
     }
 
@@ -575,6 +575,8 @@
                 <a href="Javascript:;;">三人行--鸥洋 雷双 张岚芊 艺术展在深圳市木星美术馆举行</a>
             </div>
         </article>
+
+
     </section>
 
     <section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
@@ -587,246 +589,29 @@
 
         <ul id="list" class="more col-xs20 col-sm20 col-md20 col-lg20">
 
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
+            @foreach (var n in ViewBag.newnews)
+            {
+                <li>
+                    <a href="/Home/ArtNewsRead/@n.Id">
+                        <i class="secondborder"></i>
+                        <i class="secondborder mirror"></i>
 
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/IMG_4187.jpg" alt="">
+                        <img class="col-xs6 col-sm6 col-md4 col-lg4" src="@n.CoverPath" alt="">
 
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">张岚芊与鸥洋进行艺术对谈</h2>
-                        <h3 class="JhengLight">发布日期:2023年07月05日</h3>
-                        <p>
-                            意象油画是我们多年前才开始提出的。我是从1985年在赵无极的指导下，才开始进行一些油画的探索。原因是由于早期的绘画习惯是按照苏式的艺术观念创作，基本上是写实的
-                        </p>
+                        <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+                        <div class="col-xs11 col-sm11 col-md15 col-lg15">
+                            <h2 class="JhengBold">@n.Title</h2>
+                            <h3 class="JhengLight">发布日期:@string.Format("{0:yyyy.MM.dd}", n.Date)</h3>
+                            <p>
+                                @n.Content
+                            </p>
 
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
+                            <span class="JhengLight">查看更多 ></span>
+                        </div>
+                    </a>
+                </li>
+            }
 
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/9832ffb1-ae20-4482-9aa7-503ee149dab2.jpeg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">《三人行》张岚芊与顾振清访谈录系列（三）</h2>
-                        <h3 class="JhengLight">发布日期:2023年07月05日</h3>
-                        <p>
-                            艺术顾问顾振清：大家可以看到张岚芊的抽象绘画，其实是一个知识结构的反映。她肯定是读了无数个抽象艺术家的作品，才有现在的一种融汇贯通。她的绘画里头你可以感受到一种唐朝宋朝艺术的风度，也可以看到赵无极、朱德群这些中国华人抽象画家风格的一种转化
-                        </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/6dcfe184-4488-46b1-8b80-d89df6fcb67b.png" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">#艺术对话 ｜雷双与顾振清《三人行》访谈录系列（二）</h2>
-                        <h3 class="JhengLight">发布日期:2023年06月26日</h3>
-                        <p>
-                            今天我们有幸请来了一位非常重要的嘉宾--雷双，可以说向日葵系列是雷双老师最让我们熟悉的系列作品之一。雷双老师也是我一直仰慕的一位非常优秀有天赋的艺术家，这次展览中的几个系列作品，尤其是我最熟悉的向日葵系列、“向里尔克致意”系列那种非常有人文底蕴的表现主义绘画
-                        </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/ebbcd3c4-f388-45f3-baf3-fedce2d77314.jpeg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">展会 | 第十九届文博会深圳动漫园分会场盛大启幕</h2>
-                        <h3 class="JhengLight">发布日期:2023年06月15日</h3>
-                        <p>
-                            6月9日，深圳动漫园迎来了第十九届文博会深圳动漫园分会场的开幕式。该系列活动由润杨集团旗下深圳动漫园携手深圳市仓颉通文化传播有限公司、深圳市艺术产业促进会(以下简称市艺促会)等单位和机构共同主、承办，以数字化赋能时尚产业、高质量提升文化融合为主题
-                        </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/29d3d9d9-8085-4a41-a3a5-f74bcb1592af.jpeg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">三人行--鸥洋 雷双 张岚芊 艺术展在深圳市木星美术馆举行</h2>
-                        <h3 class="JhengLight">发布日期:2023年06月08日</h3>
-                        <p>
-                            市艺促会驻会副会长兼秘书长及参展艺术家张岚芊表示：“非常感谢两位我最喜欢的艺术家鸥洋老师、雷双老师，也十分感动能和两位优秀的艺术家前辈一道用作品交流对话，在画面中所传达的心境，用传统的手法表达意象的东西也是自己对画面的把控和对作品和自然的艺术理解。感谢到场的各位嘉宾对艺促会的支持！”
-                        </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/ac2ead59-4adf-4c07-ba7b-aca039c3b4a2.png" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">开幕回顾 ｜《三人行》鸥洋/雷双/张岚芊 当代艺术展</h2>
-                        <h3 class="JhengLight">发布日期:2023年06月08日</h3>
-                        <p>
-                            2023年6月3日，由深圳市艺术产业促进会主办，木星美术馆联合主办的《三人行》鸥洋/雷双/张岚芊
-                            艺术展开幕式在木星美术馆前厅顺利举行。此次展览活动由环球夫人全球执行秘书长陈骊璐女士主持，出席此次活动开幕式的领导和嘉宾有：艺促会副秘书长王玉波、参展艺术家雷双、深圳市医疗器械协会执行副会长王斌、深圳市仓颉通文化传播有限公司总经理倪鹤琴博士、深圳市木星美术馆策展总监陈观亨、艺术家黄海军、李坚、李苑、李跃飞、喜儿、
-                            曾风、bobo、前海紫晴国际贸易总裁具商业价值夫人紫晴女士，收藏家张铁民女士、倪红艳女士等。 </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/TrioMain.jpg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">三人行--鸥洋/雷双/张岚芊 艺术展即将拉开帷幕！</h2>
-                        <h3 class="JhengLight">发布日期:2023年06月02日</h3>
-                        <p>
-                            在中国传统文化中，“语境”、“意境” 或
-                            “意象”是创作过程的重要思路，这其实与西方的“抽象”有着异曲同工之妙。中国自古以来就有抽象的表达方式，刘勰（xié）曾在《文心雕龙·物色》中记载：“岁有万物，物有其容；情以物迁，辞以情发。”
-                            又或 “体物为妙，功在密附。”等词句精辟地概括了创作与“物”本源的关系，其本身就是一种抽象化的创作思维方式，在中国的历史长河中，这也早就成为了传统文化中一种感性的认知体系。
-
-                            　　“In Chinese traditional culture， “context，” “mood，” or “imagery” are important ideas
-                            in the creative process. This is similar to the Western concept of “abstraction.” The
-                            expression of abstraction has existed since ancient times. In “Wen Xin Diao Long，” Liu
-                            Xie recorded that “there are ten thousand things in a year， each with its appearance；
-                            emotions change with things， and words express emotions.” Or “Depiction of things is
-                            ingenious， and the skill lies in being closely attached.” These concise statements
-                            summarize the relationship between creation and the origin of “things.” It is itself a
-                            way of thinking about abstract creation. In China‘s long history， this has also become a
-                            perceptual-cognitive system in traditional culture. </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4" src="../../content/images/chunyu2.jpg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">“春语”第二季--国际视觉艺术邀请展，即将启幕</h2>
-                        <h3 class="JhengLight">发布日期:2023年04月21日</h3>
-                        <p>
-                            春天，万物苏醒，我们又到了约定的季节。艺术创作是真诚的，是一种觉醒和反思，是由表及里的自我救赎。阳春的气息有一种特定的形态，或温文尔雅，或热情似火，或缠绵缱绻，在迹象中无限延伸，这是生命的迹象，有迹可寻，无迹亦真，都会在春天的语境中娓娓道来，倾诉了生命最原始的物体语言。贫瘠的土壤需要春风化雨，从此便有了生命赞歌，我们如此热爱自己的家园，无论在地球的哪个角落，会用自己独特的方式来宣示，这便是生命的全部意义。
-
-                            　　这就是春，萌生生命的美好，十里春光，不愠不火，不紧不慢。
-
-                            　　你好，春天，我们来了！
-
-                            　　姚建伟于清华园
-
-                            2023年4月18日
-
-                            PREFACE
-
-                            　　In spring， everything wakes up and we are in the season of engagement again.Art
-                            creation is sincere， an awakening and reflection， a self-redemption from the surface to
-                            the inside. The breath of spring has a specific form， or gentle， or passionate， or
-                            lingering and loving， in the signs of infinite extension， this is the signs of life，
-                            traceable， no trace is also true， will be in the context of spring to speak， pouring out
-                            the language of the most primitive objects of life.Barren soil needs a spring breeze，
-                            from then on there is a hymn to life， we love our homeland so much， no matter where on
-                            earth， will be declared in their own unique way， this is the whole meaning of life.This
-                            is spring， sprouting the beauty of life， many miles of spring light， moderate and
-                            proportionate， calm and quiet.
-
-                            　　Bonjour， Spring， here we come.</p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/8cc6fb92-03e9-4bda-b37b-1b1234b5b54e.png" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">展讯丨“灵性咏叹——刘东风艺术作品展”于罗湖美术馆开幕！ </h2>
-                        <h3 class="JhengLight">发布日期:2023年04月03日</h3>
-                        <p>
-                            3月29日由深圳市罗湖区文化广电旅游体育局主办、罗湖美术馆承办、深圳市艺术产业促进会（以下简称艺促会）、深圳市仓颉通文化传播有限公司协办的“灵性咏叹——刘东风艺术作品展”在罗湖美术馆开幕。此次展出艺术家刘东风所创作的当代艺术作品58件，涵盖油画、雕塑、影像等多种形式，集中呈现其近三年来的艺术创新硕果。展期将至4月9日。
-                        </p>
-
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
-
-            <li>
-                <a href="Javascript:;;">
-                    <i class="secondborder"></i>
-                    <i class="secondborder mirror"></i>
-
-                    <img class="col-xs6 col-sm6 col-md4 col-lg4"
-                        src="../../content/images/01149784-1c5f-4395-8fbe-72ad664b2663.jpeg" alt="">
-
-                    <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-                    <div class="col-xs11 col-sm11 col-md15 col-lg15">
-                        <h2 class="JhengBold">是谁，收藏了那一抹逝去的玫瑰红？</h2>
-                        <h3 class="JhengLight">发布日期:2023年03月27日</h3>
-                        <p>
-                            这不仅是一段佳话，更是一段传奇。2023春冬交替之际，南方乍暖还寒。从深圳驱车近400公里，深圳市艺术产业促进会一干艺术家，应邀来到梅州，城内小栖，直奔北塘。
-                            远远望去，一片柚田映入眼帘。此地产柚，只见昔日的柚仓成了“靖西当代艺术馆”，取名“艺术柚仓”。此地不仅出柚子，而且多出“翰林”，与艺术馆一方鱼塘相隔，对岸即是由猪圈华丽转身的“翰林草堂”，这里正在展出全国扇面展。国风装束，古筝悠远，乐音萦绕于草堂，飘向田野，吸引一批文人墨客艺术家欢聚，也招徕附近村夫俗子好奇的目光。
-                        </p>
-                        <span class="JhengLight">查看更多 ></span>
-                    </div>
-                </a>
-            </li>
         </ul>
 
         <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
@@ -878,42 +663,6 @@
                             收藏机构：罗湖美术馆
                             地&#8195;&#8195;点：深圳,中国
                             收藏编号：L2021010001
-                        </p>
-                    </div>
-                </div>
-            </li>
-
-            <!-- 收藏2 - 荷兰白立方 -->
-            <li class="col-xs20 col-sm20 col-md20 col-lg20">
-                <div class="infoBox" style="background-image: url('../../Content/images/yuanfang1.jpg');">
-                    <span class="info">
-                        <h1 class="JhengLight">远方系列 -1</h1>
-                        <p class="foldInfo">荷兰白立方&#12288;|&#12288;2019</p>
-
-                        <!-- 触发折叠button -->
-                        <i class="fold"></i>
-                    </span>
-                    <!-- <img src="../../Content/ArtImg/Artist/works-narrow/2e6379aca36d3074ec7921b8d9830d87.png" alt=""> -->
-                </div>
-
-                <!-- 折叠 -->
-                <div class="unfolded col-xs20 col-sm20 col-md20 col-lg20">
-                    <div class="col-xs7 col-sm7 col-md12 col-lg12 xijie">
-                        <img src="../../Content/images/yuanfang1.jpg" class="zoom"
-                            data-magnify-src="../../Content/images/yuanfang1.jpg">
-                        <p>120x100&nbsp;cm</p>
-                    </div>
-
-                    <div class="col-xs13 col-sm13 col-md8 col-lg8">
-
-                        <p class="zuopin">
-                            作&#8195;&#8195;品：《远方系列 -1》
-                            作&#8195;&#8195;者：张岚芊
-                            作品尺寸：120x100cm
-                            材&#8195;&#8195;质：布面油画
-                            类&#8195;&#8195;别：油画不含丙烯画
-                            收藏机构：荷兰白立方
-                            地&#8195;&#8195;点：阿姆斯特丹,荷兰
                         </p>
                     </div>
                 </div>
@@ -1006,11 +755,11 @@
             </tr>
 
             <!-- <tr>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
-                    <th>8</th>
-                </tr> -->
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                    </tr> -->
         </table>
     </section>
 

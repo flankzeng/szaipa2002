@@ -673,7 +673,7 @@
     <table>
         <tr>
             <td>
-                <a href="~/Home/newIndex" style="border-left: 1px solid black;">
+                <a href="/Home/newIndex" style="border-left: 1px solid black;">
                     首&#12288;页
                 </a>
             </td>
@@ -716,7 +716,7 @@
         <li class="name JhengLight" style="color: white;">
             @Model.ArtistNameCN 作品 ©️
         </li>
-        <a href="Javascript:;;">
+        <a href="/Home/ArtNews/@Model.Id">
             <li class="hoverLine JhengBold">
                 艺术家资讯
                 <div class="moreInfo">
@@ -726,7 +726,7 @@
                 </div>
             </li>
         </a>
-        <a href="Javascript:;;">
+        <a href="/Home/ArtNews/@Model.Id#section02">
             <li class="hoverLine JhengBold">
                 收藏捐赠
                 <div class="moreInfo">
@@ -736,7 +736,7 @@
                 </div>
             </li>
         </a>
-        <a href="Javascript:;;">
+        <a href="/Home/ArtNews/@Model.Id#section03">
             <li class="hoverLine JhengBold">
                 出版著作
                 <div class="moreInfo">
@@ -745,7 +745,7 @@
                 </div>
             </li>
         </a>
-        <a href="/Home/Art/@Model.Id">
+        <a href="/Home/ArtNews/@Model.Id#section04">
             <li class="hoverLine JhengBold">
                 拍卖作品
                 <div class="moreInfo">
@@ -842,7 +842,6 @@
                                 </div>
                                 <h2>@w.Title</h2>
                                 <p>
-                                    @* @w.Content *@
                                     @w.Tags
                                 </p>
                             </div>
