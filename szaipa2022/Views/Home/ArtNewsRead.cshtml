@@ -1,6 +1,5 @@
-﻿@model szaipa2022.Models.ArtNews
-@{
-    ViewBag.Title = Model.Title;
+﻿@{
+    ViewBag.Title = Model.ArtNews.Title;
     Layout = "~/Views/Shared/_Artist.cshtml";
 }
 
@@ -15,7 +14,7 @@
     }
 
     .bg {
-        background: linear-gradient(to bottom right, #3e47e1, #151965);
+        background: linear-gradient(to bottom right, @Model.Artist.Color1, @Model.Artist.Color2);
         display: list-item;
     }
 
@@ -143,15 +142,16 @@
 <div class="bg col-xs20 col-sm20 col-md20 col-lg20" id="section01">
 
     <header class="col-xs20 col-sm20 col-md20 col-lg20">
-        <img class="header" src="@Model.CoverPath" alt="">
+        <img class="header" src="@Model.ArtNews.CoverPath" alt="">
     </header>
     <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
 
     <article class="col-xs16 col-sm16 col-md16 col-lg16">
-        <h1>@Model.Title
-            <span class="times JhengLight">作者：张岚芊&emsp;&emsp;@string.Format("{0:yyyy.MM.dd}", Model.Date)</span>
+        <h1>@Model.ArtNews.Title
+            <span class="times JhengLight">作者：@Model.Artist.ArtistNameCN &emsp;&emsp;@string.Format("{0:yyyy.MM.dd}",
+                Model.ArtNews.Date)</span>
         </h1>
-        @Html.Raw(Model.Content)
+        @Html.Raw(Model.ArtNews.Content)
     </article>
 
     <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>

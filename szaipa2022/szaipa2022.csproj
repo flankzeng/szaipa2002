@@ -3439,6 +3439,7 @@
     <Content Include="Views\Shared\_Artist.cshtml" />
     <Content Include="Views\Staff\newArtAdd.cshtml" />
     <Content Include="Views\Staff\newWorkAdd.cshtml" />
+    <Content Include="Views\Home\ArtNewsRead.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -3684,6 +3685,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="..\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

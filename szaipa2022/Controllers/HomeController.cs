@@ -270,18 +270,41 @@ namespace Szaipa.Controllers
 
             return View(art);
         }
+        // public ActionResult ArtNewsRead(int id)
+        // {
+        //     if (Session["Staff"] != null) ViewBag.staff = 1;
+        //     if (Session["Home"] == null) HaveViti();
+        //     var art = db.Artist.FirstOrDefault(d => d.Id == id);
+        //     var artNews = db.ArtNews.FirstOrDefault(d => d.Id == id);
+
+        //     var day = today();
+        //     db.SaveChanges();
+
+        //     return View(artNews);
+        // }
+
         public ActionResult ArtNewsRead(int id)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;
             if (Session["Home"] == null) HaveViti();
-            var art = db.Artist.FirstOrDefault(d => d.Id == id);
-            var artNews = db.ArtNews.FirstOrDefault(d => d.Id == id);
 
-            var day = today();
-            db.SaveChanges();
+            // 获取特定的 ArtNews
+            var artNews = db.ArtNews.FirstOrDefault(n => n.Id == id);
 
-            return View(artNews);
+            // 获取相关的 Artist
+            var artist = db.Artist.FirstOrDefault(a => a.Id == artNews.ArtistId);
+
+            // 创建 ArtNewsViewModel 的实例
+            var viewModel = new ArtNewsViewModel
+            {
+                ArtNews = artNews,
+                Artist = artist
+            };
+
+            // 将 ViewModel 传递给视图
+            return View(viewModel);
         }
+
         public ActionResult artistZLQ()
         {
             return View();
@@ -594,7 +617,7 @@ namespace Szaipa.Controllers
                 var n = new newsreadlist();
                 n.Title = a.Title;
                 n.Subtitle = a.Subtitle;
-                n.Id = n.Id;
+                n.Id = a.Id;
                 n.Autor = a.Autor;
                 n.ImgTitle = a.CoverPath;
                 if (n.link != null)

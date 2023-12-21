@@ -120,5 +120,10 @@ namespace Szaipa.Models
         public string date { get; set; }
 
     }
+    public class ArtNewsViewModel
+    {
+        public ArtNews ArtNews { get; set; }
+        public Artist Artist { get; set; }
 
+    }
 }
