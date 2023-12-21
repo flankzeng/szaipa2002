@@ -258,17 +258,35 @@ namespace Szaipa.Controllers
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;
             if (Session["Home"] == null) HaveViti();
-            var art = db.Artist.FirstOrDefault(d => d.Id == id);
-            var newnews = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList();
-            ViewBag.newnews = newnews;
+            // 获取特定的 ArtNews
+            var artNews = db.ArtNews.FirstOrDefault(n => n.Id == id);
 
-            var day = today();
-            day.ArtVisit = day.ArtVisit + 1;
-            db.SaveChanges();
+            // 获取相关的 Artist
+            var artist = db.Artist.FirstOrDefault(a => a.Id == artNews.ArtistId);
 
-            ViewBag.vip = 1;
+            // 1.为视图创建头条新闻：
+            var heading = db.ArtNews.Take(1);
+            ViewBag.Heading = heading;
 
-            return View(art);
+            // 2.为视图创建2～5条新闻的列表：
+            var info = db.ArtNews.Where(n => n.ArtistId == artist.Id)
+                          .Take(5)
+                          .ToList();
+            ViewBag.Info = info;
+
+            // 3.赋予视图所有的新闻列表功能：
+            var selfUpload = db.ArtNews.Where(d => d.ArtistId == artist.Id).ToList();
+            ViewBag.selfUpload = selfUpload;
+
+            // 创建 ArtNewsViewModel 的实例
+            var viewModel = new ArtNewsViewModel
+            {
+                ArtNews = artNews,
+                Artist = artist
+            };
+
+            // 将 ViewModel 传递给视图
+            return View(viewModel);
         }
         // public ActionResult ArtNewsRead(int id)
         // {

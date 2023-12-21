@@ -1,6 +1,5 @@
-﻿@model szaipa2022.Models.Artist
-@{
-    ViewBag.Title = Model.ArtistNameCN + " - 艺术家资讯";
+﻿@{
+    ViewBag.Title = Model.Artist.ArtistNameCN + " - 艺术家资讯";
     Layout = "~/Views/Shared/_Artist.cshtml";
 }
 <style>
@@ -49,7 +48,7 @@
     }
 
     .bg {
-        background: linear-gradient(to bottom right, @Model.Color1, @Model.Color2);
+        background: linear-gradient(to bottom right, @Model.Artist.Color1, @Model.Artist.Color2);
         display: list-item;
     }
 
@@ -561,18 +560,19 @@
         <!-- 最新资讯大图(按所有艺术家自行发布的新闻的最近一期) -->
         <article class="recent">
 
-            <a class="now" href="/Home/artistNewsRead">
+            @{
+                var h in ViewBag.Heading;
+            }
+            <a class="now" href="/Home/ArtNewsRead/@h.Id">
                 回顾 | 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
                 <span class="JhengLight">张岚芊&#12288;|&#12288;2023年07月05日</span>
             </a>
 
             <div class="news xs-hide sm-hide">
-                <a href="Javascript:;;">张岚芊与鸥洋进行艺术对谈</a>|
-                <a href="Javascript:;;">《三人行》张岚芊与顾振清访谈录系列（三）</a>|
-                <a href="Javascript:;;">#艺术对话 ｜雷双与顾振清《三人行》访谈录系列（二）</a>
-                <br />
-                <a href="Javascript:;;">展会 | 第十九届文博会深圳动漫园分会场盛大启幕</a>|
-                <a href="Javascript:;;">三人行--鸥洋 雷双 张岚芊 艺术展在深圳市木星美术馆举行</a>
+                @foreach (var i in ViewBag.Info)
+                {
+                    <a href="/Home/ArtNewsRead/@i.Id">@i.Title</a>
+                }
             </div>
         </article>
 
@@ -589,7 +589,7 @@
 
         <ul id="list" class="more col-xs20 col-sm20 col-md20 col-lg20">
 
-            @foreach (var n in ViewBag.newnews)
+            @foreach (var n in ViewBag.selfUpload)
             {
                 <li>
                     <a href="/Home/ArtNewsRead/@n.Id">
