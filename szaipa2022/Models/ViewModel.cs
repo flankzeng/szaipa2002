@@ -124,6 +124,8 @@ namespace Szaipa.Models
     {
         public ArtNews ArtNews { get; set; }
         public Artist Artist { get; set; }
-
+        public Fav Fav { get; set; }
+        public Public Public { get; set; }
+        public Auction Auction { get; set;}
     }
 }

@@ -38,5 +38,6 @@ namespace szaipa2022.Models
         public string Position { get; set; }
         public string Path1 { get; set; }
         public string Path2 { get; set; }
+        public string DeedsThings { get; set; }
     }
 }
