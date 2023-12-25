@@ -22,5 +22,6 @@ namespace szaipa2022.Models
         public Nullable<decimal> RMB { get; set; }
         public Nullable<decimal> HKD { get; set; }
         public Nullable<decimal> USD { get; set; }
+        public string Date { get; set; }
     }
 }

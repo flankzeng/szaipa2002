@@ -63,6 +63,7 @@
           <Property Name="Path1" Type="nvarchar" MaxLength="200" />
           <Property Name="Path2" Type="nvarchar" MaxLength="200" />
           <Property Name="DeedsThings" Type="nvarchar(max)" />
+          <Property Name="DeedsYears" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -95,6 +96,7 @@
           <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
           <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
           <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="Date" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -260,7 +262,8 @@
     [Auction].[Price] AS [Price], 
     [Auction].[RMB] AS [RMB], 
     [Auction].[HKD] AS [HKD], 
-    [Auction].[USD] AS [USD]
+    [Auction].[USD] AS [USD], 
+    [Auction].[Date] AS [Date]
     FROM [dbo].[Auction] AS [Auction]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Fav" EntityType="Self.Fav" store:Type="Tables" store:Schema="dbo">
@@ -344,6 +347,7 @@
           <Property Name="Path1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Path2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeedsYears" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -495,6 +499,7 @@
           <Property Name="RMB" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Fav">
           <Key>
@@ -558,6 +563,7 @@
           <EntitySetMapping Name="Artist">
             <EntityTypeMapping TypeName="SzaipaModel.Artist">
               <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="DeedsYears" ColumnName="DeedsYears" />
                 <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
                 <ScalarProperty Name="Path2" ColumnName="Path2" />
                 <ScalarProperty Name="Path1" ColumnName="Path1" />
@@ -716,6 +722,7 @@
           <EntitySetMapping Name="Auction">
             <EntityTypeMapping TypeName="SzaipaModel.Auction">
               <MappingFragment StoreEntitySet="Auction">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="USD" ColumnName="USD" />
                 <ScalarProperty Name="HKD" ColumnName="HKD" />
                 <ScalarProperty Name="RMB" ColumnName="RMB" />

@@ -58,6 +58,7 @@
     <Property Name="Path1" Type="nvarchar" MaxLength="200" />
     <Property Name="Path2" Type="nvarchar" MaxLength="200" />
     <Property Name="DeedsThings" Type="nvarchar(max)" />
+    <Property Name="DeedsYears" Type="nvarchar" MaxLength="5" />
   </EntityType>
   <!--生成过程中发现错误:
 警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -90,6 +91,7 @@
     <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
     <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
     <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="Date" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -255,7 +257,8 @@
     [Auction].[Price] AS [Price], 
     [Auction].[RMB] AS [RMB], 
     [Auction].[HKD] AS [HKD], 
-    [Auction].[USD] AS [USD]
+    [Auction].[USD] AS [USD], 
+    [Auction].[Date] AS [Date]
     FROM [dbo].[Auction] AS [Auction]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="Fav" EntityType="Self.Fav" store:Type="Tables" store:Schema="dbo">

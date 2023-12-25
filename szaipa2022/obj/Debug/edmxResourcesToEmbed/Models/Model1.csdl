@@ -58,6 +58,7 @@
     <Property Name="Path1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Path2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DeedsYears" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -209,6 +210,7 @@
     <Property Name="RMB" Type="Decimal" Precision="10" Scale="3" />
     <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
     <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
+    <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Fav">
     <Key>

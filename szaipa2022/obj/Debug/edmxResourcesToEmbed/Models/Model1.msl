@@ -35,6 +35,7 @@
     <EntitySetMapping Name="Artist">
       <EntityTypeMapping TypeName="SzaipaModel.Artist">
         <MappingFragment StoreEntitySet="Artist">
+          <ScalarProperty Name="DeedsYears" ColumnName="DeedsYears" />
           <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
           <ScalarProperty Name="Path2" ColumnName="Path2" />
           <ScalarProperty Name="Path1" ColumnName="Path1" />
@@ -193,6 +194,7 @@
     <EntitySetMapping Name="Auction">
       <EntityTypeMapping TypeName="SzaipaModel.Auction">
         <MappingFragment StoreEntitySet="Auction">
+          <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="USD" ColumnName="USD" />
           <ScalarProperty Name="HKD" ColumnName="HKD" />
           <ScalarProperty Name="RMB" ColumnName="RMB" />
