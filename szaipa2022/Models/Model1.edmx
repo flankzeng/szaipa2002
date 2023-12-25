@@ -79,6 +79,22 @@
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Title" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Auction”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Auction">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
+        </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="Id" />
@@ -110,6 +126,19 @@
           <Property Name="CompanyVisit" Type="int" Nullable="false" />
           <Property Name="OperationRecord" Type="nvarchar(max)" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Fav”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Fav">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="Year" Type="nchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="MonthData">
           <Key>
             <PropertyRef Name="Id" />
@@ -137,6 +166,19 @@
           <Property Name="Activity" Type="nvarchar(max)" />
           <Property Name="Important" Type="bit" />
           <Property Name="Year" Type="int" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Public”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="Public">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="25" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="Author" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -207,6 +249,36 @@
     [ArtNews].[Content] AS [Content], 
     [ArtNews].[Title] AS [Title]
     FROM [dbo].[ArtNews] AS [ArtNews]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Auction" EntityType="Self.Auction" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Auction].[Id] AS [Id], 
+    [Auction].[ArtistId] AS [ArtistId], 
+    [Auction].[Title] AS [Title], 
+    [Auction].[CoverPath] AS [CoverPath], 
+    [Auction].[Price] AS [Price], 
+    [Auction].[RMB] AS [RMB], 
+    [Auction].[HKD] AS [HKD], 
+    [Auction].[USD] AS [USD]
+    FROM [dbo].[Auction] AS [Auction]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Fav" EntityType="Self.Fav" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Fav].[Id] AS [Id], 
+    [Fav].[ArtistId] AS [ArtistId], 
+    [Fav].[Title] AS [Title], 
+    [Fav].[CoverPath] AS [CoverPath], 
+    [Fav].[Year] AS [Year]
+    FROM [dbo].[Fav] AS [Fav]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Public" EntityType="Self.Public" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Public].[Id] AS [Id], 
+    [Public].[ArtistId] AS [ArtistId], 
+    [Public].[Title] AS [Title], 
+    [Public].[CoverPath] AS [CoverPath], 
+    [Public].[Author] AS [Author]
+    FROM [dbo].[Public] AS [Public]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -390,6 +462,9 @@
           <EntitySet Name="Works" EntityType="Self.Works" />
           <EntitySet Name="WorksTag" EntityType="Self.WorksTag" />
           <EntitySet Name="ArtNews" EntityType="SzaipaModel.ArtNews" />
+          <EntitySet Name="Auction" EntityType="SzaipaModel.Auction" />
+          <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
+          <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
         </EntityContainer>
         <EntityType Name="ArtNews">
           <Key>
@@ -404,6 +479,42 @@
           <Property Name="ReadCount" Type="Int32" Nullable="false" />
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Auction">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="RMB" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
+        </EntityType>
+        <EntityType Name="Fav">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Public">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -594,6 +705,42 @@
                 <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Auction">
+            <EntityTypeMapping TypeName="SzaipaModel.Auction">
+              <MappingFragment StoreEntitySet="Auction">
+                <ScalarProperty Name="USD" ColumnName="USD" />
+                <ScalarProperty Name="HKD" ColumnName="HKD" />
+                <ScalarProperty Name="RMB" ColumnName="RMB" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fav">
+            <EntityTypeMapping TypeName="SzaipaModel.Fav">
+              <MappingFragment StoreEntitySet="Fav">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Public">
+            <EntityTypeMapping TypeName="SzaipaModel.Public">
+              <MappingFragment StoreEntitySet="Public">
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

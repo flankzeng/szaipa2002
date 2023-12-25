@@ -189,5 +189,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Auction">
+      <EntityTypeMapping TypeName="SzaipaModel.Auction">
+        <MappingFragment StoreEntitySet="Auction">
+          <ScalarProperty Name="USD" ColumnName="USD" />
+          <ScalarProperty Name="HKD" ColumnName="HKD" />
+          <ScalarProperty Name="RMB" ColumnName="RMB" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Fav">
+      <EntityTypeMapping TypeName="SzaipaModel.Fav">
+        <MappingFragment StoreEntitySet="Fav">
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Public">
+      <EntityTypeMapping TypeName="SzaipaModel.Public">
+        <MappingFragment StoreEntitySet="Public">
+          <ScalarProperty Name="Author" ColumnName="Author" />
+          <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

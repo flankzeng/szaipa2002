@@ -74,6 +74,22 @@
     <Property Name="Content" Type="nvarchar(max)" />
     <Property Name="Title" Type="nvarchar" MaxLength="500" />
   </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Auction”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="Auction">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="Price" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
+    <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
+  </EntityType>
   <EntityType Name="Company">
     <Key>
       <PropertyRef Name="Id" />
@@ -105,6 +121,19 @@
     <Property Name="CompanyVisit" Type="int" Nullable="false" />
     <Property Name="OperationRecord" Type="nvarchar(max)" />
   </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Fav”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="Fav">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="Year" Type="nchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="MonthData">
     <Key>
       <PropertyRef Name="Id" />
@@ -132,6 +161,19 @@
     <Property Name="Activity" Type="nvarchar(max)" />
     <Property Name="Important" Type="bit" />
     <Property Name="Year" Type="int" />
+  </EntityType>
+  <!--生成过程中发现错误:
+警告 6002: 表/视图“Szaipa.dbo.Public”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+  <EntityType Name="Public">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="25" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="Author" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>
@@ -202,6 +244,36 @@
     [ArtNews].[Content] AS [Content], 
     [ArtNews].[Title] AS [Title]
     FROM [dbo].[ArtNews] AS [ArtNews]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Auction" EntityType="Self.Auction" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Auction].[Id] AS [Id], 
+    [Auction].[ArtistId] AS [ArtistId], 
+    [Auction].[Title] AS [Title], 
+    [Auction].[CoverPath] AS [CoverPath], 
+    [Auction].[Price] AS [Price], 
+    [Auction].[RMB] AS [RMB], 
+    [Auction].[HKD] AS [HKD], 
+    [Auction].[USD] AS [USD]
+    FROM [dbo].[Auction] AS [Auction]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Fav" EntityType="Self.Fav" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Fav].[Id] AS [Id], 
+    [Fav].[ArtistId] AS [ArtistId], 
+    [Fav].[Title] AS [Title], 
+    [Fav].[CoverPath] AS [CoverPath], 
+    [Fav].[Year] AS [Year]
+    FROM [dbo].[Fav] AS [Fav]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Public" EntityType="Self.Public" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Public].[Id] AS [Id], 
+    [Public].[ArtistId] AS [ArtistId], 
+    [Public].[Title] AS [Title], 
+    [Public].[CoverPath] AS [CoverPath], 
+    [Public].[Author] AS [Author]
+    FROM [dbo].[Public] AS [Public]</DefiningQuery>
     </EntitySet>
   </EntityContainer>
 </Schema>

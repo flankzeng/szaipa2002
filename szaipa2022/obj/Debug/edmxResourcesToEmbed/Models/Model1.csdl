@@ -177,6 +177,9 @@
     <EntitySet Name="Works" EntityType="Self.Works" />
     <EntitySet Name="WorksTag" EntityType="Self.WorksTag" />
     <EntitySet Name="ArtNews" EntityType="SzaipaModel.ArtNews" />
+    <EntitySet Name="Auction" EntityType="SzaipaModel.Auction" />
+    <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
+    <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
   </EntityContainer>
   <EntityType Name="ArtNews">
     <Key>
@@ -191,5 +194,41 @@
     <Property Name="ReadCount" Type="Int32" Nullable="false" />
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Auction">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Precision="10" Scale="3" />
+    <Property Name="RMB" Type="Decimal" Precision="10" Scale="3" />
+    <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
+    <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
+  </EntityType>
+  <EntityType Name="Fav">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Year" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Public">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="ArtistId" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
