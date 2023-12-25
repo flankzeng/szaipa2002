@@ -285,8 +285,6 @@ namespace Szaipa.Controllers
             art.Color1 = Request.Form["Color1"];
             art.Color2 = Request.Form["Color2"];
             art.Deeds = Request.Form["Deeds"];
-            art.DeedsYear = Request.Form["DeedsYear"];
-            art.DeedsThings = Request.Form["DeedsThings"];
             art.Introduction = Request.Form["Introduction"];
             art.Position = Request.Form["Position"];
 
@@ -361,8 +359,6 @@ namespace Szaipa.Controllers
             art.Color1 = Request.Form["Color1"];
             art.Color2 = Request.Form["Color2"];
             art.Deeds = Request.Form["Deeds"];
-            art.DeedsYear = Request.Form["DeedsYear"];
-            art.DeedsThings = Request.Form["DeedsThings"];
 
             if (TempData["TempImg"] != null)
             {
