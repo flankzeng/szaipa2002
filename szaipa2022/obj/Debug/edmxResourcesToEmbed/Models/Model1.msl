@@ -35,10 +35,10 @@
     <EntitySetMapping Name="Artist">
       <EntityTypeMapping TypeName="SzaipaModel.Artist">
         <MappingFragment StoreEntitySet="Artist">
+          <ScalarProperty Name="Path2" ColumnName="Path2" />
+          <ScalarProperty Name="Path1" ColumnName="Path1" />
           <ScalarProperty Name="Position" ColumnName="Position" />
           <ScalarProperty Name="Introduction" ColumnName="Introduction" />
-          <ScalarProperty Name="DeedsYear" ColumnName="DeedsYear" />
-          <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
           <ScalarProperty Name="Color2" ColumnName="Color2" />
           <ScalarProperty Name="Color1" ColumnName="Color1" />
           <ScalarProperty Name="Id" ColumnName="Id" />

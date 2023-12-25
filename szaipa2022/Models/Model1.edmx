@@ -58,10 +58,10 @@
           <Property Name="Activity" Type="nvarchar(max)" />
           <Property Name="Color1" Type="nvarchar" MaxLength="8" />
           <Property Name="Color2" Type="nvarchar" MaxLength="8" />
-          <Property Name="DeedsThings" Type="nvarchar(max)" />
-          <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
           <Property Name="Introduction" Type="nvarchar(max)" />
           <Property Name="Position" Type="nvarchar(max)" />
+          <Property Name="Path1" Type="nvarchar" MaxLength="200" />
+          <Property Name="Path2" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -338,10 +338,10 @@
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Color1" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Path1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Path2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -556,10 +556,10 @@
           <EntitySetMapping Name="Artist">
             <EntityTypeMapping TypeName="SzaipaModel.Artist">
               <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="Path2" ColumnName="Path2" />
+                <ScalarProperty Name="Path1" ColumnName="Path1" />
                 <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="Introduction" ColumnName="Introduction" />
-                <ScalarProperty Name="DeedsYear" ColumnName="DeedsYear" />
-                <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
                 <ScalarProperty Name="Color2" ColumnName="Color2" />
                 <ScalarProperty Name="Color1" ColumnName="Color1" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

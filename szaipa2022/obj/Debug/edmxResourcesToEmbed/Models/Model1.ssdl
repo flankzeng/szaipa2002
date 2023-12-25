@@ -53,10 +53,10 @@
     <Property Name="Activity" Type="nvarchar(max)" />
     <Property Name="Color1" Type="nvarchar" MaxLength="8" />
     <Property Name="Color2" Type="nvarchar" MaxLength="8" />
-    <Property Name="DeedsThings" Type="nvarchar(max)" />
-    <Property Name="DeedsYear" Type="nvarchar" MaxLength="10" />
     <Property Name="Introduction" Type="nvarchar(max)" />
     <Property Name="Position" Type="nvarchar(max)" />
+    <Property Name="Path1" Type="nvarchar" MaxLength="200" />
+    <Property Name="Path2" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <!--生成过程中发现错误:
 警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->

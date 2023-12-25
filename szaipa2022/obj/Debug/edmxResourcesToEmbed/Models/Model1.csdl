@@ -53,10 +53,10 @@
     <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Color1" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
     <Property Name="Color2" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-    <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="DeedsYear" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Path1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Path2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
