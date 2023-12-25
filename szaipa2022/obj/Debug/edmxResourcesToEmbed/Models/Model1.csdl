@@ -57,6 +57,7 @@
     <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Path1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Path2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="DeedsThings" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Company">
     <Key>

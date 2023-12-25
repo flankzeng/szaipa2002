@@ -35,6 +35,7 @@
     <EntitySetMapping Name="Artist">
       <EntityTypeMapping TypeName="SzaipaModel.Artist">
         <MappingFragment StoreEntitySet="Artist">
+          <ScalarProperty Name="DeedsThings" ColumnName="DeedsThings" />
           <ScalarProperty Name="Path2" ColumnName="Path2" />
           <ScalarProperty Name="Path1" ColumnName="Path1" />
           <ScalarProperty Name="Position" ColumnName="Position" />

@@ -57,6 +57,7 @@
     <Property Name="Position" Type="nvarchar(max)" />
     <Property Name="Path1" Type="nvarchar" MaxLength="200" />
     <Property Name="Path2" Type="nvarchar" MaxLength="200" />
+    <Property Name="DeedsThings" Type="nvarchar(max)" />
   </EntityType>
   <!--生成过程中发现错误:
 警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
