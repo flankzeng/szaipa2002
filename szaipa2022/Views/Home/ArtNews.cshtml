@@ -630,44 +630,45 @@
         </div>
 
         <ul class="collection col-xs20 col-sm20 col-md20 col-lg20">
-            <!-- 收藏1 - 罗湖美术馆 -->
-            <li class="col-xs20 col-sm20 col-md20 col-lg20">
-                <div class="infoBox" style="background-image: url('../../Content/images/WechatIMG1665.jpg');">
-                    <span class="info">
-                        <h1 class="JhengLight">右玉·西口人家</h1>
-                        <p class="foldInfo">罗湖美术馆&#12288;|&#12288;2021</p>
+            @foreach (var f in ViewBag.Fav)
+            {
+                <li class="col-xs20 col-sm20 col-md20 col-lg20">
+                    <div class="infoBox" style="background-image: url('/Content/ArtImg/Artist/Fav/@f.CoverPath');">
+                        <span class="info">
+                            <h1 class="JhengLight">@f.Title</h1>
+                            <p class="foldInfo">@f.Location &#12288;|&#12288;@f.Year</p>
 
-                        <!-- 触发折叠button -->
-                        <i class="fold"></i>
-                    </span>
-                    <!-- <img src="../../content/images/WechatIMG1665.jpg" alt=""> -->
-                </div>
-
-                <!-- 折叠 -->
-                <div class="unfolded col-xs20 col-sm20 col-md20 col-lg20">
-
-                    <div class="col-xs7 col-sm7 col-md12 col-lg12 xijie">
-                        <img src="../../content/images/WechatIMG1665.jpg" class="zoom"
-                            data-magnify-src="../../content/images/WechatIMG1665.jpg">
-                        <p>80x80&nbsp;cm</p>
+                            <!-- 触发折叠button -->
+                            <i class="fold"></i>
+                        </span>
+                        <!-- <img src="../../content/images/WechatIMG1665.jpg" alt=""> -->
                     </div>
 
-                    <div class="col-xs13 col-sm13 col-md8 col-lg8">
+                    <!-- 折叠 -->
+                    <div class="unfolded col-xs20 col-sm20 col-md20 col-lg20">
 
-                        <p class="zuopin">
-                            作&#8195;&#8195;品：《右玉·西口人家》
-                            作&#8195;&#8195;者：张岚芊
-                            作品尺寸：80x80cm
-                            材&#8195;&#8195;质：布面油画
-                            类&#8195;&#8195;别：油画不含丙烯画
-                            收藏机构：罗湖美术馆
-                            地&#8195;&#8195;点：深圳,中国
-                            收藏编号：L2021010001
-                        </p>
+                        <div class="col-xs7 col-sm7 col-md12 col-lg12 xijie">
+                            <img src="../../content/images/WechatIMG1665.jpg" class="zoom"
+                                data-magnify-src="../../content/images/WechatIMG1665.jpg">
+                            <p>80x80&nbsp;cm</p>
+                        </div>
+
+                        <div class="col-xs13 col-sm13 col-md8 col-lg8">
+
+                            <p class="zuopin">
+                                作&#8195;&#8195;品：《右玉·西口人家》
+                                作&#8195;&#8195;者：张岚芊
+                                作品尺寸：80x80cm
+                                材&#8195;&#8195;质：布面油画
+                                类&#8195;&#8195;别：油画不含丙烯画
+                                收藏机构：罗湖美术馆
+                                地&#8195;&#8195;点：深圳,中国
+                                收藏编号：L2021010001
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </li>
-
+                </li>
+            }
         </ul>
         <!-- 收藏捐赠 -->
         <div style="height: 140vh;">&nbsp;</div>

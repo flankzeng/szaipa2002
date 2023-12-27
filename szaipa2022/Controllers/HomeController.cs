@@ -264,6 +264,10 @@ namespace Szaipa.Controllers
             // 获取相关的 Artist
             var artist = db.Artist.FirstOrDefault(a => a.Id == artNews.ArtistId);
 
+            // 获取相关的Fav
+            var fav = db.Fav;
+            ViewBag.Fav = fav;
+
             // 1.为视图创建头条新闻：
             var heading = db.ArtNews.Take(1);
             ViewBag.Heading = heading;

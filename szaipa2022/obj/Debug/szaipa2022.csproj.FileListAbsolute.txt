@@ -90,4 +90,3 @@ C:\Users\Administrator\Source\Repos\szaipa2002\szaipa2022\bin\zh-Hans\System.Web
 C:\Users\Administrator\Source\Repos\szaipa2002\szaipa2022\bin\zh-Hans\System.Web.Helpers.resources.dll
 C:\Users\Administrator\Source\Repos\szaipa2002\szaipa2022\bin\zh-Hans\System.Web.Mvc.resources.dll
 C:\Users\Administrator\Source\Repos\szaipa2002\szaipa2022\obj\Debug\szaipa2022.dll
-C:\Users\Administrator\Source\Repos\szaipa2002\szaipa2022\obj\Debug\szaipa2022.csprojResolveAssemblyReference.cache
