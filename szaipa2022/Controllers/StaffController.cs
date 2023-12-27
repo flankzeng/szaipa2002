@@ -358,7 +358,8 @@ namespace Szaipa.Controllers
             }
             art.Color1 = Request.Form["Color1"];
             art.Color2 = Request.Form["Color2"];
-            art.Deeds = Request.Form["Deeds"];
+            art.DeedsYears = Request.Form["DeedsYears"];
+            art.DeedsThings = Request.Form["DeedsThings"];
 
             if (TempData["TempImg"] != null)
             {
@@ -395,6 +396,54 @@ namespace Szaipa.Controllers
             if (staff == null) return RedirectToAction("Login", "Staff");
             return View(staff);
         }
+        public ActionResult newArtFav(int? id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            ViewBag.Artistid = id;
+
+
+            return View(staff);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult newArtFav(FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            int aid = Convert.ToInt32(Request.Form["ArtistId"]);
+            Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
+
+            Fav fav = new Fav();
+            fav.ArtistId = aid;
+            fav.Title = Request.Form["Title"];
+            fav.Year = Request.Form["Year"];
+            fav.Location = Request.Form["Location"];
+
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Fav/";
+                ImgSave(path, filename);
+                fav.CoverPath = filename;
+
+                workinf wk = imginf(path, filename);
+            }
+
+
+            db.Fav.Add(fav);
+            db.SaveChanges();
+
+            return RedirectToAction("Works", "Staff");
+        }
+
 
         public ActionResult newExhibitionAdd()
         {
