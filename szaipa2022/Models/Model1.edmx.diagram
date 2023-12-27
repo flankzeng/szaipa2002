@@ -16,10 +16,10 @@
         <EntityTypeShape EntityType="SzaipaModel.Tag" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.Works" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SzaipaModel.WorksTag" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SzaipaModel.ArtNews" Width="1.5" PointX="13.375" PointY="1.5" />
-        <EntityTypeShape EntityType="SzaipaModel.Auction" Width="1.5" PointX="17.875" PointY="1.5" />
-        <EntityTypeShape EntityType="SzaipaModel.Fav" Width="1.5" PointX="14.875" PointY="1.5" />
-        <EntityTypeShape EntityType="SzaipaModel.Public" Width="1.5" PointX="16.375" PointY="1.5" />
+        <EntityTypeShape EntityType="SzaipaModel.ArtNews" Width="1.5" PointX="3.375" PointY="9.75" />
+        <EntityTypeShape EntityType="SzaipaModel.Auction" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="SzaipaModel.Fav" Width="1.5" PointX="7.375" PointY="11.75" />
+        <EntityTypeShape EntityType="SzaipaModel.Public" Width="1.5" PointX="11.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -65,30 +65,23 @@
           <Property Name="DeedsThings" Type="nvarchar(max)" />
           <Property Name="DeedsYears" Type="nvarchar" MaxLength="5" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“Szaipa.dbo.ArtNews”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="ArtNews">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
-            <PropertyRef Name="ReadCount" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
-          <Property Name="ReadCount" Type="int" Nullable="false" />
+          <Property Name="ReadCount" Type="int" />
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Title" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“Szaipa.dbo.Auction”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="Auction">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
@@ -129,14 +122,11 @@
           <Property Name="CompanyVisit" Type="int" Nullable="false" />
           <Property Name="OperationRecord" Type="nvarchar(max)" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“Szaipa.dbo.Fav”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="Fav">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
@@ -171,14 +161,11 @@
           <Property Name="Important" Type="bit" />
           <Property Name="Year" Type="int" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“Szaipa.dbo.Public”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="Public">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="25" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
@@ -235,57 +222,18 @@
           <EntitySet Name="AccessData" EntityType="Self.AccessData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArtNews" EntityType="Self.ArtNews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Auction" EntityType="Self.Auction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diary" EntityType="Self.Diary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fav" EntityType="Self.Fav" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Public" EntityType="Self.Public" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WorksTag" EntityType="Self.WorksTag" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ArtNews" EntityType="Self.ArtNews" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ArtNews].[Id] AS [Id], 
-    [ArtNews].[ArtistId] AS [ArtistId], 
-    [ArtNews].[Date] AS [Date], 
-    [ArtNews].[CoverPath] AS [CoverPath], 
-    [ArtNews].[ReadCount] AS [ReadCount], 
-    [ArtNews].[Content] AS [Content], 
-    [ArtNews].[Title] AS [Title]
-    FROM [dbo].[ArtNews] AS [ArtNews]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Auction" EntityType="Self.Auction" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Auction].[Id] AS [Id], 
-    [Auction].[ArtistId] AS [ArtistId], 
-    [Auction].[Title] AS [Title], 
-    [Auction].[CoverPath] AS [CoverPath], 
-    [Auction].[Price] AS [Price], 
-    [Auction].[RMB] AS [RMB], 
-    [Auction].[HKD] AS [HKD], 
-    [Auction].[USD] AS [USD], 
-    [Auction].[Date] AS [Date]
-    FROM [dbo].[Auction] AS [Auction]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Fav" EntityType="Self.Fav" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Fav].[Id] AS [Id], 
-    [Fav].[ArtistId] AS [ArtistId], 
-    [Fav].[Title] AS [Title], 
-    [Fav].[CoverPath] AS [CoverPath], 
-    [Fav].[Location] AS [Location], 
-    [Fav].[Year] AS [Year]
-    FROM [dbo].[Fav] AS [Fav]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Public" EntityType="Self.Public" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Public].[Id] AS [Id], 
-    [Public].[ArtistId] AS [ArtistId], 
-    [Public].[Title] AS [Title], 
-    [Public].[CoverPath] AS [CoverPath], 
-    [Public].[Author] AS [Author]
-    FROM [dbo].[Public] AS [Public]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -477,23 +425,20 @@
         <EntityType Name="ArtNews">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
-            <PropertyRef Name="ReadCount" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="3" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ReadCount" Type="Int32" Nullable="false" />
+          <Property Name="ReadCount" Type="Int32" />
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Auction">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -506,21 +451,19 @@
         <EntityType Name="Fav">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Public">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="ArtistId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -740,8 +683,8 @@
           <EntitySetMapping Name="Fav">
             <EntityTypeMapping TypeName="SzaipaModel.Fav">
               <MappingFragment StoreEntitySet="Fav">
-                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />

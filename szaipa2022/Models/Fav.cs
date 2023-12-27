@@ -18,7 +18,7 @@ namespace szaipa2022.Models
         public int ArtistId { get; set; }
         public string Title { get; set; }
         public string CoverPath { get; set; }
-        public string Year { get; set; }
         public string Location { get; set; }
+        public string Year { get; set; }
     }
 }

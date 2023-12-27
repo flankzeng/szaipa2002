@@ -186,23 +186,20 @@
   <EntityType Name="ArtNews">
     <Key>
       <PropertyRef Name="Id" />
-      <PropertyRef Name="ArtistId" />
-      <PropertyRef Name="ReadCount" />
     </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Date" Type="DateTime" Precision="3" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="ReadCount" Type="Int32" Nullable="false" />
+    <Property Name="ReadCount" Type="Int32" />
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Auction">
     <Key>
       <PropertyRef Name="Id" />
-      <PropertyRef Name="ArtistId" />
     </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -215,21 +212,19 @@
   <EntityType Name="Fav">
     <Key>
       <PropertyRef Name="Id" />
-      <PropertyRef Name="ArtistId" />
     </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Public">
     <Key>
       <PropertyRef Name="Id" />
-      <PropertyRef Name="ArtistId" />
     </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />

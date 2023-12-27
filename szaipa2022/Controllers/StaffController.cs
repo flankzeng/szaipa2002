@@ -433,15 +433,14 @@ namespace Szaipa.Controllers
                 string path = "/Content/ArtImg/Artist/Fav/";
                 ImgSave(path, filename);
                 fav.CoverPath = filename;
-
-                workinf wk = imginf(path, filename);
             }
 
 
             db.Fav.Add(fav);
             db.SaveChanges();
 
-            return RedirectToAction("Works", "Staff");
+            // FavList视图待创建，直接套模板就ok
+            return RedirectToAction("Fav", "Staff");
         }
 
 

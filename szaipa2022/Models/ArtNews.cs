@@ -18,7 +18,7 @@ namespace szaipa2022.Models
         public int ArtistId { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string CoverPath { get; set; }
-        public int ReadCount { get; set; }
+        public Nullable<int> ReadCount { get; set; }
         public string Content { get; set; }
         public string Title { get; set; }
     }

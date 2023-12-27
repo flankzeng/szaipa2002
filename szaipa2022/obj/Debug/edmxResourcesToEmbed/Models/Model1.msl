@@ -209,8 +209,8 @@
     <EntitySetMapping Name="Fav">
       <EntityTypeMapping TypeName="SzaipaModel.Fav">
         <MappingFragment StoreEntitySet="Fav">
-          <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
