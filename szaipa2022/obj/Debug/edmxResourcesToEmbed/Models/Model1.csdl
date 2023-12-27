@@ -221,7 +221,8 @@
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Year" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Public">
     <Key>

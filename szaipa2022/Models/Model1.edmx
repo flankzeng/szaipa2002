@@ -140,7 +140,8 @@
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
-          <Property Name="Year" Type="nchar" MaxLength="10" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" />
+          <Property Name="Year" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="MonthData">
           <Key>
@@ -272,6 +273,7 @@
     [Fav].[ArtistId] AS [ArtistId], 
     [Fav].[Title] AS [Title], 
     [Fav].[CoverPath] AS [CoverPath], 
+    [Fav].[Location] AS [Location], 
     [Fav].[Year] AS [Year]
     FROM [dbo].[Fav] AS [Fav]</DefiningQuery>
           </EntitySet>
@@ -510,7 +512,8 @@
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Year" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Public">
           <Key>
@@ -737,6 +740,7 @@
           <EntitySetMapping Name="Fav">
             <EntityTypeMapping TypeName="SzaipaModel.Fav">
               <MappingFragment StoreEntitySet="Fav">
+                <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
