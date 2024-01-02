@@ -181,6 +181,7 @@
     <EntitySetMapping Name="ArtNews">
       <EntityTypeMapping TypeName="SzaipaModel.ArtNews">
         <MappingFragment StoreEntitySet="ArtNews">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
@@ -194,6 +195,7 @@
     <EntitySetMapping Name="Auction">
       <EntityTypeMapping TypeName="SzaipaModel.Auction">
         <MappingFragment StoreEntitySet="Auction">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="USD" ColumnName="USD" />
           <ScalarProperty Name="HKD" ColumnName="HKD" />
@@ -209,6 +211,7 @@
     <EntitySetMapping Name="Fav">
       <EntityTypeMapping TypeName="SzaipaModel.Fav">
         <MappingFragment StoreEntitySet="Fav">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
@@ -221,6 +224,7 @@
     <EntitySetMapping Name="Public">
       <EntityTypeMapping TypeName="SzaipaModel.Public">
         <MappingFragment StoreEntitySet="Public">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Author" ColumnName="Author" />
           <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
           <ScalarProperty Name="Title" ColumnName="Title" />

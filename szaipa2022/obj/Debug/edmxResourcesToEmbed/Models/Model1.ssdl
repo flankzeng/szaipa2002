@@ -71,6 +71,7 @@
     <Property Name="ReadCount" Type="int" />
     <Property Name="Content" Type="nvarchar(max)" />
     <Property Name="Title" Type="nvarchar" MaxLength="500" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Auction">
     <Key>
@@ -85,6 +86,7 @@
     <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
     <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
     <Property Name="Date" Type="nvarchar" MaxLength="10" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -127,6 +129,7 @@
     <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
     <Property Name="Location" Type="nvarchar" MaxLength="50" />
     <Property Name="Year" Type="nvarchar" MaxLength="10" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="MonthData">
     <Key>
@@ -165,6 +168,7 @@
     <Property Name="Title" Type="nvarchar" MaxLength="25" />
     <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
     <Property Name="Author" Type="nvarchar" MaxLength="50" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>

@@ -194,6 +194,7 @@
     <Property Name="ReadCount" Type="Int32" />
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Auction">
     <Key>
@@ -208,6 +209,7 @@
     <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
     <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
     <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Fav">
     <Key>
@@ -219,6 +221,7 @@
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Public">
     <Key>
@@ -229,5 +232,6 @@
     <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
