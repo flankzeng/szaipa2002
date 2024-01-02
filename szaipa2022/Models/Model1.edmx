@@ -76,6 +76,7 @@
           <Property Name="ReadCount" Type="int" />
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Title" Type="nvarchar" MaxLength="500" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Auction">
           <Key>
@@ -90,6 +91,7 @@
           <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
           <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
           <Property Name="Date" Type="nvarchar" MaxLength="10" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -132,6 +134,7 @@
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
           <Property Name="Location" Type="nvarchar" MaxLength="50" />
           <Property Name="Year" Type="nvarchar" MaxLength="10" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="MonthData">
           <Key>
@@ -170,6 +173,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="25" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
           <Property Name="Author" Type="nvarchar" MaxLength="50" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -433,6 +437,7 @@
           <Property Name="ReadCount" Type="Int32" />
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Auction">
           <Key>
@@ -447,6 +452,7 @@
           <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Fav">
           <Key>
@@ -458,6 +464,7 @@
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Public">
           <Key>
@@ -468,6 +475,7 @@
           <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -655,6 +663,7 @@
           <EntitySetMapping Name="ArtNews">
             <EntityTypeMapping TypeName="SzaipaModel.ArtNews">
               <MappingFragment StoreEntitySet="ArtNews">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
@@ -668,6 +677,7 @@
           <EntitySetMapping Name="Auction">
             <EntityTypeMapping TypeName="SzaipaModel.Auction">
               <MappingFragment StoreEntitySet="Auction">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="USD" ColumnName="USD" />
                 <ScalarProperty Name="HKD" ColumnName="HKD" />
@@ -683,6 +693,7 @@
           <EntitySetMapping Name="Fav">
             <EntityTypeMapping TypeName="SzaipaModel.Fav">
               <MappingFragment StoreEntitySet="Fav">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
@@ -695,6 +706,7 @@
           <EntitySetMapping Name="Public">
             <EntityTypeMapping TypeName="SzaipaModel.Public">
               <MappingFragment StoreEntitySet="Public">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

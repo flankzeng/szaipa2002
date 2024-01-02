@@ -21,5 +21,6 @@ namespace szaipa2022.Models
         public Nullable<int> ReadCount { get; set; }
         public string Content { get; set; }
         public string Title { get; set; }
+        public string EditRecord { get; set; }
     }
 }

@@ -20,5 +20,6 @@ namespace szaipa2022.Models
         public string CoverPath { get; set; }
         public string Location { get; set; }
         public string Year { get; set; }
+        public string EditRecord { get; set; }
     }
 }
