@@ -78,8 +78,7 @@
         height: 100vh;
         filter: brightness(65%);
         transition: transform 300ms;
-        background-image: url('../../Content/images/IMG_9282.jpg');
-        background-repeat: no-repeat;
+        @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
         background-size: cover;
         background-position: 50% 50%;
     }
@@ -89,7 +88,7 @@
     }
 
     .recent a {
-        padding: 0 10% 0 10%;
+        padding: 0 12%;
         text-align: center;
         color: white;
         text-decoration: none;
@@ -344,7 +343,7 @@
     .collection span h1 {
         font-size: 3.2rem;
         /* font-family: 'JhengLight';*/
-    @*margin-bottom:3%;*@text-align: right;
+        @*margin-bottom:3%;*@text-align: right;
     }
 
     /* 取消了地址时间一起进入的动画 */
@@ -561,14 +560,20 @@
         <!-- 最新资讯大图(按所有艺术家自行发布的新闻的最近一期) -->
         <article class="recent">
 
-            @* @{
-            var h in ViewBag.Heading;
-            } *@
-            <a class="now" href="Javascript:;;">
-                回顾 | 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
-                <span class="JhengLight">张岚芊&#12288;|&#12288;2023年07月05日</span>
-            </a>
+            @foreach (var h in ViewBag.Heading)
+            {
+                <a class="now" href="/Home/ArtNewsRead/@h.Id">
+                    @h.Title
+                    <span class="JhengLight">@Model.Artist.ArtistNameCN &#12288;|&#12288;@string.Format("{0:yyyy年MM月dd日}",
+                    h.Date)</span>
+                </a>
 
+                <style>
+                    .recent::before {
+                        background-image: url('@h.CoverPath')
+                    }
+                </style>
+            }
             <div class="news xs-hide sm-hide">
                 @foreach (var i in ViewBag.Info)
                 {
@@ -602,7 +607,7 @@
                         <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
                         <div class="col-xs11 col-sm11 col-md15 col-lg15">
                             <h2 class="JhengBold">@n.Title</h2>
-                            <h3 class="JhengLight">发布日期:@string.Format("{0:yyyy.MM.dd}", n.Date)</h3>
+                            <h3 class="JhengLight">发布日期:@string.Format("{0:yyyy年MM月dd日}", n.Date)</h3>
                             <p>
                                 @n.Content
                             </p>
@@ -709,7 +714,7 @@
                         成交价(HKD):400,126
                         成交价(USD):50,968
 
-                        <i>拍卖日期:2022-10-05</i>
+                        <i>成交日期:2022-10-05</i>
                     </p>
                 </th>
 
@@ -723,7 +728,7 @@
                         成交价(HKD):400,126
                         成交价(USD):509,68
 
-                        <i>拍卖日期:2022-10-05</i>
+                        <i>成交日期:2022-10-05</i>
                     </p>
                 </th>
 
@@ -737,7 +742,7 @@
                         成交价(HKD):437,365
                         成交价(USD):54,780
 
-                        <i>拍卖日期:2021-02-05</i>
+                        <i>成交日期:2021-02-05</i>
                     </p>
                 </th>
 
@@ -751,7 +756,7 @@
                         成交价(HKD):177,844
                         成交价(USD):222,75
 
-                        <i>拍卖日期:2021-02-05</i>
+                        <i>成交日期:2021-02-05</i>
                     </p>
                 </th>
             </tr>

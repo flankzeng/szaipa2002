@@ -467,6 +467,46 @@ namespace Szaipa.Controllers
             return RedirectToAction("Fav", "Staff");
         }
 
+        public ActionResult newAuction(FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            int aid = Convert.ToInt32(Request.Form["ArtistId"]);
+            Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
+
+            Auction Auction = new Auction();
+            Auction.ArtistId = aid;
+            Auction.Title = Request.Form["Title"];
+            Auction.CoverPath = Request.Form["CoverPath"];
+            Auction.Price = Request.Form["Price"];
+            Auction.RMB = Request.Form["RMB"];
+            Auction.HKD = Request.Form["HKD"];
+            Auction.USD = Request.Form["USD"];
+            Auction.Date = Request.Form["Date"];
+
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Auction/";
+                ImgSave(path, filename);
+                Auction.CoverPath = filename;
+            }
+
+            Auction.EditRecord = Auction.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + Auction.Title + "的新闻条目。" + "/";
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + Auction.Title + "的新闻条目。" + "/";
+
+
+            db.Auction.Add(Auction);
+            db.SaveChanges();
+
+            // FavList视图待创建，直接套模板就ok
+            return RedirectToAction("Auction", "Staff");
+        }
 
         public ActionResult newExhibitionAdd()
         {

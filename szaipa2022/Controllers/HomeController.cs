@@ -266,7 +266,7 @@ namespace Szaipa.Controllers
             ViewBag.Fav = db.Fav.Where(f => f.ArtistId == art.Id);
 
             // 1.为视图创建头条新闻：
-            var heading = db.ArtNews.Take(1);
+            var heading = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList().Take(1);
             ViewBag.Heading = heading;
 
             // 2.为视图创建2～5条新闻的列表：
