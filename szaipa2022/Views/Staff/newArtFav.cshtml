@@ -24,7 +24,7 @@
 
     .remind {
         padding-top: 1em;
-        font-size: 1rem;
+        font-size: .9rem;
         text-align: center;
         color: #484848;
         width: 80%;
@@ -40,7 +40,7 @@
 
     .layui-form label,
     .layui-form input {
-        font-size: 1rem;
+        font-size: .9rem;
     }
 
     .layui-form-item {
@@ -144,6 +144,10 @@
         right: 0;
         transform: translatex(100%);
     }
+
+    form {
+        margin-bottom: 20vh;
+    }
 </style>
 
 <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
@@ -177,38 +181,75 @@
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="width: 83%;">
                         @if (ViewBag.Artistid == null)
                         {
-                                    <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
-                                        placeholder="作者ID" autocomplete="off" class="layui-input">
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
+                                placeholder="作者ID" autocomplete="off" class="layui-input">
                         }
                         else
                         {
-                                    <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
-                                        placeholder="作者ID" autocomplete="off" class="layui-input" value="@Model">
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
+                                placeholder="作者ID" autocomplete="off" class="layui-input" value="@Model">
                         }
 
                         <div style="position:absolute;top:0%;right:-10%;text-align:right;">
-                            <div class="layui-form-mid layui-word-aux" id="def" style="font-size: 1rem;"> 会员名 </div>
+                            <div class="layui-form-mid layui-word-aux" id="def" style="font-size: .9rem;"> 会员名 </div>
                             <div class="layui-form-mid layui-word-aux" id="login" style="display:none;"><i
                                     class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"
-                                    style="font-size: 1rem; color: #958e71;display: inline-block;"></i>
+                                    style="font-size: .9rem; color: #958e71;display: inline-block;"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品尺寸</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Size" placeholder="例：80x80cm" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品类别</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Type" placeholder="例：水彩画" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品材质</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Material" placeholder="例：纸本丙烯" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">收藏时间</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="Year" required lay-verify="required" placeholder="请输入作品收藏捐赠年份"
+                        <input type="text" name="Year" required lay-verify="required" placeholder="请输入作品收藏捐赠年份，例：2024"
                             autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">赠予地点</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">赠予单位</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="Location" required lay-verify="required" placeholder="请输入作品作品赠予单位"
-                            autocomplete="off" class="layui-input">
+                        <input type="text" name="Location" required lay-verify="required"
+                            placeholder="请输入作品作品赠予单位，例：深圳美术馆" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">赠与单位所属地</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Province" placeholder="例：广东深圳，中国" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">收藏编号</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="CollectNumber" placeholder="例：L1999200099" autocomplete="off"
+                            class="layui-input">
                     </div>
                 </div>
 

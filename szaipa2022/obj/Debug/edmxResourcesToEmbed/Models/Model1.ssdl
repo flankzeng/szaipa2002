@@ -130,6 +130,12 @@
     <Property Name="Location" Type="nvarchar" MaxLength="50" />
     <Property Name="Year" Type="nvarchar" MaxLength="10" />
     <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="Creator" Type="nvarchar" MaxLength="20" />
+    <Property Name="Size" Type="nvarchar" MaxLength="20" />
+    <Property Name="Material" Type="nvarchar" MaxLength="20" />
+    <Property Name="Type" Type="nvarchar" MaxLength="20" />
+    <Property Name="Province" Type="nvarchar" MaxLength="20" />
+    <Property Name="CollectNumber" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="MonthData">
     <Key>

@@ -135,6 +135,12 @@
           <Property Name="Location" Type="nvarchar" MaxLength="50" />
           <Property Name="Year" Type="nvarchar" MaxLength="10" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="Creator" Type="nvarchar" MaxLength="20" />
+          <Property Name="Size" Type="nvarchar" MaxLength="20" />
+          <Property Name="Material" Type="nvarchar" MaxLength="20" />
+          <Property Name="Type" Type="nvarchar" MaxLength="20" />
+          <Property Name="Province" Type="nvarchar" MaxLength="20" />
+          <Property Name="CollectNumber" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="MonthData">
           <Key>
@@ -465,6 +471,12 @@
           <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Material" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CollectNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Public">
           <Key>
@@ -693,6 +705,12 @@
           <EntitySetMapping Name="Fav">
             <EntityTypeMapping TypeName="SzaipaModel.Fav">
               <MappingFragment StoreEntitySet="Fav">
+                <ScalarProperty Name="CollectNumber" ColumnName="CollectNumber" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Location" ColumnName="Location" />

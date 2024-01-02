@@ -24,15 +24,15 @@ body {
     padding: 0px;
 }
 
-@media only screen and (min-width: 3840px) {
+@media only screen and (min-width: 3790px) {
 
-    /* 4K 分辨率 */
+    /* 2160p 分辨率 */
     html {
         font-size: 36px !important;
     }
 }
 
-@media only screen and (min-width: 2560px) and (max-width: 3839px) {
+@media only screen and (min-width: 2510px) and (max-width: 3789px) {
 
     /* 1440p 分辨率 */
     html {
@@ -40,7 +40,7 @@ body {
     }
 }
 
-@media only screen and (min-width: 1920px) {
+@media only screen and (min-width: 1870px) and (max-width:2509px) {
 
     /* 1080p */
     html {
@@ -48,7 +48,9 @@ body {
     }
 }
 
-@media only screen and (min-width: 1200px) and (max-width:1399px) {
+@media only screen and (min-width: 992px) and (max-width:1869px) {
+
+    /* 720p */
     html {
         font-size: 12px !important;
     }

@@ -222,6 +222,12 @@
     <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Year" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Creator" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Size" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Material" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="CollectNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Public">
     <Key>

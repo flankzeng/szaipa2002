@@ -437,6 +437,12 @@ namespace Szaipa.Controllers
             fav.Title = Request.Form["Title"];
             fav.Year = Request.Form["Year"];
             fav.Location = Request.Form["Location"];
+            fav.Creator = Request.Form["Creator"];
+            fav.Size = Request.Form["Size"];
+            fav.Material = Request.Form["Material"];
+            fav.Type = Request.Form["Type"];
+            fav.Province = Request.Form["Province"];
+            fav.CollectNumber = Request.Form["CollectNumber"];
 
 
             if (TempData["TempImg"] != null)

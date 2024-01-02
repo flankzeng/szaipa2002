@@ -21,5 +21,11 @@ namespace szaipa2022.Models
         public string Location { get; set; }
         public string Year { get; set; }
         public string EditRecord { get; set; }
+        public string Creator { get; set; }
+        public string Size { get; set; }
+        public string Material { get; set; }
+        public string Type { get; set; }
+        public string Province { get; set; }
+        public string CollectNumber { get; set; }
     }
 }

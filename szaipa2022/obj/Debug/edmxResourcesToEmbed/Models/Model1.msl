@@ -211,6 +211,12 @@
     <EntitySetMapping Name="Fav">
       <EntityTypeMapping TypeName="SzaipaModel.Fav">
         <MappingFragment StoreEntitySet="Fav">
+          <ScalarProperty Name="CollectNumber" ColumnName="CollectNumber" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Material" ColumnName="Material" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Creator" ColumnName="Creator" />
           <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Year" ColumnName="Year" />
           <ScalarProperty Name="Location" ColumnName="Location" />
