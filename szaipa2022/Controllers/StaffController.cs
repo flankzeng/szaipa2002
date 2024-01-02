@@ -396,6 +396,18 @@ namespace Szaipa.Controllers
             if (staff == null) return RedirectToAction("Login", "Staff");
             return View(staff);
         }
+        public ActionResult Fav()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+
+            return View(staff);
+        }
         public ActionResult newArtFav(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -434,6 +446,12 @@ namespace Szaipa.Controllers
                 ImgSave(path, filename);
                 fav.CoverPath = filename;
             }
+
+            fav.EditRecord = fav.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + fav.Title + "的新闻条目。" + "/";
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + fav.Title + "的新闻条目。" + "/";
 
 
             db.Fav.Add(fav);
