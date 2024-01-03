@@ -387,7 +387,43 @@ namespace Szaipa.Controllers
             db.SaveChanges();
 
 
-            return RedirectToAction("newArtist", "Staff");
+            return RedirectToAction("newArtBg", "Staff");
+        }
+        public ActionResult newArtBg()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+            TempData.Clear();
+            return View(staff);
+        }
+        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult newArtBg(FormCollection form)
+        {
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Staff staffer = (Staff)Session["staff"];
+
+
+            var art = new Artist();
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path1 = "/Content/ArtImg/Artist/Banner/";
+                ImgSave(path1, filename);
+                art.Path1 = filename;
+            }
+
+            db.SaveChanges();
+
+            return View(staff);
         }
 
         public ActionResult newWorkAdd()
@@ -466,7 +502,21 @@ namespace Szaipa.Controllers
             // FavList视图待创建，直接套模板就ok
             return RedirectToAction("Fav", "Staff");
         }
-
+        public ActionResult newAuction()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+            TempData.Clear();
+            return View(staff);
+        }
+        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
+        [HttpPost]
+        [ValidateInput(false)]
         public ActionResult newAuction(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
@@ -475,15 +525,17 @@ namespace Szaipa.Controllers
             int aid = Convert.ToInt32(Request.Form["ArtistId"]);
             Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
 
-            Auction Auction = new Auction();
-            Auction.ArtistId = aid;
-            Auction.Title = Request.Form["Title"];
-            Auction.CoverPath = Request.Form["CoverPath"];
-            Auction.Price = Request.Form["Price"];
-            Auction.RMB = Request.Form["RMB"];
-            Auction.HKD = Request.Form["HKD"];
-            Auction.USD = Request.Form["USD"];
-            Auction.Date = Request.Form["Date"];
+            Auction auction = new Auction
+            {
+                ArtistId = aid,
+                Title = Request.Form["Title"],
+                CoverPath = Request.Form["CoverPath"],
+                Price = Request.Form["Price"],
+                RMB = Request.Form["RMB"],
+                HKD = Request.Form["HKD"],
+                USD = Request.Form["USD"],
+                Date = Request.Form["Date"]
+            };
 
 
             if (TempData["TempImg"] != null)
@@ -491,21 +543,21 @@ namespace Szaipa.Controllers
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/Auction/";
                 ImgSave(path, filename);
-                Auction.CoverPath = filename;
+                auction.CoverPath = filename;
             }
 
-            Auction.EditRecord = Auction.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
+            auction.EditRecord = auction.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
             var day = today();
-            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + Auction.Title + "的新闻条目。" + "/";
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + auction.Title + "的新闻条目。" + "/";
             Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
-            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + Auction.Title + "的新闻条目。" + "/";
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + auction.Title + "的新闻条目。" + "/";
 
 
-            db.Auction.Add(Auction);
+            db.Auction.Add(auction);
             db.SaveChanges();
 
             // FavList视图待创建，直接套模板就ok
-            return RedirectToAction("Auction", "Staff");
+            return RedirectToAction("Works", "Staff");
         }
 
         public ActionResult newExhibitionAdd()

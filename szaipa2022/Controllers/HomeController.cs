@@ -279,6 +279,10 @@ namespace Szaipa.Controllers
             var selfUpload = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList();
             ViewBag.selfUpload = selfUpload;
 
+            // 链接拍卖作品功能：
+            var auction = db.Auction.Where(n => n.ArtistId == art.Id);
+            ViewBag.Auction = auction;
+
             // 创建 ArtNewsViewModel 的实例
             var viewModel = new ArtNewsViewModel
             {

@@ -284,6 +284,16 @@
                     </div>
                 </div>
 
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="ID-upload-demo-btn-2">
+                        <i class="layui-icon layui-icon-upload"></i> 多图片上传
+                    </button>
+                    <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 11px;">
+                        预览图：
+                        <div class="layui-upload-list" id="upload-demo-preview"></div>
+                    </blockquote>
+                </div>
+
                 @* <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">年&emsp;表
                 </label>
@@ -338,6 +348,45 @@
         }
         , before: function () {
             layer.msg('上传中', { icon: 16, time: 0 });
+        }
+    });
+
+
+    var path1 = "";
+    var path2 = "";
+    var count = 0;
+
+    upload.render({
+        elem: '#ID-upload-demo-btn-2',
+        url: '/Staff/TempImgSave/', // 实际使用时改成您自己的上传接口即可。
+        multiple: true,
+        choose: function (obj) {
+            var files = obj.pushFile(); // 获取选择的文件
+            count += files.length;
+
+            if (count > 2) {
+                // 超过限制数量，进行相应处理，比如提示用户或清空已选择的文件
+                // 清空已选择的文件
+                obj.resetFile();
+                count = 0;
+            } else {
+                // 限制数量内，进行预览和存储文件名
+                obj.preview(function (index, file, result) {
+                    if (count === 1) {
+                        // 第一张图片存储到 path1
+                        path1 = file.name;
+                    } else if (count === 2) {
+                        // 第二张图片存储到 path2
+                        path2 = file.name;
+                    }
+                    $('#upload-demo-preview').append('<img src="/Content/TempFile/' + result + '" alt="' + file.name + '" style="width: 90px; height: 90px;">');
+                });
+            }
+        },
+        done: function (res) {
+            // 上传完毕
+            // ...
+            // 将 path1 和 path2 的值传递到后台进行保存到数据库的操作
         }
     });
 

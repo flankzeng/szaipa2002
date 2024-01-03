@@ -166,7 +166,7 @@
             <p class="remind">点击上方上传作品</p>
         </div>
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="newArtFav" method="post">
+            <form class="layui-form" action="newAuction" method="post">
 
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品名</label>
@@ -203,7 +203,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品估价</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="number" name="Price" required lay-verify="required"
+                        <input type="text" name="Price" required lay-verify="required"
                             placeholder="请输入作品估价(间隔三位数一个,)，例：RMB 900,000 - 9,999,999" autocomplete="off"
                             class="layui-input">
                     </div>
@@ -213,7 +213,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">成交价格</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="number" name="RMB" required lay-verify="required" placeholder="请输入作品成交价格（RMB）"
+                        <input type="text" name="RMB" required lay-verify="required" placeholder="请输入作品成交价格（RMB）"
                             autocomplete="off" class="layui-input">
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">港币</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="number" name="HKD" placeholder="请输入作品成交价格（HKD）" autocomplete="off"
+                        <input type="text" name="HKD" placeholder="请输入作品成交价格（HKD）" autocomplete="off"
                             class="layui-input">
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">美元</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="number" name="USD" placeholder="请输入作品成交价格（USD）" autocomplete="off"
+                        <input type="text" name="USD" placeholder="请输入作品成交价格（USD）" autocomplete="off"
                             class="layui-input">
                     </div>
                 </div>

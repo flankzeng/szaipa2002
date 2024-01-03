@@ -78,7 +78,7 @@
         height: 100vh;
         filter: brightness(65%);
         transition: transform 300ms;
-        @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
+    @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
         background-size: cover;
         background-position: 50% 50%;
     }
@@ -343,7 +343,7 @@
     .collection span h1 {
         font-size: 3.2rem;
         /* font-family: 'JhengLight';*/
-        @*margin-bottom:3%;*@text-align: right;
+    @*margin-bottom:3%;*@text-align: right;
     }
 
     /* 取消了地址时间一起进入的动画 */
@@ -535,7 +535,7 @@
                 </a>
             </td>
             <td>
-                <a href="/Home/artistZLQ">艺术家首页</a>
+                <a href="/Home/newArt/@Model.Artist.Id">艺术家首页</a>
             </td>
             <td class="xs-hide sm-hide activeLink">
                 <a href="#section01">资&#12288;讯</a>
@@ -704,61 +704,22 @@
         <!-- 不可点击卡片 -->
         <table class="col-xs20 col-sm20 col-md20 col-lg20 market">
             <tr>
-                <th>
-                    <img src="../../Content/images/yuanfang12.jpg">
-                    <p>
-                        <span>2021年作 远方系列</span>
-                        估价:RMB 300,000 - 500,000
+                @foreach (var au in ViewBag.Auction)
+                {
+                    <th>
+                        <img src='/Content/ArtImg/Artist/Auction/@au.CoverPath'>
+                        <p>
+                            <span>@au.Title</span>
+                            估价:@au.Price
 
-                        成交价(RMB):368,000
-                        成交价(HKD):400,126
-                        成交价(USD):50,968
+                            成交价(RMB):@au.RMB
+                            成交价(HKD):@au.HKD
+                            成交价(USD):@au.USD
 
-                        <i>成交日期:2022-10-05</i>
-                    </p>
-                </th>
-
-                <th>
-                    <img src="../../Content/images/yuanfang15.jpg">
-                    <p>
-                        <span>2021年作 远方系列</span>
-                        估价:RMB 300,000 - 500,000
-
-                        成交价(RMB):368,000
-                        成交价(HKD):400,126
-                        成交价(USD):509,68
-
-                        <i>成交日期:2022-10-05</i>
-                    </p>
-                </th>
-
-                <th>
-                    <img src="../../Content/images/jubaopen6.jpg">
-                    <p>
-                        <span>聚宝盆系列之六</span>
-                        估价:RMB 200,000 - 300,000
-
-                        成交价(RMB):365,200
-                        成交价(HKD):437,365
-                        成交价(USD):54,780
-
-                        <i>成交日期:2021-02-05</i>
-                    </p>
-                </th>
-
-                <th>
-                    <img src="../../Content/images/yuanfang1.jpg">
-                    <p>
-                        <span>远方系列之一</span>
-                        估价:RMB 80,000 - 100,000
-
-                        成交价(RMB):148,500
-                        成交价(HKD):177,844
-                        成交价(USD):222,75
-
-                        <i>成交日期:2021-02-05</i>
-                    </p>
-                </th>
+                            <i>成交日期:@au.Date</i>
+                        </p>
+                    </th>
+                }
             </tr>
 
             <!-- <tr>
