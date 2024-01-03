@@ -84,14 +84,14 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
-          <Property Name="Price" Type="decimal" Precision="10" Scale="3" />
-          <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
-          <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
-          <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
-          <Property Name="Date" Type="nvarchar" MaxLength="10" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="Price" Type="nvarchar" MaxLength="50" />
+          <Property Name="RMB" Type="nvarchar" MaxLength="30" />
+          <Property Name="HKD" Type="nvarchar" MaxLength="30" />
+          <Property Name="USD" Type="nvarchar" MaxLength="30" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -453,10 +453,10 @@
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="RMB" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="HKD" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="USD" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="Price" Type="String" Nullable="false" />
+          <Property Name="RMB" Type="String" />
+          <Property Name="HKD" Type="String" />
+          <Property Name="USD" Type="String" />
           <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>

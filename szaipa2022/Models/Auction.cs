@@ -18,10 +18,10 @@ namespace szaipa2022.Models
         public int ArtistId { get; set; }
         public string Title { get; set; }
         public string CoverPath { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public Nullable<decimal> RMB { get; set; }
-        public Nullable<decimal> HKD { get; set; }
-        public Nullable<decimal> USD { get; set; }
+        public string Price { get; set; }
+        public string RMB { get; set; }
+        public string HKD { get; set; }
+        public string USD { get; set; }
         public string Date { get; set; }
         public string EditRecord { get; set; }
     }

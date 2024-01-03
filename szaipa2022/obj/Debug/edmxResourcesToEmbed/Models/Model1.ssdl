@@ -79,14 +79,14 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ArtistId" Type="int" Nullable="false" />
-    <Property Name="Title" Type="nvarchar" MaxLength="50" />
     <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
-    <Property Name="Price" Type="decimal" Precision="10" Scale="3" />
-    <Property Name="RMB" Type="decimal" Precision="10" Scale="3" />
-    <Property Name="HKD" Type="decimal" Precision="10" Scale="3" />
-    <Property Name="USD" Type="decimal" Precision="10" Scale="3" />
-    <Property Name="Date" Type="nvarchar" MaxLength="10" />
     <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+    <Property Name="RMB" Type="nvarchar" MaxLength="30" />
+    <Property Name="HKD" Type="nvarchar" MaxLength="30" />
+    <Property Name="USD" Type="nvarchar" MaxLength="30" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Date" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="Company">
     <Key>

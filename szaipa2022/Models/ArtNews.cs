@@ -11,7 +11,7 @@ namespace szaipa2022.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class ArtNews
     {
         public int Id { get; set; }
