@@ -352,41 +352,21 @@
     });
 
 
-    var path1 = "";
-    var path2 = "";
-    var count = 0;
-
     upload.render({
         elem: '#ID-upload-demo-btn-2',
         url: '/Staff/TempImgSave/', // 实际使用时改成您自己的上传接口即可。
         multiple: true,
-        choose: function (obj) {
-            var files = obj.pushFile(); // 获取选择的文件
-            count += files.length;
-
-            if (count > 2) {
-                // 超过限制数量，进行相应处理，比如提示用户或清空已选择的文件
-                // 清空已选择的文件
-                obj.resetFile();
-                count = 0;
-            } else {
-                // 限制数量内，进行预览和存储文件名
-                obj.preview(function (index, file, result) {
-                    if (count === 1) {
-                        // 第一张图片存储到 path1
-                        path1 = file.name;
-                    } else if (count === 2) {
-                        // 第二张图片存储到 path2
-                        path2 = file.name;
-                    }
-                    $('#upload-demo-preview').append('<img src="/Content/TempFile/' + result + '" alt="' + file.name + '" style="width: 90px; height: 90px;">');
-                });
-            }
-        },
-        done: function (res) {
-            // 上传完毕
-            // ...
-            // 将 path1 和 path2 的值传递到后台进行保存到数据库的操作
+        before: function (obj) {
+            // 预读本地文件示例，不支持ie8
+            obj.preview(function (index, file, result) {
+                $('#upload-demo-preview').append('<img src="' + result + '" alt="' + file.name + '" style="width: 90px; height: 90px;">')
+                console.log(index);
+                console.log(file);
+                console.log(result)
+            });
+        }, done: function (res) {
+            console.log(2);
+            layer.msg('上传成功');
         }
     });
 

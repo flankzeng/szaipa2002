@@ -361,20 +361,28 @@ namespace Szaipa.Controllers
             art.DeedsYears = Request.Form["DeedsYears"];
             art.DeedsThings = Request.Form["DeedsThings"];
 
-            if (TempData["TempImg"] != null)
+            if (TempData["TempImg"] == null)
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/";
-                ImgSave(path, filename);
+                ImgSaveMulti(path, filename);
                 art.Path = filename;
             }
-            if (TempData["TempFile"] != null)
-            {
-                string filename = TempData["TempFile"].ToString();
-                string path = "/Content/File/";
-                ImgSave(path, filename);
-                art.FlieInf = filename;
-            }
+
+            // string content = "";
+            // for (int i = 0; i < 2; i++)
+            // {
+            //     if (i == 0 && TempData["TempIntervalImg"] != null)
+            //     {
+            //         string imgtitle = TempData["TempIntervalImg"].ToString();
+            //         art.Path1 = EffectiveImgs(imgtitle, content);
+            //     }
+            //     else
+            //     {
+            //         string imgtitle = TempData["TempIntervalImg"].ToString();
+            //         art.Path2 = EffectiveImgs(imgtitle, content);
+            //     }
+            // }
 
             art.EditRecord = staffer.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 创建了此会员的条目。" + "/";
 
@@ -413,12 +421,15 @@ namespace Szaipa.Controllers
 
             var art = new Artist();
 
-            if (TempData["TempImg"] != null)
+            if (TempData["TempImg1"] != null && TempData["TempImg2"] != null)
             {
-                string filename = TempData["TempImg"].ToString();
-                string path1 = "/Content/ArtImg/Artist/Banner/";
-                ImgSave(path1, filename);
-                art.Path1 = filename;
+                string filename1 = TempData["TempImg1"].ToString();
+                string filename2 = TempData["TempImg2"].ToString();
+                string path = "/Content/ArtImg/Artist/Banner";
+                ImgSaveMulti(path, filename1);
+                ImgSaveMulti(path, filename2);
+                art.Path1 = filename1;
+                art.Path2 = filename2;
             }
 
             db.SaveChanges();
@@ -426,11 +437,55 @@ namespace Szaipa.Controllers
             return View(staff);
         }
 
-        public ActionResult newWorkAdd()
+        public ActionResult newWorkAdd(int? id)
         {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
+
+            ViewBag.Artistid = id;
+
+
             return View(staff);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult newWorkAdd(FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            int aid = Convert.ToInt32(Request.Form["ArtistId"]);
+            Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
+
+            Works works = new Works();
+            works.ArtistId = aid;
+            works.Title = Request.Form["Title"];
+            works.Content = Request.Form["Content"];
+            works.Tags = Request.Form["Tags"];
+
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Works/";
+                ImgSave(path, filename);
+                works.Path = filename;
+            }
+
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + works.Title + "的新闻条目。" + "/";
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + works.Title + "的新闻条目。" + "/";
+
+
+            db.Works.Add(works);
+            db.SaveChanges();
+
+            return RedirectToAction("Works", "Staff");
         }
         public ActionResult Fav()
         {
@@ -1125,6 +1180,36 @@ namespace Szaipa.Controllers
             }
 
         }
+
+        // 以下为2024新增多图办法：
+
+        private void ImgSaveMulti(string path, string filename)
+        {
+            string pa1 = path + filename;
+            string pa2 = "/Content/TempFile/" + filename;
+            var imgpath = Path.Combine(Server.MapPath(pa1));
+            string temppath = Path.Combine(Server.MapPath(pa2));
+            if (System.IO.File.Exists(temppath))
+            {
+                System.IO.File.Copy(temppath, imgpath, true);
+                // System.IO.File.Delete(temppath);
+            }
+        }
+        // private void ImgSaveMulti(string path, string filenames)
+        // {
+        //     for (int i = 0; i < path.Length; i++)
+        //     {
+        //         string imgpath = path + filenames;
+        //         string temppath = "/Content/TempFile/" + filename;
+
+        //         if (System.IO.File.Exists(temppath))
+        //         {
+        //             System.IO.File.Copy(temppath, imgpath, true);
+        //             System.IO.File.Delete(temppath);
+        //         }
+        //     }
+        // }
+
         /// <summary>
         /// 多张图片从临时文件转入相对应的储存文件.
         /// </summary>

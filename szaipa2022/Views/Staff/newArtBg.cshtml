@@ -204,7 +204,7 @@
 
     <div class="col-xs20 col-sm20 col-md20 col-lg20 allpadding">
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="newArtAdd" method="post">
+            <form class="layui-form" action="newArtBg" method="post">
                 <div class="layui-upload">
                     <button type="button" class="layui-btn" id="ID-upload-demo-btn-2">
                         <i class="layui-icon layui-icon-upload"></i> 多图片上传
@@ -237,59 +237,17 @@
         elem: '#ID-upload-demo-btn-2',
         url: '/Staff/TempImgSave/', // 实际使用时改成您自己的上传接口即可。
         multiple: true,
+        done: function (res) {
+
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        },
         before: function (obj) {
             // 预读本地文件示例，不支持ie8
             obj.preview(function (index, file, result) {
                 $('#upload-demo-preview').append('<img src="' + result + '" alt="' + file.name + '" style="width: 90px; height: 90px;">')
             });
         },
-        done: function (res) {
-            // 上传完毕
-            // …
-        }
     });
-
-
-    @* var path1 = "";
-        var path2 = "";
-        var count = 0;
-
-        upload.render({
-        elem: '#ID-upload-demo-btn-2',
-        url: '/Staff/TempImgSave/', // 实际使用时改成您自己的上传接口即可。
-        multiple: true,
-        choose: function (obj) {
-        var files = obj.pushFile(); // 获取选择的文件
-        count += files.length;
-
-        if (count > 2) {
-        // 超过限制数量，进行相应处理，比如提示用户或清空已选择的文件
-        // 清空已选择的文件
-        obj.resetFile();
-        count = 0;
-        } else {
-        // 限制数量内，进行预览和存储文件名
-        obj.preview(function (index, file, result) {
-        if (count === 1) {
-        // 第一张图片存储到 path1
-        path1 = file.name;
-        $('#upload-demo-preview').append('<img src="/Content/TempFile/' + path1 + '" alt="' + file.name + '" style="width: 90px; height: 90px;">');
-        console.log(obj);
-
-        } else if (count === 2) {
-        // 第二张图片存储到 path2
-        path2 = file.name;
-        $('#upload-demo-preview').append('<img src="/Content/TempFile/' + path2 + '" alt="' + file.name + '" style="width: 90px; height: 90px;">');
-        console.log(obj);
-
-        }
-        });
-        }
-        },
-        done: function (res) {
-        // 上传完毕
-        // ...
-        // 将 path1 和 path2 的值传递到后台进行保存到数据库的操作
-        }
-        }); *@
 </script>

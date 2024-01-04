@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "WorkAdd";
+    ViewBag.Title = "艺术家作品新增";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
 
@@ -56,59 +56,6 @@
     }
 
 
-
-
-
-
-    #color1,
-    #color2 {
-        all: inherit;
-        width: 20%;
-        border: none;
-        outline: none;
-        box-shadow: none;
-        margin: 0;
-        height: 3vh;
-
-        position: absolute;
-        left: 0;
-    }
-
-    #color2 {
-        top: 3.5vh;
-    }
-
-    #hexColor1,
-    #hexColor2 {
-        position: absolute;
-        width: 40%;
-        height: 3vh;
-        left: 21%;
-    }
-
-    #hexColor1 {
-        top: 0;
-    }
-
-    #hexColor2 {
-        top: 3.5vh;
-    }
-
-
-
-
-
-    #gradient-preview {
-        width: 35%;
-        height: 6.5vh;
-
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-
-
     #event-container .layui-input {
         display: initial;
     }
@@ -163,7 +110,7 @@
 
         </div>
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="WorkAdd" method="post">
+            <form class="layui-form" action="newWorkAdd" method="post">
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品名</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
@@ -195,13 +142,20 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
+
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简&emsp;介</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品简介</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <textarea name="Content" placeholder="介绍这个作品，如不输入则显示为空白" class="layui-textarea"></textarea>
+                        <input type="text" name="Content" required lay-verify="required"
+                            placeholder="输入作品尺寸类型等内容，例：120x70cm 纸本水墨" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品介绍</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <textarea name="Tags" placeholder="介绍一下作品，如不输入则显示为空白" class="layui-textarea"></textarea>
 
                     </div>
                 </div>
