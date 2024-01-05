@@ -3476,6 +3476,9 @@
     <Compile Include="Models\Diary.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Exhibition.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Fav.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

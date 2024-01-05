@@ -119,6 +119,20 @@
     <Property Name="CompanyVisit" Type="int" Nullable="false" />
     <Property Name="OperationRecord" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="Exhibition">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ArtistId" Type="int" Nullable="false" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="100" />
+    <Property Name="StartDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="Link" Type="nvarchar(max)" />
+    <Property Name="EndDate" Type="nvarchar" MaxLength="50" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="Fav">
     <Key>
       <PropertyRef Name="Id" />
@@ -231,6 +245,7 @@
     <EntitySet Name="Auction" EntityType="Self.Auction" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Diary" EntityType="Self.Diary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Exhibition" EntityType="Self.Exhibition" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Fav" EntityType="Self.Fav" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />

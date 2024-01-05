@@ -124,6 +124,20 @@
           <Property Name="CompanyVisit" Type="int" Nullable="false" />
           <Property Name="OperationRecord" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Link" Type="nvarchar(max)" />
+          <Property Name="EndDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Fav">
           <Key>
             <PropertyRef Name="Id" />
@@ -236,6 +250,7 @@
           <EntitySet Name="Auction" EntityType="Self.Auction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Diary" EntityType="Self.Diary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exhibition" EntityType="Self.Exhibition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fav" EntityType="Self.Fav" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
@@ -431,6 +446,7 @@
           <EntitySet Name="Auction" EntityType="SzaipaModel.Auction" />
           <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
           <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
+          <EntitySet Name="Exhibition" EntityType="SzaipaModel.Exhibition" />
         </EntityContainer>
         <EntityType Name="ArtNews">
           <Key>
@@ -453,10 +469,10 @@
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="String" Nullable="false" />
-          <Property Name="RMB" Type="String" />
-          <Property Name="HKD" Type="String" />
-          <Property Name="USD" Type="String" />
+          <Property Name="Price" Type="String" Unicode="true" FixedLength="false" MaxLength="50" />
+          <Property Name="RMB" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="HKD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="USD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
           <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -487,6 +503,20 @@
           <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
@@ -728,6 +758,21 @@
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exhibition">
+            <EntityTypeMapping TypeName="SzaipaModel.Exhibition">
+              <MappingFragment StoreEntitySet="Exhibition">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

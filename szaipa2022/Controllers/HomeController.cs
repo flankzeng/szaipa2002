@@ -240,10 +240,20 @@ namespace Szaipa.Controllers
             var work = db.Works.Where(d => d.ArtistId == art.Id).ToList();
             ViewBag.work = work;
 
+            // 获取子页面讯息简介
+            var news = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList().Take(1); // 最新新闻
+            var fav = db.Fav.Where(d => d.ArtistId == art.Id).ToList().Take(1); // 最新收藏
+            var pub = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList().Take(1); // 最新出版
+            var auc = db.Auction.Where(d => d.ArtistId == art.Id).ToList().Take(1); // 最新拍卖
+            ViewBag.News = news;
+            ViewBag.Fav = fav;
+            ViewBag.Pub = pub;
+            ViewBag.Auc = auc;
+
+            // 获取相关的展讯
+            ViewBag.Exhibition = db.Exhibition.Where(f => f.ArtistId == art.Id);
 
             if (art.Honor != null && art.Honor.IndexOf("/") > 0)
-
-
                 art.VisitCount = art.VisitCount + 1;
             var day = today();
             day.ArtVisit = day.ArtVisit + 1;

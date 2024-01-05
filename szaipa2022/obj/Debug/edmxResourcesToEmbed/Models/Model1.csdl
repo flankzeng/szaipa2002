@@ -182,6 +182,7 @@
     <EntitySet Name="Auction" EntityType="SzaipaModel.Auction" />
     <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
     <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
+    <EntitySet Name="Exhibition" EntityType="SzaipaModel.Exhibition" />
   </EntityContainer>
   <EntityType Name="ArtNews">
     <Key>
@@ -204,10 +205,10 @@
     <Property Name="ArtistId" Type="Int32" Nullable="false" />
     <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="Price" Type="String" Nullable="false" />
-    <Property Name="RMB" Type="String" />
-    <Property Name="HKD" Type="String" />
-    <Property Name="USD" Type="String" />
+    <Property Name="Price" Type="String" Unicode="true" FixedLength="false" MaxLength="50" />
+    <Property Name="RMB" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="HKD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="USD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
@@ -238,6 +239,20 @@
     <Property Name="Title" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Exhibition">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ArtistId" Type="Int32" Nullable="false" />
+    <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

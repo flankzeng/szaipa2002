@@ -23,7 +23,7 @@
         width: 100vw;
         height: 100vh;
         position: relative;
-        background-image: url('../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg');
+        background-image: url('../../content/ArtImg/Artist/Banner/@Model.Path1');
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;
@@ -552,23 +552,23 @@
 
             switch (index) {
                 case 0:
-                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                    bgImg = '../../content/ArtImg/Artist/Banner/@Model.Path1';
                     break;
                 case 1:
-                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                    bgImg = '../../content/ArtImg/Artist/Banner/@Model.Path2';
                     break;
                 case 2:
-                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg';
+                    bgImg = '../../content/ArtImg/Artist/Banner/@Model.Path1';
                     break;
                 case 3:
-                    bgImg = '../../content/ArtImg/Artist/Works/zhanglanqian-02.jpg';
+                    bgImg = '../../content/ArtImg/Artist/Banner/@Model.Path2';
                     break;
 
             }
 
             $('#section01').css('background-image', 'url("' + bgImg + '")');
         }, function () {
-            $('#section01').css('background-image', 'url("../../content/ArtImg/Artist/Works/zhanglanqian-01.jpg")');
+            $('#section01').css('background-image', 'url("../../content/ArtImg/Artist/Banner/@Model.Path1")');
         });
     });
 
@@ -719,19 +719,24 @@
         <a href="/Home/ArtNews/@Model.Id">
             <li class="hoverLine JhengBold">
                 艺术家资讯
+
                 <div class="moreInfo">
-                    <!-- 源自策展情况前两条TITLE -->
-                    回顾 | 三人行——鸥洋 / 雷双 / 张岚芊 艺术展
+                    @foreach (var n in ViewBag.News)
+                    {
+                        @n.Title
+                    }
                     <span class="arrow-right"></span>
                 </div>
+
             </li>
         </a>
         <a href="/Home/ArtNews/@Model.Id#section02">
             <li class="hoverLine JhengBold">
                 收藏捐赠
                 <div class="moreInfo">
-                    <!-- 固定模板 -->
-                    机构/个人收藏&#12288;捐赠罗湖美术馆
+                    @foreach (var f in ViewBag.Fav)
+                    {
+                        机构 / 个人收藏 &#12288;捐赠 @f.Location}
                     <span class="arrow-right"></span>
                 </div>
             </li>
@@ -740,194 +745,201 @@
             <li class="hoverLine JhengBold">
                 出版著作
                 <div class="moreInfo">
-                    长篇小说《围城里的处女》
-                    <span class="arrow-right"></span>
-                </div>
-            </li>
-        </a>
-        <a href="/Home/ArtNews/@Model.Id#section04">
-            <li class="hoverLine JhengBold">
-                拍卖作品
-                <div class="moreInfo">
-                    远方系列之15&#12288;聚宝盆系列之6
-                    <span class="arrow-right"></span>
-                </div>
-            </li>
-        </a>
-    </ul>
-</section>
+                    @foreach (var p in ViewBag.Pub) {《@p.Title》}
+                        <span class="arrow-right"></span>
+                    </div>
 
-<div class="bg col-xs20 col-sm20 col-md20 col-lg20">
+                </li>
+            </a>
+            <a href="/Home/ArtNews/@Model.Id#section04">
+                <li class="hoverLine JhengBold">
+                    拍卖作品
+                    <div class="moreInfo">
+                        @foreach (var a in ViewBag.Auc)
+                        {
+                            @a.Title
+                        }
+                        <span class="arrow-right"></span>
+                    </div>
 
-
-
-    <!-- 简介 -->
-    <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
-
-        <div class="col-xs20 col-sm20 col-md7 col-lg7 relative">
-
-            <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
-                <div class="touxiang">
-                    <div class="line xs-hide sm-hide"> </div>
-                    <img src="~/Content/ArtImg/Artist/@Model.Path" style="width: var(--touxiang);border-radius: 100%;"
-                        alt="艺术家头像">
-                </div>
-
-
-                <div class="jieshao JhengLight">
-                    <div class="padding"></div>
-                    <h1 class="JhengBold">@Model.ArtistNameCN</h1>
-                    @Model.Introduction
-                    @* 加两个项目。1.Introduction; 2.Position; 分别为简介和职务 *@
-                    <h1 class="JhengBold">社会职务</h1>
-                    @Model.Position
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
-        <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
-
-            <div class="sec02-title relative">
-                <span class="JhengRegular">艺术家年表</span>
-                <span style="font-size: 1rem;font-family:dinLight;">&ensp;/&ensp;CHRONOLOGY </span>
-                <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
-            </div>
-
-            @Html.Raw(Model.DeedsThings)
-
-        </div>
-        <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
-
-
-
+                </li>
+            </a>
+        </ul>
     </section>
 
+    <div class="bg col-xs20 col-sm20 col-md20 col-lg20">
 
 
-    <!-- 作品集 -->
-    <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
 
-        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-            <span class="JhengRegular">作品集</span>
-            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;PORTFOLIO </span>
-        </div>
+        <!-- 简介 -->
+        <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
 
-        <div class="xs-hide sm-hide col-md6 col-lg6">
-            <div class="fuzhuImg"></div>
-        </div>
+            <div class="col-xs20 col-sm20 col-md7 col-lg7 relative">
 
-        <div class="col-xs20 col-sm20 col-md14 col-lg14">
+                <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
+                    <div class="touxiang">
+                        <div class="line xs-hide sm-hide"> </div>
+                        <img src="~/Content/ArtImg/Artist/@Model.Path" style="width: var(--touxiang);border-radius: 100%;"
+                            alt="艺术家头像">
+                    </div>
 
-            <div class="swiper mySwiper swiper-h">
-                <div class="swiper-wrapper">
 
-                    @{
-                        int counter = 1; // 定义一个计数器变量，初始值为1
-                    }
-                    @foreach (var w in ViewBag.work)
-                    {
-                        <div class="swiper-slide">
-                            <div class="material JhengLight">
-                                <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
-                            </div>
-                            <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="">
+                    <div class="jieshao JhengLight">
+                        <div class="padding"></div>
+                        <h1 class="JhengBold">@Model.ArtistNameCN</h1>
+                        @Model.Introduction
+                        @* 加两个项目。1.Introduction; 2.Position; 分别为简介和职务 *@
+                        <h1 class="JhengBold">社会职务</h1>
+                        @Model.Position
+                    </div>
+                </div>
 
-                            <div class="blankspace"></div>
+            </div>
 
-                            <div class="workInfo">
-                                <div class="number">
-                                    <p>@counter</p> <!-- 使用计数器变量 -->
+            <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
+            <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
+
+                <div class="sec02-title relative">
+                    <span class="JhengRegular">艺术家年表</span>
+                    <span style="font-size: 1rem;font-family:dinLight;">&ensp;/&ensp;CHRONOLOGY </span>
+                    <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
+                </div>
+
+                @Html.Raw(Model.DeedsThings)
+
+            </div>
+            <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+
+
+
+        </section>
+
+
+
+        <!-- 作品集 -->
+        <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+            <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+                <span class="JhengRegular">作品集</span>
+                <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;PORTFOLIO </span>
+            </div>
+
+            <div class="xs-hide sm-hide col-md6 col-lg6">
+                <div class="fuzhuImg"></div>
+            </div>
+
+            <div class="col-xs20 col-sm20 col-md14 col-lg14">
+
+                <div class="swiper mySwiper swiper-h">
+                    <div class="swiper-wrapper">
+
+                        @{
+                            int counter = 1; // 定义一个计数器变量，初始值为1
+                        }
+                        @foreach (var w in ViewBag.work)
+                        {
+                            <div class="swiper-slide">
+                                <div class="material JhengLight">
+                                    <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
                                 </div>
-                                <h2>@w.Title</h2>
-                                <p>
-                                    @w.Tags
-                                </p>
+                                <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="">
+
+                                <div class="blankspace"></div>
+
+                                <div class="workInfo">
+                                    <div class="number">
+                                        <p>@counter</p> <!-- 使用计数器变量 -->
+                                    </div>
+                                    <h2>@w.Title</h2>
+                                    <p>
+                                        @w.Tags
+                                    </p>
+                                </div>
                             </div>
+                            counter++; // 每次循环结束后，计数器自增
+                        }
+                    </div>
+                    <!-- <div class="swiper-pagination"></div> -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+
+
+
+
+            </div>
+
+        </section>
+
+        <!--展讯 -->
+        <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+            <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+                <span class="JhengRegular">相关展览</span>
+                <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;EXHIBITION </span>
+            </div>
+
+            <div class="col-xs20 col-sm20 col-md20 col-lg20">
+                <div class="swiper mySwiper3">
+                    <div class="swiper-wrapper exhibition">
+
+                        @foreach (var h in ViewBag.Exhibition)
+                        {
+                            <div class="swiper-slide">
+                                <img src="/Content/ArtImg/Artist/Exhibition/@h.CoverPath" alt="">
+                                <a href="@h.Link">
+                                    <p class="information">
+                                        @h.Location<br />
+                                        @h.StartDate - @h.EndDate
+                                        <span>@h.Title</span>
+                                    </p>
+                                </a>
+                            </div>
+                        }
+
+                        <div class="swiper-slide">
+                            <!-- 活动1 春语II -->
+                            <img src="../../Content/images/IMG_9282.jpg" alt="">
+                            <a href="/Publication/chunyu2">
+                                <p class="information">
+                                    深圳动漫园·同构艺术空间<br />
+                                    2023.04.21 - 2023.05.28
+                                    <span>“春语”第二季——国际视觉艺术邀请展</span>
+                                </p>
+                            </a>
                         </div>
-                        counter++; // 每次循环结束后，计数器自增
-                    }
+
+                        <div class="swiper-slide">
+                            <!-- 活动2 同构II -->
+                            <img src="../../Content/images/_DSF7252.jpg" alt="">
+                            <a href="/Publication/tonggou2">
+                                <p class="information">
+                                    深圳市罗湖美术馆<br />
+                                    2022.12.29 - 2023.01.28
+                                    <span>同构《第二季》·当代艺术展</span>
+                                </p>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <!-- 活动3 春语I -->
+                            <img src="../../Content/images/zhongyi/10000.jpg" alt="">
+                            <a href="/Publication/chunyu">
+                                <p class="information">
+                                    深圳市动漫园·盛世艺术空间<br />
+                                    2022.03.29
+                                    <span>“春语”——当代艺术名家邀请展</span>
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+
                 </div>
-                <!-- <div class="swiper-pagination"></div> -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
 
 
 
 
-        </div>
 
-    </section>
-
-    <!--展讯 -->
-    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
-
-        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
-            <span class="JhengRegular">相关展览</span>
-            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;EXHIBITION </span>
-        </div>
-
-        <div class="col-xs20 col-sm20 col-md20 col-lg20">
-            <div class="swiper mySwiper3">
-                <div class="swiper-wrapper exhibition">
-
-                    <div class="swiper-slide">
-                        <!-- 三人行 -->
-                        <img src="../../Content/images/IMG_9282.jpg" alt="">
-                        <a href="/Publication/trio">
-                            <p class="information">
-                                深圳市木星美术馆<br />
-                                2023.06.03 - 2023.07.02
-                                <span> 三人行——鸥洋/雷双/张岚芊艺术展</span>
-                            </p>
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <!-- 活动1 春语II -->
-                        <img src="../../Content/images/IMG_9282.jpg" alt="">
-                        <a href="/Publication/chunyu2">
-                            <p class="information">
-                                深圳动漫园·同构艺术空间<br />
-                                2023.04.21 - 2023.05.28
-                                <span>“春语”第二季——国际视觉艺术邀请展</span>
-                            </p>
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <!-- 活动2 同构II -->
-                        <img src="../../Content/images/_DSF7252.jpg" alt="">
-                        <a href="/Publication/tonggou2">
-                            <p class="information">
-                                深圳市罗湖美术馆<br />
-                                2022.12.29 - 2023.01.28
-                                <span>同构《第二季》·当代艺术展</span>
-                            </p>
-                        </a>
-                    </div>
-                    <div class="swiper-slide">
-                        <!-- 活动3 春语I -->
-                        <img src="../../Content/images/zhongyi/10000.jpg" alt="">
-                        <a href="/Publication/chunyu">
-                            <p class="information">
-                                深圳市动漫园·盛世艺术空间<br />
-                                2022.03.29
-                                <span>“春语”——当代艺术名家邀请展</span>
-                            </p>
-                        </a>
-                    </div>
-                </div>
-                <div class="swiper-pagination"></div>
 
             </div>
-
-
-
-
-
-
-        </div>
-    </section>
+        </section>

@@ -575,7 +575,7 @@ namespace Szaipa.Controllers
             return RedirectToAction("Works", "Staff");
         }
 
-        public ActionResult newExhibitionAdd()
+        public ActionResult newExhibitionAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -583,11 +583,12 @@ namespace Szaipa.Controllers
             TempData["view"] = actionName;
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
-            ViewBag.StaffEdit = 1;
-            TempData.Clear();
+
+            ViewBag.Artistid = id;
+
+
             return View(staff);
         }
-        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult newExhibitionAdd(FormCollection form)
@@ -598,17 +599,24 @@ namespace Szaipa.Controllers
             int aid = Convert.ToInt32(Request.Form["ArtistId"]);
             Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
 
-            Exhibition exhibition = new Exhibition
-            {
-                ArtistId = aid,
-                Title = Request.Form["Title"],
-                CoverPath = Request.Form["CoverPath"],
-                Title = Request.Form["Title"],
-                Location = Request.Form["Location"],
-                StartDate = Request.Form["StartDate"],
-                EndDate = Request.Form["EndDate"],
-                Link = Request.Form["Link"],
-            };
+            Exhibition exhibition = new Exhibition();
+            exhibition.ArtistId = aid;
+            exhibition.Title = Request.Form["Title"];
+            exhibition.CoverPath = Request.Form["CoverPath"];
+            exhibition.Location = Request.Form["Location"];
+            exhibition.StartDate = Request.Form["StartDate"];
+            exhibition.EndDate = Request.Form["EndDate"];
+            exhibition.Link = Request.Form["Link"];
+
+            // {
+            //     ArtistId = aid,
+            //     Title = Request.Form["Title"],
+            //     CoverPath = Request.Form["CoverPath"],
+            //     Location = Request.Form["Location"],
+            //     StartDate = Request.Form["StartDate"],
+            //     EndDate = Request.Form["EndDate"],
+            //     Link = Request.Form["Link"],
+            // };
 
 
             if (TempData["TempImg"] != null)
@@ -626,10 +634,10 @@ namespace Szaipa.Controllers
             Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + exhibition.Title + "的新闻条目。" + "/";
 
 
-            db.Auction.Add(exhibition);
+            db.Exhibition.Add(exhibition);
             db.SaveChanges();
 
-            return View(staff);
+            return RedirectToAction("Index", "Staff");
         }
         public ActionResult newArtEdit()
         {

@@ -20,6 +20,7 @@
         <EntityTypeShape EntityType="SzaipaModel.Auction" Width="1.5" PointX="5.375" PointY="9.75" />
         <EntityTypeShape EntityType="SzaipaModel.Fav" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="SzaipaModel.Public" Width="1.5" PointX="11.375" PointY="8.75" />
+        <EntityTypeShape EntityType="SzaipaModel.Exhibition" Width="1.5" PointX="9.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

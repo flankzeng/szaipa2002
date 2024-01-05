@@ -188,7 +188,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">会员ID</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="width: 83%;">
-                        @if (ViewBag.Artistid == null)
+                        @if (ViewBag.ArtistId == null)
                         {
                             <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
                                 placeholder="会员ID" autocomplete="off" class="layui-input">
@@ -227,7 +227,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">结束时间</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="StartDate" placeholder="输入展出结束时间，例：2021.01.01" autocomplete="off"
+                        <input type="text" name="EndDate" placeholder="输入展出结束时间，例：2021.01.01" autocomplete="off"
                             class="layui-input">
                     </div>
                 </div>
@@ -236,24 +236,22 @@
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">页面链接</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
                         <input type="text" name="Link" required lay-verify="required"
-                            placeholder="请输入展览活动主题页链接（如无主题页，请输入活动报导链接）" autocomplete="off" class="layui-input">
+                            placeholder="请输入展览活动主题页链接（如无主题页，请输入活动报导链接），注：请输入完整路径，例'https://www.baidu.com'"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="text-align: center;">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
                     </div>
                 </div>
 
             </form>
         </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="text-align: center;">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-
-            </div>
-        </div>
-
-        </form>
     </div>
-</div>
 </div>
 
 <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
@@ -312,4 +310,33 @@
         }
     });
 
+
+    $(document).ready(function () {
+        $("#ArtistId").blur(function () {
+            var val = $(this).val();
+            var def = $("#def");
+            var log = $("#login");
+            def.hide();
+            log.show();
+
+            $.ajax({
+                url: "/Staff/ArtTOF/?id=" + val,
+                type: "post",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    log.hide();
+                    if (data.data != null) {
+                        def.text(data.data)
+                        def.show();
+
+                    } else {
+                        def.text("请输入正确的会员ID号!");
+                        def.show();
+                    }
+
+                }
+            });
+        });
+    });
 </script>
