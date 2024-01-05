@@ -2067,7 +2067,6 @@ namespace Szaipa.Controllers
                     {
                         file = filename,
                     },
-
                 }
             };
         }
