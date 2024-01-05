@@ -397,46 +397,6 @@ namespace Szaipa.Controllers
 
             return RedirectToAction("newArtBg", "Staff");
         }
-        public ActionResult newArtBg()
-        {
-            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
-            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            TempData["controller"] = controllerName;
-            TempData["view"] = actionName;
-            var staff = Session["Staff"];
-            if (staff == null) return RedirectToAction("Login", "Staff");
-            ViewBag.StaffEdit = 1;
-            TempData.Clear();
-            return View(staff);
-        }
-        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult newArtBg(FormCollection form)
-        {
-            var staff = Session["Staff"];
-            if (staff == null) return RedirectToAction("Login", "Staff");
-            Staff staffer = (Staff)Session["staff"];
-
-
-            var art = new Artist();
-
-            if (TempData["TempImg1"] != null && TempData["TempImg2"] != null)
-            {
-                string filename1 = TempData["TempImg1"].ToString();
-                string filename2 = TempData["TempImg2"].ToString();
-                string path = "/Content/ArtImg/Artist/Banner";
-                ImgSaveMulti(path, filename1);
-                ImgSaveMulti(path, filename2);
-                art.Path1 = filename1;
-                art.Path2 = filename2;
-            }
-
-            db.SaveChanges();
-
-            return View(staff);
-        }
-
         public ActionResult newWorkAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -617,8 +577,58 @@ namespace Szaipa.Controllers
 
         public ActionResult newExhibitionAdd()
         {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+            TempData.Clear();
+            return View(staff);
+        }
+        //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult newExhibitionAdd(FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            int aid = Convert.ToInt32(Request.Form["ArtistId"]);
+            Artist art = db.Artist.FirstOrDefault(d => d.Id == aid);
+
+            Exhibition exhibition = new Exhibition
+            {
+                ArtistId = aid,
+                Title = Request.Form["Title"],
+                CoverPath = Request.Form["CoverPath"],
+                Title = Request.Form["Title"],
+                Location = Request.Form["Location"],
+                StartDate = Request.Form["StartDate"],
+                EndDate = Request.Form["EndDate"],
+                Link = Request.Form["Link"],
+            };
+
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Exhibition/";
+                ImgSave(path, filename);
+                exhibition.CoverPath = filename;
+            }
+
+            exhibition.EditRecord = exhibition.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + exhibition.Title + "的新闻条目。" + "/";
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + exhibition.Title + "的新闻条目。" + "/";
+
+
+            db.Auction.Add(exhibition);
+            db.SaveChanges();
+
             return View(staff);
         }
         public ActionResult newArtEdit()

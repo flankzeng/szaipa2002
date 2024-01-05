@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "WorkAdd";
+    ViewBag.Title = "新增展讯";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
 
@@ -169,76 +169,91 @@
                 </div>
                 @* <i class="layui-icon"></i> *@
             </div>
-            <p class="remind">点击上方上传相关图片</p>
-
+            <p class="remind">点击上方上传展览海报（横）</p>
         </div>
+
+
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="WorkAdd" method="post">
+            <form class="layui-form" action="newExhibitionAdd" method="post">
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">中文名称</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展览名称</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="ExhibitTitleCN" required lay-verify="required" placeholder="请输入展览中文名"
-                            autocomplete="off" class="layui-input">
+                        <input type="text" name="Title" required lay-verify="required"
+                            placeholder="请输入展览名，例：同构《第二季》·当代艺术展" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
 
+
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">英文名称</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">会员ID</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="width: 83%;">
+                        @if (ViewBag.Artistid == null)
+                        {
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
+                                placeholder="会员ID" autocomplete="off" class="layui-input">
+                        }
+                        else
+                        {
+                            <input type="text" id="ArtistId" name="ArtistId" required lay-verify="required"
+                                placeholder="会员ID" autocomplete="off" class="layui-input" value="@Model">
+                        }
+                        <div style="position:absolute;top:0%;right:-10%;text-align:right;">
+                            <div class="layui-form-mid layui-word-aux" id="def" style="font-size: .9rem;"> 会员名 </div>
+                            <div class="layui-form-mid layui-word-aux" id="login" style="display:none;"><i
+                                    class="layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop"
+                                    style="font-size: .9rem; color: #958e71;display: inline-block;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展出地点</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="ExhibitTitleEN" placeholder="请输入展览英文名" autocomplete="off"
+                        <input type="text" name="Location" required lay-verify="required"
+                            placeholder="输入展出地点，例：深圳南山漫谷·同构艺术空间" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">开始时间</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="StartDate" placeholder="输入展出开始时间，例：2020.12.01" autocomplete="off"
                             class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展览时间</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">结束时间</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="ExhibitTime" required lay-verify="required"
-                            placeholder="例:2023.01.03-2023.12.31" autocomplete="off" class="layui-input">
+                        <input type="text" name="StartDate" placeholder="输入展出结束时间，例：2021.01.01" autocomplete="off"
+                            class="layui-input">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展览地点</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">页面链接</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="ExhibitLocate" required lay-verify="required" placeholder="请输入展览地点"
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">主办单位</label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <textarea name="ExhibitZhuban" placeholder="请输入主办单位名称，注意换行" class="area"></textarea>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">承办单位</label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <textarea name="ExhibitChengban" placeholder="请输入协办单位名称，注意换行" class="area"></textarea>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">协办单位</label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <textarea name="ExhibitXieban" placeholder="请输入协办单位名称，注意换行" class="area"></textarea>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="text-align: center;">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-
+                        <input type="text" name="Link" required lay-verify="required"
+                            placeholder="请输入展览活动主题页链接（如无主题页，请输入活动报导链接）" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
             </form>
         </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="text-align: center;">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+            </div>
+        </div>
+
+        </form>
     </div>
+</div>
 </div>
 
 <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
