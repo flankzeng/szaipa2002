@@ -220,8 +220,6 @@ namespace Szaipa.Controllers
 
 
             if (art.Honor != null && art.Honor.IndexOf("/") > 0)
-
-
                 art.VisitCount = art.VisitCount + 1;
             var day = today();
             day.ArtVisit = day.ArtVisit + 1;
@@ -253,8 +251,7 @@ namespace Szaipa.Controllers
             // 获取相关的展讯
             ViewBag.Exhibition = db.Exhibition.Where(f => f.ArtistId == art.Id);
 
-            if (art.Honor != null && art.Honor.IndexOf("/") > 0)
-                art.VisitCount = art.VisitCount + 1;
+            art.VisitCount = art.VisitCount + 1;
             var day = today();
             day.ArtVisit = day.ArtVisit + 1;
             db.SaveChanges();

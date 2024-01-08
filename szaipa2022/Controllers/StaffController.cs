@@ -360,6 +360,7 @@ namespace Szaipa.Controllers
             art.Color2 = Request.Form["Color2"];
             art.DeedsYears = Request.Form["DeedsYears"];
             art.DeedsThings = Request.Form["DeedsThings"];
+            art.VisitCount = 0;
 
             if (TempData["TempImg"] == null)
             {
@@ -426,6 +427,7 @@ namespace Szaipa.Controllers
             works.Title = Request.Form["Title"];
             works.Content = Request.Form["Content"];
             works.Tags = Request.Form["Tags"];
+            works.VisitCount = 0;
 
 
             if (TempData["TempImg"] != null)
@@ -494,7 +496,7 @@ namespace Szaipa.Controllers
             fav.Type = Request.Form["Type"];
             fav.Province = Request.Form["Province"];
             fav.CollectNumber = Request.Form["CollectNumber"];
-
+            fav.VisitCount = 0;
 
             if (TempData["TempImg"] != null)
             {
@@ -561,7 +563,8 @@ namespace Szaipa.Controllers
                 RMB = Request.Form["RMB"],
                 HKD = Request.Form["HKD"],
                 USD = Request.Form["USD"],
-                Date = Request.Form["Date"]
+                Date = Request.Form["Date"],
+                VisitCount = 0,
             };
 
 
@@ -619,6 +622,7 @@ namespace Szaipa.Controllers
             exhibition.StartDate = Request.Form["StartDate"];
             exhibition.EndDate = Request.Form["EndDate"];
             exhibition.Link = Request.Form["Link"];
+            exhibition.VisitCount = 0;
 
             // {
             //     ArtistId = aid,
@@ -1874,7 +1878,7 @@ namespace Szaipa.Controllers
                 au.RMB = u.RMB;
                 au.HKD = u.HKD;
                 au.USD = u.USD;
-                au.VisitCount = u.VisitCount;
+                au.visitcount = u.VisitCount;
                 au.CoverPath = u.CoverPath;
                 au.EditRecord = u.EditRecord;
                 auv.Add(au);

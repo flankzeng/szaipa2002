@@ -211,6 +211,7 @@
     <Property Name="USD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
     <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
   </EntityType>
   <EntityType Name="Fav">
     <Key>
@@ -229,6 +230,7 @@
     <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="CollectNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
   </EntityType>
   <EntityType Name="Public">
     <Key>
@@ -240,6 +242,7 @@
     <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
   </EntityType>
   <EntityType Name="Exhibition">
     <Key>
@@ -254,5 +257,6 @@
     <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="VisitCount" Type="Int32" />
   </EntityType>
 </Schema>
