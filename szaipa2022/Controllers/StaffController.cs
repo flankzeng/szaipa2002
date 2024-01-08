@@ -517,6 +517,18 @@ namespace Szaipa.Controllers
             // FavList视图待创建，直接套模板就ok
             return RedirectToAction("Fav", "Staff");
         }
+        public ActionResult ArtAuction()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+
+            return View(staff);
+        }
         public ActionResult newAuction()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -1827,6 +1839,48 @@ namespace Szaipa.Controllers
             }
             return cv;
         }
+
+        private List<AuctionView> PageAuction(List<Auction> auc, int page, int limit, int count)
+        {
+            List<AuctionView> auv = new List<AuctionView>();
+
+            int fint = (page - 1) * limit;
+            int eint = page * limit - 1;
+            int m = count % limit;
+            if (count < limit)
+            {
+                eint = count;
+            }
+            else
+            {
+                if (m > 0 && (count - m) / limit < page)
+                {
+                    eint = count;
+                }
+            }
+            List<Auction> aucs = new List<Auction>();
+            aucs = auc.SkipWhile((d, Index) => Index < fint).ToList();
+            if ((count - m) / limit >= page) aucs = aucs.TakeWhile((d, Index) => Index > eint - fint).ToList();
+
+            foreach (var u in aucs)
+            {
+                AuctionView au = new AuctionView();
+                au.Id = u.Id;
+                au.Title = u.Title;
+                au.ArtistId = u.ArtistId;
+                au.ArtistName = db.Artist.FirstOrDefault(a => a.Id == u.ArtistId).ArtistNameCN;
+                au.Date = u.Date;
+                au.Price = u.Price;
+                au.RMB = u.RMB;
+                au.HKD = u.HKD;
+                au.USD = u.USD;
+                au.VisitCount = u.VisitCount;
+                au.CoverPath = u.CoverPath;
+                au.EditRecord = u.EditRecord;
+                auv.Add(au);
+            }
+            return auv;
+        }
         public List<OR> or(string OR)
         {
             if (OR == null || OR == "") return null;
@@ -1981,6 +2035,24 @@ namespace Szaipa.Controllers
                     code = 0,
                     count = count,
                     data = company,
+                },
+            };
+        }
+
+        public JsonResult Auctionsdata(int page, int limit)
+        {
+            if (Session["Staff"] == null) return null;
+            var Auction = db.Auction.ToList();
+            int count = Auction.Count();
+            var auction = PageAuction(Auction, page, limit, count);
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    count = count,
+                    data = auction,
                 },
             };
         }

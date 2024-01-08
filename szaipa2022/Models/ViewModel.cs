@@ -82,6 +82,23 @@ namespace Szaipa.Models
         public string LDate { get; set; }
 
     }
+
+    public class AuctionView
+    {
+        public int Id { set; get; }
+        public int ArtistId { set; get; }
+        public int? visitcount { get; set; }
+        public string Title { set; get; }
+        public string ArtistName { set; get; }
+        public string Date { set; get; }
+        public string Price { set; get; }
+        public string RMB { set; get; }
+        public string HKD { set; get; }
+        public string USD { set; get; }
+        public string CoverPath { set; get; }
+        public string EditRecord { set; get; }
+
+    }
     public class father
     {
         public string name { get; set; }
@@ -126,6 +143,6 @@ namespace Szaipa.Models
         public Artist Artist { get; set; }
         public Fav Fav { get; set; }
         public Public Public { get; set; }
-        public Auction Auction { get; set;}
+        public Auction Auction { get; set; }
     }
 }
