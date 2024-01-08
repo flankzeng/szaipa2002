@@ -587,7 +587,7 @@ namespace Szaipa.Controllers
             db.SaveChanges();
 
             // FavList视图待创建，直接套模板就ok
-            return RedirectToAction("Works", "Staff");
+            return RedirectToAction("ArtAuction", "Staff");
         }
 
         public ActionResult newExhibitionAdd(int? id)
@@ -2718,7 +2718,34 @@ namespace Szaipa.Controllers
                 }
             };
         }
+        public JsonResult AuctionDelete(int id)
+        {
+            int msg = 0;
+            var staff = Session["Staff"];
+            if (staff != null)
+            {
+                Staff staffer = (Staff)Session["Staff"];
+                Auction au = db.Auction.FirstOrDefault(d => d.Id == id);
+                Artist art = db.Artist.FirstOrDefault(a => a.Id == au.ArtistId);
+                staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + au.Id + ")" + "的拍卖作品。" + "/";
+                var day = today();
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + au.Id + ")" + "的拍卖作品。" + "/";
+                string path = "/Content/ArtImg/Artist/Auction/";
+                FileDelete(path, au.CoverPath);
+                db.Auction.Remove(au);
+                db.SaveChanges();
 
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    data = msg
+                }
+            };
+        }
         public JsonResult ArtTOF(int id)
         {
             string name = null;
