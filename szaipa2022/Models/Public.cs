@@ -20,5 +20,6 @@ namespace szaipa2022.Models
         public string CoverPath { get; set; }
         public string Author { get; set; }
         public string EditRecord { get; set; }
+        public Nullable<int> VisitCount { get; set; }
     }
 }

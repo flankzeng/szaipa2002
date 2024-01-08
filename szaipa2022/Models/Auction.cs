@@ -24,5 +24,6 @@ namespace szaipa2022.Models
         public string USD { get; set; }
         public string Date { get; set; }
         public string EditRecord { get; set; }
+        public Nullable<int> VisitCount { get; set; }
     }
 }

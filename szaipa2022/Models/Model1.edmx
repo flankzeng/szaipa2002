@@ -92,6 +92,7 @@
           <Property Name="USD" Type="nvarchar" MaxLength="30" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="Date" Type="nvarchar" MaxLength="10" />
+          <Property Name="VisitCount" Type="int" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -137,6 +138,7 @@
           <Property Name="Link" Type="nvarchar(max)" />
           <Property Name="EndDate" Type="nvarchar" MaxLength="50" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="int" />
         </EntityType>
         <EntityType Name="Fav">
           <Key>
@@ -155,6 +157,7 @@
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
           <Property Name="Province" Type="nvarchar" MaxLength="20" />
           <Property Name="CollectNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="VisitCount" Type="int" />
         </EntityType>
         <EntityType Name="MonthData">
           <Key>
@@ -194,6 +197,7 @@
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" />
           <Property Name="Author" Type="nvarchar" MaxLength="50" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="VisitCount" Type="int" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -475,6 +479,7 @@
           <Property Name="USD" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
           <Property Name="Date" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
         </EntityType>
         <EntityType Name="Fav">
           <Key>
@@ -493,6 +498,7 @@
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CollectNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
         </EntityType>
         <EntityType Name="Public">
           <Key>
@@ -504,6 +510,7 @@
           <Property Name="CoverPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
         </EntityType>
         <EntityType Name="Exhibition">
           <Key>
@@ -518,6 +525,7 @@
           <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VisitCount" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -719,6 +727,7 @@
           <EntitySetMapping Name="Auction">
             <EntityTypeMapping TypeName="SzaipaModel.Auction">
               <MappingFragment StoreEntitySet="Auction">
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="USD" ColumnName="USD" />
@@ -735,6 +744,7 @@
           <EntitySetMapping Name="Fav">
             <EntityTypeMapping TypeName="SzaipaModel.Fav">
               <MappingFragment StoreEntitySet="Fav">
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
                 <ScalarProperty Name="CollectNumber" ColumnName="CollectNumber" />
                 <ScalarProperty Name="Province" ColumnName="Province" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -754,6 +764,7 @@
           <EntitySetMapping Name="Public">
             <EntityTypeMapping TypeName="SzaipaModel.Public">
               <MappingFragment StoreEntitySet="Public">
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
@@ -766,6 +777,7 @@
           <EntitySetMapping Name="Exhibition">
             <EntityTypeMapping TypeName="SzaipaModel.Exhibition">
               <MappingFragment StoreEntitySet="Exhibition">
+                <ScalarProperty Name="VisitCount" ColumnName="VisitCount" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="Link" ColumnName="Link" />

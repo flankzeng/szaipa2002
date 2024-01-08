@@ -27,5 +27,6 @@ namespace szaipa2022.Models
         public string Type { get; set; }
         public string Province { get; set; }
         public string CollectNumber { get; set; }
+        public Nullable<int> VisitCount { get; set; }
     }
 }
