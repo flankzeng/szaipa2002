@@ -370,21 +370,6 @@ namespace Szaipa.Controllers
                 art.Path = filename;
             }
 
-            // string content = "";
-            // for (int i = 0; i < 2; i++)
-            // {
-            //     if (i == 0 && TempData["TempIntervalImg"] != null)
-            //     {
-            //         string imgtitle = TempData["TempIntervalImg"].ToString();
-            //         art.Path1 = EffectiveImgs(imgtitle, content);
-            //     }
-            //     else
-            //     {
-            //         string imgtitle = TempData["TempIntervalImg"].ToString();
-            //         art.Path2 = EffectiveImgs(imgtitle, content);
-            //     }
-            // }
-
             art.EditRecord = staffer.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 创建了此会员的条目。" + "/";
 
             Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
@@ -449,7 +434,7 @@ namespace Szaipa.Controllers
 
             return RedirectToAction("Works", "Staff");
         }
-        public ActionResult Fav()
+        public ActionResult ArtFav()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -461,6 +446,56 @@ namespace Szaipa.Controllers
 
             return View(staff);
         }
+
+        public ActionResult FavEdit(int id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            TempData["id"] = id;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            var fav = db.Fav.FirstOrDefault(d => d.Id == id);
+            var art = db.Artist.FirstOrDefault(d => d.Id == fav.ArtistId);
+
+
+
+            ViewBag.art = art.ArtistNameCN;
+
+            return View(fav);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult FavEdit(Fav fav, FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Fav favE = db.Fav.FirstOrDefault(d => d.Id == fav.Id);
+            favE.Title = fav.Title;
+            favE.Size = fav.Size;
+            favE.Type = fav.Type;
+            favE.Material = fav.Material;
+            favE.Year = fav.Year;
+            favE.Location = fav.Location;
+            favE.Province = fav.Province;
+            favE.CollectNumber = fav.CollectNumber;
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Fav/";
+                ImgChange(path, filename, favE.CoverPath);
+                favE.CoverPath = filename;
+            }
+
+            fav.EditRecord = fav.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此作品。" + "/";
+
+            db.SaveChanges();
+
+            return RedirectToAction("ArtFav", "Staff");
+        }
+
         public ActionResult newArtFav(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -516,8 +551,7 @@ namespace Szaipa.Controllers
             db.Fav.Add(fav);
             db.SaveChanges();
 
-            // FavList视图待创建，直接套模板就ok
-            return RedirectToAction("Fav", "Staff");
+            return RedirectToAction("ArtFav", "Staff");
         }
         public ActionResult ArtAuction()
         {
@@ -531,6 +565,55 @@ namespace Szaipa.Controllers
 
             return View(staff);
         }
+
+        public ActionResult AuctionEdit(int id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            TempData["id"] = id;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            var auction = db.Auction.FirstOrDefault(d => d.Id == id);
+            var art = db.Artist.FirstOrDefault(d => d.Id == auction.ArtistId);
+
+
+
+            ViewBag.art = art.ArtistNameCN;
+
+            return View(auction);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult AuctionEdit(Auction auction, FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Auction auctionE = db.Auction.FirstOrDefault(d => d.Id == auction.Id);
+            auctionE.Title = auction.Title;
+            auctionE.Price = auction.Price;
+            auctionE.RMB = auction.RMB;
+            auctionE.HKD = auction.HKD;
+            auctionE.USD = auction.USD;
+            auctionE.Date = auction.Date;
+
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Auction/";
+                ImgChange(path, filename, auctionE.CoverPath);
+                auctionE.CoverPath = filename;
+            }
+
+            auction.EditRecord = auction.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此作品。" + "/";
+
+            db.SaveChanges();
+
+            return RedirectToAction("ArtAuction", "Staff");
+        }
+
         public ActionResult newAuction()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -623,17 +706,6 @@ namespace Szaipa.Controllers
             exhibition.EndDate = Request.Form["EndDate"];
             exhibition.Link = Request.Form["Link"];
             exhibition.VisitCount = 0;
-
-            // {
-            //     ArtistId = aid,
-            //     Title = Request.Form["Title"],
-            //     CoverPath = Request.Form["CoverPath"],
-            //     Location = Request.Form["Location"],
-            //     StartDate = Request.Form["StartDate"],
-            //     EndDate = Request.Form["EndDate"],
-            //     Link = Request.Form["Link"],
-            // };
-
 
             if (TempData["TempImg"] != null)
             {
@@ -815,8 +887,8 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/images/";
-                ImgSave(path, filename);
-                work.Path = filename;
+                ImgChange(path, filename, workn.Path);
+                workn.Path = filename;
             }
             string tags = Request.Form["Tag"];
 
@@ -1844,6 +1916,49 @@ namespace Szaipa.Controllers
             return cv;
         }
 
+        private List<FavView> PageFav(List<Fav> fa, int page, int limit, int count)
+        {
+            List<FavView> fv = new List<FavView>();
+
+            int fint = (page - 1) * limit;
+            int eint = page * limit - 1;
+            int m = count % limit;
+            if (count < limit)
+            {
+                eint = count;
+            }
+            else
+            {
+                if (m > 0 && (count - m) / limit < page)
+                {
+                    eint = count;
+                }
+            }
+            List<Fav> favs = new List<Fav>();
+            favs = fa.SkipWhile((d, Index) => Index < fint).ToList();
+            if ((count - m) / limit >= page) favs = favs.TakeWhile((d, Index) => Index > eint - fint).ToList();
+
+            foreach (var u in favs)
+            {
+                FavView f = new FavView();
+                f.Id = u.Id;
+                f.Title = u.Title;
+                f.ArtistId = u.ArtistId;
+                f.ArtistName = db.Artist.FirstOrDefault(a => a.Id == u.ArtistId).ArtistNameCN;
+                f.Size = u.Size;
+                f.Type = u.Type;
+                f.Material = u.Material;
+                f.Year = u.Year;
+                f.Location = u.Location;
+                f.Province = u.Province;
+                f.CollectNumber = u.CollectNumber;
+                f.visitcount = u.VisitCount;
+                f.CoverPath = u.CoverPath;
+                f.EditRecord = u.EditRecord;
+                fv.Add(f);
+            }
+            return fv;
+        }
         private List<AuctionView> PageAuction(List<Auction> auc, int page, int limit, int count)
         {
             List<AuctionView> auv = new List<AuctionView>();
@@ -2042,7 +2157,23 @@ namespace Szaipa.Controllers
                 },
             };
         }
-
+        public JsonResult Favsdata(int page, int limit)
+        {
+            if (Session["Staff"] == null) return null;
+            var Fav = db.Fav.ToList();
+            int count = Fav.Count();
+            var fav = PageFav(Fav, page, limit, count);
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    count = count,
+                    data = fav,
+                },
+            };
+        }
         public JsonResult Auctionsdata(int page, int limit)
         {
             if (Session["Staff"] == null) return null;
@@ -2706,6 +2837,35 @@ namespace Szaipa.Controllers
                 FileDelete(path, com.ImgPath);
                 FileDelete(path2, com.FilePath);
                 db.Company.Remove(com);
+                db.SaveChanges();
+
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    data = msg
+                }
+            };
+        }
+
+        public JsonResult FavDelete(int id)
+        {
+            int msg = 0;
+            var staff = Session["Staff"];
+            if (staff != null)
+            {
+                Staff staffer = (Staff)Session["Staff"];
+                Fav fav = db.Fav.FirstOrDefault(d => d.Id == id);
+                Artist art = db.Artist.FirstOrDefault(a => a.Id == fav.ArtistId);
+                staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的拍卖作品。" + "/";
+                var day = today();
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的拍卖作品。" + "/";
+                string path = "/Content/ArtImg/Artist/Fav/";
+                FileDelete(path, fav.CoverPath);
+                db.Fav.Remove(fav);
                 db.SaveChanges();
 
             }

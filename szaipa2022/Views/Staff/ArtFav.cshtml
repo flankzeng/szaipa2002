@@ -1,8 +1,7 @@
 ﻿@{
-    ViewBag.Title = "全部收藏作品列表";
+    ViewBag.Title = "收藏捐赠作品列表";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
-
 
 <div class="layui-row">
 
@@ -36,7 +35,7 @@
             , dropdown = layui.dropdown //下拉菜单
 
         //向世界问个好
-        layer.msg('当前位置：全部收藏作品列表（后台）');
+        layer.msg('当前位置：会员数据库（后台）');
 
         //监听Tab切换
         element.on('tab(demo)', function (data) {
@@ -49,26 +48,27 @@
         table.render({
             elem: '#demo'
             , height: 680
-            , url: '/Staff/worksdata/' //数据接口
-            , title: '作品表'
+            , url: '/Staff/Favsdata/' //数据接口
+            , title: '用户表'
             , page: true //开启分页
             , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             , totalRow: true //开启合计行
-            , limit: 100
-
+            , limit: 30
             , cols: [[ //表头
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'Id', title: 'ID编号', width: 100, sort: true, fixed: 'left', totalRowText: '合计：' }
-                , { field: 'Title', title: '作品名称', width: 350 }
-                , { field: 'ArtistId', title: '作者id', width: 100, sort: true }
-                , { field: 'ArtisName', title: '作者名', width: 150, sort: true }
-                , { field: 'visitcount', title: '点击总数', width: 100, totalRowText: '累积：' }
-                , { field: 'FDate', title: '上传日期', width: 150, sort: true, }
-                , { field: 'LDate', title: '最后修改日期', width: 150, sort: true, }
-                , { field: 'Record', title: '最后操作', width: 250, }
-                , { field: 'Tags', title: '作品标签', width: 250, }
-
-                ,
+                , { field: 'Id', title: 'ID编号', width: 100, sort: true, fixed: 'left', }
+                , { field: 'ArtistName', title: '作者名', width: 100 }
+                , { field: 'Title', title: '作品名', width: 150 }
+                , { field: 'Size', title: '作品尺寸', width: 110, sort: true }
+                , { field: 'Type', title: '作品类别', width: 150, sort: true, }
+                , { field: 'Material', title: '作品材质', width: 110, sort: true, }
+                , { field: 'Year', title: '收藏时间', width: 110, sort: true, }
+                , { field: 'Location', title: '赠与单位', width: 110, sort: true, }
+                , { field: 'Province', title: '所属地', width: 150, sort: true, }
+                , { field: 'CollectNumber', title: '收藏编号', width: 150, sort: true, }
+                , { field: 'CoverPath', title: '封面链接', width: 150 }
+                , { field: 'EditRecord', title: '编辑历史', width: 500 }
+                , { field: 'VisitCount', title: '访问数', width: 100, sort: true, totalRow: true }
                 , { fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo' }
             ]]
         });
@@ -79,13 +79,14 @@
                 , data = checkStatus.data; //获取选中的数据
             switch (obj.event) {
                 case 'add':
-                    window.location.href = "WorkAdd";
+                    window.location.href = "newArtFav";
                     break;
                 case 'update':
                     if (data.length === 0) {
                         layer.msg('请选择一行');
                     } else if (data.length > 1) {
                         layer.msg('只能同时编辑一个');
+                        console.log(data);
                     } else {
                         layer.alert('编辑 [id]：' + checkStatus.data[0].id);
                     }
@@ -94,7 +95,23 @@
                     if (data.length === 0) {
                         layer.msg('请选择一行');
                     } else {
-                        layer.msg('删除');
+                        // 目前仍存在的问题24.01.09：多选只能删除一个，且视图不刷新；
+                        layer.confirm('真的删除行么', function (index) {
+                            // 向服务端发送删除指令
+                            $.ajax({
+                                type: "GET",
+                                url: "/Staff/FavDelete/",
+                                data: { 'id': data[0].Id }, //回传一个参数
+                                success: function () {
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功 ' + data[0].Id);
+                                },
+                                error: function () {
+                                    layer.msg('删除失败 ' + data[0].Id);
+                                }
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             };
@@ -105,7 +122,8 @@
             var data = obj.data //获得当前行数据
                 , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'detail') {
-                window.open("/Home/works/" + data.Id);
+                window.open("/Home/ArtNews/" + data.ArtistId + "#section02");
+                // 查看按钮跳转位置 - 绑定ArtistId
             } else if (layEvent === 'more') {
                 //下拉菜单
                 dropdown.render({
@@ -126,7 +144,7 @@
                                 //向服务端发送删除指令
                                 $.ajax({
                                     type: "get",//这里是http类型                                
-                                    url: "/Staff/WorkDelete/",//大家都应该很清楚了
+                                    url: "/Staff/FavDelete/",//大家都应该很清楚了
                                     data: { 'id': data.Id },//回传一个参数                                 
                                     success: function () {
                                         layer.msg('删除成功' + data.Id);
@@ -137,7 +155,7 @@
                                 });
                             });
                         } else if (menudata.id === 'edit') {
-                            window.open("/Staff/WorkEdit/?id=" + data.Id);
+                            window.open("/Staff/FavEdit/?id=" + data.Id);
                         }
                     }
                     , align: 'right' //右对齐弹出（v2.6.8 新增）

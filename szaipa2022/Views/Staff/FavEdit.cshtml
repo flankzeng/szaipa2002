@@ -1,6 +1,6 @@
-﻿@model szaipa2022.Models.Auction
+﻿@model szaipa2022.Models.Fav
 @{
-    ViewBag.Title = "拍卖作品更改";
+    ViewBag.Title = "收藏作品更改";
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
 
@@ -160,14 +160,14 @@
         <div class="col-xs5 col-sm5 col-md5 col-lg5">
             <div class="layui-upload-drag" id="uploadDemo">
                 <div class="iconwork" id="uploadDemoView">
-                    <img src="/Content/ArtImg/Artist/Auction/@Model.CoverPath" style="max-width: 100%">
+                    <img src="/Content/ArtImg/Artist/Fav/@Model.CoverPath" style="max-width: 100%">
                 </div>
                 @* <i class="layui-icon"></i> *@
             </div>
             <p class="remind">点击上方上传作品</p>
         </div>
         <div class="col-xs15 col-sm15 col-md15 col-lg15">
-            <form class="layui-form" action="AuctionEdit" method="post">
+            <form class="layui-form" action="FavEdit" method="post">
 
                 <div class="layui-form-item">
                     <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品名</label>
@@ -188,47 +188,63 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品估价</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品尺寸</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="Price" required lay-verify="required"
-                            placeholder="请输入作品估价(间隔三位数一个,)，例：RMB 900,000 - 9,999,999" autocomplete="off"
-                            class="layui-input" Value="@Model.Price">
-                    </div>
-                </div>
-
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">成交价格</label>
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="RMB" required lay-verify="required" placeholder="请输入作品成交价格（RMB）"
-                            autocomplete="off" class="layui-input" Value="@Model.RMB">
+                        <input type="text" name="Size" placeholder="例：80x80cm" autocomplete="off" class="layui-input"
+                            value="@Model.Size">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">港币</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品类别</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="HKD" placeholder="请输入作品成交价格（HKD）" autocomplete="off"
-                            class="layui-input" Value="@Model.HKD">
+                        <input type="text" name="Type" placeholder="例：水彩画" autocomplete="off" class="layui-input"
+                            value="@Model.Type">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">美元</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作品材质</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="USD" placeholder="请输入作品成交价格（USD）" autocomplete="off"
-                            class="layui-input" value="@Model.USD">
+                        <input type="text" name="Material" placeholder="例：纸本丙烯" autocomplete="off" class="layui-input"
+                            value="@Model.Material">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">成交时间</label>
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">收藏时间</label>
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                        <input type="text" name="Date" required lay-verify="required"
-                            placeholder="请输入作品成交时间，例：2099-12-12" autocomplete="off" class="layui-input"
-                            value="@Model.Date">
+                        <input type="text" name="Year" required lay-verify="required" placeholder="请输入作品收藏捐赠年份，例：2024"
+                            autocomplete="off" class="layui-input" value="@Model.Year">
                     </div>
                 </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">赠予单位</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Location" required lay-verify="required"
+                            placeholder="请输入作品作品赠予单位，例：深圳美术馆" autocomplete="off" class="layui-input"
+                            value="@Model.Location">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">赠与单位所属地</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Province" placeholder="例：广东深圳，中国" autocomplete="off"
+                            class="layui-input" value="@Model.Province">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">收藏编号</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="CollectNumber" placeholder="例：L1999200099" autocomplete="off"
+                            class="layui-input" value="@Model.CollectNumber">
+                    </div>
+                </div>
+
+
 
                 <div class="layui-form-item">
                     <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">

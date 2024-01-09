@@ -93,21 +93,22 @@
                     if (data.length === 0) {
                         layer.msg('请选择一行');
                     } else {
+                        // 目前仍存在的问题24.01.09：多选只能删除一个，且视图不刷新；
                         layer.confirm('真的删除行么', function (index) {
-                            obj.del(); //删除对应行（tr）的DOM结构
-                            layer.close(index);
-                            //向服务端发送删除指令
+                            // 向服务端发送删除指令
                             $.ajax({
-                                type: "get",//这里是http类型                                
-                                url: "/Staff/AuctionDelete/",//大家都应该很清楚了
-                                data: { 'id': data.Id },//回传一个参数                                 
+                                type: "GET",
+                                url: "/Staff/AuctionDelete/",
+                                data: { 'id': data[0].Id }, //回传一个参数
                                 success: function () {
-                                    layer.msg('删除成功' + data.Id);
+                                    obj.del(); //删除对应行（tr）的DOM结构
+                                    layer.msg('删除成功 ' + data[0].Id);
                                 },
                                 error: function () {
-                                    layer.msg('删除失败' + data.Id);
+                                    layer.msg('删除失败 ' + data[0].Id);
                                 }
                             });
+                            layer.close(index);
                         });
                     }
                     break;
