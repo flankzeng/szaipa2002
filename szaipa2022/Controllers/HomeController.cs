@@ -115,7 +115,7 @@ namespace Szaipa.Controllers
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
             if (Session["Staff"] != null) ViewBag.staff = 1;
 
-            var art = db.Artist.OrderByDescending(d => d.Id).ToList();
+            var art = db.Artist.OrderBy(d => d.Id).ToList();
 
             ViewBag.vip = 1;
             return View(art);
