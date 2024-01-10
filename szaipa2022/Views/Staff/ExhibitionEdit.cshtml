@@ -1,0 +1,328 @@
+﻿@model szaipa2022.Models.Exhibition
+@{
+    ViewBag.Title = "展览信息更改";
+    Layout = "~/Views/Shared/Staff_Layout.cshtml";
+}
+
+<style>
+    .layui-upload-drag {
+        width: 80%;
+        min-height: 20vh;
+    }
+
+    .allpadding {
+        /* 把原本layui的padding补回去 */
+        padding: 10px;
+    }
+
+    .iconwork {
+        height: 15vh;
+        background: url('../../content/icon/tupian.svg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .remind {
+        padding-top: 1em;
+        font-size: .9rem;
+        text-align: center;
+        color: #484848;
+        width: 80%;
+    }
+
+    .layui-input-block {
+        margin-left: 0;
+    }
+
+    .layui-form-label {
+        padding: 9px 1em 0 0;
+    }
+
+    .layui-form label,
+    .layui-form input {
+        font-size: .9rem;
+    }
+
+    .layui-form-item {
+        margin-bottom: 3%;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    ::placeholder {
+        font-size: .7rem;
+    }
+
+
+
+
+
+
+    #color1,
+    #color2 {
+        all: inherit;
+        width: 20%;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        margin: 0;
+        height: 3vh;
+
+        position: absolute;
+        left: 0;
+    }
+
+    #color2 {
+        top: 3.5vh;
+    }
+
+    #hexColor1,
+    #hexColor2 {
+        position: absolute;
+        width: 40%;
+        height: 3vh;
+        left: 21%;
+    }
+
+    #hexColor1 {
+        top: 0;
+    }
+
+    #hexColor2 {
+        top: 3.5vh;
+    }
+
+
+
+
+
+    #gradient-preview {
+        width: 35%;
+        height: 6.5vh;
+
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+
+
+    #event-container .layui-input {
+        display: initial;
+    }
+
+    .event-row {
+        margin-bottom: 1%;
+    }
+
+    .year-input {
+        width: 30%;
+        margin-right: 2%;
+    }
+
+    .event-input {
+        width: 67%;
+    }
+
+    .add-button {
+        all: initial;
+        cursor: pointer;
+    }
+
+    .add {
+        background-image: url('../../content/icon/tianjia.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 35px;
+        height: 35px;
+        display: block;
+        position: absolute;
+        top: 0%;
+        right: 0;
+        transform: translatex(100%);
+    }
+
+    .area {
+        display: block;
+        outline: none;
+        border: 1px solid #ededed;
+        width: 100%;
+        padding-left: .5em;
+        padding-top: .6em;
+        min-height: 7em;
+    }
+</style>
+
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+<div class="col-xs12 col-sm12 col-md12 col-lg12">
+    <div class="col-xs20 col-sm20 col-md20 col-lg20">&nbsp;</div>
+
+    <div class="col-xs20 col-sm20 col-md20 col-lg20 allpadding">
+        <div class="col-xs5 col-sm5 col-md5 col-lg5">
+            <div class="layui-upload-drag" id="uploadDemo">
+                <div class="iconwork" id="uploadDemoView">
+                    <img src="/Content/ArtImg/Artist/Exhibition/@Model.CoverPath" style="max-width: 100%">
+                </div>
+                @* <i class="layui-icon"></i> *@
+            </div>
+            <p class="remind">点击上方上传展览海报（横）</p>
+        </div>
+
+
+        <div class="col-xs15 col-sm15 col-md15 col-lg15">
+            <form class="layui-form" action="newExhibitionAdd" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展览名称</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Title" required lay-verify="required"
+                            placeholder="请输入展览名，例：同构《第二季》·当代艺术展" autocomplete="off" class="layui-input"
+                            value="@Model.Title">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">作者ID</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="hidden" name="Id" required lay-verify="required" placeholder="请输入作品的名称"
+                            autocomplete="off" class="layui-input" value="@Model.Id">
+
+                        <div class="readonly"> @Model.ArtistId (@ViewBag.Art) </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">展出地点</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Location" required lay-verify="required"
+                            placeholder="输入展出地点，例：深圳南山漫谷·同构艺术空间" autocomplete="off" class="layui-input"
+                            value="@Model.Location">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">开始时间</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="StartDate" placeholder="输入展出开始时间，例：2020.12.01" autocomplete="off"
+                            class="layui-input" value="@Model.StartDate">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">结束时间</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="EndDate" placeholder="输入展出结束时间，例：2021.01.01" autocomplete="off"
+                            class="layui-input" value="@Model.EndDate">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">页面链接</label>
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                        <input type="text" name="Link" required lay-verify="required"
+                            placeholder="请输入展览活动主题页链接（如无主题页，请输入活动报导链接），注：请输入完整路径，例'https://www.baidu.com'"
+                            autocomplete="off" class="layui-input" value="@Model.Link">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18" style="text-align: center;">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+    var upload = layui.upload; //得到 upload 对象
+
+    upload.render({
+        elem: '#uploadDemo',
+        url: '/Staff/TempImgSave/',  //改成您自己的上传接口
+        done: function (res) {
+
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('iconwork').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
+    });
+
+    layui.use('layedit', function () {
+        var layedit = layui.layedit;
+        layedit.build('demo',
+            {
+                height: 500 //设置编辑器高度
+                , tool: [
+                    'strong' //加粗
+                    , 'italic' //斜体
+                    , 'underline' //下划线
+                    , 'del' //删除线
+
+                    , '|' //分割线
+
+                    , 'left' //左对齐
+                    , 'center' //居中对齐
+                    , 'right' //右对齐
+                    , 'link' //超链接
+                    , 'unlink' //清除链接
+
+                ]
+            }
+
+        ); //建立编辑器
+    });
+
+</script>

@@ -383,7 +383,68 @@ namespace Szaipa.Controllers
 
             return RedirectToAction("newArtBg", "Staff");
         }
-        public ActionResult newWorkAdd(int? id)
+
+        public ActionResult ArtWorks()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+
+            return View(staff);
+        }
+
+        public ActionResult ArtWorksEdit(int id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            TempData["id"] = id;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            var works = db.Works.FirstOrDefault(d => d.Id == id);
+            var art = db.Artist.FirstOrDefault(d => d.Id == works.ArtistId);
+
+
+
+            ViewBag.art = art.ArtistNameCN;
+
+            return View(works);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ArtWorksEdit(Works works, FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Works wk = db.Works.FirstOrDefault(d => d.Id == works.Id);
+            wk.Title = works.Title;
+            wk.Content = works.Content;
+            wk.Tags = works.Tags;
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/works-narrow/";
+                ImgChange(path, filename, wk.Path);
+                wk.Path = filename;
+            }
+
+            wk.EditRecord = wk.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + wk.Title + "的新闻条目。" + "/";
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + wk.Title + "的新闻条目。" + "/";
+
+            db.SaveChanges();
+
+            return RedirectToAction("ArtWorks", "Staff");
+        }
+        public ActionResult ArtWorksAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -399,7 +460,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult newWorkAdd(FormCollection form)
+        public ActionResult ArtWorksAdd(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -418,21 +479,18 @@ namespace Szaipa.Controllers
             if (TempData["TempImg"] != null)
             {
                 string filename = TempData["TempImg"].ToString();
-                string path = "/Content/ArtImg/Artist/Works/";
+                string path = "/Content/ArtImg/Artist/works-narrow/";
                 ImgSave(path, filename);
                 works.Path = filename;
             }
 
-            var day = today();
-            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + works.Title + "的新闻条目。" + "/";
-            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
-            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + works.Title + "的新闻条目。" + "/";
+            works.EditRecord = works.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此作品。" + "/";
 
 
             db.Works.Add(works);
             db.SaveChanges();
 
-            return RedirectToAction("Works", "Staff");
+            return RedirectToAction("ArtWorks", "Staff");
         }
         public ActionResult ArtFav()
         {
@@ -673,6 +731,63 @@ namespace Szaipa.Controllers
             return RedirectToAction("ArtAuction", "Staff");
         }
 
+        public ActionResult ArtExhibition()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+
+            return View(staff);
+        }
+        public ActionResult ExhibitionEdit(int id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            TempData["id"] = id;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            var exhibit = db.Exhibition.FirstOrDefault(d => d.Id == id);
+            var art = db.Artist.FirstOrDefault(d => d.Id == exhibit.ArtistId);
+
+
+
+            ViewBag.art = art.ArtistNameCN;
+
+            return View(exhibit);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ExhibitionEdit(Exhibition exhibit, FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            Exhibition ex = db.Exhibition.FirstOrDefault(d => d.Id == exhibit.Id);
+            ex.Title = exhibit.Title;
+            ex.StartDate = exhibit.StartDate;
+            ex.EndDate = exhibit.EndDate;
+            ex.Location = exhibit.Location;
+            ex.Link = exhibit.Link;
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/Exhibition/";
+                ImgChange(path, filename, ex.CoverPath);
+                ex.CoverPath = filename;
+            }
+
+            exhibit.EditRecord = exhibit.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此作品。" + "/";
+
+            db.SaveChanges();
+
+            return RedirectToAction("ArtExhibition", "Staff");
+        }
         public ActionResult newExhibitionAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -725,7 +840,7 @@ namespace Szaipa.Controllers
             db.Exhibition.Add(exhibition);
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Staff");
+            return RedirectToAction("ArtExhibition", "Staff");
         }
         public ActionResult newArtEdit()
         {
@@ -808,19 +923,6 @@ namespace Szaipa.Controllers
             return RedirectToAction("News", "Staff");
         }
 
-
-        public ActionResult ArtWorks(int id)
-        {
-            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
-            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
-            TempData["controller"] = controllerName;
-            TempData["view"] = actionName;
-            var staff = Session["Staff"];
-            if (staff == null) return RedirectToAction("Login", "Staff");
-            ViewBag.StaffEdit = 1;
-
-            return View(id);
-        }
         public ActionResult Works()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -1916,6 +2018,75 @@ namespace Szaipa.Controllers
             return cv;
         }
 
+        private List<ArtWorksView> PageArtWorks(List<Works> Works, int page, int limit, int count)
+        {
+            List<ArtWorksView> wv = new List<ArtWorksView>();
+
+            int fint = (page - 1) * limit;
+            int eint = page * limit;
+
+
+            Works = Works.Take(eint).Skip(fint).ToList();
+
+
+            foreach (var n in Works)
+            {
+                ArtWorksView v = new ArtWorksView();
+                v.Id = n.Id;
+                v.Title = n.Title;
+                v.ArtistId = n.ArtistId;
+                v.ArtistName = db.Artist.FirstOrDefault(a => a.Id == n.ArtistId).ArtistNameCN;
+                v.Tags = n.Tags;
+                v.Content = n.Content;
+                v.Path = n.Path;
+                v.visitcount = Convert.ToInt32(n.VisitCount);
+                v.EditRecord = n.EditRecord;
+                wv.Add(v);
+            }
+
+
+            return wv;
+        }
+        private List<ExhibitionView> PageExhibition(List<Exhibition> exhi, int page, int limit, int count)
+        {
+            List<ExhibitionView> ehb = new List<ExhibitionView>();
+
+            int fint = (page - 1) * limit;
+            int eint = page * limit - 1;
+            int m = count % limit;
+            if (count < limit)
+            {
+                eint = count;
+            }
+            else
+            {
+                if (m > 0 && (count - m) / limit < page)
+                {
+                    eint = count;
+                }
+            }
+            List<Exhibition> exb = new List<Exhibition>();
+            exb = exhi.SkipWhile((d, Index) => Index < fint).ToList();
+            if ((count - m) / limit >= page) exb = exb.TakeWhile((d, Index) => Index > eint - fint).ToList();
+
+            foreach (var e in exb)
+            {
+                ExhibitionView ex = new ExhibitionView();
+                ex.Id = e.Id;
+                ex.Title = e.Title;
+                ex.ArtistId = e.ArtistId;
+                ex.ArtistName = db.Artist.FirstOrDefault(a => a.Id == e.ArtistId).ArtistNameCN;
+                ex.StartDate = e.StartDate;
+                ex.EndDate = e.EndDate;
+                ex.Location = e.Location;
+                ex.Link = e.Link;
+                ex.visitcount = e.VisitCount;
+                ex.CoverPath = e.CoverPath;
+                ex.EditRecord = e.EditRecord;
+                ehb.Add(ex);
+            }
+            return ehb;
+        }
         private List<FavView> PageFav(List<Fav> fa, int page, int limit, int count)
         {
             List<FavView> fv = new List<FavView>();
@@ -2154,6 +2325,40 @@ namespace Szaipa.Controllers
                     code = 0,
                     count = count,
                     data = company,
+                },
+            };
+        }
+        public JsonResult ArtWorksdata(int page, int limit)
+        {
+            if (Session["Staff"] == null) return null;
+            var Works = db.Works.ToList();
+            int count = Works.Count();
+            var work = PageArtWorks(Works, page, limit, count);
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    count = count,
+                    data = work,
+                },
+            };
+        }
+        public JsonResult Exhibitionsdata(int page, int limit)
+        {
+            if (Session["Staff"] == null) return null;
+            var Exhibition = db.Exhibition.ToList();
+            int count = Exhibition.Count();
+            var exhibit = PageExhibition(Exhibition, page, limit, count);
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    count = count,
+                    data = exhibit,
                 },
             };
         }
@@ -2850,6 +3055,61 @@ namespace Szaipa.Controllers
             };
         }
 
+        public JsonResult ArtWorksDelete(int id)
+        {
+            int msg = 0;
+            var staff = Session["Staff"];
+            if (staff != null)
+            {
+                Staff staffer = (Staff)Session["Staff"];
+                Works works = db.Works.FirstOrDefault(d => d.Id == id);
+                Artist art = db.Artist.FirstOrDefault(a => a.Id == works.ArtistId);
+                staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + works.Id + ")" + "的作品。" + "/";
+                var day = today();
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + works.Id + ")" + "的作品。" + "/";
+                string path = "/Content/ArtImg/Artist/works-narrow/";
+                FileDelete(path, works.Path);
+                db.Works.Remove(works);
+                db.SaveChanges();
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    data = msg
+                }
+            };
+        }
+        public JsonResult ExhibitionDelete(int id)
+        {
+            int msg = 0;
+            var staff = Session["Staff"];
+            if (staff != null)
+            {
+                Staff staffer = (Staff)Session["Staff"];
+                Exhibition exhibit = db.Exhibition.FirstOrDefault(d => d.Id == id);
+                Artist art = db.Artist.FirstOrDefault(a => a.Id == exhibit.ArtistId);
+                staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + exhibit.Id + ")" + "的展讯。" + "/";
+                var day = today();
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + exhibit.Id + ")" + "的展讯。" + "/";
+                string path = "/Content/ArtImg/Artist/Exhibition/";
+                FileDelete(path, exhibit.CoverPath);
+                db.Exhibition.Remove(exhibit);
+                db.SaveChanges();
+
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    data = msg
+                }
+            };
+        }
         public JsonResult FavDelete(int id)
         {
             int msg = 0;
@@ -2860,9 +3120,9 @@ namespace Szaipa.Controllers
                 Fav fav = db.Fav.FirstOrDefault(d => d.Id == id);
                 Artist art = db.Artist.FirstOrDefault(a => a.Id == fav.ArtistId);
                 staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
-                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的拍卖作品。" + "/";
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的收藏捐赠作品。" + "/";
                 var day = today();
-                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的拍卖作品。" + "/";
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + fav.Id + ")" + "的收藏捐赠作品。" + "/";
                 string path = "/Content/ArtImg/Artist/Fav/";
                 FileDelete(path, fav.CoverPath);
                 db.Fav.Remove(fav);

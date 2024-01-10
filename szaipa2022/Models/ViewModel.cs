@@ -82,6 +82,32 @@ namespace Szaipa.Models
         public string LDate { get; set; }
 
     }
+    public class ArtWorksView
+    {
+        public int Id { set; get; }
+        public int ArtistId { set; get; }
+        public int? visitcount { get; set; }
+        public string Title { set; get; }
+        public string ArtistName { set; get; }
+        public string Content { set; get; }
+        public string Tags { set; get; }
+        public string Path { set; get; }
+        public string EditRecord { set; get; }
+    }
+    public class ExhibitionView
+    {
+        public int Id { set; get; }
+        public int ArtistId { set; get; }
+        public int? visitcount { get; set; }
+        public string Title { set; get; }
+        public string ArtistName { set; get; }
+        public string StartDate { set; get; }
+        public string EndDate { set; get; }
+        public string Location { set; get; }
+        public string Link { set; get; }
+        public string CoverPath { set; get; }
+        public string EditRecord { set; get; }
+    }
     public class FavView
     {
         public int Id { set; get; }
