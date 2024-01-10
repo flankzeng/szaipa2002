@@ -113,11 +113,12 @@
                                                     <div class="layui-timeline-content layui-text">
                                                         <h3 class="layui-timeline-title">@o.date</h3>
                                                         <p style="font-size: 1.4rem;">
-                                                            @foreach (var r in o.or)
-                                                            {
-                                                                @r <br />
-                                                            }
+                                                            @foreach (var item in o.or)
+                {
+                    @item <br />
+                }
                                                         </p>
+
                                                     </div>
                                                 </li>
                                             }

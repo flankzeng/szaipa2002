@@ -151,7 +151,7 @@ namespace Szaipa.Controllers
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
             ViewBag.StaffIndex = 1;
-
+            ViewBag.Diary = db.Diary.ToList();
 
             List<OR> or = DayOr(2);
 
@@ -2247,8 +2247,14 @@ namespace Szaipa.Controllers
                 {
                     if (d.OperationRecord != null && d.OperationRecord != "")
                     {
+                        o.or = new List<string>();
+
                         string[] sd = d.OperationRecord.Split('/');
-                        o.or = new List<string>(sd);
+                        foreach (string record in sd)
+                        {
+                            // 添加单独的操作记录到列表
+                            o.or.Add(record);
+                        }
                     }
                     else
                     {
@@ -2256,11 +2262,8 @@ namespace Szaipa.Controllers
                         o.or.Add("当天无操作记录");
                     }
                 }
-                else
-                {
-                    o.or = new List<string>();
-                    o.or.Add("当天无操作记录");
-                }
+
+
                 or.Add(o);
             }
 
