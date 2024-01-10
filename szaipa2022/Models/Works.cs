@@ -30,5 +30,6 @@ namespace szaipa2022.Models
         public string Activity { get; set; }
         public string Tags { get; set; }
         public string Deeds { get; set; }
+        public string EditRecord { get; set; }
     }
 }

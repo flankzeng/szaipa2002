@@ -3691,6 +3691,19 @@
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
     <Content Include="Views\Staff\newArtist.cshtml" />
     <Content Include="Views\Home\newabout.cshtml" />
+    <Content Include="Views\Staff\ArtAuction.cshtml" />
+    <Content Include="Views\Staff\ArtExhibition.cshtml" />
+    <Content Include="Views\Staff\ArtFav.cshtml" />
+    <Content Include="Views\Staff\ArtWorks.cshtml" />
+    <Content Include="Views\Staff\ArtWorksAdd.cshtml" />
+    <Content Include="Views\Staff\ArtWorksEdit.cshtml" />
+    <Content Include="Views\Staff\AuctionEdit.cshtml" />
+    <Content Include="Views\Staff\ExhibitionEdit.cshtml" />
+    <Content Include="Views\Staff\FavEdit.cshtml" />
+    <Content Include="Views\Staff\newArtFav.cshtml" />
+    <Content Include="Views\Staff\newAuction.cshtml" />
+    <Content Include="Views\Staff\newExhibitionAdd.cshtml" />
+    <Content Include="Views\Staff\newNewsAdd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

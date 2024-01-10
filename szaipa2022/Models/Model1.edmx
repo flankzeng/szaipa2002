@@ -237,6 +237,7 @@
           <Property Name="Activity" Type="nvarchar(max)" />
           <Property Name="Tags" Type="nvarchar(max)" />
           <Property Name="Deeds" Type="nvarchar(max)" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="WorksTag">
           <Key>
@@ -425,6 +426,7 @@
           <Property Name="Activity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Deeds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="WorksTag">
           <Key>
@@ -682,6 +684,7 @@
           <EntitySetMapping Name="Works">
             <EntityTypeMapping TypeName="SzaipaModel.Works">
               <MappingFragment StoreEntitySet="Works">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

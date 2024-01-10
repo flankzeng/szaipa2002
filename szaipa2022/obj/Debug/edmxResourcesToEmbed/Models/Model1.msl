@@ -150,6 +150,7 @@
     <EntitySetMapping Name="Works">
       <EntityTypeMapping TypeName="SzaipaModel.Works">
         <MappingFragment StoreEntitySet="Works">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
           <ScalarProperty Name="Title" ColumnName="Title" />

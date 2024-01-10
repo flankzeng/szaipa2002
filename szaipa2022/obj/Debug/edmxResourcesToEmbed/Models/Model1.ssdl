@@ -232,6 +232,7 @@
     <Property Name="Activity" Type="nvarchar(max)" />
     <Property Name="Tags" Type="nvarchar(max)" />
     <Property Name="Deeds" Type="nvarchar(max)" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="WorksTag">
     <Key>
