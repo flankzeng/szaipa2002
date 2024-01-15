@@ -151,7 +151,7 @@ namespace Szaipa.Controllers
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
             ViewBag.StaffIndex = 1;
-            ViewBag.Diary = db.Diary.ToList();
+            ViewBag.Diary = db.Diary.OrderByDescending(d => d.Date).Take(7).ToList();
 
             List<OR> or = DayOr(2);
 

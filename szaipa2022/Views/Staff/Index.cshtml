@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="layui-col-md4">
-                    <div class="layui-panel">
+                    <div class="layui-panel" style="height: auto;">
                         <div style="padding:30px;">
                             <div style="width:100%;min-height:470px">
                                 <fieldset class="layui-field-title" style="margin-top: 10px;">
@@ -106,19 +106,20 @@
                                 <div class="layui-row layui-col-space5">
                                     <div class="layui-col-md10">
                                         <ul class="layui-timeline">
-                                            @foreach (var o in Model)
+                                            @foreach (var o in ViewBag.Diary)
                                             {
                                                 <li class="layui-timeline-item">
                                                     <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                                                     <div class="layui-timeline-content layui-text">
-                                                        <h3 class="layui-timeline-title">@o.date</h3>
-                                                        <p style="font-size: 1.4rem;">
-                                                            @foreach (var item in o.or)
-                {
-                    @item <br />
-                }
-                                                        </p>
+                                                        <h3 class="layui-timeline-title">@o.Date.ToString("yyyy年M月d日")</h3>
+                                                        <p>
 
+                                                            @if (o.OperationRecord != null)
+                                                            {
+                                                                @Html.Raw(@o.OperationRecord.Replace("/", "<br />"))
+                                                            }
+
+                                                        </p>
                                                     </div>
                                                 </li>
                                             }
@@ -132,7 +133,8 @@
                                         </ul>
                                     </div>
                                     <div class="layui-col-md2">
-                                        <div id="slideTest12" style="margin: 45px 30px; display: inline-block;"></div>
+                                        <div id="slideTest12" style="margin: 45px 30px; display: inline-block;">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -329,5 +331,6 @@
     //})
     //option && myChart.setOption(option);
 </script>
-@*'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21',
+@*'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+'21',
 '22', '23', '24', '25', '26', '27', '28', '29', '30'*@

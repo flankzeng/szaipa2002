@@ -217,22 +217,24 @@
 
     @RenderBody()
 
+
+    <script>
+        //注意：导航 依赖 element 模块，否则无法进行功能性操作
+        layui.use('element', function () {
+            var element = layui.element;
+            $('#TongouAtristZxing').click(function () {
+
+                layer.msg('艺术家二维码生成中');
+
+            });
+
+            $('#TongouWorkZxing').click(function () {
+                layer.msg('已下二维码生成中');
+            });
+            //…
+        });
+    </script>
+
 </body>
 
 </html>
-<script>
-    //注意：导航 依赖 element 模块，否则无法进行功能性操作
-    layui.use('element', function () {
-        var element = layui.element;
-        $('#TongouAtristZxing').click(function () {
-
-            layer.msg('艺术家二维码生成中');
-
-        });
-
-        $('#TongouWorkZxing').click(function () {
-            layer.msg('已下二维码生成中');
-        });
-        //…
-    });
-</script>

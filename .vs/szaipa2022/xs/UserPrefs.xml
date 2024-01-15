@@ -1,31 +1,42 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/StaffController.cs">
     <Files>
-      <File FileName="szaipa2022/Controllers/HomeController.cs" />
       <File FileName="../../../../../Applications/Visual Studio.app/Contents/MonoBundle/MSBuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
       <File FileName="szaipa2022/Views/Home/Index.cshtml" />
-      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="339" Column="25" />
       <File FileName="szaipa2022/Views/Staff/newArtAdd.cshtml" />
-      <File FileName="szaipa2022/Models/Model1.edmx" />
       <File FileName="szaipa2022/Models/Artist.cs" />
+      <File FileName="szaipa2022/Controllers/HomeController.cs" />
+      <File FileName="szaipa2022/Controllers/ArtistController.cs" />
+      <File FileName="szaipa2022/Controllers/TestController.cs" />
+      <File FileName="szaipa2022/Controllers/SearchController.cs" />
+      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="2231" Column="21" />
+      <File FileName="szaipa2022/Controllers/PublicationController.cs" />
+      <File FileName="szaipa2022/Models/Model1.edmx" />
+      <File FileName="szaipa2022/Models/ViewModel.cs" />
+      <File FileName="szaipa2022/Views/Home/ArtNewsRead.cshtml" />
+      <File FileName="szaipa2022/Models/ArtNews.cs" />
+      <File FileName="szaipa2022/Models/Auction.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="szaipa2022">
-            <Node name="szaipa2022">
-              <Node name="Controllers" expanded="True">
-                <Node name="StaffController.cs" selected="True" />
-              </Node>
+          <Node name="szaipa2022" expanded="True">
+            <Node name="szaipa2022" expanded="True" selected="True">
+              <Node name="Content" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints />
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
-  <MultiItemStartupConfigurations />
 </Properties>
