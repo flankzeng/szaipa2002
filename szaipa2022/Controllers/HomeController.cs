@@ -660,9 +660,13 @@ namespace Szaipa.Controllers
                     n.or = false;
                 }
                 DateTime dt = Convert.ToDateTime(a.Date);
+                n.Date = dt.ToString("yyyy年MM月dd日");
+                if (a.Important == false)
+                {
+                    n.Important = false;
+                }
+                else { n.Important = true; };
 
-                n.DateD = dt.Day;
-                n.DateM = dt.Month;
                 nl.Add(n);
             }
 
@@ -831,12 +835,20 @@ namespace Szaipa.Controllers
                 a.Title = n.Title;
                 a.Subtitle = n.Subtitle;
                 a.ImgTitle = n.CoverPath;
-                DateTime dt = Convert.ToDateTime(n.Date);
-                a.DateM = dt.Month;
-                a.DateD = dt.Day;
+                DateTime dt = Convert.ToDateTime(a.Date);
+                a.Date = dt.ToString("yyyy年MM月dd日");
                 a.link = n.link;
                 a.or = n.original;
                 a.Autor = n.Autor;
+                if (n.Important == false)
+                {
+                    a.Important = false;
+                }
+                else
+                {
+                    a.Important = true;
+                }
+
                 e.Add(a);
             }
             return e;

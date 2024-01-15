@@ -18,10 +18,10 @@ namespace Szaipa.Models
         public string Subtitle { get; set; }
         public string Autor { get; set; }
         public string link { get; set; }
-        public int DateM { get; set; }
-        public int DateD { get; set; }
         public bool or { get; set; }
         public int ReadCount { get; set; }
+        public string Date { set; get; }
+        public bool Important { get; set; }
     }
     public class NewsViews
     {

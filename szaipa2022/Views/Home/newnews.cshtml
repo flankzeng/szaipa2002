@@ -215,24 +215,39 @@
 
         @foreach (var news in ViewBag.NewsList)
         {
-            <ul class="col-sm20 col-md20 col-lg20 important">
-                <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
-                <li class="col-sm14 col-md13 col-lg13 title importantTXT">
-                    <a href="~/Home/newnewsread/@news.Id" target="_blank">
-                        @news.Title
-                        <p>@news.Subtitle</p>
-                        <div>
-                            <img src="../../content/newsImg/@news.CoverPath" alt="">
-                        </div>
-                        <span>查看全部 VIEW MORE</span>
+            if (news.Important == true)
+            {
+                <ul class="col-sm20 col-md20 col-lg20 important">
+                    <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
+                    <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                        <a href="~/Home/newnewsread/@news.Id" target="_blank">
+                            @news.Title
+                            <p>@news.Subtitle</p>
+                            <div>
+                                <img src="../../content/newsImg/@news.CoverPath" alt="">
+                            </div>
+                            <span>查看全部 VIEW MORE</span>
 
-                        <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                            <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                        </a>
+                    </li>
+                    <li class="col-xs1 col-sm1 col-md1 col-lg1">
+                        <img src="../../Content/icon/enter-02.png" class="enter">
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="col-sm20 col-md20 col-lg20 normal">
+                    <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
+                    <a href="~/Home/newnewsread/@news.Id" target=" _blank">
+                        <li class="col-sm14 col-md13 col-lg13 title">@news.Title</li>
+                        <li class="col-xs1 col-sm1 col-md1 col-lg1">
+                            <img src="../../Content/icon/enter-02.png" style="transform: translateX(20%);" alt="" class="enter">
+                        </li>
                     </a>
-                </li>
-                <li class="col-sm1 col-md1 col-lg1">
-                    <img src="../../Content/icon/enter-02.png" class="enter">
-                </li>
-            </ul>
+                </ul>
+            }
         }
         <!--
         <ul class="col-sm20 col-md20 col-lg20 important">

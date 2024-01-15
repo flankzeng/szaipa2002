@@ -1565,37 +1565,41 @@
 
         @foreach (var n in ViewBag.n)
         {
-            <ul class="col-sm20 col-md20 col-lg20 important">
-                <li class="col-sm5 col-md5 col-lg5 date JhengLight">2023.@n.DateM.@n.DateD </li>
-                <li class="col-sm14 col-md14 col-lg14 title importantTXT">
-                    <a href="~/Home/newnewsread/@n.Id">
-                        @n.Title
-                        <p>@n.Subtitle</p>
-                        <div>
-                            <img src="~/Content/newsImg/@n.ImgTitle" alt="">
-                        </div>
-                        <span class="JhengLight">查看全部 VIEW MORE</span>
+            if (n.Important == true)
+            {
+                <ul class="col-sm20 col-md20 col-lg20 important">
+                    <li class="col-sm5 col-md5 col-lg5 date JhengLight">@n.Date</li>
+                    <li class="col-sm14 col-md14 col-lg14 title importantTXT">
+                        <a href="~/Home/newnewsread/@n.Id">
+                            @n.Title
+                            <p>@n.Subtitle</p>
+                            <div>
+                                <img src="~/Content/newsImg/@n.ImgTitle" alt="">
+                            </div>
+                            <span class="JhengLight">查看全部 VIEW MORE</span>
 
-                        <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                            <img src="../../Content/icon/enter-02.png" alt="" class="enter">
+                        </a>
+                    </li>
+                    <li class="col-sm1 col-md1 col-lg1">
+                        <img src="../../Content/icon/enter-02.png" class="enter">
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <ul class="col-sm20 col-md20 col-lg20 normal">
+                    <li class="col-sm5 col-md5 col-lg5 date JhengLight">@n.Date</li>
+                    <a href="~/Home/newnewsread/@n.Id">
+                        <li class="col-sm14 col-md14 col-lg14 tite">@n.Title</li>
+                        <li class="col-sm1 col-md1 col-lg1"><img src="../../Content/icon/enter-02.png"
+                                style="transform: translateX(20%);" alt="" class="enter">
+                        </li>
                     </a>
-                </li>
-                <li class="col-sm1 col-md1 col-lg1">
-                    <img src="../../Content/icon/enter-02.png" class="enter">
-                </li>
-            </ul>
+                </ul>
+            }
         }
 
-        <!--
-        <ul class="col-sm20 col-md20 col-lg20 normal">
-            <li class="col-sm5 col-md5 col-lg5 date JhengLight">2022.09.08</li>
-            <a href="~/Home/newnewsread/1027">
-                <li class="col-sm14 col-md14 col-lg14 tite">富诺得首拍 ｜ 森罗万象——当代艺术专场</li>
-                <li class="col-sm1 col-md1 col-lg1"><img src="../../Content/icon/enter-02.png" alt="" class="enter">
-                </li>
-            </a>
-        </ul>
-
-        -->
 
         <button class="allNews">
             <a class="JhengRegular" href="newnews">查看全部 <span class="JhengLight">VIEW MORE</span></a>
