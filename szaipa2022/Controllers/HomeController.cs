@@ -29,7 +29,7 @@ namespace Szaipa.Controllers
             }
             var l = newslist(news);
             ViewBag.n = l;
-            return View();
+            return RedirectToAction("newIndex", "Home");
         }
         public ActionResult newIndex()
         {
