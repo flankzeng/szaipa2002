@@ -835,11 +835,12 @@ namespace Szaipa.Controllers
                 a.Title = n.Title;
                 a.Subtitle = n.Subtitle;
                 a.ImgTitle = n.CoverPath;
-                DateTime dt = Convert.ToDateTime(a.Date);
-                a.Date = dt.ToString("yyyy年MM月dd日");
                 a.link = n.link;
                 a.or = n.original;
                 a.Autor = n.Autor;
+
+                DateTime dt = Convert.ToDateTime(n.Date);
+                a.Date = dt.ToString("yyyy年MM月dd日");
                 if (n.Important == false)
                 {
                     a.Important = false;

@@ -10,13 +10,13 @@
 <head>
     <meta charset="utf-8" />
     <title>@Model.Title</title>
-    <link rel="icon" href="../../Content/123/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../Content/Model/css/responsive.css">
-    <link rel="stylesheet" href="../../Content/Model/css/Site.css">
+    <link rel="icon" href="/Content/123/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/Content/Model/css/responsive.css">
+    <link rel="stylesheet" href="/Content/Model/css/Site.css">
     <!-- 以上为共享部分 -->
-    <link rel="stylesheet" href="../../Content/Model/css/element-plus.css">
-    <script src="../../Content/Model/vue.global.js"></script>
-    <script src="../../Content/Model/element-plus.js"></script>
+    <link rel="stylesheet" href="/Content/Model/css/element-plus.css">
+    <script src="/Content/Model/vue.global.js"></script>
+    <script src="/Content/Model/element-plus.js"></script>
 
     <!-- 引入google font CDN站 2023.08.04 -->
     <link rel="preconnect" href="//fonts.googleapis.com">
@@ -578,7 +578,7 @@
         <!-- 电脑端 -->
         <div class=" col-xs20 col-sm20 col-md20 col-lg20 bannerCon">
             <a href="newIndex">
-                <img class="logo1" src="../../content/images/LOGO_01.png" alt="" />
+                <img class="logo1" src="/content/images/LOGO_01.png" alt="" />
             </a>
             <div class="xs-hide sm-hide col-md8 col-lg8">&nbsp;</div>
             <div class="col-xs3 col-sm3 col-md3 col-lg3">&nbsp;</div>
@@ -587,22 +587,22 @@
 
                     <!-- <div class="lineL"></div> -->
                     <li>
-                        <a href="../../Home/newIndex">首&#12288;&#12288;页</a>
+                        <a href="/Home/newIndex">首&#12288;&#12288;页</a>
                     </li>
                     <!-- <div class="lineR"></div> -->
 
                     <li>
-                        <a href="../../Home/newnews">新闻资讯</a>
+                        <a href="/Home/newnews">新闻资讯</a>
                     </li>
                     <!-- <div class="lineR"></div> -->
 
                     <li>
-                        <a href="../../Home/vip">会员风采</a>
+                        <a href="/Home/vip">会员风采</a>
                     </li>
                     <!-- <div class="lineR" style="margin-right: 40px;"></div> -->
 
                     <li>
-                        <a href="../../Home/newabout">关于我们</a>
+                        <a href="/Home/newabout">关于我们</a>
                     </li>
 
                     @* <li style="position: relative;">
@@ -610,7 +610,7 @@
                     {
 
                     <input type="text" name="keyword" class="search" placeholder="作品与相关信息" />
-                    <button type="submit" class="sousuo"><img src="../../content/icon/search.svg" alt=""></button>
+                    <button type="submit" class="sousuo"><img src="/content/icon/search.svg" alt=""></button>
                     }
                     @if (Model != null && Model.Any())
                     {
@@ -635,7 +635,7 @@
 
 
     <button id="topBtn" class="xs-hide sm-hide">
-        <img src="../../Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
+        <img src="/Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
         <script>
             // toTopButton
             const toTopButton = document.querySelector('#topBtn');
@@ -672,8 +672,8 @@
             <el-breadcrumb separator=">">
                 <div class="time">@string.Format("{0:yyyy.MM.dd}", Model.Date)</div>
 
-                <el-breadcrumb-item :to="{ path: '>' }"><a href="../../Home/newIndex">首页</a></el-breadcrumb-item>
-                <el-breadcrumb-item><a href="../../Home/newnews">新闻动态</a></el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '>' }"><a href="/Home/newIndex">首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/Home/newnews">新闻动态</a></el-breadcrumb-item>
                 <el-breadcrumb-item>当前页面</el-breadcrumb-item>
 
 
@@ -704,19 +704,27 @@
 
         <ul>
             @foreach (var news in ViewBag.NewsList)
+
             {
-                <a href="~/Home/newnewsread/@news.Id">
-                    <li class="contentSon" style="background-image: url('../../content/newsImg/@news.CoverPath');">
-                        <h3 class="JhengRegular">@string.Format("{0:yyyy.MM.dd}", news.Date)</h3>
-                        <h1>@news.Title</h1>
-                        <h4 class="JhengLight">查看更多</h4>
-                    </li>
-                </a>
+                if (news.Title != Model.Title)
+                {
+                    <a href="~/Home/newnewsread/@news.Id">
+                        <li class="contentSon" style="background-image: url('/content/newsImg/@news.CoverPath');">
+                            <h3 class="JhengRegular">@string.Format("{0:yyyy.MM.dd}", news.Date)</h3>
+                            <h1>@news.Title</h1>
+                            <h4 class="JhengLight">查看更多</h4>
+                        </li>
+                    </a>
+                }
+                else
+                {
+
+                }
             }
 
             <!--
                 <a href="1031">
-                <li class="contentSon" style="background-image: url('../../content/images/sample01.jpg');">
+                <li class="contentSon" style="background-image: url('/content/images/sample01.jpg');">
                     <h3 class="JhengRegular">2022.12.31</h3>
                     <h1>同构《第二季》——当代艺术展在罗湖美术馆开幕</h1>
                     <h4 class="JhengLight">查看更多</h4>
@@ -724,7 +732,7 @@
             </a>
 
             <a href="1030">
-                <li class="contentSon" style="background-image: url('../../content/images/sample02.jpg');">
+                <li class="contentSon" style="background-image: url('/content/images/sample02.jpg');">
                     <h3 class="JhengRegular">2022.12.13</h3>
                     <h1>《同构》第二季——当代艺术展即将拉开帷幕</h1>
                     <h4 class="JhengLight">查看更多</h4>
@@ -769,12 +777,12 @@
             </div>
             <div class="logoContainerM">
                 <a href="Javascript:;;">
-                    <img src="../../Content/icon/wechat.svg" class="guanzhu" alt=""></a>
+                    <img src="/Content/icon/wechat.svg" class="guanzhu" alt=""></a>
                 <a href="Javascript:;;">
-                    <img src="../../Content/icon/douyin.svg" class="guanzhu" alt=""></a>
+                    <img src="/Content/icon/douyin.svg" class="guanzhu" alt=""></a>
             </div>
 
-            <!-- <img class="undraggable" src="../../content/images/fuzhu-05.png" alt="" /> -->
+            <!-- <img class="undraggable" src="/content/images/fuzhu-05.png" alt="" /> -->
         </div>
     </section>
 
