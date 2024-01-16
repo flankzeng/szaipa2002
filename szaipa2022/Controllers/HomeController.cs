@@ -29,7 +29,18 @@ namespace Szaipa.Controllers
             }
             var l = newslist(news);
             ViewBag.n = l;
-            return RedirectToAction("newIndex", "Home");
+
+            bool isNewVersion = false;// 根据需要的条件来判断是否为新版页面
+
+            if (isNewVersion)
+            {
+                return RedirectToAction("newIndex", "Home");
+            }
+            else
+            {
+                // 返回旧版页面的视图
+                return View();
+            }
         }
         public ActionResult newIndex()
         {
