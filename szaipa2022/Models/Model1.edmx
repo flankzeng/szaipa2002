@@ -77,6 +77,7 @@
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Title" Type="nvarchar" MaxLength="500" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="ImgTitle" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Auction">
           <Key>
@@ -466,6 +467,7 @@
           <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Auction">
           <Key>
@@ -716,6 +718,7 @@
           <EntitySetMapping Name="ArtNews">
             <EntityTypeMapping TypeName="SzaipaModel.ArtNews">
               <MappingFragment StoreEntitySet="ArtNews">
+                <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Content" ColumnName="Content" />

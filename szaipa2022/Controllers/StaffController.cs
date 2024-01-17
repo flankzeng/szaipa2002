@@ -1364,6 +1364,64 @@ namespace Szaipa.Controllers
             return RedirectToAction("News", "Staff");
         }
 
+        public ActionResult ArtNewsAdd()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            ViewBag.StaffEdit = 1;
+            return View(staff);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ArtNewsAdd(FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+
+            int aid = Convert.ToInt32(Request.Form["ArtistId"]);
+
+            ArtNews artnews = new ArtNews();
+            string path = "/Content/newsImg/";
+            artnews.Date = DateTime.Now;
+            string content = Request.Form["Content"];
+            artnews.Content = content.Replace("TempFile", "newsImg");
+            if (TempData["TempIntervalImg"] != null)
+            {
+                string imgtitle = TempData["TempIntervalImg"].ToString();
+                artnews.ImgTitle = EffectiveImgs(imgtitle, content);
+            }
+
+            artnews.Title = Request.Form["Title"];
+            artnews.ArtistId = aid;
+            artnews.ReadCount = 0;
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+
+                ImgSave(path, filename);
+                artnews.CoverPath = filename;
+            }
+
+            artnews.EditRecord = staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 编写了此新闻条目。" + "/";
+            var day = today();
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + " 编写了 " + artnews.Title + "的新闻条目。" + "/";
+
+            Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 编写了" + artnews.Title + "的新闻条目。" + "/";
+
+            db.ArtNews.Add(artnews);
+            db.SaveChanges();
+
+
+            return View();
+        }
+
 
         //已下为调用方法
 

@@ -197,6 +197,7 @@
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ImgTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Auction">
     <Key>

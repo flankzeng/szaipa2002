@@ -182,6 +182,7 @@
     <EntitySetMapping Name="ArtNews">
       <EntityTypeMapping TypeName="SzaipaModel.ArtNews">
         <MappingFragment StoreEntitySet="ArtNews">
+          <ScalarProperty Name="ImgTitle" ColumnName="ImgTitle" />
           <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="Content" ColumnName="Content" />
