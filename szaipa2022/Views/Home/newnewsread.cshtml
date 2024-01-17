@@ -471,9 +471,10 @@
         }
 
         .article img {
-            width: 100% !important;
+            width: 45% !important;
             object-fit: contain;
-            margin: 3vh 0 3vh 0 !important;
+            margin: 3vh auto !important;
+            display:block;
         }
 
         .article p {
@@ -815,7 +816,7 @@
                 <div class="col-sm3 col-md3 col-lg3 footerList JhengLight">
                     <p style="padding-left: 10%;">
                         <a class="JhengLight" href="~/home/newabout">合作案例 </a><br />
-                        <a class="JhengLight" href="Javascript:;;">艺术家首页</a><br />
+                        <a class="JhengLight" href="~/home/vip">艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
                         &#12288;
@@ -862,7 +863,8 @@
         Copyright © 2023 SZAIPA. All Rights Reserved. <br />
         深圳市艺术产业促进会<br />
         <br />
-        <a class="JhengLight" href="~/home/index">切换旧版</a><br />
+        <a class="JhengLight" href="@Url.Action("Index", "Home", new { fromLink = true })">
+            切换旧版</a><br />
         <a class="JhengLight" href="~/Staff/Index">后台登陆</a>
     </footer>
 

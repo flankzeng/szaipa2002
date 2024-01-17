@@ -16,31 +16,27 @@ namespace Szaipa.Controllers
     {
         SzaipaEntities db = new SzaipaEntities();
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Index(bool fromLink = false)
         {
-            if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据\
+            if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
             if (Session["Staff"] != null) ViewBag.staff = 1;
             ViewBag.Index = 1;
-            var N = db.News.OrderByDescending(d => d.Date).ToList();
-            var news = new List<News>();
-            for (int a = 0; a < 4; a++)
-            {
-                news.Add(N[a]);
-            }
-            var l = newslist(news);
-            ViewBag.n = l;
 
-            bool isNewVersion = false;// 根据需要的条件来判断是否为新版页面
+            if (fromLink)
+            {
+                var N = db.News.OrderByDescending(d => d.Date).ToList();
+                var news = new List<News>();
+                for (int a = 0; a < 4; a++)
+                {
+                    news.Add(N[a]);
+                }
+                var l = newslist(news);
+                ViewBag.n = l;
 
-            if (isNewVersion)
-            {
-                return RedirectToAction("newIndex", "Home");
-            }
-            else
-            {
-                // 返回旧版页面的视图
                 return View();
             }
+
+            return RedirectToAction("newIndex", "Home");
         }
         public ActionResult newIndex()
         {

@@ -1,14 +1,14 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
     <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <script
+        type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link rel="icon" href="~/Content/123/favicon.ico" type="image/x-icon" />
     <!--webfont-->
     <!--/webfont-->
@@ -46,6 +46,7 @@
 
 
 </head>
+
 <body>
     <div class="laynav">
         <div class="out">
@@ -62,14 +63,18 @@
                                     <li>
                                         <div class="ewmbox">
                                             <img src="~/Content/123/EWM.jpg" />
-                                            <p style="color:rgb(129,109,84);text-align:center;margin-top:-10px;">深圳艺术产促进会公众号</p>
+                                            <p style="color:rgb(129,109,84);text-align:center;margin-top:-10px;">
+                                                深圳艺术产促进会公众号</p>
                                         </div>
 
                                     </li>
                                 </ul>
                             </li>
-                            <li> <a href="#" onclick="window.external.AddFavorite(location.href,document.title);">|&nbsp;收藏网站&nbsp;|</a>   </li>                            
-                        </ul><div class="clearfix"></div>
+                            <li> <a href="#"
+                                    onclick="window.external.AddFavorite(location.href,document.title);">|&nbsp;收藏网站&nbsp;|</a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
 
                     </div>
                     <div class="clearfix"></div>
@@ -85,7 +90,7 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            
+
 
         </div>
     </div>
@@ -99,7 +104,8 @@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1">
                                 <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -113,7 +119,8 @@
                                 @{
                                     if (@ViewBag.Index != null)
                                     {
-                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/Index">首页 <span class="sr-only">(current)</span></a></li>
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/Index">首页 <span
+                                                    class="sr-only">(current)</span></a></li>
                                     }
                                     else
                                     {
@@ -121,64 +128,73 @@
                                     }
                                     if (@ViewBag.news != null)
                                     {
-                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/news">新闻资讯<span class="sr-only">(current)</span></a></li>
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/news">新闻资讯<span
+                                                    class="sr-only">(current)</span></a></li>
                                     }
                                     else
                                     {
                                         <li class="hvr-bounce-to-bottom"><a href="~/Home/news">新闻资讯</a></li>
 
                                     }
-                                  
+
                                     if (@ViewBag.about != null)
                                     {
-                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/about">关于我们<span class="sr-only">(current)</span></a></li>}
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/about">关于我们<span
+                                                    class="sr-only">(current)</span></a></li>
+                                    }
                                     else
                                     {
-                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/about">关于我们</a></li>}
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/about">关于我们</a></li>
+                                    }
                                     if (@ViewBag.vip != null)
                                     {
-                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/vip">会员风采<span class="sr-only">(current)</span></a></li> }
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/vip">会员风采<span
+                                                    class="sr-only">(current)</span></a></li>
+                                    }
                                     else
                                     {
-                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/vip">会员风采</a></li> }
+                                        <li class="hvr-bounce-to-bottom"><a href="~/Home/vip">会员风采</a></li>
+                                    }
 
                                     if (@ViewBag.link != null)
                                     {
-                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/link">联系我们<span class="sr-only">(current)</span></a></li> }
+                                        <li class="hvr-bounce-to-bottom active"><a href="~/Home/link">联系我们<span
+                                                    class="sr-only">(current)</span></a></li>
+                                    }
                                     else
                                     {
                                         <li class="hvr-bounce-to-bottom"><a href="~/Home/link">联系我们</a></li>
                                     }
-                                   
+
                                 }
-                                <li class="pull-right"style="width:30%;">
+                                <li class="pull-right" style="width:30%;">
                                     <div class="col-lg-12 in-gp-tb">
                                         <div class="input-group">
-                                            <input type="text" id="keyword" class="form-control" placeholder="作品与相关信息"                                                  
-                                                   >
+                                            <input type="text" id="keyword" class="form-control" placeholder="作品与相关信息">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" id="search"data-toggle="tooltip"data-placement="right"title="右侧的 Tooltip">
-                                                        
+                                                <button class="btn btn-default" type="button" id="search"
+                                                    data-toggle="tooltip" data-placement="right" title="右侧的 Tooltip">
+
                                                     <span class="glyphicon glyphicon-search"></span>
-                                                </button> 
+                                                </button>
                                             </span>
-                                        <script>
-                                            $(document).ready(function () {
-                                              
-                                                $("#search").click(function () {
-                                                    var keyword = $("#keyword").val();
-                                                    window.location.href = "/Home/Tags/?keyword="+keyword;
-                                                   
+                                            <script>
+                                                $(document).ready(function () {
+
+                                                    $("#search").click(function () {
+                                                        var keyword = $("#keyword").val();
+                                                        window.location.href = "/Home/Tags/?keyword=" + keyword;
+
+                                                    });
                                                 });
-                                            });
 
 
-                                        </script>
+                                            </script>
                                         </div><!-- /input-group -->
                                     </div>
                                 </li>
                             </ul>
-                            
+
 
                             <div class="clearfix"></div>
                         </div><!-- /.navbar-collapse -->
@@ -213,17 +229,18 @@
 
     <style>
         .returnico {
-        display:none;    
-        width:75px;
-        height:61px;
-        position:fixed;
-        right:3%;
-        top:250px;
-        background-image:url("/Content/images/return-1.png")
+            display: none;
+            width: 75px;
+            height: 61px;
+            position: fixed;
+            right: 3%;
+            top: 250px;
+            background-image: url("/Content/images/return-1.png")
         }
-            .returnico:hover {
-            background-image:url("/Content/images/return-2.png")
-            }
+
+        .returnico:hover {
+            background-image: url("/Content/images/return-2.png")
+        }
     </style>
     <div class="footer">
         <div class="container">
@@ -232,38 +249,58 @@
                     <h4>资料下载</h4>
                     <div class="recent-posts-text">
                         <h5>深圳市艺术产业促进会章程</h5>
-                        <a href="/Content/Filme/深圳艺术产业促进会章程.pdf" download="深圳艺术产业促进会章程"><p>点击此处下载(PDF格式)</p></a>
+                        <a href="/Content/Filme/深圳艺术产业促进会章程.pdf" download="深圳艺术产业促进会章程">
+                            <p>点击此处下载(PDF格式)</p>
+                        </a>
                     </div>
                     <div class="recent-posts-text">
                         <h5>艺术产业促进会介绍</h5>
-                        <a href="#" download="艺术产业促进会介绍"><p>点击此处下载(PDF格式)</p></a>
+                        <a href="#" download="艺术产业促进会介绍">
+                            <p>点击此处下载(PDF格式)</p>
+                        </a>
                     </div>
                     <div class="recent-posts-text">
                         <h5>合作案例</h5>
-                        <a href="#" download="合作项目"><p>点击此处下载(PDF格式)</p></a>
+                        <a href="#" download="合作项目">
+                            <p>点击此处下载(PDF格式)</p>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4 recent-posts">
                     <h4>网络安全信息</h4>
                     <style>
                         .recent-posts-text p img {
-                        margin-top:-10px;
+                            margin-top: -10px;
                         }
                     </style>
                     <div class="recent-posts-text">
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889"><h5>公安局备案</h5></a>
-                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889"><p><img src="~/Content/images/备案图标.png" />   粤公网安备 44030402004889号</p></a>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            <h5>公安局备案</h5>
+                        </a>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            <p><img src="~/Content/images/备案图标.png" /> 粤公网安备 44030402004889号</p>
+                        </a>
                     </div>
-                   
-                   
+
+
                     <div class="recent-posts-text">
-                        <a href="https://beian.miit.gov.cn/"><h5>工信部备案</h5></a>
-                        <a href="https://beian.miit.gov.cn/"><p>粤ICP备2021095230号</p></a>
+                        <a href="https://beian.miit.gov.cn/">
+                            <h5>工信部备案</h5>
+                        </a>
+                        <a href="https://beian.miit.gov.cn/">
+                            <p>粤ICP备2021095230号</p>
+                        </a>
                     </div>
                     <div class="recent-posts-text">
-                        <a href="#"><h5>最后更新时间：<span>2021.7.28</span> </h5></a>
-                        <a href="~/Staff/Index"><p>管理员后台</p></a>
-		<a href="~/Home/newindex"><p>切换新版</p></a>
+                        <a href="#">
+                            <h5>最后更新时间：<span>2021.7.28</span> </h5>
+                        </a>
+                        <a href="~/Staff/Index">
+                            <p>管理员后台</p>
+                        </a>
+                        <a href="~/Home/newIndex">
+                            <p>切换新版</p>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-4 recent-posts">
@@ -283,4 +320,5 @@
     </div>
 
 </body>
+
 </html>
