@@ -4,9 +4,6 @@
     Page.validateRequest = "false";
 }
 
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
 
 <div class="col-xs20 col-sm20 col-m20 col-lg20">&nbsp;</div>
 <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
@@ -135,6 +132,36 @@
                 <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">正文</label>
 
                 <div class="col-xs18 col-sm18 col-md18 col-lg18">
+                    @* <div id="editor" name="content"></div> *@
+
+                    <div id="toolbar">
+
+                        <select class="ql-header" style="margin-right: .5%;"></select>
+
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline" style="margin-right: .5%;"></button>
+
+
+                        <select class="ql-align">
+
+                            <option selected></option>
+                            <option value="center"></option>
+                            <option value="right"></option>
+                            <option value="justify"></option>
+
+                        </select>
+
+                        <button class="ql-image" style="margin-right: .5%;"></button>
+
+
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                        <button class="ql-clean" style="margin-right: .5%;"></button>
+
+                        <button id="custom-button">'Clicked!'</button>
+
+                    </div>
                     <div id="editor" name="content"></div>
                 </div>
             </div>
@@ -227,10 +254,19 @@
         var quill = new Quill('#editor', {
             theme: 'snow',
             modules: {
-                toolbar: toolbarOptions
+                toolbar: {
+                    container: "#toolbar",
+                    external: toolbarOptions,
+                }
             }
         });
 
+        // 测试一下是否可以通过prompt加入图注
+        // Todo: Insert photo port
+        var customButton = document.querySelector('#custom-button');
+        customButton.addEventListener('click', function () {
+            console.log('Clicked!');
+        });
 
 
 
