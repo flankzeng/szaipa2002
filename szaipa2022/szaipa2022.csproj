@@ -3438,7 +3438,6 @@
     <Content Include="Views\Home\artistZLQ.cshtml" />
     <Content Include="Views\Shared\_Artist.cshtml" />
     <Content Include="Views\Staff\newArtAdd.cshtml" />
-    <Content Include="Views\Staff\newWorkAdd.cshtml" />
     <Content Include="Views\Home\ArtNewsRead.cshtml" />
   </ItemGroup>
   <ItemGroup>
