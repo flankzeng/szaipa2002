@@ -57,5 +57,9 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+        public ActionResult chunyu3()
+        {
+            return View();
+        }
     }
 }
