@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <title>春语第三季——致敬女性艺术展</title>
-    <link rel="icon" href="/Content/123/tonggou.ico" type="image/x-icon">
+    <link rel="icon" href="/Content/123/chunyu.ico" type="image/x-icon">
     <link rel="stylesheet" href="/Content/Model/css/responsive.css">
     <link rel="stylesheet" href="/Content/Model/css/Site.css">
     <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
@@ -611,7 +611,7 @@
 
         /* 交易页面 */
         .introCon {
-            padding: 5% 10% 10vh 10%;
+            padding: var(--introCon);
             color: white;
             background-color: black;
             position: relative;
@@ -680,7 +680,7 @@
             max-height: 65vh;
             height: auto;
             float: right;
-            margin-top: -20vh;
+            margin-top: var(--type2);
         }
 
         /* type1和type2的横向竖向输入框不等长 */
@@ -724,7 +724,7 @@
         .trading-copyright {
             width: 97%;
             position: absolute;
-            bottom: 10vh;
+            bottom: 17.5vh;
             color: #939393;
         }
 
@@ -847,7 +847,8 @@
 
 
             <div class="nameCN">
-                策展人：张岚芊
+                策展人：张岚芊<br />
+                2024年3月8日
             </div>
         </div>
 
@@ -866,15 +867,340 @@
                     <span style="font-family: 'dinLightI';!important">CATALOG</span>
                 </h1>
 
+                <!-- filter的格式错误问题暂时解决不了，或许考虑删除filter -->
+
+                <ul class="filterCon">
+                    <li class="filter bold" data-filter="all">所有</li>
+                    @* <li class="filter" data-filter="oilPainting">纸本水墨</li>
+                    <li class="filter" data-filter="oilPainting">布面油画</li>
+                    <li class="filter" data-filter="combine">综合材料</li>
+                    <li class="filter" data-filter="other">其他</li> *@
+                </ul>
+
+                <style>
+                    .filter {
+                        font-weight: 300;
+                        font-family: 'Noto Sans SC', sans-serif;
+                    }
+
+                    .filterCon {
+                        list-style: none;
+                        display: flex;
+                        padding: 0;
+                        margin-bottom: 3vh;
+                    }
+
+                    .filterCon li {
+                        margin-right: 2vw;
+                    }
+
+                    .hidden {
+                        display: none;
+                    }
+
+                    .bold {
+                        font-weight: 700;
+                        font-family: 'Noto Sans SC', sans-serif;
+                    }
+                </style>
+
+                <script>
+
+                    // $(function () {
+                    //     $('.filter').click(function () {
+                    //         const value = $(this).attr('data-filter');
+                    //         if (value == 'all') {
+                    //             $('.filterBox').show('1000');
+                    //         }
+                    //         else {
+                    //             $('.filterBox').not('.' + value).hide('1000');
+                    //             $('.filterBox').filter('.' + value).show('1000');
+                    //         }
+                    //     })
+                    // })
+
+                    $(function () {
+                        $('.filter').click(function () {
+                            const value = $(this).attr('data-filter');
+                            if (value == 'all') {
+                                $('.filterBox').removeClass('hidden');
+                            }
+                            else {
+                                $('.filterBox').not('.' + value).addClass('hidden');
+                                $('.filterBox').filter('.' + value).removeClass('hidden');
+                            }
+
+                            // 切换 .bold 类名
+                            const $currentItem = $(this);
+                            const $prevItem = $('.filter.bold');
+                            if (!$currentItem.hasClass('bold')) {
+                                $currentItem.addClass('bold');
+                                $prevItem.removeClass('bold');
+                            }
+                        });
+                    });
+
+
+                </script>
+
+
+
                 <div class="swiper mySwiper">
                     <div class="swiper-wrapper mob">
-                        <div class="swiper-slide filterBox paperInk">
-                            <img src="/Content/images/zuopin/我们的世界之二.jpg" />
-                            <a href="#num00" class="link">我们的世界No.2</a>
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/305×193cm--花季雨季12.jpg" />
+
+                            <a href="#num00" class="link">花季雨季12</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/305.5×193.5cm--花季雨季11.jpg" />
+
+                            <a href="#num01" class="link">花季雨季11</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/美丽家园-100x120cm-丙烯.jpg" />
+
+                            <a href="#num02" class="link">美丽家园</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/溪深鱼肥-100x120cm-丙烯.jpg" />
+
+                            <a href="#num03" class="link">溪深鱼肥</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦与海-60X60cm-布面油画.jpg" />
+
+                            <a href="#num04" class="link">梦与海</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《痕迹2》120x120cm 油画布 2024.jpg" />
+
+                            <a href="#num05" class="link">痕迹2</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《HER》作品系列-余天.jpg" />
+
+                            <a href="#num06" class="link">《HER》作品系列</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《四方食事》之餐盘系列-30x30cm.jpg" />
+
+                            <a href="#num07" class="link">《四方食事》之餐盘系列</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《幻相》 布面综合材料50x50cm-2024年.jpg" />
+
+                            <a href="#num08" class="link">幻相</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《繁花之一》-纸本丙烯-38x53cm.jpg" />
+
+                            <a href="#num09" class="link">繁花之一</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《繁花之二》-纸本丙烯-38x53cm.jpg" />
+
+                            <a href="#num10" class="link">繁花之二</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《绯色》布面综合材料-2024年 35x28cm.jpg" />
+
+                            <a href="#num11" class="link">绯色</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《花开》-100-100-油画布-2023.jpg" />
+
+                            <a href="#num12" class="link">花开</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《迷幻》 布面综合材料60x80cm-2024年.jpg" />
+
+                            <a href="#num13" class="link">迷幻</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《重叠之相》布面综合材料-2024年 35x28cm.jpg" />
+
+                            <a href="#num14" class="link">重叠之相</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《重叠之相》布面综合材料-2024年 60x50cm.jpg" />
+
+                            <a href="#num15" class="link">重叠之相</a>
                         </div>
 
 
-                        @* 待添加 *@
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《雪白与血红》布面综合材料-20x35cm-2024年.jpg" />
+
+                            <a href="#num17" class="link">雪白与血红</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/《雪白与血红》布面综合材料-90x45cm-2023年.jpg" />
+
+                            <a href="#num18" class="link">雪白与血红</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/告白-65X80-布面油画-2021.jpg" />
+
+                            <a href="#num19" class="link">告白</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/坠入花海-80x80cm-油画.jpg" />
+
+                            <a href="#num20" class="link">坠入花海</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/夜鱼龙舞-80x80cm-油画.jpg" />
+
+                            <a href="#num21" class="link">夜鱼龙舞</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/天马行空-30x30cm-综合材料.jpg" />
+
+                            <a href="#num22" class="link">天马行空</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/无题-44x54cm-纸本水彩.jpg" />
+
+                            <a href="#num23" class="link">无题</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/春江水暖鸭先知-其一-240x55cm.jpg" />
+
+                            <a href="#num24" class="link">春江水暖鸭先知 其一</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/春江水暖鸭先知-其二-240x55cm.jpg" />
+
+                            <a href="#num25" class="link">春江水暖鸭先知 其二</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之三十三·-星球史诗-80x107cm-中国漳州.jpg" />
+
+                            <a href="#num26" class="link">梦中的安塔利亚系列之三十三·星球史诗</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之六·大海的乐章-100x135cm-中国漳州.jpg" />
+
+                            <a href="#num27" class="link">梦中的安塔利亚系列之六·大海的乐章</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之十·恒的孤独-80x120cm-中国漳州.jpg" />
+
+                            <a href="#num28" class="link">梦中的安塔利亚系列之十·恒的孤独</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之十六·心灵图象-80x107cm-中国漳州.jpg" />
+
+                            <a href="#num29" class="link">梦中的安塔利亚系列之十六·心灵图象</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之四十二隐藏在弧形风景下的奥秘-80x107cm-中国漳州.jpg" />
+
+                            <a href="#num30" class="link">梦中的安塔利亚系列之四十二·隐藏在弧形风景下的奥秘</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/梦中的安塔利亚系列之四十手执火焰之矛的堂吉河德骑士-80x107cm-中国漳州.jpg" />
+
+                            <a href="#num31" class="link">梦中的安塔利亚系列之四十·手执火焰之矛的堂吉河德骑士</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/煌-70x100cm-2023.jpg" />
+
+                            <a href="#num32" class="link">煌</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/猎语机械芯.jpg" />
+
+                            <a href="#num33" class="link">猎语机械芯</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/百款玫瑰-数字版画-2024.jpg" />
+
+                            <a href="#num34" class="link">百款玫瑰</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/百魅女人-数字版画-2024.jpg" />
+
+                            <a href="#num35" class="link">百魅女人</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/等待-65X80-布面油画-2019.jpg" />
+
+                            <a href="#num36" class="link">等待</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/脊-装置-110x65x55cm.jpg" />
+
+                            <a href="#num37" class="link">脊</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯-II.jpg" />
+
+                            <a href="#num38" class="link">色彩狂想曲II</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯.jpg" />
+
+                            <a href="#num39" class="link">色彩狂想曲</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/行动的前奏-60X60cm-布面油画.jpg" />
+
+                            <a href="#num40" class="link">行动的前奏</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/随园食单-其一-200x200cm.jpg" />
+
+                            <a href="#num41" class="link">随园食单 其一</a>
+                        </div>
+
+                        <div class="swiper-slide filterBox oilPainting">
+                            <img src="/Content/images/chunyu3/道-70x100cm-2023.jpg" />
+
+                            <a href="#num42" class="link">道</a>
+                        </div>
+
                     </div>
                     <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
@@ -885,275 +1211,1102 @@
             </section>
         </div>
 
-        <!-- type1(横)测试 x3 -->
+        <!-- type1(横) -->
 
         <div class="introCon target" id="num00">
-            <p class="JhengBold">我们的世界No.2
-                姚健伟
-                68X136cm
-                纸本彩墨
-            </p>
-            <div class="msg btn1">
-                <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-            </div>
-
-            <a href="/content/images/zuopin/我们的世界之二.jpg" target="_blank">
-                <img src="/content/images/zuopin/我们的世界之二.jpg" class="type1" /></a>
-
-            <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num01">
-            <p class="JhengBold">大鹏系列-1
+            <p class="JhengBold">花季雨季12
                 张岚芊
-                120X180cm
+                305x193cm
                 综合材料
             </p>
             <div class="msg btn1">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+
             </div>
-            <a href="/content/images/zuopin/大鹏系列-1.jpg" target="_blank">
-                <img src="/content/images/zuopin/大鹏系列-1.jpg" class="type1" /></a>
+
+            <a href="/content/images/chunyu3/305×193cm--花季雨季12.jpg" target="_blank">
+                <img src="/content/images/chunyu3/305×193cm--花季雨季12.jpg" class="type1" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
-        <div class="introCon target" id="num02">
-            <p class="JhengBold">三渡
-                张铁军
-                33X180cm
-                纸本水墨
+
+
+
+        <div class="introCon target" id="num01">
+            <p class="JhengBold">花季雨季11
+                张岚芊
+                305.5x193.5cm
+                综合材料
             </p>
             <div class="msg btn1">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+
             </div>
-            <a href="/content/images/zuopin/三渡.jpg" target="_blank">
-                <img src="/content/images/zuopin/三渡.jpg" class="type1" /></a>
+
+            <a href="/content/images/chunyu3/305.5×193.5cm--花季雨季11.jpg" target="_blank">
+                <img src="/content/images/chunyu3/305.5×193.5cm--花季雨季11.jpg" class="type1" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
+
+
 
         <div class="introCon target" id="num06">
-            <p class="JhengBold">魔鬼猫·动物家族
-                猫爹雨海
-                布面油画
+            <p class="JhengBold">《HER》作品系列
+                余天
+                摄影作品
             </p>
             <div class="msg btn1">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+
             </div>
 
-            <a href="/content/images/zuopin/魔鬼猫家族.jpg" target="_blank">
-                <img src="/content/images/zuopin/魔鬼猫家族.jpg" class="type1" /></a>
+            <a href="/content/images/chunyu3/《HER》作品系列-余天.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《HER》作品系列-余天.jpg" class="type1" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
-        <div class="introCon target" id="num08">
-            <p class="JhengBold">黑白照
-                盛伯骥
-                尺寸可变
+
+        <div class="introCon target" id="num07">
+            <p class="JhengBold">《四方食事》之餐盘系列
+                聂萍
+                30x30cm/个
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《四方食事》之餐盘系列-30x30cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《四方食事》之餐盘系列-30x30cm.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num09">
+            <p class="JhengBold">繁花之一
+                王玉波
+                38x53cm
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《繁花之一》-纸本丙烯-38x53cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《繁花之一》-纸本丙烯-38x53cm.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num10">
+            <p class="JhengBold">繁花之二
+                王玉波
+                38x53cm
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《繁花之二》-纸本丙烯-38x53cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《繁花之二》-纸本丙烯-38x53cm.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num13">
+            <p class="JhengBold">迷幻
+                乙妍
+                60x80cm
+                油画布
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《迷幻》 布面综合材料60x80cm-2024年.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《迷幻》 布面综合材料60x80cm-2024年.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num17">
+            <p class="JhengBold">雪白与血红
+                乙妍
+                20x35cm
+                布面综合材料
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《雪白与血红》布面综合材料-20x35cm-2024年.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《雪白与血红》布面综合材料-20x35cm-2024年.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num18">
+            <p class="JhengBold">雪白与血红
+                乙妍
+                90x45cm
+                布面综合材料
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《雪白与血红》布面综合材料-90x45cm-2023年.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《雪白与血红》布面综合材料-90x45cm-2023年.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num23">
+            <p class="JhengBold">无题
+                鸥洋
+                44x54cm
+                纸本水彩
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/无题-44x54cm-纸本水彩.jpg" target="_blank">
+                <img src="/content/images/chunyu3/无题-44x54cm-纸本水彩.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num24">
+            <p class="JhengBold">春江水暖鸭先知 其一
+                刘煜
+                240x55cm
+                水墨
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/春江水暖鸭先知-其一-240x55cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/春江水暖鸭先知-其一-240x55cm.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num25">
+            <p class="JhengBold">春江水暖鸭先知 其二
+                刘煜
+                240x55cm
+                水墨
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/春江水暖鸭先知-其二-240x55cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/春江水暖鸭先知-其二-240x55cm.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num26">
+            <p class="JhengBold">梦中的安塔利亚系列之三十三
+                星球史诗
+                楚雨
+                80x107cm
                 摄影
             </p>
             <div class="msg btn1">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+
             </div>
 
-            <a href="/content/images/zuopin/黑白照.jpg" target="_blank">
-                <img src="/content/images/zuopin/黑白照.jpg" class="type1" /></a>
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之三十三·-星球史诗-80x107cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之三十三·-星球史诗-80x107cm-中国漳州.jpg" class="type1" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num27">
+            <p class="JhengBold">梦中的安塔利亚系列之六
+                大海的乐章
+                楚雨
+                100x135cm
+                摄影
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之六·大海的乐章-100x135cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之六·大海的乐章-100x135cm-中国漳州.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num29">
+            <p class="JhengBold">梦中的安塔利亚系列之十六
+                心灵图象
+                楚雨
+                80x107cm
+                摄影
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之十六·心灵图象-80x107cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之十六·心灵图象-80x107cm-中国漳州.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num32">
+            <p class="JhengBold">煌
+                黄蕾
+                70x100cm
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/煌-70x100cm-2023.jpg" target="_blank">
+                <img src="/content/images/chunyu3/煌-70x100cm-2023.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num33">
+            <p class="JhengBold">猎语机械芯
+                红图文化
+                尺寸可变
+                数字版画
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/猎语机械芯.jpg" target="_blank">
+                <img src="/content/images/chunyu3/猎语机械芯.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num34">
+            <p class="JhengBold">百款玫瑰
+                曾风
+                尺寸可变
+                数字版画
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/百款玫瑰-数字版画-2024.jpg" target="_blank">
+                <img src="/content/images/chunyu3/百款玫瑰-数字版画-2024.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num35">
+            <p class="JhengBold">百魅女人
+                曾风
+                尺寸可变
+                数字版画
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/百魅女人-数字版画-2024.jpg" target="_blank">
+                <img src="/content/images/chunyu3/百魅女人-数字版画-2024.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num42">
+            <p class="JhengBold">道
+                黄蕾
+                70x100cm
+            </p>
+            <div class="msg btn1">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/道-70x100cm-2023.jpg" target="_blank">
+                <img src="/content/images/chunyu3/道-70x100cm-2023.jpg" class="type1" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
 
-        <!-- type2（竖）测试 x3 -->
 
-        <div class="introCon target" id="num03">
 
-            <p class="JhengBold">“山象”系列（叁）-佛面
-                常世江
-                100X100cm
-                布面丙烯
+
+        <!-- type2（竖） -->
+
+        <div class="introCon target" id="num02">
+
+            <p class="JhengBold">美丽家园
+                李苑
+                100x120cm
+                丙烯
             </p>
             <div class="msg btn2">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
 
             </div>
 
-            <a href="/content/images/zuopin/“山象”系列（叁）-佛面.jpg" target="_blank">
-                <img src="/content/images/zuopin/“山象”系列（叁）-佛面.jpg" class="type2" /></a>
+            <a href="/content/images/chunyu3/美丽家园-100x120cm-丙烯.jpg" target="_blank">
+                <img src="/content/images/chunyu3/美丽家园-100x120cm-丙烯.jpg" class="type2" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num03">
+
+            <p class="JhengBold">溪深鱼肥
+                李苑
+                100x120cm
+                丙烯
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/溪深鱼肥-100x120cm-丙烯.jpg" target="_blank">
+                <img src="/content/images/chunyu3/溪深鱼肥-100x120cm-丙烯.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
         <div class="introCon target" id="num04">
 
-            <p class="JhengBold">风月（二联图）
-                农夫
-                82X275*2cm
-                纸本水墨
-            </p>
-            <div class="msg btn2">
-                <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
-
-
-            </div>
-
-            <a href="/content/images/zuopin/风月（二联图）.jpg" target="_blank">
-                <img src="/content/images/zuopin/风月（二联图）.jpg" class="type2" /></a>
-
-            <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
-
-            <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
-            </div>
-        </div>
-
-        <div class="introCon target" id="num05">
-
-            <p class="JhengBold">时尚碎片-梧桐山水
-                曾风
-                320X160cm
+            <p class="JhengBold">梦与海
+                乙妍
+                60x60cm
                 布面油画
             </p>
             <div class="msg btn2">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
 
             </div>
 
-            <a href="/content/images/zuopin/时尚碎片.jpg" target="_blank">
-                <img src="/content/images/zuopin/时尚碎片.jpg" class="type2" /></a>
+            <a href="/content/images/chunyu3/梦与海-60X60cm-布面油画.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦与海-60X60cm-布面油画.jpg" class="type2" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
-        <div class="introCon target" id="num07">
 
-            <p class="JhengBold">Prometheus, Mixed media
-                on canvas
-                栗子
-                90X73cm
+        <div class="introCon target" id="num05">
+
+            <p class="JhengBold">痕迹2
+                王华
+                120x120cm
+                油画布
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《痕迹2》120x120cm 油画布 2024.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《痕迹2》120x120cm 油画布 2024.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+
+        <div class="introCon target" id="num08">
+
+            <p class="JhengBold">幻相
+                乙妍
+                50x50cm
+                布面综合材料
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《幻相》 布面综合材料50x50cm-2024年.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《幻相》 布面综合材料50x50cm-2024年.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num11">
+
+            <p class="JhengBold">绯色
+                乙妍
+                35x28cm
+                布面综合材料
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《绯色》布面综合材料-2024年 35x28cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《绯色》布面综合材料-2024年 35x28cm.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+
+        <div class="introCon target" id="num12">
+
+            <p class="JhengBold">花开
+                王华
+                100x100cm
+                油画布
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《花开》-100-100-油画布-2023.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《花开》-100-100-油画布-2023.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num14">
+
+            <p class="JhengBold">重叠之相
+                乙妍
+                35x28cm
+                布面综合材料
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《重叠之相》布面综合材料-2024年 35x28cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《重叠之相》布面综合材料-2024年 35x28cm.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num15">
+
+            <p class="JhengBold">重叠之相
+                乙妍
+                60x50cm
+                布面综合材料
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/《重叠之相》布面综合材料-2024年 60x50cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/《重叠之相》布面综合材料-2024年 60x50cm.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num19">
+
+            <p class="JhengBold">告白
+                张瑛
+                65x80cm
+                布面油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/告白-65X80-布面油画-2021.jpg" target="_blank">
+                <img src="/content/images/chunyu3/告白-65X80-布面油画-2021.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num20">
+
+            <p class="JhengBold">坠入花海
+                陈晓英
+                80x80cm
+                油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/坠入花海-80x80cm-油画.jpg" target="_blank">
+                <img src="/content/images/chunyu3/坠入花海-80x80cm-油画.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num21">
+
+            <p class="JhengBold">夜鱼龙舞
+                陈晓英
+                80x80cm
+                油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/夜鱼龙舞-80x80cm-油画.jpg" target="_blank">
+                <img src="/content/images/chunyu3/夜鱼龙舞-80x80cm-油画.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num22">
+
+            <p class="JhengBold">天马行空
+                徐赓良
+                30x30cm
                 综合材料
             </p>
             <div class="msg btn2">
                 <p class="JhengLight">
-                    咨询该作品是否出售：</p>
-                <input type="text" placeholder="请输入您的称呼 / Name" />
-                <br />
-                <input type="email" placeholder="请输入您的电子邮箱 / Email" />
-                <br />
-
-                <button type="submit">提&emsp;交 / SUBMIT</button>
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
 
 
             </div>
 
-            <a href="/content/images/zuopin/普罗米修斯.jpg" target="_blank">
-                <img src="/content/images/zuopin/普罗米修斯.jpg" class="type2" /></a>
+            <a href="/content/images/chunyu3/天马行空-30x30cm-综合材料.jpg" target="_blank">
+                <img src="/content/images/chunyu3/天马行空-30x30cm-综合材料.jpg" class="type2" /></a>
 
             <!-- 固定元素 -->
-            <img src="/content/images/trading.png" class="xs-hide sm-hide trading">
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
 
             <div class="trading-copyright">
-                Copyright © 2023 SZAIPA. All Rights Reserved.
+                Copyright © 2024 SZAIPA. All Rights Reserved.
             </div>
         </div>
 
+        <div class="introCon target" id="num28">
+
+            <p class="JhengBold">梦中的安塔利亚系列之十
+                恒的孤独
+                楚雨
+                80x120cm
+                摄影
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之十·恒的孤独-80x120cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之十·恒的孤独-80x120cm-中国漳州.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num30">
+
+            <p class="JhengBold">梦中的安塔利亚系列之四十二
+                隐藏在弧形风景下的奥秘
+                楚雨
+                80x107cm
+                摄影
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之四十二隐藏在弧形风景下的奥秘-80x107cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之四十二隐藏在弧形风景下的奥秘-80x107cm-中国漳州.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num31">
+
+            <p class="JhengBold">梦中的安塔利亚系列之四十
+                手执火焰之矛的堂吉河德骑士
+                楚雨
+                80x107cm
+                摄影
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/梦中的安塔利亚系列之四十手执火焰之矛的堂吉河德骑士-80x107cm-中国漳州.jpg" target="_blank">
+                <img src="/content/images/chunyu3/梦中的安塔利亚系列之四十手执火焰之矛的堂吉河德骑士-80x107cm-中国漳州.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num36">
+
+            <p class="JhengBold">等待
+                张瑛
+                65x80cm
+                布面油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/等待-65X80-布面油画-2019.jpg" target="_blank">
+                <img src="/content/images/chunyu3/等待-65X80-布面油画-2019.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num37">
+
+            <p class="JhengBold">脊
+                何娟
+                110x65x55cm
+                装置
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/脊-装置-110x65x55cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/脊-装置-110x65x55cm.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num38">
+
+            <p class="JhengBold">色彩狂想曲II
+                何婷
+                100x100cm
+                布面油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯-II.jpg" target="_blank">
+                <img src="/content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯-II.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num39">
+
+            <p class="JhengBold">色彩狂想曲I
+                何婷
+                100x100cm
+                布面油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯.jpg" target="_blank">
+                <img src="/content/images/chunyu3/色彩狂想曲-100x100cm-布面油画-丙烯.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num40">
+
+            <p class="JhengBold">行动的前奏
+                乙妍
+                60x60cm
+                布面油画
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/行动的前奏-60X60cm-布面油画.jpg" target="_blank">
+                <img src="/content/images/chunyu3/行动的前奏-60X60cm-布面油画.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+        <div class="introCon target" id="num41">
+
+            <p class="JhengBold">随园食单-其一
+                聂萍
+                200x200cm
+                水墨
+            </p>
+            <div class="msg btn2">
+                <p class="JhengLight">
+                    扫描下方微信二维码<br />咨询该作品是否出售：</p>
+                <img src="/content/images/qrcode.png" style="width: 55%;" />
+
+
+            </div>
+
+            <a href="/content/images/chunyu3/随园食单-其一-200x200cm.jpg" target="_blank">
+                <img src="/content/images/chunyu3/随园食单-其一-200x200cm.jpg" class="type2" /></a>
+
+            <!-- 固定元素 -->
+            <img src="/content/images/trading-chunyu.png" class="xs-hide sm-hide trading">
+
+            <div class="trading-copyright">
+                Copyright © 2024 SZAIPA. All Rights Reserved.
+            </div>
+        </div>
+
+
+
+
+
         <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
     </section>
+
 
 
 
@@ -1173,7 +2326,142 @@
                 <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img src="/Content/images/chunyu-color.jpg" />
+                            <img src="/Content/images/chunyu3/10004.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10002.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10003.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10001.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10005.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10006.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10007.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10008.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10009.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100010.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100011.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100012.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100013.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100014.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100015.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100016.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100017.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100018.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100019.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100020.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100021.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100022.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100023.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100024.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100025.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100026.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100027.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100028.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100029.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100030.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100031.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100032.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100033.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100034.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100035.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100036.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100037.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100038.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100039.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100040.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100041.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100042.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100043.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100044.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100045.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100046.jpg" />
                         </div>
                     </div>
                     <div class="swiper-button-next xs-hide sm-hide"></div>
@@ -1182,11 +2470,148 @@
                 <div thumbsSlider="" class="swiper mySwiper2">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
-                            <img src="/Content/images/chunyu-color.jpg">
+                            <img src="/Content/images/chunyu3/10004.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10002.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10003.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10001.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10005.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10006.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10007.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10008.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/10009.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100010.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100011.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100012.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100013.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100014.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100015.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100016.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100017.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100018.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100019.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100020.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100021.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100022.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100023.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100024.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100025.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100026.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100027.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100028.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100029.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100030.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100031.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100032.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100033.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100034.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100035.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100036.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100037.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100038.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100039.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100040.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100041.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100042.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100043.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100044.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100045.jpg" />
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="/Content/images/chunyu3/100046.jpg" />
                         </div>
                     </div>
                 </div>
             </section>
+
+
         </div>
 
         <div class=" col-xs2 col-sm2 col-md2 col-lg2">&nbsp;
@@ -1249,7 +2674,7 @@
         var swiper = new Swiper(".mySwiper", {
             effect: "coverflow",
             // 设置初始显示的幻灯片索引为0
-            initialSlide: 1,
+            initialSlide: 0,
             grabCursor: true,
             centeredSlides: true,
             slidesPerView: "auto",
@@ -1393,7 +2818,7 @@
                         <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
                             粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
                         办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
-                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                        Copyright © 2024 SZAIPA. All Rights Reserved. <br />
                         深圳市艺术产业促进会
                     </p>
                 </div>
@@ -1437,7 +2862,7 @@
         <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
             粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
         办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
-        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+        Copyright © 2024 SZAIPA. All Rights Reserved. <br />
         深圳市艺术产业促进会<br />
         <br />
         <a href="~/Staff/Index">后台登陆</a>

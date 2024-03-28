@@ -15,6 +15,11 @@
     --footerBorder: 0.7px solid #939393;
     --footerFontsize: 1.4rem;
     --footerLineheight: 1.8em;
+
+    /* 春语3页面单独 */
+    /* QRCode的处理方式，以后要换成input提交邮件申请 */
+    --introCon: 5% 10% 10vh 10%;
+    --type2: -20vh;
 }
 
 /* 初始化页面与响应式标准字号的设置 */
@@ -157,6 +162,10 @@ body {
         --footerFontsize: 1rem !important;
         --footerLineheight: 1.8em;
 
+        /* 春语3页面单独 */
+        /* QRCode的处理方式，以后要换成input提交邮件申请 */
+        --introCon: 17% 10% 10vh 10%;
+        --type2: -30%;
     }
 
     .after::after {
