@@ -159,44 +159,30 @@
                         <select class="ql-background"></select>
                         <button class="ql-clean" style="margin-right: .5%;"></button>
 
-                        <button id="custom-button">'Clicked!'</button>
+                        @* <button id="custom-button">'Clicked!'</button> *@
 
                     </div>
-                    <div id="editor" name="content"></div>
-                </div>
-            </div>
+                    <div type="hidden" id="editor" name="content"> </div>
 
+                    <br />
+                    <div class="col-xs20 col-sm20 col-m20 col-lg20">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18"
+                                style="text-align: center;margin-top:2vh;">
+                                <button id="submitBtn" class="layui-btn" lay-submit
+                                    lay-filter="formSubmit">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 
-
-
-            @* <button id="alignLeftBtn">左</button>
-            <button id="alignCenterBtn">中</button>
-            <button id="alignRightBtn">右</button>
-            <button id="captionBtn">注</button>
-            <button id="uploadBtn">传</button>
-
-            <div class="editor" contenteditable="true"></div>
-            <div class="output" name="Content"></div> *@
-
-            <br />
-            <div class="col-xs20 col-sm20 col-m20 col-lg20">
-                <div class="layui-form-item">
-                    <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18"
-                        style="text-align: center;margin-top:2vh;">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
     </form>
 
 
     <div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
 
     <script>
-
-        //上传
+        //封面上传
         var upload = layui.upload; //得到 upload 对象
         upload.render({
             elem: '#uploadDemo'
@@ -209,6 +195,25 @@
             , before: function () {
                 layer.msg('上传中', { icon: 16, time: 0 });
             }
+        });
+
+        // ？？？？
+        layui.use('form', function () {
+            var form = layui.form;
+
+            // 监听表单提交
+            form.on('submit(formSubmit)', function (data) {
+                // 获取Quill编辑器实例
+                var editor = new Quill('#editor');
+                // 获取编辑器的内容
+                var content = editor.root.innerHTML;
+
+                // 将内容赋值给隐藏的input元素
+                $('#editor').val(content);
+
+                // 继续执行表单提交的逻辑处理代码
+                // ...
+            });
         });
 
         $(function () {
@@ -246,12 +251,12 @@
             [{ 'align': [] }],
             ['image'],
 
-            [{ 'color': [] }],          // dropdown with defaults from theme
+            [{ 'color': [] }],                                // dropdown with defaults from theme
             ['clean']                                         // remove formatting button
         ];
 
         // 创建Quill编辑器
-        var quill = new Quill('#editor', {
+        var editor = new Quill('#editor', {
             theme: 'snow',
             modules: {
                 toolbar: {
@@ -263,14 +268,55 @@
 
         // 测试一下是否可以通过prompt加入图注
         // Todo: Insert photo port
-        var customButton = document.querySelector('#custom-button');
-        customButton.addEventListener('click', function () {
+        @* var customButton = document.querySelector('#custom-button');
+            customButton.addEventListener('click', function () {
             console.log('Clicked!');
-        });
+            }); *@
 
+        // 粘贴图片上传服务器
+        var quillEditor = this.editor; // 缓存Quill编辑器的实例
+        editor.root.addEventListener("paste", (e) => {
+            console.log(e)
+            console.log(quillEditor)
+            const clipboardData = e.clipboardData
+            // support cut by software & copy image file directly
+            const isImage = clipboardData.types.length && clipboardData.types.join('').includes('Files');
+            if (!isImage) {
+                return;
+            }
+            // only support single image paste
+            const file = clipboardData.files[0];
+            if (!file || !file.name || !(file.name.toLowerCase().indexOf(".png") !== -1 || file.name.toLowerCase().indexOf(".gif") !== -1
+                || file.name.toLowerCase().indexOf(".jpg") !== -1)) {
+                console.log('粘贴的不是图片')
+                return;
+            }
+            var formData = new FormData;
+            formData.append('file', file)
+            // 在此执行上传
+            $.ajax({
+                data: formData,
+                processData: false,//不做处理
+                contentType: false,//不做处理
+                sync: false,
+                url: '/Staff/TempImgIntervalSave',
+                type: 'post',
+                success(data) {
+                    console.log(data)
+                    if (data.code == 0) {
+                        const range = quillEditor.getSelection(true);
+                        quillEditor.insertEmbed(range.index, 'image', data.data);
+                    } else {
+                        layer.msg(data.msg)
+                    }
 
-
-
-
+                }
+            })
+        })
+        editor.clipboard.addMatcher('IMG', (node, delta) => {
+            const Delta = Quill.import('delta')
+            // 忽略base64插入操作
+            return new Delta().insert('')
+        })
 
     </script>
