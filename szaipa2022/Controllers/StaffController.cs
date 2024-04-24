@@ -314,9 +314,9 @@ namespace Szaipa.Controllers
             db.SaveChanges();
 
 
-            return RedirectToAction("newArtist", "Staff");
+            return RedirectToAction("ArtistList", "Staff");
         }
-        public ActionResult newArtAdd()
+        public ActionResult ArtistAdd()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -331,7 +331,7 @@ namespace Szaipa.Controllers
         //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult newArtAdd(FormCollection form)
+        public ActionResult ArtistAdd(FormCollection form)
         {
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -384,7 +384,7 @@ namespace Szaipa.Controllers
             return RedirectToAction("newArtBg", "Staff");
         }
 
-        public ActionResult ArtWorks()
+        public ActionResult ArtWorksList()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -442,7 +442,7 @@ namespace Szaipa.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("ArtWorks", "Staff");
+            return RedirectToAction("ArtWorksList", "Staff");
         }
         public ActionResult ArtWorksAdd(int? id)
         {
@@ -490,9 +490,9 @@ namespace Szaipa.Controllers
             db.Works.Add(works);
             db.SaveChanges();
 
-            return RedirectToAction("ArtWorks", "Staff");
+            return RedirectToAction("ArtWorksList", "Staff");
         }
-        public ActionResult ArtFav()
+        public ActionResult ArtFavList()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -505,7 +505,7 @@ namespace Szaipa.Controllers
             return View(staff);
         }
 
-        public ActionResult FavEdit(int id)
+        public ActionResult ArtFavEdit(int id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -525,7 +525,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult FavEdit(Fav fav, FormCollection form)
+        public ActionResult ArtFavEdit(Fav fav, FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -551,10 +551,10 @@ namespace Szaipa.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("ArtFav", "Staff");
+            return RedirectToAction("ArtFavList", "Staff");
         }
 
-        public ActionResult newArtFav(int? id)
+        public ActionResult ArtFavAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -570,7 +570,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult newArtFav(FormCollection form)
+        public ActionResult ArtFavAdd(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -609,9 +609,9 @@ namespace Szaipa.Controllers
             db.Fav.Add(fav);
             db.SaveChanges();
 
-            return RedirectToAction("ArtFav", "Staff");
+            return RedirectToAction("ArtFavList", "Staff");
         }
-        public ActionResult ArtAuction()
+        public ActionResult ArtAuctionList()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -624,7 +624,7 @@ namespace Szaipa.Controllers
             return View(staff);
         }
 
-        public ActionResult AuctionEdit(int id)
+        public ActionResult ArtAuctionEdit(int id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -644,7 +644,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult AuctionEdit(Auction auction, FormCollection form)
+        public ActionResult ArtAuctionEdit(Auction auction, FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -669,10 +669,10 @@ namespace Szaipa.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("ArtAuction", "Staff");
+            return RedirectToAction("ArtAuctionList", "Staff");
         }
 
-        public ActionResult newAuction()
+        public ActionResult ArtAuctionAdd()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -687,7 +687,7 @@ namespace Szaipa.Controllers
         //string CnName,string EnName,string Nation,string Ctiy,string Title,int sex,string Content
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult newAuction(FormCollection form)
+        public ActionResult ArtAuctionAdd(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -728,10 +728,10 @@ namespace Szaipa.Controllers
             db.SaveChanges();
 
             // FavList视图待创建，直接套模板就ok
-            return RedirectToAction("ArtAuction", "Staff");
+            return RedirectToAction("ArtAuctionList", "Staff");
         }
 
-        public ActionResult ArtExhibition()
+        public ActionResult ArtExhibitionList()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -743,7 +743,7 @@ namespace Szaipa.Controllers
 
             return View(staff);
         }
-        public ActionResult ExhibitionEdit(int id)
+        public ActionResult ArtExhibitionEdit(int id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -763,7 +763,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult ExhibitionEdit(Exhibition exhibit, FormCollection form)
+        public ActionResult ArtExhibitionEdit(Exhibition exhibit, FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -786,9 +786,9 @@ namespace Szaipa.Controllers
 
             db.SaveChanges();
 
-            return RedirectToAction("ArtExhibition", "Staff");
+            return RedirectToAction("ArtExhibitionList", "Staff");
         }
-        public ActionResult newExhibitionAdd(int? id)
+        public ActionResult ArtExhibitionAdd(int? id)
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
@@ -804,7 +804,7 @@ namespace Szaipa.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult newExhibitionAdd(FormCollection form)
+        public ActionResult ArtExhibitionAdd(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -840,7 +840,7 @@ namespace Szaipa.Controllers
             db.Exhibition.Add(exhibition);
             db.SaveChanges();
 
-            return RedirectToAction("ArtExhibition", "Staff");
+            return RedirectToAction("ArtExhibitionList", "Staff");
         }
         public ActionResult newArtEdit()
         {
@@ -849,7 +849,7 @@ namespace Szaipa.Controllers
             return View(staff);
         }
 
-        public ActionResult newArtist()
+        public ActionResult ArtistList()
         {
             var staff = Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
@@ -1364,6 +1364,64 @@ namespace Szaipa.Controllers
             return RedirectToAction("News", "Staff");
         }
 
+        public ActionResult ArtNewsList()
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ViewBag.StaffEdit = 1;
+
+            return View(staff);
+        }
+
+        public ActionResult ArtNewsEdit(int id)
+        {
+            string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
+            string controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            TempData["controller"] = controllerName;
+            TempData["view"] = actionName;
+            TempData["id"] = id;
+            var staff = Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            var artnews = db.ArtNews.FirstOrDefault(d => d.Id == id);
+            var art = db.Artist.FirstOrDefault(d => d.Id == artnews.ArtistId);
+
+
+
+            ViewBag.art = art.ArtistNameCN;
+
+            return View(artnews);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult ArtNewsEdit(ArtNews artnews, FormCollection form)
+        {
+            var staff = (Staff)Session["Staff"];
+            if (staff == null) return RedirectToAction("Login", "Staff");
+            ArtNews artnew = db.ArtNews.FirstOrDefault(d => d.Id == artnews.Id);
+            artnew.CoverPath = artnew.CoverPath;
+            artnew.Title = artnew.Title;
+            artnew.Date = artnew.Date;
+            artnew.ArtistId = artnew.ArtistId;
+            artnew.Content = artnew.Content;
+
+            if (TempData["TempImg"] != null)
+            {
+                string filename = TempData["TempImg"].ToString();
+                string path = "/Content/ArtImg/Artist/ArtNews/";
+                ImgChange(path, filename, artnew.CoverPath);
+                artnew.CoverPath = filename;
+            }
+
+            artnew.EditRecord = artnew.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此作品。" + "/";
+
+            db.SaveChanges();
+
+            return RedirectToAction("ArtNewsList", "Staff");
+        }
         public ActionResult ArtNewsAdd()
         {
             string actionName = this.ControllerContext.RouteData.Values["action"].ToString();
@@ -1371,7 +1429,7 @@ namespace Szaipa.Controllers
             TempData["controller"] = controllerName;
             TempData["view"] = actionName;
             var staff = Session["Staff"];
-            if (staff == null) 
+            if (staff == null)
             {
                 return RedirectToAction("Login", "Staff");
             }
@@ -1385,7 +1443,7 @@ namespace Szaipa.Controllers
         public ActionResult ArtNewsAdd(FormCollection form)
         {
             var staff = (Staff)Session["Staff"];
-            if (staff == null) 
+            if (staff == null)
             {
                 return RedirectToAction("Login", "Staff");
             }
@@ -1394,7 +1452,14 @@ namespace Szaipa.Controllers
 
             ArtNews artnews = new ArtNews();
             string path = "/Content/newsImg/";
-            artnews.Date = DateTime.Now;
+            // artnews.Date = DateTime.Now;
+            string shijian = Request.Form["Date"];
+            DateTime dateValue;
+            if (DateTime.TryParse(shijian, out dateValue))
+            {
+                // 转换成功，可以将dateValue赋值给artnews.Date属性
+                artnews.Date = dateValue;
+            }
             string content = Request.Form["Content"];
             artnews.Content = content.Replace("TempFile", "newsImg");
             if (TempData["TempIntervalImg"] != null)
@@ -1425,7 +1490,7 @@ namespace Szaipa.Controllers
             db.ArtNews.Add(artnews);
             db.SaveChanges();
 
-            return View();
+            return RedirectToAction("ArtNewsList", "Staff");
         }
 
         //已下为调用方法
@@ -2160,6 +2225,35 @@ namespace Szaipa.Controllers
 
             return wv;
         }
+
+        private List<ArtNewsView> PageArtNews(List<ArtNews> ArtNews, int page, int limit, int count)
+        {
+            List<ArtNewsView> wv = new List<ArtNewsView>();
+
+            int fint = (page - 1) * limit;
+            int eint = page * limit;
+
+
+            ArtNews = ArtNews.Take(eint).Skip(fint).ToList();
+
+
+            foreach (var n in ArtNews)
+            {
+                ArtNewsView v = new ArtNewsView();
+                v.Id = n.Id;
+                v.Title = n.Title;
+                v.ArtistId = n.ArtistId;
+                v.ArtistName = db.Artist.FirstOrDefault(a => a.Id == n.ArtistId).ArtistNameCN;
+                v.Content = n.Content;
+                v.CoverPath = n.CoverPath;
+                v.readcount = Convert.ToInt32(n.ReadCount);
+                v.EditRecord = n.EditRecord;
+                wv.Add(v);
+            }
+
+
+            return wv;
+        }
         private List<ExhibitionView> PageExhibition(List<Exhibition> exhi, int page, int limit, int count)
         {
             List<ExhibitionView> ehb = new List<ExhibitionView>();
@@ -2461,6 +2555,24 @@ namespace Szaipa.Controllers
                 },
             };
         }
+
+        public JsonResult ArtNewsdata(int page, int limit)
+        {
+            if (Session["Staff"] == null) return null;
+            var artnews = db.ArtNews.ToList();
+            int count = artnews.Count();
+            var artnew = PageArtNews(artnews, page, limit, count);
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    count = count,
+                    data = artnew,
+                },
+            };
+        }
         public JsonResult Exhibitionsdata(int page, int limit)
         {
             if (Session["Staff"] == null) return null;
@@ -2664,7 +2776,7 @@ namespace Szaipa.Controllers
             }
             if (msg == "0")
             {
-                
+
                 // 使用 Guid.NewGuid().ToString() 生成唯一的文件名
                 string newFilename = Guid.NewGuid().ToString() + "." + fileExt;
 
@@ -2692,7 +2804,7 @@ namespace Szaipa.Controllers
                     }
                 }
             };
-        }        
+        }
 
         public JsonResult diary(int day)
         {
@@ -3201,6 +3313,33 @@ namespace Szaipa.Controllers
                 }
             };
         }
+        public JsonResult ArtNewsDelete(int id)
+        {
+            int msg = 0;
+            var staff = Session["Staff"];
+            if (staff != null)
+            {
+                Staff staffer = (Staff)Session["Staff"];
+                ArtNews artnews = db.ArtNews.FirstOrDefault(d => d.Id == id);
+                Artist art = db.Artist.FirstOrDefault(a => a.Id == artnews.ArtistId);
+                staffer = db.Staff.FirstOrDefault(d => d.Id == staffer.Id);
+                staffer.OperationRecord = staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 删除了" + art.ArtistNameCN + "(id:" + artnews.Id + ")" + "的作品。" + "/";
+                var day = today();
+                day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staffer.StaffName + " 删除了" + art.ArtistNameCN + "(id:" + artnews.Id + ")" + "的作品。" + "/";
+                string coverpath = "/Content/ArtImg/Artist/artnews-narrow/";
+                FileDelete(coverpath, artnews.CoverPath);
+                db.ArtNews.Remove(artnews);
+                db.SaveChanges();
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    data = msg
+                }
+            };
+        }
         public JsonResult ExhibitionDelete(int id)
         {
             int msg = 0;
@@ -3317,51 +3456,51 @@ namespace Szaipa.Controllers
         }
 
 
-public Dictionary<int, string> tempImageDictionary = new Dictionary<int, string>();
+        public Dictionary<int, string> tempImageDictionary = new Dictionary<int, string>();
 
-public JsonResult TestTempImg(HttpPostedFileBase file, int newsId)
-{
-    int msg = 0;
-    string filename = "null";
-    var supportedTypes = new[] { "jpg", "jpeg", "png", "gif", "bmp", "JPG", "JPEG", "PNG", "GIF", "BMP" };
-    var fileExt = Path.GetExtension(file.FileName).Substring(1);
-    if (!supportedTypes.Contains(fileExt))
-    {
-        msg = 1;
-    }
-    if (file.ContentLength > 1024 * 1000 * 20)
-    {
-        msg = 2;
-    }
-    if (msg == 0)
-    {
-        if (tempImageDictionary.ContainsKey(newsId)) 
+        public JsonResult TestTempImg(HttpPostedFileBase file, int newsId)
         {
-            string f = tempImageDictionary[newsId];
-            TempDelete(f);
-        }
-        Random r = new Random();
-        string firstname = DateTime.Now.ToString("yyyyMMddHHmmss") + r.Next(1000000);
-        firstname = Get_MD5(firstname, "utf-8");
-        filename = newsId.ToString() + "_" + firstname + "." + fileExt;
-        var filepath = Path.Combine(Server.MapPath("/Content/TempFile"), filename);
-        file.SaveAs(filepath);
-        tempImageDictionary[newsId] = filename;
-    }
-    return new JsonResult()
-    {
-        JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-        Data = new
-        {
-            code = 0,
-            msg = msg,
-            files = new
+            int msg = 0;
+            string filename = "null";
+            var supportedTypes = new[] { "jpg", "jpeg", "png", "gif", "bmp", "JPG", "JPEG", "PNG", "GIF", "BMP" };
+            var fileExt = Path.GetExtension(file.FileName).Substring(1);
+            if (!supportedTypes.Contains(fileExt))
             {
-                file = filename
+                msg = 1;
             }
+            if (file.ContentLength > 1024 * 1000 * 20)
+            {
+                msg = 2;
+            }
+            if (msg == 0)
+            {
+                if (tempImageDictionary.ContainsKey(newsId))
+                {
+                    string f = tempImageDictionary[newsId];
+                    TempDelete(f);
+                }
+                Random r = new Random();
+                string firstname = DateTime.Now.ToString("yyyyMMddHHmmss") + r.Next(1000000);
+                firstname = Get_MD5(firstname, "utf-8");
+                filename = newsId.ToString() + "_" + firstname + "." + fileExt;
+                var filepath = Path.Combine(Server.MapPath("/Content/TempFile"), filename);
+                file.SaveAs(filepath);
+                tempImageDictionary[newsId] = filename;
+            }
+            return new JsonResult()
+            {
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = new
+                {
+                    code = 0,
+                    msg = msg,
+                    files = new
+                    {
+                        file = filename
+                    }
+                }
+            };
         }
-    };
-}
 
 
         //以下为调用静态数据

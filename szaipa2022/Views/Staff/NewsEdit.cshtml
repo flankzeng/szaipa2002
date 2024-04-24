@@ -25,10 +25,17 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">主标题</label>
                     <div class="layui-input-block">
-                      
-                        @Html.TextBoxFor(m => m.Title, new { value = Model.Title, @class = "layui-input", placeholder = "新闻的主标题", autocomplete = "off" })
-                     </div>
-                </div>                
+
+                        @Html.TextBoxFor(m => m.Title, new
+                            {
+                                value = Model.Title,
+                                @class = "layui-input",
+                                placeholder =
+                                 "新闻的主标题",
+                                autocomplete = "off"
+                            })
+                    </div>
+                </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">单选框</label>
                     <div class="layui-input-block">
@@ -39,16 +46,29 @@
                 <div class="layui-form-item" id="linkform">
                     <label class="layui-form-label">连接</label>
                     <div class="layui-input-block">
-                      
-                        @Html.TextBoxFor(m => m.link, new { value = Model.link, @class = "layui-input", placeholder = "文章出处（仅仅用于转载）", autocomplete = "off" })
+
+                        @Html.TextBoxFor(m => m.link, new
+                            {
+                                value = Model.link,
+                                @class = "layui-input",
+                                placeholder =
+                                 "文章出处（仅仅用于转载）",
+                                autocomplete = "off"
+                            })
 
 
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">简介</label>
-                    <div class="layui-input-block">                       
-                        @Html.TextAreaFor(m => m.Subtitle, new { value = Model.Subtitle, @class = "layui-textarea", placeholder = "新闻的副标题（如果有）", autocomplete = "off" })
+                    <div class="layui-input-block">
+                        @Html.TextAreaFor(m => m.Subtitle, new
+                            {
+                                value = Model.Subtitle,
+                                @class = "layui-textarea",
+                                placeholder = "新闻的副标题（如果有）",
+                                autocomplete = "off"
+                            })
 
                     </div>
                 </div>
@@ -57,17 +77,22 @@
             </div>
 
             <div class="layui-col-md12">
-               
-                @Html.TextAreaFor(m => m.Content, new { value = Model.Content, id = "demo" ,style = "display: none;" })
+
+                @Html.TextAreaFor(m => m.Content, new { value = Model.Content, id = "demo", style = "display: none;" })
             </div>
             <br />
             <div class="layui-col-md12">
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <div class="layui-form-item" style="text-align: center;">
 
+
+                    <div class="layui-btn" onclick="addMaxWidthToImages()" style="background-color: rgb(137, 0, 0);">
+                        修复显示错误
                     </div>
+
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+
                 </div>
             </div>
         }
@@ -81,7 +106,7 @@
         layedit.set({
             uploadImage: {
                 url: '/Staff/TempImgIntervalSave' //接口url
-              , type: '' //默认post
+                , type: '' //默认post
             }
         });
         layedit.build('demo',
@@ -89,23 +114,33 @@
                 height: 580 //设置编辑器高度
             }
 
-            ); //建立编辑器
+        ); //建立编辑器
     });
     //上传
     var upload = layui.upload; //得到 upload 对象
     upload.render({
         elem: '#uploadDemo'
-      , url: '/Staff/TempImgSave/' //改成您自己的上传接口
-      , done: function (res) {
-          layer.msg('上传成功');
-          layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
-          console.log(res)
-      }
-      , before: function () {
-          layer.msg('上传中', { icon: 16, time: 0 });
-      }
+        , url: '/Staff/TempImgSave/' //改成您自己的上传接口
+        , done: function (res) {
+            layer.msg('上传成功');
+            layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', "/Content/TempFile/" + res.files.file);
+            console.log(res)
+        }
+        , before: function () {
+            layer.msg('上传中', { icon: 16, time: 0 });
+        }
     });
 
- 
+    function addMaxWidthToImages() {
 
-</script> 
+        let iframes = document.getElementsByTagName("iframe");
+        for (let j = 0; j < iframes.length; j++) {
+            let iframeDocument = iframes[j].contentDocument || iframes[j].contentWindow.document;
+            let iframeImages = iframeDocument.getElementsByTagName("img");
+            for (let k = 0; k < iframeImages.length; k++) {
+                iframeImages[k].style.maxWidth = "95%";
+            }
+        }
+    }
+
+</script>

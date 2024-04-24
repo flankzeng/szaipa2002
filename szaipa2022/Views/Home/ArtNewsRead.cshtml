@@ -57,7 +57,7 @@
                 </a>
             </td>
             <td>
-                <a href="/Home/artistZLQ">艺术家首页</a>
+                <a href="/Home/newArt/@Model.Artist.Id">艺术家首页</a>
             </td>
             <td class="activeLink">
                 <a href="#section01">资&#12288;讯</a>
@@ -152,6 +152,10 @@
                 Model.ArtNews.Date)</span>
         </h1>
         @Html.Raw(Model.ArtNews.Content)
+
+
+        @* Todo：
+        1.图注要使用<figcaption>标签； *@
     </article>
 
     <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>

@@ -16,6 +16,7 @@
 
 .loginbox {
     width: var(--loginboxW);
+    min-width: 300px;
     height: var(--loginboxH);
     border-radius: 15px;
     box-shadow: 5px 5px 2px #888888;

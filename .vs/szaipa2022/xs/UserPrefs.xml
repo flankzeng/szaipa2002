@@ -1,6 +1,12 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Microsoft Edge.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints />
+  <Debugger.DebugSourceFolders>
+    <String>/Users/arthur/Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d</String>
+  </Debugger.DebugSourceFolders>
   <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/StaffController.cs">
     <Files>
       <File FileName="../../../../../Applications/Visual Studio.app/Contents/MonoBundle/MSBuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
@@ -11,7 +17,7 @@
       <File FileName="szaipa2022/Controllers/ArtistController.cs" />
       <File FileName="szaipa2022/Controllers/TestController.cs" />
       <File FileName="szaipa2022/Controllers/SearchController.cs" />
-      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="2231" Column="10" />
+      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="2678" Column="1" />
       <File FileName="szaipa2022/Controllers/PublicationController.cs" />
       <File FileName="szaipa2022/Models/Model1.edmx" />
       <File FileName="szaipa2022/Models/ViewModel.cs" />
@@ -23,17 +29,13 @@
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="szaipa2022" expanded="True">
-            <Node name="szaipa2022" expanded="True">
-              <Node name="Controllers" expanded="True" />
-            </Node>
+            <Node name="szaipa2022" expanded="True" />
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

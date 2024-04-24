@@ -342,21 +342,6 @@ namespace Szaipa.Controllers
             return View(viewModel);
         }
 
-        public ActionResult artistZLQ()
-        {
-            return View();
-        }
-
-        public ActionResult artistNews()
-        {
-            return View();
-        }
-
-        public ActionResult artistNewsRead()
-        {
-            return View();
-        }
-
         public ActionResult newsread(int id)
         {
             if (Session["Staff"] != null) ViewBag.staff = 1;

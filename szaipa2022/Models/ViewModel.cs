@@ -94,6 +94,17 @@ namespace Szaipa.Models
         public string Path { set; get; }
         public string EditRecord { set; get; }
     }
+    public class ArtNewsView
+    {
+        public int Id { set; get; }
+        public int ArtistId { set; get; }
+        public int? readcount { get; set; }
+        public string Title { set; get; }
+        public string ArtistName { set; get; }
+        public string Content { set; get; }
+        public string CoverPath { set; get; }
+        public string EditRecord { set; get; }
+    }
     public class ExhibitionView
     {
         public int Id { set; get; }
