@@ -292,14 +292,14 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 art.Path = filename;
             }
             if (TempData["TempFile"] != null)
             {
                 string filename = TempData["TempFile"].ToString();
                 string path = "/Content/File/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 art.FlieInf = filename;
             }
 
@@ -480,7 +480,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/works-narrow/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 works.Path = filename;
             }
 
@@ -595,7 +595,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/Fav/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 fav.CoverPath = filename;
             }
 
@@ -713,7 +713,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/Auction/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 auction.CoverPath = filename;
             }
 
@@ -826,7 +826,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/Exhibition/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 exhibition.CoverPath = filename;
             }
 
@@ -881,8 +881,8 @@ namespace Szaipa.Controllers
             news.Content = content.Replace("TempFile", "newsImg");
             if (TempData["TempIntervalImg"] != null)
             {
-                string imgtitle = TempData["TempIntervalImg"].ToString();
-                news.ImgTitle = EffectiveImgs(imgtitle, content);
+                string imgstitle = TempData["TempIntervalImg"].ToString();
+                news.ImgTitle = EffectiveImgs(imgstitle, content);
             }
 
             news.Autor = staff.StaffName;
@@ -905,7 +905,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
 
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 news.CoverPath = filename;
             }
 
@@ -1041,7 +1041,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Artist/Works/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 work.Path = filename;
 
                 workinf wk = imginf(path, filename);
@@ -1183,14 +1183,14 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
                 string path = "/Content/ArtImg/Company";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 com.ImgPath = filename;
             }
             if (TempData["TempFile"] != null)
             {
                 string filename = TempData["TempFile"].ToString();
                 string path = "/Content/File/";
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 com.FilePath = filename;
             }
 
@@ -1319,11 +1319,11 @@ namespace Szaipa.Controllers
             string path = "/Content/newsImg/";
             news.Date = DateTime.Now;
             string content = Request.Form["Content"];
-            news.Content = content.Replace("TempFile", "newsImg");
+
             if (TempData["TempIntervalImg"] != null)
             {
-                string imgtitle = TempData["TempIntervalImg"].ToString();
-                news.ImgTitle = EffectiveImgs(imgtitle, content);
+                string imgstitle = TempData["TempIntervalImg"].ToString();
+                news.ImgTitle = EffectiveImgs(imgstitle, content);
             }
 
             news.Autor = staff.StaffName;
@@ -1346,7 +1346,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
 
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 news.CoverPath = filename;
             }
 
@@ -1460,12 +1460,14 @@ namespace Szaipa.Controllers
                 // 转换成功，可以将dateValue赋值给artnews.Date属性
                 artnews.Date = dateValue;
             }
+
+
             string content = Request.Form["Content"];
             artnews.Content = content.Replace("TempFile", "newsImg");
             if (TempData["TempIntervalImg"] != null)
             {
-                string imgtitle = TempData["TempIntervalImg"].ToString();
-                artnews.ImgTitle = EffectiveImgs(imgtitle, content);
+                string imgstitle = TempData["TempIntervalImg"].ToString();
+                artnews.ImgTitle = EffectiveImgs(imgstitle, content);
             }
 
             artnews.Title = Request.Form["Title"];
@@ -1476,7 +1478,7 @@ namespace Szaipa.Controllers
             {
                 string filename = TempData["TempImg"].ToString();
 
-                NewImgSave(path, filename);
+                ImgSave(path, filename);
                 artnews.CoverPath = filename;
             }
 
@@ -1504,54 +1506,50 @@ namespace Szaipa.Controllers
         /// <param name="filename">临时文件的文件名</param>
 
         // 此方法为修正后的新ImgSave方法
-        private void NewImgSave(string path, string filename)
-        {
-            // 修改文件名生成方式，使用 Guid.NewGuid().ToString()
-            string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(filename);
+        // 24.04.26 我的评价是等以后学会了再来磨...
 
-            // 定义临时图片和最终图片的完整文件路径
-            string tempPath = Path.Combine(Server.MapPath("/Content/TempFile"), filename);
-            string finalPath = Path.Combine(Server.MapPath(path), newFilename);
+        // private void NewImgSave(string path, string filename)
+        // {
+        //     // 修改文件名生成方式，使用 Guid.NewGuid().ToString()
+        //     string newFilename = Guid.NewGuid().ToString() + Path.GetExtension(filename);
 
-            try
-            {
-                // 检查临时图片是否存在
-                if (System.IO.File.Exists(tempPath))
-                {
-                    // 确保目标目录存在，如果不存在则创建
-                    string directory = Path.GetDirectoryName(finalPath);
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
+        //     // 定义临时图片和最终图片的完整文件路径
+        //     string tempPath = Path.Combine(Server.MapPath("/Content/TempFile"), filename);
+        //     string finalPath = Path.Combine(Server.MapPath(path), newFilename);
 
-                    // 复制图片到新位置
-                    System.IO.File.Copy(tempPath, finalPath, true);
+        //     try
+        //     {
+        //         // 检查临时图片是否存在
+        //         if (System.IO.File.Exists(tempPath))
+        //         {
+        //             // 确保目标目录存在，如果不存在则创建
+        //             string directory = Path.GetDirectoryName(finalPath);
+        //             if (!Directory.Exists(directory))
+        //             {
+        //                 Directory.CreateDirectory(directory);
+        //             }
 
-                    // 检查图片是否成功复制到新位置
-                    if (System.IO.File.Exists(finalPath))
-                    {
-                        // 删除临时图片文件
-                        System.IO.File.Delete(tempPath);
-                    }
-                    else
-                    {
-                        throw new IOException("文件复制失败：无法验证最终图片路径。");
-                    }
-                }
-                else
-                {
-                    throw new FileNotFoundException("临时图片不存在，无法保存。");
-                }
-            }
-            catch (Exception ex)
-            {
-                // TODO: 添加错误日志
-                // 例：Log.Error(ex.Message, ex);
-                // 如果有必要，可以在这里重新抛出异常，或者以其他方式通知调用者
-                throw; // 可以选择重新抛出异常，或者返回一个错误标志。
-            }
-        }
+        //             // 复制图片到新位置
+        //             System.IO.File.Copy(tempPath, finalPath, true);
+
+        //             // 检查图片是否成功复制到新位置
+        //             if (System.IO.File.Exists(finalPath))
+        //             {
+        //                 // 删除临时图片文件
+        //                 System.IO.File.Delete(tempPath);
+        //             }
+        //             else
+        //             {
+        //                 throw new IOException("文件复制失败：无法验证最终图片路径。");
+        //             }
+        //         }
+        //         else
+        //         {
+        //             throw new FileNotFoundException("临时图片不存在，无法保存。");
+        //         }
+        //     }
+        //     catch { }
+        // }
 
         private void ImgSave(string path, string filename)
         {
@@ -2003,7 +2001,7 @@ namespace Szaipa.Controllers
                 {
                     if (content.IndexOf(imgtitles[a]) > 1)
                     {
-                        NewImgSave(path, imgtitles[a]);
+                        ImgSave(path, imgtitles[a]);
 
                         titles = titles + imgtitles[a] + ",";
                     }
@@ -2018,7 +2016,7 @@ namespace Szaipa.Controllers
             {
                 if (content.IndexOf(imgstitle) > 1)
                 {
-                    NewImgSave(path, imgstitle);
+                    ImgSave(path, imgstitle);
                     titles = imgstitle;
                     return titles;
                 }
@@ -2654,7 +2652,7 @@ namespace Szaipa.Controllers
             {
                 msg = 1;
             }
-            if (file.ContentLength > 1024 * 1000 * 20)
+            if (file.ContentLength > 1024 * 1024 * 20)
             {
                 msg = 2;
             }
@@ -2730,7 +2728,7 @@ namespace Szaipa.Controllers
                     erro.Add(e);
                     msg = 1;
                 }
-                if (file.ContentLength > 1024 * 1000 * 20)
+                if (file.ContentLength > 1024 * 1024 * 20)
                 {
                     string e = "文件" + file.FileName + "文件大小超过了20M";
                     erro.Add(e);
@@ -2769,27 +2767,30 @@ namespace Szaipa.Controllers
                 msg = "图片格式不对";
                 code = 1;
             }
-            if (file.ContentLength > 1024 * 1000 * 20)
+            if (file.ContentLength > 1024 * 1024 * 20)
             {
                 msg = "图片过大，请勿超过20M";
                 code = 1;
             }
             if (msg == "0")
             {
-
-                // 使用 Guid.NewGuid().ToString() 生成唯一的文件名
-                string newFilename = Guid.NewGuid().ToString() + "." + fileExt;
-
-                var filepath = Path.Combine(Server.MapPath("/Content/TempFile"), newFilename);
-
+                Random r = new Random();
+                string firstname = DateTime.Now.ToString("yyyyMMddHHmmss") + r.Next(1000000);
+                firstname = Get_MD5(firstname, "utf-8");
+                filename = firstname + "." + fileExt;
+                var filepath = Path.Combine(Server.MapPath("/Content/TempFile"), filename);
                 file.SaveAs(filepath);
-
-                TempData["TempIntervalImg"] = newFilename;
-
-                filename = newFilename;
+                if (TempData["TempIntervalImg"] != null)
+                {
+                    string files = TempData["TempIntervalImg"].ToString();
+                    TempData["TempIntervalImg"] = files + "," + filename;
+                }
+                else
+                {
+                    TempData["TempIntervalImg"] = filename;
+                }
 
             }
-
             return new JsonResult()
             {
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
@@ -2804,6 +2805,7 @@ namespace Szaipa.Controllers
                     }
                 }
             };
+
         }
 
         public JsonResult diary(int day)
@@ -3468,7 +3470,7 @@ namespace Szaipa.Controllers
             {
                 msg = 1;
             }
-            if (file.ContentLength > 1024 * 1000 * 20)
+            if (file.ContentLength > 1024 * 1024 * 20)
             {
                 msg = 2;
             }

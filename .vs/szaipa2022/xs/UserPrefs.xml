@@ -3,7 +3,9 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <Debugger.DebugSourceFolders>
     <String>/Users/arthur/Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d</String>
   </Debugger.DebugSourceFolders>
@@ -13,23 +15,29 @@
       <File FileName="szaipa2022/Views/Home/Index.cshtml" />
       <File FileName="szaipa2022/Views/Staff/newArtAdd.cshtml" />
       <File FileName="szaipa2022/Models/Artist.cs" />
-      <File FileName="szaipa2022/Controllers/HomeController.cs" />
+      <File FileName="szaipa2022/Controllers/HomeController.cs" Line="345" Column="1" />
       <File FileName="szaipa2022/Controllers/ArtistController.cs" />
       <File FileName="szaipa2022/Controllers/TestController.cs" />
       <File FileName="szaipa2022/Controllers/SearchController.cs" />
-      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="2678" Column="1" />
+      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="1392" Column="1" />
       <File FileName="szaipa2022/Controllers/PublicationController.cs" />
       <File FileName="szaipa2022/Models/Model1.edmx" />
       <File FileName="szaipa2022/Models/ViewModel.cs" />
       <File FileName="szaipa2022/Views/Home/ArtNewsRead.cshtml" />
       <File FileName="szaipa2022/Models/ArtNews.cs" />
       <File FileName="szaipa2022/Models/Auction.cs" />
+      <File FileName="../../../Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d/mcs/class/System.Web/System.Web.Hosting/ApplicationHost.cs" Line="244" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="szaipa2022" expanded="True">
-            <Node name="szaipa2022" expanded="True" />
+            <Node name="szaipa2022" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="StaffController.cs" selected="True" />
+              </Node>
+              <Node name="Global.asax" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

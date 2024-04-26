@@ -78,7 +78,7 @@
         height: 100vh;
         filter: brightness(65%);
         transition: transform 300ms;
-    @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
+        @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
         background-size: cover;
         background-position: 50% 50%;
     }
@@ -343,7 +343,7 @@
     .collection span h1 {
         font-size: 3.2rem;
         /* font-family: 'JhengLight';*/
-    @*margin-bottom:3%;*@text-align: right;
+        @*margin-bottom:3%;*@text-align: right;
     }
 
     /* 取消了地址时间一起进入的动画 */
@@ -575,7 +575,7 @@
                 </style>
             }
             <div class="news xs-hide sm-hide">
-                @foreach (var i in ViewBag.Info)
+                @foreach (var i in ViewBag.descendingInfo)
                 {
                     <a href="/Home/ArtNewsRead/@i.Id">@i.Title</a>
                 }
@@ -610,6 +610,7 @@
                             <h3 class="JhengLight">发布日期:@string.Format("{0:yyyy年MM月dd日}", n.Date)</h3>
                             <p>
                                 @n.Content
+                                @* @n.Subtitle *@
                             </p>
 
                             <span class="JhengLight">查看更多 ></span>
@@ -746,6 +747,7 @@
             });
         }).scroll();
     });
+
 
     // 通过宽高比修改最大字符
     $(function () {
