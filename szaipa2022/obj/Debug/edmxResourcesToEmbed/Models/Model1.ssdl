@@ -73,6 +73,7 @@
     <Property Name="Title" Type="nvarchar" MaxLength="500" />
     <Property Name="EditRecord" Type="nvarchar(max)" />
     <Property Name="ImgTitle" Type="nvarchar(max)" />
+    <Property Name="SubTitle" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Auction">
     <Key>

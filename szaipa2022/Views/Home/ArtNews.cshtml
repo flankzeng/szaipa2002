@@ -78,7 +78,7 @@
         height: 100vh;
         filter: brightness(65%);
         transition: transform 300ms;
-        @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
+    @*background-image:url('../../Content/images/IMG_9282.jpg');*@background-repeat: no-repeat;
         background-size: cover;
         background-position: 50% 50%;
     }
@@ -97,7 +97,7 @@
     .now {
         display: block;
         width: 100vw;
-        font-size: 5rem;
+        font-size: 4.4rem;
         /* font-family: 'cjkBold';*/
         font-weight: 700;
         font-family: 'Noto Serif SC', serif;
@@ -343,7 +343,7 @@
     .collection span h1 {
         font-size: 3.2rem;
         /* font-family: 'JhengLight';*/
-        @*margin-bottom:3%;*@text-align: right;
+    @*margin-bottom:3%;*@text-align: right;
     }
 
     /* 取消了地址时间一起进入的动画 */
@@ -575,7 +575,7 @@
                 </style>
             }
             <div class="news xs-hide sm-hide">
-                @foreach (var i in ViewBag.descendingInfo)
+                @foreach (var i in ViewBag.Info)
                 {
                     <a href="/Home/ArtNewsRead/@i.Id">@i.Title</a>
                 }
@@ -609,8 +609,24 @@
                             <h2 class="JhengBold">@n.Title</h2>
                             <h3 class="JhengLight">发布日期:@string.Format("{0:yyyy年MM月dd日}", n.Date)</h3>
                             <p>
-                                @n.Content
-                                @* @n.Subtitle *@
+                                @* @n.Content *@
+                                @* 优化后改用Subtitle *@
+
+                                @if (n.SubTitle != null)
+                                {
+                                    if (Request.Browser.IsMobileDevice)
+                                    {
+                                        @(n.SubTitle.Length > 70 ? n.SubTitle.Substring(0, 70) + "..." : n.SubTitle)
+                                    }
+                                    else
+                                    {
+                                        @(n.SubTitle.Length > 150 ? n.SubTitle.Substring(0, 150) + "..." : n.SubTitle)
+                                    }
+                                }
+                                else
+                                {
+                                    @:暂无简介
+                                }
                             </p>
 
                             <span class="JhengLight">查看更多 ></span>
@@ -750,7 +766,7 @@
 
 
     // 通过宽高比修改最大字符
-    $(function () {
+    @* $(function () {
 
         var $paragraphs = $("#section01 li p"); // 获取特定元素下的所有p元素
         var deviceWidth = $(window).width(); // 获取设备宽度
@@ -760,88 +776,89 @@
         var maxCharCount = deviceRatio > 1 ? 150 : 70; // 根据宽高比决定最大字符数限制
 
         $paragraphs.each(function () {
-            var $paragraph = $(this);
-            var content = $paragraph.text();
+        var $paragraph = $(this);
+        var content = $paragraph.text();
 
-            if (content.length > maxCharCount) {
-                var trimmedContent = content.slice(0, maxCharCount);
-                var truncatedContent = trimmedContent + "......";
-                $paragraph.text(truncatedContent);
-            }
-        });
-    });
-
-    // 新闻分页切换
-    $(function () {
-        var itemsPerPage = 6;           // 每页显示的条目数
-        var currentPage = 1;            // 当前页面
-        var $list = $('#list');         // 绑定#list
-        var $items = $list.children();  // 选中#list的子类
-        var totalItems = $items.length;
-        var totalPages = Math.ceil(totalItems / itemsPerPage);
-
-        // 显示当前页的条目
-        function showPage(page) {
-            var startIndex = (page - 1) * itemsPerPage;
-            var endIndex = startIndex + itemsPerPage;
-            $items.hide().slice(startIndex, endIndex).show();
+        if (content.length > maxCharCount) {
+        var trimmedContent = content.slice(0, maxCharCount);
+        var truncatedContent = trimmedContent + "......";
+        $paragraph.text(truncatedContent);
         }
+        });
+        }); *@
 
-        // 生成分页导航条
-        function generatePagination() {
-            var $pagination = $("#pagination");
-            $pagination.empty();
 
-            var $prev = $('<li class="prev disabled"><a href="#">上一页</a></li>');
-            if (currentPage > 1) {
-                $prev.removeClass("disabled");
-                $prev.children("a").attr("href", "#");
+        // 新闻分页切换
+        $(function () {
+            var itemsPerPage = 6;           // 每页显示的条目数
+            var currentPage = 1;            // 当前页面
+            var $list = $('#list');         // 绑定#list
+            var $items = $list.children();  // 选中#list的子类
+            var totalItems = $items.length;
+            var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            // 显示当前页的条目
+            function showPage(page) {
+                var startIndex = (page - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+                $items.hide().slice(startIndex, endIndex).show();
             }
-            $pagination.append($prev);
 
-            for (var i = 1; i <= totalPages; i++) {
-                var $li = $('<li><a href="#">' + i + '</a></li>');
+            // 生成分页导航条
+            function generatePagination() {
+                var $pagination = $("#pagination");
+                $pagination.empty();
 
-                if (i === currentPage) {
-                    $li.addClass("active");
+                var $prev = $('<li class="prev disabled"><a href="#">上一页</a></li>');
+                if (currentPage > 1) {
+                    $prev.removeClass("disabled");
+                    $prev.children("a").attr("href", "#");
+                }
+                $pagination.append($prev);
+
+                for (var i = 1; i <= totalPages; i++) {
+                    var $li = $('<li><a href="#">' + i + '</a></li>');
+
+                    if (i === currentPage) {
+                        $li.addClass("active");
+                    }
+
+                    $pagination.append($li);
                 }
 
-                $pagination.append($li);
+                var $next = $('<li class="next"><a href="#">下一页</a></li>');
+                if (currentPage < totalPages) {
+                    $next.children("a").attr("href", "#");
+                } else {
+                    $next.addClass("disabled");
+                }
+                $pagination.append($next);
             }
 
-            var $next = $('<li class="next"><a href="#">下一页</a></li>');
-            if (currentPage < totalPages) {
-                $next.children("a").attr("href", "#");
-            } else {
-                $next.addClass("disabled");
-            }
-            $pagination.append($next);
-        }
-
-        // 初始化显示第一页
-        showPage(currentPage);
-        generatePagination();
-
-        // 点击分页导航条触发事件
-        $("#pagination").on("click", "a", function (e) {
-            e.preventDefault();
-            var targetPage = $(this).text();
-
-            if (targetPage === "上一页" && currentPage > 1) {
-                currentPage--;
-            } else if (targetPage === "下一页" && currentPage < totalPages) {
-                currentPage++;
-            } else {
-                currentPage = parseInt(targetPage);
-            }
-
+            // 初始化显示第一页
             showPage(currentPage);
             generatePagination();
 
-            // 滚动到章节顶部
-            $("html, body").animate({ scrollTop: $("#zixun").offset().top }, 50);
+            // 点击分页导航条触发事件
+            $("#pagination").on("click", "a", function (e) {
+                e.preventDefault();
+                var targetPage = $(this).text();
+
+                if (targetPage === "上一页" && currentPage > 1) {
+                    currentPage--;
+                } else if (targetPage === "下一页" && currentPage < totalPages) {
+                    currentPage++;
+                } else {
+                    currentPage = parseInt(targetPage);
+                }
+
+                showPage(currentPage);
+                generatePagination();
+
+                // 滚动到章节顶部
+                $("html, body").animate({ scrollTop: $("#zixun").offset().top }, 50);
+            });
         });
-    });
 
     // Info图像显示
     $(function () {

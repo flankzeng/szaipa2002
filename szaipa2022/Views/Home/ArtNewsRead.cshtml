@@ -42,6 +42,22 @@
     }
 
     /* 以上为导航栏部分 */
+
+    #topBtn {
+        display: none;
+
+        padding: 0;
+        position: fixed;
+        bottom: 5vh;
+        right: 4vw;
+        z-index: 1;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        filter: invert(100%);
+    }
 </style>
 
 
@@ -98,6 +114,8 @@
     article {
         color: white;
         padding-bottom: 8%;
+
+        min-height: 60vh;
     }
 
     article h1 {
@@ -139,6 +157,10 @@
         margin: -1em 0 2em 0;
     }
 </style>
+
+<button id="topBtn">
+    <img src="/Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
+</button>
 <div class="bg col-xs20 col-sm20 col-md20 col-lg20" id="section01">
 
     <header class="col-xs20 col-sm20 col-md20 col-lg20">
@@ -164,5 +186,25 @@
 </div>
 
 <script>
+    // toTopButton
+    const toTopButton = document.querySelector('#topBtn');
 
+    window.addEventListener('scroll', function () {
+        // 获取当前滚动位置
+        const scrollPosition = window.scrollY;
+
+        // 如果滚动位置大于等于 500px，显示按钮；否则隐藏按钮
+        if (scrollPosition >= 500) {
+            toTopButton.style.display = 'block';
+        } else {
+            toTopButton.style.display = 'none';
+        }
+    });
+
+    toTopButton.addEventListener('click', function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 </script>

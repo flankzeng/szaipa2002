@@ -29,35 +29,31 @@ body {
     padding: 0px;
 }
 
-@media only screen and (min-width: 3790px) {
-
-    /* 2160p 分辨率 */
+/* 2160p (4K) - 3840x2160 */
+@media only screen and (min-width: 2560px) {
     html {
-        font-size: 36px !important;
+        font-size: 20px;
     }
 }
 
-@media only screen and (min-width: 2510px) and (max-width: 3789px) {
-
-    /* 1440p 分辨率 */
-    html {
-        font-size: 24px !important;
-    }
-}
-
-@media only screen and (min-width: 1870px) and (max-width:2509px) {
-
-    /* 1080p */
+/* 1440p - 2560x1440 */
+@media only screen and (min-width: 1920px) and (max-width: 2559px) {
     html {
         font-size: 18px;
     }
 }
 
-@media only screen and (min-width: 992px) and (max-width:1869px) {
-
-    /* 720p */
+/* 1080p - 1920x1080 */
+@media only screen and (min-width: 1280px) and (max-width: 1919px) {
     html {
-        font-size: 12px !important;
+        font-size: 16px;
+    }
+}
+
+/* 720p - 1280x720 */
+@media only screen and (max-width: 1279px) {
+    html {
+        font-size: 12px;
     }
 }
 

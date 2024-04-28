@@ -286,15 +286,13 @@ namespace Szaipa.Controllers
             // 2.为视图创建2～5条新闻的列表：
             var info = db.ArtNews.Where(n => n.ArtistId == art.Id)
                                  .Take(5)
-                                 .OrderBy(n => n.Date == artNews.Date)
+                                 .OrderByDescending(n => n.Date)
                                  .ToList();
 
-            var descendingInfo = info.OrderByDescending(n => n.Date == artNews.Date).ToList();
             ViewBag.Info = info;
-            ViewBag.descendingInfo = descendingInfo;
 
             // 3.赋予视图所有的新闻列表功能：
-            var selfUpload = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList();
+            var selfUpload = db.ArtNews.Where(d => d.ArtistId == art.Id).OrderByDescending(n => n.Date).ToList();
             ViewBag.selfUpload = selfUpload;
 
             // 链接拍卖作品功能：

@@ -81,6 +81,16 @@
         .ql-editor {
             min-height: 50vh;
         }
+
+        .subtitle {
+            display: block;
+            height: 10em;
+            padding: .1em 10px;
+            color: rgba(0, 0, 0, .85);
+
+            border: 1px solid #eeeeee;
+            border-radius: 2px;
+        }
     </style>
 
 
@@ -136,6 +146,13 @@
                 </div>
             </div>
 
+            <div class="layui-form-item">
+                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">简介</label>
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <textarea type="text" name="SubTitle" placeholder="如未填写则为空白" autocomplete="off"
+                        class="subtitle"></textarea>
+                </div>
+            </div>
 
             <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">正文</label>
             <div class="col-xs18 col-sm18 col-m18 col-lg18">

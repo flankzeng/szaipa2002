@@ -23,5 +23,6 @@ namespace szaipa2022.Models
         public string Title { get; set; }
         public string EditRecord { get; set; }
         public string ImgTitle { get; set; }
+        public string SubTitle { get; set; }
     }
 }

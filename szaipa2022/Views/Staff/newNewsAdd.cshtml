@@ -95,6 +95,14 @@
                     <input type="text" name="Link" placeholder="新闻来源连接（如果有）" autocomplete="off" class="layui-input">
                 </div>
             </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">重要性</label>
+                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
+                    <input type="radio" name="Important" value="1" title="重要">
+                    <input type="radio" name="Important" value="0" title="不重要" checked>
+                </div>
+            </div>
         </div>
 
         <div class="col-xs20 col-sm20 col-md20 col-lg20 layui-form-item layui-form-text" style="margin-top: 2vh;">
@@ -113,6 +121,9 @@
             <div class="layui-form-item">
                 <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18"
                     style="text-align: center;margin-top:2vh;">
+                    <div class="layui-btn" onclick="addMaxWidthToImages()" style="background-color: rgb(137, 0, 0);">
+                        修复显示错误
+                    </div>
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 
@@ -169,6 +180,16 @@
         }
     });
 
+    function addMaxWidthToImages() {
 
+        let iframes = document.getElementsByTagName("iframe");
+        for (let j = 0; j < iframes.length; j++) {
+            let iframeDocument = iframes[j].contentDocument || iframes[j].contentWindow.document;
+            let iframeImages = iframeDocument.getElementsByTagName("img");
+            for (let k = 0; k < iframeImages.length; k++) {
+                iframeImages[k].style.maxWidth = "95%";
+            }
+        }
+    }
 
 </script>
