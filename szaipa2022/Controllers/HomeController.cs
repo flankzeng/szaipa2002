@@ -309,6 +309,8 @@ namespace Szaipa.Controllers
             // 将 ViewModel 传递给视图
             return View(viewModel);
         }
+
+        public virtual bool IsMobileDevice { get; }
         // public ActionResult ArtNewsRead(int id)
         // {
         //     if (Session["Staff"] != null) ViewBag.staff = 1;
