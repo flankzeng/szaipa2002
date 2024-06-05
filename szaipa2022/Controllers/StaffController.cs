@@ -1255,24 +1255,28 @@ namespace Szaipa.Controllers
         {
             var staff = (Staff)Session["Staff"];
             if (staff == null) return RedirectToAction("Login", "Staff");
-
-            News news = new News();
             string path = "/Content/newsImg/";
-            news.Date = DateTime.Now;
-            string content = Request.Form["Content"];
-
-            if (TempData["TempIntervalImg"] != null)
-            {
-                string imgstitle = TempData["TempIntervalImg"].ToString();
-                news.ImgTitle = EffectiveImgs(imgstitle, content);
-            }
-
-            news.Autor = staff.StaffName;
+            int Id = Convert.ToInt32(Request.Form["Id"]);
+            News news = db.News.FirstOrDefault(d => d.Id == Id);
             news.Title = Request.Form["Title"];
             news.Subtitle = Request.Form["Subtitle"];
-            news.ReadCount = 0;
-            string Link = Request.Form["Link"];
-            if (Link == "" || Link == null)
+            string content = Request.Form["Content"];
+            news.Content = content.Replace("TempFile", "newsImg");
+            string imgtitle;
+            if (TempData["TempIntervalImg"] != null)
+            {
+                imgtitle = TempData["TempIntervalImg"].ToString();
+            }
+            else
+            {
+                imgtitle = "";
+            }
+
+            string titles = str2t1(news.ImgTitle, imgtitle, news.Content);
+            ImgsSave(path, titles);
+
+            string link = Request.Form["link"];
+            if (link == "" || link == null)
             {
                 news.original = true;
                 news.link = null;
@@ -1280,37 +1284,23 @@ namespace Szaipa.Controllers
             else
             {
                 news.original = false;
-                news.link = Link;
+                news.link = link;
             }
 
             if (TempData["TempImg"] != null)
             {
                 string filename = TempData["TempImg"].ToString();
-
-                ImgSave(path, filename);
+                ImgChange(path, filename, news.CoverPath);
                 news.CoverPath = filename;
             }
 
-
-            if (form["Important"] == "1")
-            {
-                news.Important = true;
-            }
-            else
-            {
-                news.Important = false;
-            }
-
-            news.EditRecord = staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 编写了此新闻条目。" + "/";
+            news.EditRecord = news.EditRecord + staff.StaffName + " 于 " + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了此新闻条目。" + "/";
             var day = today();
-            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + " 编写了 " + news.Title + "的新闻条目。" + "/";
-
+            day.OperationRecord = day.OperationRecord + (DateTime.Now).ToString("HH:mm:ss") + staff.StaffName + "  修改了 " + news.Title + "的新闻条目。" + "/";
             Staff Staffer = db.Staff.FirstOrDefault(d => d.Id == staff.Id);
-            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 编写了" + news.Title + "的新闻条目。" + "/";
+            Staffer.OperationRecord = Staffer.OperationRecord + (DateTime.Now).ToString("yyyy年MM月dd日 HH:mm:ss") + " 修改了" + news.Title + "的新闻条目。" + "/";
 
-            db.News.Add(news);
             db.SaveChanges();
-
 
             return RedirectToAction("News", "Staff");
         }

@@ -1,42 +1,42 @@
 ﻿<Properties StartupConfiguration="{AD6D539C-D86A-4688-A299-CFEB34469666}|">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <Debugger.DebugSourceFolders>
     <String>/Users/arthur/Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d</String>
   </Debugger.DebugSourceFolders>
-  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Controllers/StaffController.cs">
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Views/Home/ArtNews.cshtml">
     <Files>
       <File FileName="../../../../../Applications/Visual Studio.app/Contents/MonoBundle/MSBuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
       <File FileName="szaipa2022/Views/Home/Index.cshtml" />
-      <File FileName="szaipa2022/Views/Staff/newArtAdd.cshtml" />
       <File FileName="szaipa2022/Models/Artist.cs" />
-      <File FileName="szaipa2022/Controllers/HomeController.cs" Line="345" Column="1" />
+      <File FileName="szaipa2022/Controllers/HomeController.cs" />
       <File FileName="szaipa2022/Controllers/ArtistController.cs" />
       <File FileName="szaipa2022/Controllers/TestController.cs" />
       <File FileName="szaipa2022/Controllers/SearchController.cs" />
-      <File FileName="szaipa2022/Controllers/StaffController.cs" Line="1392" Column="1" />
+      <File FileName="szaipa2022/Controllers/StaffController.cs" />
       <File FileName="szaipa2022/Controllers/PublicationController.cs" />
       <File FileName="szaipa2022/Models/Model1.edmx" />
       <File FileName="szaipa2022/Models/ViewModel.cs" />
       <File FileName="szaipa2022/Views/Home/ArtNewsRead.cshtml" />
       <File FileName="szaipa2022/Models/ArtNews.cs" />
       <File FileName="szaipa2022/Models/Auction.cs" />
-      <File FileName="../../../Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d/mcs/class/System.Web/System.Web.Hosting/ApplicationHost.cs" Line="244" Column="1" />
+      <File FileName="szaipa2022/Views/Home/ArtNews.cshtml" Line="614" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="szaipa2022" expanded="True">
             <Node name="szaipa2022" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="StaffController.cs" selected="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True">
+                  <Node name="ArtNews.cshtml" selected="True" />
+                </Node>
               </Node>
-              <Node name="Global.asax" expanded="True" />
             </Node>
           </Node>
         </State>

@@ -4,149 +4,101 @@
     Layout = "~/Views/Shared/Staff_Layout.cshtml";
 }
 
-<div class="col-xs20 col-sm20 col-m20 col-lg20">&nbsp;</div>
-<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
 
-<div class="col-xs12 col-sm12 col-md12 col-lg12">
-
-
-    <style>
-        .layui-upload-drag {
-            width: 100%;
-            min-height: 12vh;
-        }
-
-        .allpadding {
-            /* 把原本layui的padding补回去 */
-            padding: 10px;
-        }
-
-        .icontouxiang {
-            height: 10vh;
-            width: inherit;
-            background: url('../../content/icon/tupian.svg');
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-
-        .remind {
-            padding-top: 1em;
-            font-size: .7rem;
-            text-align: center;
-            color: #484848;
-        }
-
-        .layui-input-block {
-            margin-left: 0;
-        }
-
-        .layui-form-label {
-            padding: 9px 1em 0 0;
-        }
-
-        .layui-form label,
-        .layui-form input {
-            font-size: .9rem;
-        }
-
-        .layui-form-item {
-            margin-bottom: 3%;
-        }
-
-        textarea {
-            width: 100%;
-        }
-
-        ::placeholder {
-            font-size: .7rem;
-        }
-    </style>
-    <form class="layui-form" action="NewsAdd" method="post">
-
-        <div class="col-xs6 col-sm6 col-md6 col-lg6">
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md4">
             <div class="layui-upload-drag" id="uploadDemo">
-                <div class="icontouxiang" id="uploadDemoView">
-                    <img src="~/Content/newsImg/@Model.CoverPath" style="max-width: 100%">
-                </div>
-                @* <i class="layui-icon"></i> *@
-            </div>
-            <p class="remind">新闻封面上传</p>
-        </div>
-
-        <div class="col-xs14 col-sm14 col-md14 col-lg14">
-            <div class="layui-form-item">
-                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">主标题</label>
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                    <input type="text" name="Title" required lay-verify="required" placeholder="新闻的主标题"
-                        autocomplete="off" class="layui-input" value="@Model.Title">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">声明</label>
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                    <input type="radio" name="original" value="1" title="原创" checked>
-                    <input type="radio" name="original" value="0" title="转载">
-                </div>
-            </div>
-            <div class="layui-form-item" id="linkform">
-                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">连接</label>
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                    @Html.TextBoxFor(m => m.link, new
-                        {
-                            value = Model.link,
-                            @class = "layui-input",
-                            placeholder =
-                             "文章出处（仅仅用于转载）",
-                            autocomplete = "off"
-                        })
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <label class="layui-form-label col-xs2 col-sm2 col-md2 col-lg2">重要性</label>
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18">
-                    <input type="radio" id="ImportantYes" name="Important" value="1" title="重要">
-                    <input type="radio" id="ImportantNo" name="Important" value="0" title="不重要">
+                <i class="layui-icon"></i>
+                <p>(新闻封面)点击上传，或将文件拖拽到此处，文件尺寸1150px*450px</p>
+                <div id="uploadDemoView">
+                    <hr>
+                    <img src="~/Content/newsImg/@Model.CoverPath" alt="上传成功后渲染" style="max-width: 100%">
                 </div>
             </div>
         </div>
 
-        <div class="col-xs20 col-sm20 col-md20 col-lg20 layui-form-item layui-form-text" style="margin-top: 2vh;">
-            <label class="layui-form-label col-xs1 col-sm1 col-md1 col-lg1">简介</label>
-            <div class="layui-input-block col-xs19 col-sm19 col-md19 col-lg19">
-                @Html.TextAreaFor(m => m.Subtitle, new
-                    {
-                        value = Model.Subtitle,
-                        @class = "layui-textarea",
-                        placeholder = "新闻的副标题（如果有）",
-                        autocomplete = "off"
-                    })
+        @using (Html.BeginForm("NewsEdit", "Staff", FormMethod.Post, new { @class = "layui-form" }))
+        {
+            @Html.HiddenFor(m => m.Id, new { @class = "layui-input", value = Model.Id })
+            <div class="layui-col-md8">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">主标题</label>
+                    <div class="layui-input-block">
+
+                        @Html.TextBoxFor(m => m.Title, new
+                            {
+                                value = Model.Title,
+                                @class = "layui-input",
+                                placeholder =
+                                 "新闻的主标题",
+                                autocomplete = "off"
+                            })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单选框</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="original" value="1" title="原创" checked>
+                        <input type="radio" name="original" value="0" title="转载">
+                    </div>
+                </div>
+                <div class="layui-form-item" id="linkform">
+                    <label class="layui-form-label">连接</label>
+                    <div class="layui-input-block">
+
+                        @Html.TextBoxFor(m => m.link, new
+                            {
+                                value = Model.link,
+                                @class = "layui-input",
+                                placeholder =
+                                 "文章出处（仅仅用于转载）",
+                                autocomplete = "off"
+                            })
+
+
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">简介</label>
+                    <div class="layui-input-block">
+                        @Html.TextAreaFor(m => m.Subtitle, new
+                            {
+                                value = Model.Subtitle,
+                                @class = "layui-textarea",
+                                placeholder = "新闻的副标题（如果有）",
+                                autocomplete = "off"
+                            })
+
+                    </div>
+                </div>
+
+
             </div>
-        </div>
 
-        <div class="col-xs20 col-sm20 col-m20 col-lg20">
+            <div class="layui-col-md12">
 
-            @Html.TextAreaFor(m => m.Content, new { value = Model.Content, id = "demo", style = "display: none;" })
-        </div>
-        <br />
-        <div class="col-xs20 col-sm20 col-m20 col-lg20">
-            <div class="layui-form-item">
-                <div class="layui-input-block col-xs18 col-sm18 col-md18 col-lg18"
-                    style="text-align: center;margin-top:2vh;">
+                @Html.TextAreaFor(m => m.Content, new { value = Model.Content, id = "demo", style = "display: none;" })
+            </div>
+            <br />
+            <div class="layui-col-md12">
+                <div class="layui-form-item" style="text-align: center;">
+
+
                     <div class="layui-btn" onclick="addMaxWidthToImages()" style="background-color: rgb(137, 0, 0);">
                         修复显示错误
                     </div>
+
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 
+
                 </div>
             </div>
-        </div>
-    </form>
-</div>
-<div class="col-xs4 col-sm4 col-md4 col-lg4">&nbsp;</div>
+        }
 
+    </div>
+</div>
 <script>
 
     layui.use('layedit', function () {
@@ -176,15 +128,6 @@
         }
         , before: function () {
             layer.msg('上传中', { icon: 16, time: 0 });
-        }
-    });
-
-    $(function () {
-        const status = '@Model.Important' === 'True';
-        if (status) {
-            document.getElementById('ImportantYes').checked = true;
-        } else {
-            document.getElementById('ImportantNo').checked = true;
         }
     });
 
