@@ -61,5 +61,14 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+
+        public ActionResult man()
+        {
+            return View();
+        }
+        public ActionResult yijia()
+        {
+            return View();
+        }
     }
 }
