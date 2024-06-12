@@ -145,6 +145,7 @@
         width: 100vw;
         overflow-x: hidden;
         padding: 8% 10% 0% 10%;
+        min-height:80vh;
     }
 
     .more a {
@@ -524,6 +525,9 @@
     }
 </style>
 
+<script>
+    let id = 0;
+</script>
 
 
 <nav id="ArtistNav">
@@ -559,8 +563,9 @@
     <section class="col-xs20 col-sm20 col-md20 col-lg20">
 
         <!-- 最新资讯大图(按所有艺术家自行发布的新闻的最近一期) -->
-        <article class="recent">
+        <article class="recent" id="template">
 
+            
             @foreach (var h in ViewBag.Heading)
             {
                 <a class="now" href="/Home/ArtNewsRead/@h.Id">
@@ -574,7 +579,13 @@
                         background-image: url('@h.CoverPath')
                     }
                 </style>
+
+                <script>
+                id = @h.Id
+                </script>
             }
+
+
             <div class="news xs-hide sm-hide">
                 @foreach (var i in ViewBag.Info)
                 {
@@ -740,6 +751,18 @@
 </div>
 
 <script>
+    // 如果新闻为空，则显示创建模板文字
+    if(id === 0){
+    // 获取ID为'template'的div元素
+    const templateDiv = document.getElementById('template');
+
+    // 准备要插入的HTML代码和内联样式
+    const content = `<a class="now" href="Javascript:;;"><span class="JhengLight">暂无上传资讯</span></a><style>.recent::before {background-image: url('/Content/images/2021.5.30f2-2.jpg')}</style>`;
+
+    // 将内容插入到div中
+    templateDiv.innerHTML = content;
+}
+
     // 导航栏的焦点切换
     $(function () {
         $(window).scroll(function () {
