@@ -70,5 +70,9 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+        public ActionResult zhongri()
+        {
+            return View();
+        }
     }
 }
