@@ -2,15 +2,11 @@
   <Debugger.DebugSourceFolders>
     <String>/Users/arthur/Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/ca8abcb6bc4d87d8bbd8b4eb3a769269cefb629d</String>
   </Debugger.DebugSourceFolders>
-  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="szaipa2022/Views/Home/ArtNews.cshtml">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench>
     <Files>
+      <File FileName="szaipa2022/Models/Auction.cs" IsPinned="True" />
       <File FileName="../../../../../Applications/Visual Studio.app/Contents/MonoBundle/MSBuild/Current/bin/Microsoft.Common.CurrentVersion.targets" />
       <File FileName="szaipa2022/Views/Home/Index.cshtml" />
       <File FileName="szaipa2022/Models/Artist.cs" />
@@ -24,19 +20,14 @@
       <File FileName="szaipa2022/Models/ViewModel.cs" />
       <File FileName="szaipa2022/Views/Home/ArtNewsRead.cshtml" />
       <File FileName="szaipa2022/Models/ArtNews.cs" />
-      <File FileName="szaipa2022/Models/Auction.cs" />
-      <File FileName="szaipa2022/Views/Home/ArtNews.cshtml" Line="614" Column="1" />
+      <File FileName="szaipa2022/Views/Home/ArtNews.cshtml" Line="618" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="szaipa2022" expanded="True">
             <Node name="szaipa2022" expanded="True">
-              <Node name="Views" expanded="True">
-                <Node name="Home" expanded="True">
-                  <Node name="ArtNews.cshtml" selected="True" />
-                </Node>
-              </Node>
+              <Node name="Content" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -46,4 +37,9 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.szaipa2022 PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>

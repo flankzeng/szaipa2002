@@ -397,6 +397,7 @@
         padding: 3em 5% 3em 5%;
         /* background-color: #c26739; */
         border-right: 1px solid white;
+        z-index:0;
     }
 
     .swiper-button-prev,
@@ -419,7 +420,7 @@
         text-transform: lowercase;
     }
 
-    .swiper-slide img {
+    .swiper-slide a {
         display: block;
         width: 75%;
         height: var(--zuopinjiH);
@@ -428,6 +429,7 @@
         top: var(--zuopinTop);
         left: 50%;
         transform: translateX(-50%);
+        z-index:1;
     }
 
     .workInfo {
@@ -528,9 +530,27 @@
         bottom: 1.4em;
         left: 0;
     }
+
+    .magnify{
+        height:35vh;
+    }
+
+    .magnify>.magnify-lens{
+        border:1px solid white;
+    }
 </style>
 
 <script>
+    // 放大镜
+    $(function () {
+        $('.zoom').magnify({
+            speed: 200,
+            // limitBounds: true,
+            magnifiedWidth: 1000,
+            magnifiedHeight: 1000,
+        })
+    });
+
     // 导航栏的焦点切换
     $(function () {
         $(window).scroll(function () {
@@ -847,8 +867,13 @@
                             <div class="material JhengLight">
                                 <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
                             </div>
-                            <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" alt="">
 
+                            <a href="~/Content/ArtImg/Artist/works-narrow/@w.Path">
+  <img src="~/Content/ArtImg/Artist/works-narrow/@w.Path" class="zoom">
+</a>
+
+
+                                
                             <div class="blankspace"></div>
 
                             <div class="workInfo">
