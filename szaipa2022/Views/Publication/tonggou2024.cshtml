@@ -1,0 +1,1159 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <title>同构——纽伦堡国际当代艺术展</title>
+    <link rel="icon" href="/Content/123/tonggou.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/Content/Model/css/responsive.css">
+    <link rel="stylesheet" href="/Content/Model/css/Site.css">
+    <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
+    <script src="/Content/Model/jquery-3.6.1.min.js"></script>
+    <script src="/Content/Model/bootstrap.min.js"></script>
+
+    <!-- 引入Vue3和Element Plus -->
+    <script src="/Content/Model/vue.global.js"></script>
+    <link rel="stylesheet" href="/Content/Model/css/element-plus.css">
+    <script src="/Content/Model/element-plus.js"></script>
+
+    <!-- 引入Swiper.js -->
+    <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css">
+    <script src="/Content/Model/swiper-bundle.min.js"></script>
+
+    <!-- 引入google font CDN站 2023.08.04 -->
+    <link rel="preconnect" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin>
+    <link href='//fonts.loli.net/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+    <link href='//fonts.loli.net/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
+        type='text/css'>
+
+    <!-- 引入有字体 2023.08.04 -->
+    <script type="text/javascript" src="//cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 以下为footer */
+        #section08 {
+            /* EMAIL */
+            height: 30vh;
+            width: 100%;
+            background-color: white;
+            position: relative;
+            margin-top: 5vh;
+        }
+
+        #section08m {
+            /* EMAIL */
+            height: 80vh;
+            width: 100%;
+            background-color: black;
+            color: white;
+            position: relative;
+            border-top: 1px solid #ededed;
+        }
+
+        /* Section08 邮箱填写 */
+
+        .fuzhu {
+            width: 100%;
+            transform: translateY(25%);
+        }
+
+        .dui {
+            height: 1em;
+            width: 1em;
+            display: inline-block;
+            background-image: url('/content/images/dui-06.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .enter02 {
+            /* 去色 */
+            filter: grayscale(100%);
+
+            /* 去button默认样式 */
+            box-shadow: none;
+            background-color: transparent;
+            border: none;
+
+            float: right;
+            transform: translateY(-140%);
+        }
+
+        .enter02 img {
+            width: 1.5vw;
+            height: auto;
+        }
+
+        .emailPosition h1 {
+            text-align: center;
+            font-family: var(--fontLight);
+        }
+
+        .emailPosition h1 {
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 5vh;
+        }
+
+        .emailPosition p {
+            text-align: justify;
+            color: #939393;
+            margin-top: 3vh;
+            font-weight: 200;
+            font-size: 1.2rem;
+            line-height: 1.8em;
+        }
+
+        .emailPosition {
+            height: auto;
+            width: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #section08m button {
+            display: flex;
+            background-color: transparent;
+            color: white;
+            font-family: var(--fontLight);
+            font-size: 1.3rem;
+            margin: 5vh auto;
+            box-shadow: none;
+            border: 1px solid white;
+            padding: .5vh 2vw;
+        }
+
+        .guanzhu {
+            width: 8vw;
+            height: auto;
+            margin-right: 3vw;
+        }
+
+        .logoContainerM {
+            height: 100%;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .email {
+            position: relative;
+            width: var(--emailLine);
+            margin-bottom: 1.3vh;
+            border-bottom: 1.5px solid black;
+        }
+
+        .emailInput {
+            width: var(--emailLine);
+            margin-bottom: 0.5vh;
+            padding-left: 0.1em;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: var(--email);
+            letter-spacing: 0.05em;
+        }
+
+        .emailInput::placeholder {
+            color: black;
+        }
+
+        #section08m .email input::placeholder {
+            padding-left: 2vw;
+            color: white;
+            font-size: 1rem;
+            font-family: 'dinLight';
+        }
+
+        #section08m .email input {
+            margin-bottom: 0px;
+        }
+
+        .email input::placeholder {
+            color: black;
+            font-size: var(--emailHolder);
+            font-family: 'dinLight';
+        }
+
+        .jieshou {
+            line-height: 20px;
+            vertical-align: middle;
+            white-space: nowrap;
+            font-size: var(--jieshou);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 400;
+        }
+
+        .jieshou span {
+            display: inline-block;
+            transform: translateY(-8%);
+        }
+
+        .emailContainerM {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .emailM {
+            background-color: transparent;
+            width: 100%;
+            height: 2vh;
+            font-size: 1.3rem;
+            outline: none;
+            border: 1px solid white;
+            padding: 1em 1em;
+        }
+
+        .logoContainerM a {
+            margin-bottom: 5vh;
+        }
+
+        /* Section09 版权 */
+
+        .section09 {
+            /* FOOTER */
+            height: 40vh;
+            width: 100%;
+            background-color: black;
+            color: #939393;
+            overflow: hidden;
+        }
+
+        .section09m {
+            /* FOOTER */
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            color: #939393;
+            overflow: hidden;
+        }
+
+        .footer {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding-top: 5vh;
+        }
+
+        .footerList {
+            position: relative;
+            border-left: var(--footerBorder);
+            height: 100%;
+        }
+
+        .copyrightM {
+            border-top: 1.5px solid #939393;
+            padding: 5vh 0 5vh 0;
+            line-height: var(--footerLineheight);
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            font-size: var(--footerFontsize);
+        }
+
+        .copyrightM a {
+            color: #939393;
+            text-decoration: none;
+        }
+
+        .copyright {
+            position: relative;
+            height: 100%;
+        }
+
+        .copyright p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright p>br {
+            font-size: var(--footerFontsize);
+            line-height: 1.5em;
+        }
+
+        .copyright-container {
+            border-top: var(--footerBorder);
+            height: 35vh;
+        }
+
+        .copyright-container p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright-container a,
+        .copyright-container p {
+            color: #939393;
+            text-decoration: none;
+            /* font-family: 'sansLight';*/
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: var(--footerLineheight);
+        }
+    </style>
+
+    <!-- 以上为共享部分 -->
+
+    <style>
+        #topBtn {
+            display: block;
+
+            filter: invert();
+            padding: 0;
+            position: fixed;
+            bottom: 5vh;
+            right: 4vw;
+            z-index: 999;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* section01 banner */
+        .banner {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            background: url('/Content/images/tonggou2024/100000.jpg');
+            background-size: cover;
+        }
+
+        .banner * {
+            color: white;
+        }
+
+
+        .title {
+            height: 100px;
+            width: auto;
+            position: absolute;
+            left: 7vw;
+            top: 55%;
+            color: white;
+        }
+
+        .title h1 {
+            /* font-family: 'JhengRegular';*/
+            font-size: 2.7rem;
+            margin-bottom: 0;
+        }
+
+        .title h3 {
+            /* font-family: 'JhengLight';*/
+            letter-spacing: 0.03em;
+            margin-top: 2vh;
+            margin-bottom: 3vh;
+            font-size: 1rem;
+        }
+
+        .title button {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        button {
+            background: none;
+            border: .2vh solid white;
+            color: white;
+            border-radius: 10px;
+            padding: 1vh 3vw 1vh 3vw;
+            margin: 0;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            padding: 0 4vw 0 0;
+
+            position: absolute;
+            right: 0;
+            bottom: 8%;
+        }
+
+        .nav li {
+            margin-right: 3vw;
+            font-size: 1.3rem;
+            font-weight: 200;
+            font-family: 'Noto Sans SC', sans-serif;
+            opacity: 0.7;
+        }
+
+        .active {
+            opacity: 1 !important;
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif !important;
+        }
+
+        .black02 {
+            height: inherit;
+            background-color: black;
+            opacity: 0.2;
+        }
+
+        /* section02 */
+        #section02 {
+            position: relative;
+            height: auto;
+            padding: 0 10vw 10vh 10vw;
+        }
+
+        #section02 h1 {
+            padding: 0;
+            /* font-family: 'JhengBold'; */
+            font-size: 3rem;
+            margin-bottom: 2vh;
+            text-align: center;
+        }
+
+        #section02 p {
+            margin: 0;
+            padding: 0;
+            font-size: 1.3rem;
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 2.7em;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .nameCN {
+            margin-top: 3vh;
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .xu {
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+            position: relative;
+            width: 100%;
+            height: 15vh;
+            margin-top: 10vh;
+            margin-bottom: 7vh;
+        }
+
+        .tonggou {
+            height: 15vh;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .elementPub {
+            height: 8vh;
+            position: absolute;
+            bottom: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* section03 */
+        #section03 {
+            position: relative;
+            color: #f7f7f7;
+            background-color: black;
+            padding-bottom: 10vh;
+        }
+
+
+        /* section03 目录的介绍以及列表 */
+
+        #content h1 {
+            margin-top: 10vh;
+            margin-bottom: 3vh;
+            padding: 0;
+            font-family: 'dinLightI'
+                /* 'JhengBold' */
+            ;
+            font-size: 2.5rem;
+        }
+
+        #swiperAndFilter {
+            margin-bottom: 3vh;
+        }
+
+        .imgFilter {
+            margin-bottom: 5vh;
+        }
+
+        .mySwiper {
+            max-width: 100vw;
+        }
+
+        .swiper {
+            width: 120%;
+            margin-left: -10%;
+            margin-right: -10%;
+            padding-bottom: 4vh;
+        }
+
+        .swiper-slide {
+            height: auto;
+            max-height: 70vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            margin-bottom: 15vh;
+            width: auto;
+            height: 75%;
+            max-width: 90%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .swiper-slide a {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            font-family: 'smile', 'dinLightI';
+            letter-spacing: 0.2em;
+            font-size: 2rem;
+
+            height: 100%;
+            width: 60%;
+            position: absolute;
+            bottom: 5%;
+            color: white;
+            text-decoration: none;
+        }
+
+
+        .swiper-button-next {
+            color: white;
+            /* padding-right: 5vw; */
+            opacity: 0.7;
+            height: 100%;
+            width: 10%;
+            transform: translateY(-50%);
+        }
+
+        .swiper-button-prev {
+            color: white;
+            /* padding-left: 5vw; */
+            opacity: 0.7;
+            height: 100%;
+            width: 10%;
+            transform: translateY(-50%);
+        }
+
+        .swiper-pagination-bullet {
+            background-color: white;
+            outline: none;
+        }
+
+        /* .link:hover {
+            scale: 1.1;
+            transition: 500ms;
+            transform: translateY(-10%);
+        } */
+
+
+        /* .link {
+            border: 0.2vh solid white;
+
+
+            弃用
+            padding: 1vh 5vw;
+            border-radius: 10px;
+        } */
+
+        .remind {
+            height: 10vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2vh;
+            /* font-family: 'JhengLight';*/
+            color: #939393;
+        }
+
+        /* 交易页面 */
+        .introCon {
+            padding: 5% 10% 10vh 10%;
+            color: white;
+            background-color: black;
+            position: relative;
+            height: auto;
+            width: 100%;
+
+            /* 清除浮动 */
+            /* display: table; */
+            /* display:table 使元素像表格一样能够自适应内容 */
+            content: "";
+            clear: both;
+        }
+
+        .introCon,
+        .target,
+        .displayInfo {
+            overflow-x: hidden;
+        }
+
+        .target {
+            display: none;
+            overflow: hidden;
+        }
+
+        .displayInfo {
+            display: table;
+        }
+
+        .introCon input {
+            border: 1px solid #f7f7f7;
+            padding: 1vh 1vw;
+            margin-bottom: 2vh;
+            outline: none;
+            background: none;
+            box-shadow: none;
+        }
+
+        .introCon button {
+            border-radius: 0;
+            box-sizing: border-box;
+        }
+
+        .introCon div {
+            float: left;
+        }
+
+        .introCon p {
+            font-size: 3.5rem;
+            /* font-family: 'JhengBold';*/
+            white-space: pre-line;
+            height: auto;
+            width: auto;
+        }
+
+        .type1 {
+            /* type1是横着的 */
+            /* max-height: 50vh; */
+            max-width: 50vw;
+            float: right;
+            margin-top: -10vh;
+        }
+
+        .type2 {
+            /* type2是竖着的 */
+            max-width: 40vw;
+            max-height: 65vh;
+            height: auto;
+            float: right;
+            margin-top: -20vh;
+        }
+
+        /* type1和type2的横向竖向输入框不等长 */
+        .btn1 input,
+        .btn1 button {
+            width: 25vw;
+        }
+
+        .btn2 input,
+        .btn2 button {
+            width: 35vw;
+        }
+
+        .msg {
+            /* padding-top: 8vh; */
+            padding-bottom: 15vh;
+            /* margin-top: 5vh; */
+        }
+
+        .msg button {
+            cursor: pointer;
+        }
+
+        .introCon .msg p {
+            font-size: 1rem;
+            /* font-family: 'JhengLight';*/
+            letter-spacing: 0.1em;
+            color: #939393;
+            height: auto;
+            padding-top: 10vh;
+            margin: 0 0 2vh 0;
+        }
+
+        .trading {
+            height: 6vh;
+            position: absolute;
+            right: 10%;
+            top: 8%;
+        }
+
+        .trading-copyright {
+            width: 97%;
+            position: absolute;
+            bottom: 10vh;
+            color: #939393;
+        }
+
+        /* section04 现场照片儿 */
+        #section04 {
+            background-color: black;
+            color: white;
+            padding: 5vh 0 10vh 0;
+        }
+
+        #section04 h1 {
+            margin-bottom: 5vh;
+            padding: 0;
+            font-family: 'dinLightI'
+                /*'JhengBold' */
+            ;
+            font-size: 2.5rem;
+        }
+
+        .mySwiper3 {
+            height: 75vh;
+            padding-bottom: 0;
+        }
+
+        .mySwiper3 .swiper-slide {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+        }
+
+        .mySwiper3 .swiper-slide img {
+            /* height: 100%;
+            width: auto;
+            object-fit: cover;*/
+            object-fit: contain;
+            object-position: center center;
+        }
+
+        .mySwiper2 {
+            box-sizing: border-box;
+            padding: 0;
+            height: 15vh;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .mySwiper2 .swiper-slide {
+            width: 10vw;
+        }
+
+        .mySwiper2 .swiper-slide img {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .mySwiper2 .swiper-slide:not(.swiper-slide-thumb-active) img {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="topBtn">
+        <img src="/Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
+    </button>
+
+    <section id="section01" class="banner">
+        <div class="black02"></div>
+
+
+        <div class="title">
+            <h1 class="JhengRegular">同构——纽伦堡国际当代艺术展</h1>
+            <h3 class="JhengLight">
+                <!-- 展览时间2024.09.28-2024.10.28 -->
+                "isomorphism" Nuremberg International Contemporary Art Exhibition
+            </h3>
+            <a href="#content">
+                <button>画廊模式</button></a>
+        </div>
+
+        <ul class="nav">
+            <a href="~/Home/newIndex" target="_blank">
+                <li class="nav-item active">首&emsp;页</li>
+            </a>
+            <a href="#section02">
+                <li class="nav-item">序&emsp;章</li>
+            </a>
+
+            <a href="#section04">
+                <li class="nav-item">现场照片</li>
+            </a>
+        </ul>
+    </section>
+
+    <section id="section02">
+
+        <!-- 序章 -->
+
+        <div>
+            <div class="xu">
+                <img class="tonggou" src="/content/images/tonggou Alpha.png" />
+                <img class="elementPub" src="/content/images/fuzhu-05.png" />
+            </div>
+
+            <h1 class="JhengBold">序</h1>
+            <p>同等恒量的情绪诉求在艺术家所呈现的内容和结果相去甚远，正向而行，反相而往，这或许就是同构的意义所在，“同构”是指两个结构之间存在的对应关系，这种关系使得它们在某种事理上是等价的。在艺术领域，“同构”则被赋予了更为丰富的含义：它不仅指涉作品之间形式的开放性，更涉及深层的文化、情感和社会联系。参展艺术家们通过各自独特的视角，探讨人类经验的共通之处，以及在不同文化语境下对人类文明的不同解读。
+            </p>
+
+
+            <p>在多元且快速变化的时代，艺术作为一种跨越文化和地域的语言，始终承载着人类对于世界的深刻思考与无限想象。“同构 —
+                纽伦堡国际当代艺术展”正是在这样的背景下应运而生，旨在探索不同文化脉络中艺术创作的内在联系及其独特表现形式。
+            </p>
+            <p>
+                本次展览汇集了来自中国及德国优秀的当代艺术家，他们的作品涵盖了绘画、装置艺术、数字媒体等多种媒介，共同探求多维度的艺术感知与价值认同。
+            </p>
+
+            <div class="nameCN">
+                清华大学&#12288;姚健伟<br />
+                2024年8月
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
+        <!-- 现场照片 -->
+
+        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+        <div class="col-xs16 col-sm16 col-md16 col-lg16">
+            <h1 class="JhengBold">现场照片 <i
+                    style="font-style: normal;font-weight: 300;font-family: 'Noto Sans SC', sans-serif;vertical-align: top;font-size: 2rem;">|</i>
+                <span style="font-family: 'dinLightI';!important">GALLERY</span>
+            </h1>
+
+            <!-- Swiper02 -->
+
+            <section>
+                <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
+                    <div class="swiper-wrapper">
+                        <!-- ++ -->
+                        @for (var i = 100001; i <= 100107; i++)
+                        {
+                            <div class="swiper-slide">
+                                <img src="@string.Format("../../Content/images/tonggou2024/{0}.jpg", i)" />
+                            </div>
+                        }
+                    </div>
+                    <div class="swiper-button-next xs-hide sm-hide"></div>
+                    <div class="swiper-button-prev xs-hide sm-hide"></div>
+                </div>
+                <div thumbsSlider="" class="swiper mySwiper2">
+                    <div class="swiper-wrapper">
+                        <!-- ++ -->
+                        @for (var i = 100001; i <= 100107; i++)
+                        {
+                            <div class="swiper-slide">
+                                <img src="@string.Format("../../Content/images/tonggou2024/{0}.jpg", i)" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+    </section>
+
+
+
+
+    <script>
+        // toTopBtn
+        const toTopButton = document.querySelector('#topBtn');
+        const section01 = document.querySelector('#section01');
+
+        window.addEventListener('scroll', function () {
+            // 获取当前滚动位置
+            const scrollPosition = window.scrollY;
+
+            // 判断是否在 section01 区域内
+            if (scrollPosition >= section01.offsetTop && scrollPosition < section01.offsetTop + section01.offsetHeight) {
+                toTopButton.style.display = 'none';
+            } else {
+                toTopButton.style.display = 'block';
+            }
+        });
+
+        toTopButton.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 添加这个属性可以平滑地滚动到顶部
+            });
+        });
+
+
+        // 导航点击加粗
+        $(function () {
+            $(".nav-item").click(function () {
+                $(".nav-item").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+
+        // section01的go gray
+        // $(function () {
+        //     var section01Height = $('#section01').height();
+        //     var maxScrollTop = $(document).height() - $(window).height();
+        //     $(window).scroll(function () {
+        //         var currentScrollTop = $(this).scrollTop();
+        //         var scrollPercent = (currentScrollTop / (maxScrollTop - section01Height)) * 130;
+        //         var grayPercent = Math.max(0, Math.min(100, scrollPercent));
+        //         var alpha = Math.max(0, Math.min(1, scrollPercent / 500));
+        //         // var scrollPercent = (currentScrollTop / (maxScrollTop - section01Height)) * 900;
+        //         // var alpha = Math.max(0, Math.min(1, scrollPercent / 900));
+        //         $('#section01').css('filter', 'grayscale(' + grayPercent + '%) brightness(' + (1 - alpha) + ')');
+        //     });
+        // });
+
+
+        // sectino03的swiper，coverflow+rotateEffect
+        var swiper = new Swiper(".mySwiper", {
+            effect: "coverflow",
+            // 设置初始显示的幻灯片索引为0
+            initialSlide: 1,
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            loop: true,
+            // 启用懒加载
+            lazy: true,
+            // preloadImages: false, // 禁用预加载
+            // updateOnImagesReady: true, // 等待所有图片加载完成后更新swiper
+            coverflowEffect: {
+                rotate: 20,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
+            },
+            on: {
+                //扩大点击范围
+                click: function (e) {
+                    // 获取被点击的slide的索引
+                    var clickedIndex = e.clickedIndex;
+                    // 切换到被点击的slide
+                    this.slideTo(clickedIndex);
+                }
+            },
+        });
+
+        // section03显示Info
+
+        // 获取所有链接
+        var links = document.querySelectorAll('.link');
+
+        // 遍历链接，并为每个链接添加事件监听器
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener('click', function (event) {
+                // 阻止链接的默认行为
+                event.preventDefault();
+
+                // 获取目标元素
+                var target = document.querySelector(this.getAttribute('href'));
+
+                // 移除所有目标元素的 'show' 类
+                var targets = document.querySelectorAll('.target');
+                for (var j = 0; j < targets.length; j++) {
+                    targets[j].classList.remove('displayInfo');
+                }
+
+                // 添加 'show' 类到目标元素
+                target.classList.add('displayInfo');
+
+                // 将页面滚动到目标元素的位置
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+
+        // section04的双swiper,02是子，03是父
+
+        var swiper2 = new Swiper(".mySwiper2", {
+            loop: true,
+            grabCursor: true,
+            spaceBetween: 3,
+            slidesPerView: 7,
+            freeMode: true,
+            watchSlidesProgress: true,
+        });
+        var swiper3 = new Swiper(".mySwiper3", {
+            loop: true,
+            spaceBetween: 0,
+            grabCursor: true,
+            // slidesPerView: 0,
+            // 启用懒加载
+            lazy: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            thumbs: {
+                swiper: swiper2,
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
+            },
+        });
+
+    </script>
+
+    <!-- 以下为共享部分 -->
+
+    <!-- FOOTER - PC -->
+
+    <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+        <div class="footer">
+            <div class="copyright-container">
+                <div class="col-md2 col-lg2">&nbsp;</div>
+                <div class="col-md7 col-lg7 copyright">
+                    <p>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                        深圳市艺术产业促进会
+                    </p>
+                </div>
+                <div class="col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newnews"> 新闻动态</a><br />
+                        <a href="~/publication/index"> 展会动态</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+
+                </div>
+                <div class="col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/newabout">合作案例 </a><br />
+                        <a href="~/Home/vip" target="_blank" `>艺术家首页</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+                <div class="col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="~/home/link">联系我们</a><br />
+                        <a href="@Url.Action("Index", "Home", new { fromLink = true })">旧版首页</a><br />
+                        <a href="~/Staff/Index">后台登陆</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                    </p>
+                </div>
+
+                <div class="col-md2 col-lg2">&nbsp;</div>
+            </div>
+        </div>
+    </footer>
+
+    <footer class="section09m md-hide lg-hide copyrightM">
+
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+        深圳市艺术产业促进会<br />
+        <br />
+        <a href="~/Staff/Index">后台登陆</a>
+
+    </footer>
+
+
+    <script type="text/javascript">
+        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
+        /*．．．*/
+        $webfont.draw();
+
+        $(function () {
+            var lastScrollPosition = $(window).scrollTop();
+            var downThreshold = 10;  // 向下滚动触发的阈值
+            var upThreshold = 5;     // 向上滚动触发的阈值
+
+            $(window).scroll(function () {
+                var currentScrollPosition = $(window).scrollTop();
+                var distanceScrolled = Math.abs(currentScrollPosition - lastScrollPosition);
+
+                if (currentScrollPosition > lastScrollPosition && distanceScrolled >= downThreshold) {
+                    // 向下滚动，并且滚动距离大于或等于向下阈值
+                    $(".bannerCon").css({
+                        "transition": "transform 250ms",
+                        "transform": "translateY(-100%)"
+                    });
+                } else if (currentScrollPosition < lastScrollPosition && distanceScrolled >= upThreshold) {
+                    // 向上滚动，并且滚动距离大于或等于向上阈值
+                    $(".bannerCon").css({
+                        "transition": "transform 250ms",
+                        "transform": "translateY(0)"
+                    });
+                }
+
+                lastScrollPosition = currentScrollPosition;  // 更新最后的滚动位置
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
