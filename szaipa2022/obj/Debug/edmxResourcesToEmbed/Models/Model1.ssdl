@@ -196,6 +196,22 @@
     <Property Name="EditRecord" Type="nvarchar(max)" />
     <Property Name="VisitCount" Type="int" />
   </EntityType>
+  <EntityType Name="Publication">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TitleCN" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="TitleEN" Type="nvarchar" MaxLength="500" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="FolderName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="MaxImg" Type="int" Nullable="false" />
+    <Property Name="LogoPath" Type="nvarchar" MaxLength="50" />
+    <Property Name="CoverPath" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="ReadCount" Type="int" Nullable="false" />
+    <Property Name="EditRecord" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="Staff">
     <Key>
       <PropertyRef Name="Id" />
@@ -257,6 +273,7 @@
     <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Public" EntityType="Self.Public" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Publication" EntityType="Self.Publication" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />

@@ -261,5 +261,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Publication">
+      <EntityTypeMapping TypeName="SzaipaModel.Publication">
+        <MappingFragment StoreEntitySet="Publication">
+          <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+          <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+          <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+          <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+          <ScalarProperty Name="MaxImg" ColumnName="MaxImg" />
+          <ScalarProperty Name="FolderName" ColumnName="FolderName" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="TitleEN" ColumnName="TitleEN" />
+          <ScalarProperty Name="TitleCN" ColumnName="TitleCN" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

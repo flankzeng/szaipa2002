@@ -184,6 +184,7 @@
     <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
     <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
     <EntitySet Name="Exhibition" EntityType="SzaipaModel.Exhibition" />
+    <EntitySet Name="Publication" EntityType="SzaipaModel.Publication" />
   </EntityContainer>
   <EntityType Name="ArtNews">
     <Key>
@@ -261,5 +262,21 @@
     <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="VisitCount" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Publication">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TitleCN" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TitleEN" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="FolderName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MaxImg" Type="Int32" Nullable="false" />
+    <Property Name="LogoPath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CoverPath" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ReadCount" Type="Int32" Nullable="false" />
+    <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
