@@ -117,6 +117,7 @@ namespace Szaipa.Controllers
             ViewBag.news = 1;
             return View(ns);
         }
+
         public ActionResult vip()
         {
             if (Session["Home"] == null) HaveViti();//是否是有效访问，若是记录数据
@@ -282,7 +283,7 @@ namespace Szaipa.Controllers
             // 1.为视图创建头条新闻：
             var heading = db.ArtNews.Where(d => d.ArtistId == art.Id).ToList().OrderByDescending(d => d.Date).Take(1);
 
-            ViewBag.Heading = heading;;
+            ViewBag.Heading = heading; ;
 
             // 2.为视图创建2～5条新闻的列表：
             var info = db.ArtNews.Where(n => n.ArtistId == art.Id)
@@ -534,6 +535,40 @@ namespace Szaipa.Controllers
             return RedirectToAction("Index", "Staff");
         }
 
+        public ActionResult PublicationList(int? page, int? limit, int? count, string keyword)
+        {
+            if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
+            if (Session["Staff"] != null) ViewBag.staff = 1;
+
+            var publication = db.Publication.OrderByDescending(d => d.Id).ToList();
+            var pub = publicationlist(publication);
+
+            var publicationList = db.Publication.OrderByDescending(d => d.Id).ToList();
+            ViewBag.PublicationList = publicationList;
+
+            ViewBag.publication = 1;
+            return View(pub);
+        }
+
+        public ActionResult Publication(int id)
+        {
+            if (Session["Staff"] != null) ViewBag.staff = 1;
+            if (Session["Home"] == null) HaveViti(); // 是否是有效访问，若是记录数据
+            ViewBag.news = 1;
+
+            var publication = db.Publication.FirstOrDefault(d => d.Id == id);
+            // var ps = publicationlist(publication);
+            publication.ReadCount = publication.ReadCount + 1;
+
+
+            db.SaveChanges();
+
+            var publicationList = db.Publication.ToList();
+            ViewBag.PublicationsList = publicationList; // 将publicationsList传递给视图
+
+            return View(publication);
+        }
+
 
         /// <summary>
         /// 生成当天点击量数据
@@ -669,6 +704,35 @@ namespace Szaipa.Controllers
 
 
             return nl;
+        }
+
+        public List<publicationActiveList> publicationlist(int? page, int? limit, int? count)
+        {
+            List<publicationActiveList> pl = new List<publicationActiveList>();
+            var publications = db.Publication.OrderByDescending(d => d.Id).ToList();
+
+            foreach (var a in publications)
+            {
+                var p = new publicationActiveList();
+                p.TitleCN = a.TitleCN;
+                p.TitleEN = a.TitleEN;
+                p.Id = a.Id;
+                DateTime stdt = Convert.ToDateTime(a.StartDate);
+                p.StartDate = stdt.ToString("yyyy年MM月dd日");
+                DateTime endt = Convert.ToDateTime(a.EndDate);
+                p.EndDate = endt.ToString("yyyy年MM月dd日");
+                p.FolderName = a.FolderName;
+                p.MaxImg = a.MaxImg;
+                p.LogoPath = a.LogoPath;
+                p.CoverPath = a.CoverPath;
+
+                p.EditRecord = a.EditRecord;
+
+                pl.Add(p);
+            }
+
+
+            return pl;
         }
         /// <summary>
         /// IP访问测试
@@ -850,6 +914,32 @@ namespace Szaipa.Controllers
                 e.Add(a);
             }
             return e;
+        }
+
+        public List<publicationActiveList> publicationlist(List<Publication> publications)
+        {
+            List<publicationActiveList> pu = new List<publicationActiveList>();
+            foreach (var m in publications)
+            {
+                var q = new publicationActiveList();
+
+                q.TitleCN = m.TitleCN;
+                q.TitleEN = m.TitleEN;
+                q.Id = m.Id;
+                DateTime stdt = Convert.ToDateTime(m.StartDate);
+                q.StartDate = stdt.ToString("yyyy年MM月dd日");
+                DateTime endt = Convert.ToDateTime(m.EndDate);
+                q.EndDate = endt.ToString("yyyy年MM月dd日");
+                q.FolderName = m.FolderName;
+                q.MaxImg = m.MaxImg;
+                q.LogoPath = m.LogoPath;
+                q.CoverPath = m.CoverPath;
+
+                q.EditRecord = m.EditRecord;
+
+                pu.Add(q);
+            }
+            return pu;
         }
 
         public List<Tag> WorksTags(Works work)

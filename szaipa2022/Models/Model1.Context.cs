@@ -41,5 +41,6 @@ namespace szaipa2022.Models
         public virtual DbSet<Fav> Fav { get; set; }
         public virtual DbSet<Public> Public { get; set; }
         public virtual DbSet<Exhibition> Exhibition { get; set; }
+        public virtual DbSet<Publication> Publication { get; set; }
     }
 }

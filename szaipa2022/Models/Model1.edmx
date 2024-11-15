@@ -201,6 +201,22 @@
           <Property Name="EditRecord" Type="nvarchar(max)" />
           <Property Name="VisitCount" Type="int" />
         </EntityType>
+        <EntityType Name="Publication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitleCN" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TitleEN" Type="nvarchar" MaxLength="500" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="FolderName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MaxImg" Type="int" Nullable="false" />
+          <Property Name="LogoPath" Type="nvarchar" MaxLength="50" />
+          <Property Name="CoverPath" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ReadCount" Type="int" Nullable="false" />
+          <Property Name="EditRecord" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Staff">
           <Key>
             <PropertyRef Name="Id" />
@@ -262,6 +278,7 @@
           <EntitySet Name="MonthData" EntityType="Self.MonthData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Public" EntityType="Self.Public" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Publication" EntityType="Self.Publication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Works" EntityType="Self.Works" Schema="dbo" store:Type="Tables" />
@@ -455,6 +472,7 @@
           <EntitySet Name="Fav" EntityType="SzaipaModel.Fav" />
           <EntitySet Name="Public" EntityType="SzaipaModel.Public" />
           <EntitySet Name="Exhibition" EntityType="SzaipaModel.Exhibition" />
+          <EntitySet Name="Publication" EntityType="SzaipaModel.Publication" />
         </EntityContainer>
         <EntityType Name="ArtNews">
           <Key>
@@ -532,6 +550,22 @@
           <Property Name="EndDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VisitCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Publication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitleCN" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TitleEN" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="FolderName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MaxImg" Type="Int32" Nullable="false" />
+          <Property Name="LogoPath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CoverPath" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ReadCount" Type="Int32" Nullable="false" />
+          <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -795,6 +829,23 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Publication">
+            <EntityTypeMapping TypeName="SzaipaModel.Publication">
+              <MappingFragment StoreEntitySet="Publication">
+                <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
+                <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
+                <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
+                <ScalarProperty Name="LogoPath" ColumnName="LogoPath" />
+                <ScalarProperty Name="MaxImg" ColumnName="MaxImg" />
+                <ScalarProperty Name="FolderName" ColumnName="FolderName" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="TitleEN" ColumnName="TitleEN" />
+                <ScalarProperty Name="TitleCN" ColumnName="TitleCN" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

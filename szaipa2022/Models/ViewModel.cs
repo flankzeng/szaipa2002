@@ -198,4 +198,19 @@ namespace Szaipa.Models
         public Public Public { get; set; }
         public Auction Auction { get; set; }
     }
+
+    public class publicationActiveList
+    {
+        public int Id { set; get; }
+        public string TitleCN { get; set; }
+        public string TitleEN { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string FolderName { get; set; }
+        public int MaxImg { get; set; }
+        public string LogoPath { get; set; }
+        public string CoverPath { get; set; }
+        public int ReadCount { get; set; }
+        public string EditRecord { get; set; }
+    }
 }
