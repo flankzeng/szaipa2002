@@ -211,6 +211,8 @@
     <Property Name="CoverPath" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="ReadCount" Type="int" Nullable="false" />
     <Property Name="EditRecord" Type="nvarchar(max)" />
+    <Property Name="Status" Type="bit" />
+    <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>

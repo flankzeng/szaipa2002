@@ -25,5 +25,7 @@ namespace szaipa2022.Models
         public string CoverPath { get; set; }
         public int ReadCount { get; set; }
         public string EditRecord { get; set; }
+        public Nullable<bool> Status { get; set; }
+        public string Location { get; set; }
     }
 }

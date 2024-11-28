@@ -216,6 +216,8 @@
           <Property Name="CoverPath" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="ReadCount" Type="int" Nullable="false" />
           <Property Name="EditRecord" Type="nvarchar(max)" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -566,6 +568,8 @@
           <Property Name="CoverPath" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ReadCount" Type="Int32" Nullable="false" />
           <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -836,6 +840,8 @@
           <EntitySetMapping Name="Publication">
             <EntityTypeMapping TypeName="SzaipaModel.Publication">
               <MappingFragment StoreEntitySet="Publication">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />
                 <ScalarProperty Name="ReadCount" ColumnName="ReadCount" />
                 <ScalarProperty Name="CoverPath" ColumnName="CoverPath" />
