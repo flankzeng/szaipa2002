@@ -32,11 +32,11 @@
             <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
                 <div class="swiper-wrapper">
                 @for (var i = 10000; i <= 10000 + Model.MaxImg; i++)
-            {
-                <div class="swiper-slide">
-                    <img src="@string.Format("../../Content/images/{0}/{1}.jpg", Model.FolderName,i)" />
-                </div>
-            }
+                    {
+                        <div class="swiper-slide">
+                            <img src="@string.Format("../../Content/images/{0}/{1}.jpg", Model.FolderName,i)" />
+                        </div>
+                    }
         </div>
                 </div>
                 <div class="swiper-button-next xs-hide sm-hide"></div>

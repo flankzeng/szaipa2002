@@ -212,5 +212,10 @@ namespace Szaipa.Models
         public string CoverPath { get; set; }
         public int ReadCount { get; set; }
         public string EditRecord { get; set; }
+        public string Location { get; set; }
+        public bool Status { get; set; }
+        public string zhuban { get; set; }
+        public string chengban { get; set; }
+        public string xieban { get; set; }
     }
 }

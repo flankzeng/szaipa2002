@@ -730,6 +730,15 @@ namespace Szaipa.Controllers
                 p.CoverPath = a.CoverPath;
 
                 p.EditRecord = a.EditRecord;
+                p.Location = a.Location;
+                if(p.Status == false)
+                {
+                    a.Status = true;
+                }
+                else{a.Status = true;};
+                p.zhuban = a.zhuban;
+                p.chengban = a.chengban;
+                p.xieban = a.xieban;
 
                 pl.Add(p);
             }
@@ -939,6 +948,14 @@ namespace Szaipa.Controllers
                 q.CoverPath = m.CoverPath;
 
                 q.EditRecord = m.EditRecord;
+                q.Location = m.Location;
+                if(q.Status == false){
+                    m.Status = false;
+                }else{m.Status = true;};
+
+                q.zhuban = m.zhuban;
+                q.chengban = m.chengban;
+                q.xieban = m.xieban;
 
                 pu.Add(q);
             }
