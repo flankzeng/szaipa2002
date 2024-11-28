@@ -14,9 +14,9 @@
             <h3 class="JhengLight">
                 @Model.TitleEN
                 <br />
-                开幕时间：@Model.StartDate
+                开幕时间：@string.Format("{0:yyyy年MM月dd日}", Model.StartDate)
                 <br />
-                结束时间：@Model.EndDate
+                结束时间：@string.Format("{0:yyyy年MM月dd日}", Model.EndDate)
             </h3>
 
             <a class="JhengLight xs-hide sm-hide" href="javascript:history.back()">

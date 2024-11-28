@@ -65,6 +65,9 @@ namespace Szaipa.Controllers
 
             ViewBag.n = l;
 
+            var exhibitionList = db.Publication.OrderByDescending(d => d.StartDate).ToList();
+            ViewBag.ExhibitionList = exhibitionList;
+
             return View();
         }
 

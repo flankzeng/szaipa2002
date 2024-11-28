@@ -1031,6 +1031,40 @@
         <div class="swiper mySwiper" style="border:1px solid black">
             <div class="swiper-wrapper">
 
+                @foreach(var ex in ViewBag.ExhibitionList)
+
+                {
+                    <div class="swiper-slide">
+
+                    <a href="/Home/Publication/@ex.Id" class="carouselZoom">
+
+                        <div class="outterL">
+                            <p class="inner_new rotate_new">
+                                @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                            </p>
+                        </div>
+                        <div class="outterR">
+                            <p class="inner_new rotate_new">
+                                @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                            </p>
+                        </div>
+
+                        <div class="black">
+
+                            <div class="logoCon">
+                                <img src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                            </div>
+
+                            <img src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
+
+                        </div>
+
+                    </a>
+                </div>
+
+                }
+
+
                 <div class="swiper-slide">
 
                     <a href="/Publication/tonggou2024" class="carouselZoom">
@@ -1999,157 +2033,33 @@
                         </div>
                     </a>
                 </div>
-
-
-                @* <!-- 三人行 -->
-                <div class="swiper-slide">
-                <div class="exhibition">
-                <h1>
-                三人行——鸥洋 / 雷双 / 张岚芊艺术展
-                </h1>
-                <a href="/Publication/trio" style="color:black;text-decoration:none;">
-                <h3>
-                展览时间：2023.06.02-2023.07.02 <br />
-                展览地点：深圳市木星美术馆 <br />
-                主办单位：深圳市艺术产业促进会 <br />
-                联合主办：深圳市木星美术馆
-                </h3>
-                <div class="more">
-                查看更多
-                </div>
-                </a>
-                </div>
-
-                <a href="/Publication/trio">
-                <div class="processing-lunbo">
-                <div class="exhibitionSlider">
-                <div class="exhibitionSlide borderActive">
-                <img src="/content/images/trio/lunbo1.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo2.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo3.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo4.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo5.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo6.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/trio/lunbo7.jpg" alt="" />
-                </div>
-                </div>
-                </div>
-                </a>
-                </div>
-
-                <!-- 春语二 -->
-                <div class="swiper-slide">
-                <div class="exhibition">
-                <h1>
-                "春语"第二季——国际视觉艺术邀请展
-                </h1>
-                <a href="/Publication/chunyu2" style="color:black;text-decoration:none;">
-                <h3>
-                展览时间：2023.04.21-2023.05.28 <br />
-                展览地点：深圳动漫园·同构艺术空间 <br />
-                主办单位：深圳市艺术产业促进会 <br />
-                承办单位：动漫园·同构艺术空间
-                </h3>
-                <div class="more">
-                查看更多
-                </div>
-                </a>
-                </div>
-
-                <a href="/Publication/chunyu2">
-                <div class="processing-lunbo">
-                <div class="exhibitionSlider">
-                <div class="exhibitionSlide borderActive">
-                <img src="/content/images/chunyu2/lunbo1.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo2.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo3.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo4.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo5.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo6.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/chunyu2/lunbo7.jpg" alt="" />
-                </div>
-                </div>
-                </div>
-                </a>
-                </div>
-
-                <!-- 同构二 -->
-                <div class="swiper-slide">
-                <div class="exhibition">
-                <h1>
-                同构《第二季》·当代艺术展
-                </h1>
-                <a href="/Publication/tonggou2" style="color:black;text-decoration:none;">
-                <h3>
-                展览时间：2022.12.29-2023.01.28 <br />
-                展览地点：罗湖美术馆 <br />
-                主办单位：深圳市罗湖区文化广电旅游体育局 <br />
-                承办单位：罗湖美术馆&#12288;深圳市艺术产业促进会
-                </h3>
-                <div class="more">
-                查看更多
-                </div>
-                </a>
-                </div>
-
-                <a href="/Publication/tonggou2#section04">
-                <div class="processing-lunbo">
-                <div class="exhibitionSlider">
-                <div class="exhibitionSlide borderActive">
-                <img src="/content/images/test1.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test2.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test3.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test4.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test5.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test6.jpg" alt="" />
-                </div>
-                <div class="exhibitionSlide">
-                <img src="/content/images/test7.jpg" alt="" />
-                </div>
-                </div>
-                </div>
-                </a>
-                </div> *@
-
             </div>
             <div class="swiper-pagination"></div>
         </div>
 
         <div id="ended">
+
+        @foreach(var ex in ViewBag.ExhibitionList)
+        {
+            if(ex.Status == false)
+            {
+                <a href="/Home/Publication/@ex.Id">
+                <div class="card ended">
+                    <p class="JhengRegular">
+                        @ex.TitleNameCN <br />
+                        开始时间:@string.Format("{0:yyyy年MM月dd日}", ex.StartDate) <br />
+                        结束时间:@string.Format("{0:yyyy年MM月dd日}", ex.EndDate) <br />
+                        展览地点:@ex.Location
+                    </p>
+                    <span>
+                        查看更多</span>
+                    <img src="/content/@ex.FolderName /card.jpg" />
+                    <div class="filter-end"></div>
+                </div>
+            </a>
+            }
+        }
+
             <a href="/Publication/trio">
                 <div class="card ended">
                     <p class="JhengRegular">
