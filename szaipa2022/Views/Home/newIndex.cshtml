@@ -542,7 +542,8 @@
 
     .processing-lunbo {
         /* 轮播大小 */
-        height: 70vh;
+        /* 2024.11.28 由70vh更改为50vh,修复了同屏无法直接观看活动标题的错误 */
+        height: 50vh;
         width: 80vw;
         color: transparent;
     }
@@ -1844,14 +1845,13 @@
                 {
                     if (ex.Status == true)
                     {
-                        <div class="swiper-slide">
+                        <text>
+                            <div class="swiper-slide">
                             <div class="exhibition">
-                                <h1>
-                                    @ex.TitleCN
-                                </h1>
+                                <h1>@ex.TitleCN</h1>
                                 <a href="/Home/Publication/@ex.Id" style="color:black;text-decoration:none;">
                                     <h3>
-                                        展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}", ex.EndDate) <br />
+                                        展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}", ex.EndDate)<br />
                                         展览地点：@ex.Location<br />
                                         主办单位：@ex.zhuban <br />
                                         协办单位：@ex.xieban <br />
@@ -1864,20 +1864,23 @@
                             </div>
                             <a href="/Home/Publication/@ex.Id">
                                 <div class="processing-lunbo">
-                                    @for (var i = 10000; i <= 10000 + ex.MaxImg; i++)
+                                    <div class="exhibitionSlider">
+
+                                    @for (var i = 10001; i <= 10006; i++)
                                     {
-                                        <div class="exhibitionSlider">
-                                            <div class="exhibitionSlide borderActive">
-                                                <img src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName,i)" />
+                                            <div class="exhibitionSlide">
+                                                <img src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" />
                                             </div>
-                                            }
-                                        </div>
+                                        
+                                    }
                                     </div>
-                                </a>
-                            </div>
-                                    }
-                                    }
-            
+                                </div>
+                            </a>
+                        </div>
+                        </text>
+                    }
+                }
+
                 <!-- 同构——中日艺术交流展 -->
                 <div class="swiper-slide">
                     <div class="exhibition">
