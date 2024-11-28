@@ -264,6 +264,9 @@
     <EntitySetMapping Name="Publication">
       <EntityTypeMapping TypeName="SzaipaModel.Publication">
         <MappingFragment StoreEntitySet="Publication">
+          <ScalarProperty Name="xieban" ColumnName="xieban" />
+          <ScalarProperty Name="chengban" ColumnName="chengban" />
+          <ScalarProperty Name="zhuban" ColumnName="zhuban" />
           <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="EditRecord" ColumnName="EditRecord" />

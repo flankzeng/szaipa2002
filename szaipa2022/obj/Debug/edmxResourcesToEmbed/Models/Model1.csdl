@@ -280,5 +280,8 @@
     <Property Name="EditRecord" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Status" Type="Boolean" />
     <Property Name="Location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="zhuban" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="chengban" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="xieban" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>

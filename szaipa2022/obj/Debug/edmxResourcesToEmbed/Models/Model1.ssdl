@@ -213,6 +213,9 @@
     <Property Name="EditRecord" Type="nvarchar(max)" />
     <Property Name="Status" Type="bit" />
     <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="zhuban" Type="nvarchar" MaxLength="100" />
+    <Property Name="chengban" Type="nvarchar" MaxLength="50" />
+    <Property Name="xieban" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>

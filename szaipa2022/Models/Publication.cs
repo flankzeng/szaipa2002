@@ -27,5 +27,8 @@ namespace szaipa2022.Models
         public string EditRecord { get; set; }
         public Nullable<bool> Status { get; set; }
         public string Location { get; set; }
+        public string zhuban { get; set; }
+        public string chengban { get; set; }
+        public string xieban { get; set; }
     }
 }
