@@ -954,6 +954,9 @@
 
     .member th {
         position: relative;
+
+        width: 13vw;
+        /* 2025.11.19 */
     }
 
     .member img {
@@ -1799,7 +1802,8 @@
                         <p class="JhengBold">黄笃<br /><span class="JhengLight">策展人&nbsp;|&nbsp;评论家</span></p>
                     </a>
                 </th>
-                <th>
+                <th class="sm-hide xm-hide">
+                @* pc版，完全title *@
                     <a href="~/Home/Art/1051">
                         <div class="relative after">
                             <img src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt="">
@@ -1808,13 +1812,29 @@
                     </a>
                 </th>
 
-
+                <th class="md-hide lg-hide">
+                @* 移动端，部分title *@
+                    <a href="~/Home/Art/1051">
+                        <div class="relative after">
+                            <img src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt="">
+                        </div>
+                        <p>盛伯骥<br /><span>艺术顾问</span></p>
+                    </a>
+                </th>
 
 
 
 
                 <!-- 暂时留用 -->
 
+                <th class="xs-hide sm-hide" style="opacity: 0;">
+                    <a href="artistNews">
+                        <div class="relative after">
+                            <img src="/content/images/to black/vip-3hd.png" alt="">
+                        </div>
+                        <p>黄笃<br /><span>策展人&nbsp;|&nbsp;评论家</span></p>
+                    </a>
+                </th>
                 <th class="xs-hide sm-hide" style="opacity: 0;">
                     <a href="artistNews">
                         <div class="relative after">
