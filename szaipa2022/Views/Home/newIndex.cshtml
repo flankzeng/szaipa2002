@@ -1035,39 +1035,123 @@
         <div class="swiper mySwiper" style="border:1px solid black">
             <div class="swiper-wrapper">
 
-                @foreach(var ex in ViewBag.ExhibitionList)
-
+                @* 暂时没用上，2025.11.25 *@
+                @foreach (var ex in ViewBag.ExhibitionList)
                 {
                     <div class="swiper-slide">
 
-                    <a href="/Home/Publication/@ex.Id" class="carouselZoom">
+                        <a href="/Home/Publication/@ex.Id" class="carouselZoom">
+
+                            <div class="outterL">
+                                <p class="inner_new rotate_new">
+                                    @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                                </p>
+                            </div>
+                            <div class="outterR">
+                                <p class="inner_new rotate_new">
+                                    @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                                </p>
+                            </div>
+
+                            <div class="black">
+
+                                <div class="logoCon">
+                                    <img src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                                </div>
+
+                                <img src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
+
+                            </div>
+
+                        </a>
+                    </div>
+
+                }
+
+                <div class="swiper-slide">
+
+                    <a href="/Publication/tangqishan" class="carouselZoom">
 
                         <div class="outterL">
                             <p class="inner_new rotate_new">
-                                @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                                入骨相知——唐岐山当代艺术展&#12288;2025
                             </p>
                         </div>
                         <div class="outterR">
                             <p class="inner_new rotate_new">
-                                @ex.TitleCN&#12288; @ex.StartDate.Year.ToString()
+                                入骨相知——唐岐山当代艺术展&#12288;2025
                             </p>
                         </div>
-                        
+
                         <div class="black">
 
                             <div class="logoCon">
-                                <img src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                                <img src="/Content/images/tangqishan.png" alt="">
                             </div>
 
-                            <img src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
+                            <img src="/Content/images/tangqishan/100002.jpg" class="imgCon" alt="">
 
                         </div>
 
                     </a>
                 </div>
 
-                }
+                <div class="swiper-slide">
 
+                    <a href="/Publication/zhongfa" class="carouselZoom">
+
+                        <div class="outterL">
+                            <p class="inner_new rotate_new">
+                                深圳——法国国际当代艺术展&#12288;2025
+                            </p>
+                        </div>
+                        <div class="outterR">
+                            <p class="inner_new rotate_new">
+                                深圳——法国国际当代艺术展&#12288;2025
+                            </p>
+                        </div>
+
+                        <div class="black">
+
+                            <div class="logoCon">
+                                <img src="/Content/images/zhongfa.png" alt="">
+                            </div>
+
+                            <img src="/Content/images/zhongfa/poster.jpg" class="imgCon" alt="">
+
+                        </div>
+
+                    </a>
+                </div>
+
+                <div class="swiper-slide">
+
+                    <a href="/Publication/chunyu4" class="carouselZoom">
+
+                        <div class="outterL">
+                            <p class="inner_new rotate_new">
+                                春语第四季——当代艺术作品邀请展&#12288;2025
+                            </p>
+                        </div>
+                        <div class="outterR">
+                            <p class="inner_new rotate_new">
+                                春语第四季——当代艺术作品邀请展&#12288;2025
+                            </p>
+                        </div>
+
+                        <div class="black">
+
+                            <div class="logoCon">
+                                <img src="/Content/images/chunyu4.png" alt="">
+                            </div>
+
+                            <img src="/Content/images/chunyu4/100000.jpg" class="imgCon" alt="">
+
+                        </div>
+
+                    </a>
+                </div>
+                @* Aaaaadasjfahgiuwqhfiuawhifuhqwiufhiqwhfiu *@
 
                 <div class="swiper-slide">
 
@@ -1590,7 +1674,7 @@
                 </th>
 
                 @* 前三不需要隐藏移动设备   *@
-                
+
                 <th class="xs-hide sm-hide">
                     <a href="~/Home/newArt/1011">
                         <div class="relative after">
@@ -1627,8 +1711,8 @@
                         </div>
                         <p class="JhengBold">王玉波<br /><span class="JhengLight">监事&nbsp;|&nbsp;艺术家</span></p>
                     </a>
-                </th> 
-                
+                </th>
+
                 <th class="xs-hide sm-hide">
                     <a href="~/Home/Art/1015">
                         <div class="relative after">
@@ -1732,12 +1816,12 @@
                     </a>
                 </th>
 
-                <th>                        
+                <th>
                     <a href="~/Home/Art/1014">
-                    <div class="relative after">
+                        <div class="relative after">
                             <img src="/content/images/to black/vip-6cxg.png" alt="">
-                    </div>
-                    <p class="JhengBold">程晓光<br /><span class="JhengLight">策展人&nbsp;|&nbsp;艺术家</span></p>
+                        </div>
+                        <p class="JhengBold">程晓光<br /><span class="JhengLight">策展人&nbsp;|&nbsp;艺术家</span></p>
                     </a>
                 </th>
             </tr>
@@ -1803,7 +1887,7 @@
                     </a>
                 </th>
                 <th class="sm-hide xm-hide">
-                @* pc版，完全title *@
+                    @* pc版，完全title *@
                     <a href="~/Home/Art/1051">
                         <div class="relative after">
                             <img src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt="">
@@ -1813,7 +1897,7 @@
                 </th>
 
                 <th class="md-hide lg-hide">
-                @* 移动端，部分title *@
+                    @* 移动端，部分title *@
                     <a href="~/Home/Art/1051">
                         <div class="relative after">
                             <img src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt="">
@@ -1956,36 +2040,37 @@
                     {
                         <text>
                             <div class="swiper-slide">
-                            <div class="exhibition">
-                                <h1>@ex.TitleCN</h1>
-                                <a href="/Home/Publication/@ex.Id" style="color:black;text-decoration:none;">
-                                    <h3>
-                                        展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}", ex.EndDate)<br />
-                                        展览地点：@ex.Location<br />
-                                        主办单位：@ex.zhuban <br />
-                                        协办单位：@ex.xieban <br />
-                                        承办单位：@ex.chengban
-                                    </h3>
-                                    <div class="more">
-                                        查看更多
-                                    </div>
-                                </a>
-                            </div>
-                            <a href="/Home/Publication/@ex.Id">
-                                <div class="processing-lunbo">
-                                    <div class="exhibitionSlider">
-
-                                    @for (var i = 10001; i <= 10006; i++)
-                                    {
-                                            <div class="exhibitionSlide">
-                                                <img src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" />
-                                            </div>
-                                        
-                                    }
-                                    </div>
+                                <div class="exhibition">
+                                    <h1>@ex.TitleCN</h1>
+                                    <a href="/Home/Publication/@ex.Id" style="color:black;text-decoration:none;">
+                                        <h3>
+                                            展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}",
+                                                                                ex.EndDate)<br />
+                                    展览地点：@ex.Location<br />
+                                    主办单位：@ex.zhuban <br />
+                                    协办单位：@ex.xieban <br />
+                                    承办单位：@ex.chengban
+                                </h3>
+                                <div class="more">
+                                    查看更多
                                 </div>
                             </a>
                         </div>
+                        <a href="/Home/Publication/@ex.Id">
+                            <div class="processing-lunbo">
+                                <div class="exhibitionSlider">
+
+                                    @for (var i = 10001; i <= 10006; i++)
+                                            {
+                                                <div class="exhibitionSlide">
+                                                    <img src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" />
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         </text>
                     }
                 }
@@ -2189,26 +2274,26 @@
 
         <div id="ended">
 
-        @foreach(var ex in ViewBag.ExhibitionList)
-        {
-            if(ex.Status == false)
+            @foreach (var ex in ViewBag.ExhibitionList)
             {
-                <a href="/Home/Publication/@ex.Id">
-                <div class="card ended">
-                    <p class="JhengRegular">
-                        @ex.TitleCN <br />
-                        开始时间:@string.Format("{0:yyyy年MM月dd日}", ex.StartDate) <br />
-                        结束时间:@string.Format("{0:yyyy年MM月dd日}", ex.EndDate) <br />
-                        展览地点:@ex.Location
-                    </p>
-                    <span>
-                        查看更多</span>
-                    <img src="/content/images/@ex.FolderName/card.jpg" />
-                    <div class="filter-end"></div>
-                </div>
-            </a>
+                if (ex.Status == false)
+                {
+                    <a href="/Home/Publication/@ex.Id">
+                        <div class="card ended">
+                            <p class="JhengRegular">
+                                @ex.TitleCN <br />
+                                开始时间:@string.Format("{0:yyyy年MM月dd日}", ex.StartDate) <br />
+                                结束时间:@string.Format("{0:yyyy年MM月dd日}", ex.EndDate) <br />
+                                展览地点:@ex.Location
+                            </p>
+                            <span>
+                                查看更多</span>
+                            <img src="/content/images/@ex.FolderName/card.jpg" />
+                            <div class="filter-end"></div>
+                        </div>
+                    </a>
+                }
             }
-        }
 
             <a href="/Publication/trio">
                 <div class="card ended">

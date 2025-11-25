@@ -84,5 +84,20 @@ namespace Szaipa.Controllers
         {
             return View();
         }
+
+        public ActionResult chunyu4()
+        {
+            return View();
+        }
+
+        public ActionResult zhongfa()
+        {
+            return View();
+        }
+
+        public ActionResult tangqishan()
+        {
+            return View();
+        }
     }
 }
