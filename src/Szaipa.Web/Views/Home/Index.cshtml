@@ -1,0 +1,223 @@
+﻿@model Szaipa.Web.Models.MigrationDashboardViewModel
+@{
+    ViewData["Title"] = "Migration Dashboard";
+}
+
+<partial name="~/Views/Shared/_LandingPreview.cshtml" model="Model.LandingPreview" />
+
+<section class="hero-panel">
+    <p class="eyebrow">Szaipa Modernization</p>
+    <h1>ASP.NET Core cross-platform migration workspace</h1>
+    <p class="lead">
+        This app remains the safe entry point for moving the legacy ASP.NET MVC 5 site to a Mac and Windows friendly runtime while the public pages are rebuilt in small read-only batches.
+    </p>
+</section>
+
+<section class="status-grid">
+    <article class="status-card">
+        <h2>Runtime</h2>
+        <p><strong>Target:</strong> @Model.TargetFramework</p>
+        <p><strong>Environment:</strong> @Model.ActiveEnvironment</p>
+    </article>
+    <article class="status-card">
+        <h2>Database safety</h2>
+        <p><strong>Use legacy data sources:</strong> @Model.UseLegacyDataSources</p>
+        <p><strong>Allow live database:</strong> @Model.AllowLiveDatabase</p>
+        <p><strong>Has read-write source:</strong> @Model.HasReadWriteLegacySource</p>
+    </article>
+</section>
+
+<section class="workstream-panel">
+    <h2>Legacy data sources</h2>
+    <p><strong>Source legend:</strong> <code>LegacyData</code> means explicit local config, <code>Environment</code> means read-only environment variable, <code>ConnectionStrings</code> means fallback config, and <code>None</code> means no connection string is currently resolved.</p>
+    <ul>
+        @foreach (var item in Model.LegacySources)
+        {
+            <li>@item.Key: @item.Value</li>
+        }
+    </ul>
+    <ul>
+        @foreach (var item in Model.LegacyConnectionSources)
+        {
+            <li>@item.Key source: @item.Value</li>
+        }
+    </ul>
+</section>
+
+<section class="workstream-panel">
+    <h2>Scaffold readiness</h2>
+    <ul>
+        @foreach (var item in Model.ScaffoldReadiness)
+        {
+            <li>@item.Key: @item.Value</li>
+        }
+    </ul>
+</section>
+
+<section class="workstream-panel">
+    <h2>Read model flags</h2>
+    <ul>
+        @foreach (var item in Model.ReadModelFlags)
+        {
+            <li>@item.Key: @item.Value</li>
+        }
+    </ul>
+</section>
+
+<section class="workstream-panel">
+    <h2>Safety guardrails</h2>
+    <ul>
+        @foreach (var item in Model.Guardrails)
+        {
+            <li><strong>@item.Title:</strong> @item.Detail</li>
+        }
+    </ul>
+</section>
+
+<section class="workstream-panel">
+    <h2>Scaffold command plan</h2>
+    @foreach (var item in Model.ScaffoldSuggestions)
+    {
+        <article class="status-card">
+            <p><strong>Source:</strong> @item.Source</p>
+            <p><strong>Context:</strong> @item.ContextName</p>
+            <p><strong>Access mode:</strong> @item.AccessMode</p>
+            <p><strong>Ready:</strong> @item.IsReady</p>
+            <p><strong>Env var:</strong> <code>@item.EnvironmentVariableName</code></p>
+            <p><strong>Notes:</strong> @item.Notes</p>
+            <pre><code>@item.Command</code></pre>
+        </article>
+    }
+</section>
+
+<section class="workstream-panel">
+    <h2>Read-only migration batches</h2>
+    @foreach (var batch in Model.Batches)
+    {
+        <article class="status-card">
+            <p><strong>Batch:</strong> @batch.Name</p>
+            <p><strong>Source:</strong> @batch.Source</p>
+            <p><strong>Goal:</strong> @batch.Goal</p>
+            <p><strong>Entities:</strong> @string.Join(", ", batch.Entities)</p>
+            @foreach (var action in batch.Actions)
+            {
+                <p><strong>Action:</strong> @action.ActionName</p>
+                <p>@action.Purpose</p>
+                <ul>
+                    @foreach (var query in action.Queries)
+                    {
+                        <li>@query</li>
+                    }
+                </ul>
+                <ul>
+                    @foreach (var writeBehavior in action.WriteSideBehaviorsToRemove)
+                    {
+                        <li>Remove: @writeBehavior</li>
+                    }
+                </ul>
+            }
+        </article>
+    }
+</section>
+
+<section class="workstream-panel">
+    <h2>Route previews</h2>
+    @foreach (var group in Model.RoutePreviewGroups)
+    {
+        <p><strong>@group.Name</strong></p>
+        <ul>
+        @foreach (var route in group.Routes)
+        {
+            <li><strong>@route.Title:</strong> <a href="@route.Route">@route.Route</a> (@route.Status)</li>
+        }
+        </ul>
+    }
+</section>
+
+<section class="workstream-panel">
+    <h2>Public read-only link readiness</h2>
+    @{
+        var readyCount = Model.PublicReadLinkReadiness.Count(route => route.ReadyForScaffold);
+        var totalRoutes = Model.PublicReadLinkReadiness.Count;
+    }
+    <p>
+        <strong>@readyCount of @totalRoutes</strong> public read routes have a complete pre-EF-Core contract and are ready for scaffold/implementation.
+        Columns: <strong>C</strong> = contract complete, <strong>B</strong> = blueprint aligned,
+        <strong>A</strong> = asset mapping listed, <strong>W</strong> = write-removal defined, <strong>Ready</strong> = all checks pass.
+    </p>
+    <table class="readiness-table">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>Legacy route</th>
+                <th>Target repository method</th>
+                <th>C</th>
+                <th>B</th>
+                <th>A</th>
+                <th>W</th>
+                <th>Ready</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var route in Model.PublicReadLinkReadiness)
+            {
+                <tr>
+                    <td>@route.Group</td>
+                    <td><code>@route.LegacyRoute</code></td>
+                    <td>@route.TargetRepositoryMethod</td>
+                    <td>@(route.ContractComplete ? "✓" : "—")</td>
+                    <td>@(route.BlueprintAligned ? "✓" : "—")</td>
+                    <td>@(route.AssetMappingListed ? "✓" : "—")</td>
+                    <td>@(route.WriteRemovalDefined ? "✓" : "—")</td>
+                    <td>@(route.ReadyForScaffold ? "✓ Ready" : "Pending")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section class="workstream-panel">
+    <h2>Repository implementation blueprint</h2>
+    @foreach (var plan in Model.RepositoryPlans)
+    {
+        <article class="status-card">
+            <p><strong>Repository:</strong> @plan.RepositoryName</p>
+            <p><strong>Source:</strong> @plan.Source</p>
+            @foreach (var method in plan.Methods)
+            {
+                <p><strong>Method:</strong> @method.MethodName</p>
+                <p>@method.Purpose</p>
+                <p><strong>Entities:</strong> @string.Join(", ", method.Entities)</p>
+                <p><strong>Targets:</strong> @string.Join(", ", method.TargetModels)</p>
+                <ul>
+                    @foreach (var parameter in method.Parameters)
+                    {
+                        <li>Parameter: <strong>@parameter.Name</strong> = @parameter.Value (@parameter.Reason)</li>
+                    }
+                </ul>
+                <ul>
+                    @foreach (var step in method.QuerySteps)
+                    {
+                        <li>@step</li>
+                    }
+                </ul>
+                <ul>
+                    @foreach (var guardrail in method.Guardrails)
+                    {
+                        <li>Guardrail: @guardrail</li>
+                    }
+                </ul>
+            }
+        </article>
+    }
+</section>
+
+<section class="workstream-panel">
+    <h2>Current workstreams</h2>
+    <ul>
+        @foreach (var item in Model.Workstreams)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</section>

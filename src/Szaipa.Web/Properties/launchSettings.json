@@ -1,0 +1,48 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:49505",
+      "sslPort": 44391
+    }
+  },
+  "profiles": {
+    "Szaipa.Web HTTP": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "",
+      "applicationUrl": "http://127.0.0.1:5057",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RuntimeSafety__UseLegacyDataSources": "false",
+        "RuntimeSafety__AllowLiveDatabase": "false",
+        "RuntimeSafety__UseHttpsRedirection": "false"
+      }
+    },
+    "Szaipa.Web HTTPS Opt-In": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "",
+      "applicationUrl": "https://127.0.0.1:5058;http://127.0.0.1:5057",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RuntimeSafety__UseLegacyDataSources": "false",
+        "RuntimeSafety__AllowLiveDatabase": "false",
+        "RuntimeSafety__UseHttpsRedirection": "true"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RuntimeSafety__UseLegacyDataSources": "false",
+        "RuntimeSafety__AllowLiveDatabase": "false",
+        "RuntimeSafety__UseHttpsRedirection": "false"
+      }
+    }
+  }
+}

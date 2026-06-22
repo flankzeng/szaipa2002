@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Szaipa.Data\Szaipa.Data.csproj" />
+  </ItemGroup>
+
+  <!--
+    appsettings.Local.json holds machine-specific secrets (the read-only production DB connection strings).
+    It is gitignored, but gitignore does not affect MSBuild: by default it would be copied to bin and into the
+    publish output, leaking the production credentials in any deployed/shared artifact. Never copy it anywhere.
+  -->
+  <ItemGroup>
+    <Content Update="appsettings.Local.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+</Project>

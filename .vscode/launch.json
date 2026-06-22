@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // F5 here: builds Szaipa.Web with the .NET 10 SDK (~/.dotnet), launches it against the live
+            // read-only DB (appsettings.Local.json), and opens the landing page in the browser.
+            "name": "Debug Szaipa.Web (real read-only DB)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-web",
+            "program": "${userHome}/.dotnet/dotnet",
+            "args": [
+                "${workspaceFolder}/src/Szaipa.Web/bin/Debug/net10.0/Szaipa.Web.dll",
+                "--urls",
+                "http://localhost:5057"
+            ],
+            "cwd": "${workspaceFolder}/src/Szaipa.Web",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Now listening on:\\s+(https?://\\S+)",
+                "uriFormat": "%s/Home/newIndex"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "DOTNET_ROOT": "${userHome}/.dotnet"
+            }
+        }
+    ]
+}

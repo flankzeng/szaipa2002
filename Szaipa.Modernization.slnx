@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Szaipa.Data/Szaipa.Data.csproj" />
+    <Project Path="src/Szaipa.Web/Szaipa.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Szaipa.Data.Tests/Szaipa.Data.Tests.csproj" />
+  </Folder>
+</Solution>

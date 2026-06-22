@@ -1,0 +1,28 @@
+@model Szaipa.Web.Models.MigrationStubPageViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="hero-panel">
+    <p class="eyebrow">Migration Stub</p>
+    <h1>@Model.Title</h1>
+    <p class="lead">
+        This route has been reserved in the ASP.NET Core app, but it is still waiting for its read-only data path and Razor migration.
+    </p>
+</section>
+
+<section class="workstream-panel">
+    <p><strong>Legacy route:</strong> @Model.LegacyRoute</p>
+    <p><strong>Target repository:</strong> @Model.TargetRepository</p>
+    <p><strong>Migration batch:</strong> @Model.TargetBatch</p>
+</section>
+
+<section class="workstream-panel">
+    <h2>Next steps</h2>
+    <ul>
+        @foreach (var step in Model.NextSteps)
+        {
+            <li>@step</li>
+        }
+    </ul>
+</section>

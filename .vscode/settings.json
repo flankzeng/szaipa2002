@@ -1,4 +1,11 @@
 {
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "szaipa2022/szaipa2022.sln"
+    // Load the NEW .NET 10 solution, not the legacy Windows-only szaipa2022.sln (which cannot load on macOS).
+    "dotnet.defaultSolution": "Szaipa.Modernization.slnx",
+    // The C# extension's MSBuild BuildHost needs .NET >= 8. The system dotnet (/usr/local/share/dotnet) only
+    // has 6/7.x; the real .NET 10 SDK lives in ~/.dotnet. Pin the extension to it so project load works.
+    "dotnetAcquisitionExtension.existingDotnetPath": [
+        { "extensionId": "ms-dotnettools.csharp", "path": "/Users/arthur/.dotnet/dotnet" },
+        { "extensionId": "ms-dotnettools.csdevkit", "path": "/Users/arthur/.dotnet/dotnet" }
+    ]
 }

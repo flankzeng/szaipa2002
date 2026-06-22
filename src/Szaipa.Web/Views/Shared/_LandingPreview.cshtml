@@ -1,0 +1,182 @@
+@model Szaipa.Web.Models.LandingPreviewViewModel
+
+<section class="landing-preview">
+    <section class="hero-panel landing-preview__hero">
+        <p class="eyebrow">@Model.Eyebrow</p>
+        <h1>@Model.Title</h1>
+        <p class="lead">@Model.Description</p>
+    </section>
+
+    <section class="landing-preview__sections">
+        @foreach (var previewSection in Model.Sections)
+        {
+            var sectionClass = previewSection.Kind switch
+            {
+                Szaipa.Web.Models.LandingPreviewSectionKind.News => "landing-preview__section--news",
+                Szaipa.Web.Models.LandingPreviewSectionKind.Exhibition => "landing-preview__section--exhibition",
+                _ => string.Empty
+            };
+            <article class="workstream-panel landing-preview__section @sectionClass" id="@previewSection.AnchorId">
+                <p class="landing-preview__kicker">@previewSection.Subtitle</p>
+                <h2>@previewSection.Title</h2>
+                <p>@previewSection.Description</p>
+                <p><strong>Target route:</strong> <a href="@previewSection.TargetRoute">@previewSection.TargetRoute</a></p>
+                @if (previewSection.Kind == Szaipa.Web.Models.LandingPreviewSectionKind.News)
+                {
+                    <div class="landing-preview__news-layout">
+                        <div class="landing-preview__news-feature">
+                            @foreach (var item in previewSection.Items.Where(item => item.Kind == Szaipa.Web.Models.LandingPreviewItemKind.FeaturedHeadline))
+                            {
+                                <article class="landing-preview__item landing-preview__item--featured landing-preview__item--headline">
+                                    <div class="landing-preview__hero-card">
+                                        <div class="landing-preview__hero-visual"></div>
+                                        <div class="landing-preview__hero-copy">
+                                            <p class="landing-preview__item-label">@item.Label</p>
+                                            @if (!string.IsNullOrWhiteSpace(item.Meta))
+                                            {
+                                                <p class="landing-preview__item-meta-value">@item.Meta</p>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(item.Subline))
+                                            {
+                                                <p class="landing-preview__subline">@item.Subline</p>
+                                            }
+                                            <h3>@item.Title</h3>
+                                            <p>@item.Detail</p>
+                                            @if (!string.IsNullOrWhiteSpace(item.CallToAction) || !string.IsNullOrWhiteSpace(item.SecondaryAction))
+                                            {
+                                                <div class="landing-preview__action-row">
+                                                    @if (!string.IsNullOrWhiteSpace(item.CallToAction))
+                                                    {
+                                                        <p class="landing-preview__cta">@item.CallToAction</p>
+                                                    }
+                                                    @if (!string.IsNullOrWhiteSpace(item.SecondaryAction))
+                                                    {
+                                                        <p class="landing-preview__cta landing-preview__cta--secondary">@item.SecondaryAction</p>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                        <div class="landing-preview__news-list">
+                            @foreach (var item in previewSection.Items.Where(item => item.Kind == Szaipa.Web.Models.LandingPreviewItemKind.StandardListRow))
+                            {
+                                <article class="landing-preview__item landing-preview__item--list-row">
+                                    <div class="landing-preview__item-meta">
+                                        @if (!string.IsNullOrWhiteSpace(item.Marker))
+                                        {
+                                            <p class="landing-preview__item-marker">@item.Marker</p>
+                                        }
+                                        <p class="landing-preview__item-label">@item.Label</p>
+                                        @if (!string.IsNullOrWhiteSpace(item.Meta))
+                                        {
+                                            <p class="landing-preview__item-meta-value">@item.Meta</p>
+                                        }
+                                    </div>
+                                    <div>
+                                        @if (!string.IsNullOrWhiteSpace(item.MetaAccent))
+                                        {
+                                            <p class="landing-preview__meta-accent">@item.MetaAccent</p>
+                                        }
+                                        <h3>@item.Title</h3>
+                                        <p>@item.Detail</p>
+                                        @if (!string.IsNullOrWhiteSpace(item.CallToAction))
+                                        {
+                                            <p class="landing-preview__inline-cta">@item.CallToAction</p>
+                                        }
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    </div>
+                }
+                else if (previewSection.Kind == Szaipa.Web.Models.LandingPreviewSectionKind.Exhibition)
+                {
+                    <div class="landing-preview__exhibition-layout">
+                        <div class="landing-preview__exhibition-main">
+                            @foreach (var item in previewSection.Items.Where(item => item.Kind == Szaipa.Web.Models.LandingPreviewItemKind.FeaturedCard))
+                            {
+                                <article class="landing-preview__item landing-preview__item--featured landing-preview__item--feature-card">
+                                    <div class="landing-preview__hero-card">
+                                        <div class="landing-preview__hero-visual landing-preview__hero-visual--exhibition"></div>
+                                        <div class="landing-preview__hero-copy">
+                                            <p class="landing-preview__item-label">@item.Label</p>
+                                            @if (!string.IsNullOrWhiteSpace(item.Meta))
+                                            {
+                                                <p class="landing-preview__item-meta-value">@item.Meta</p>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(item.Subline))
+                                            {
+                                                <p class="landing-preview__subline">@item.Subline</p>
+                                            }
+                                            <h3>@item.Title</h3>
+                                            <p>@item.Detail</p>
+                                            @if (!string.IsNullOrWhiteSpace(item.CallToAction) || !string.IsNullOrWhiteSpace(item.SecondaryAction))
+                                            {
+                                                <div class="landing-preview__action-row">
+                                                    @if (!string.IsNullOrWhiteSpace(item.CallToAction))
+                                                    {
+                                                        <p class="landing-preview__cta">@item.CallToAction</p>
+                                                    }
+                                                    @if (!string.IsNullOrWhiteSpace(item.SecondaryAction))
+                                                    {
+                                                        <p class="landing-preview__cta landing-preview__cta--secondary">@item.SecondaryAction</p>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                        <div class="landing-preview__exhibition-rail">
+                            @foreach (var item in previewSection.Items.Where(item => item.Kind == Szaipa.Web.Models.LandingPreviewItemKind.SupportingCard))
+                            {
+                                <article class="landing-preview__item landing-preview__item--supporting-card">
+                                    <div class="landing-preview__item-meta">
+                                        @if (!string.IsNullOrWhiteSpace(item.Marker))
+                                        {
+                                            <p class="landing-preview__item-marker landing-preview__item-marker--rail">@item.Marker</p>
+                                        }
+                                        <p class="landing-preview__item-label">@item.Label</p>
+                                        @if (!string.IsNullOrWhiteSpace(item.Meta))
+                                        {
+                                            <p class="landing-preview__item-meta-value">@item.Meta</p>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(item.MetaAccent))
+                                    {
+                                        <p class="landing-preview__meta-accent">@item.MetaAccent</p>
+                                    }
+                                    <h3>@item.Title</h3>
+                                    <p>@item.Detail</p>
+                                    @if (!string.IsNullOrWhiteSpace(item.CallToAction) || !string.IsNullOrWhiteSpace(item.TertiaryAction))
+                                    {
+                                        <div class="landing-preview__rail-actions">
+                                            @if (!string.IsNullOrWhiteSpace(item.CallToAction))
+                                            {
+                                                <p class="landing-preview__inline-cta">@item.CallToAction</p>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(item.TertiaryAction))
+                                            {
+                                                <p class="landing-preview__rail-arrow">@item.TertiaryAction</p>
+                                            }
+                                        </div>
+                                    }
+                                </article>
+                            }
+                        </div>
+                    </div>
+                }
+                <ul class="landing-preview__dependencies">
+                    @foreach (var dependency in previewSection.Dependencies)
+                    {
+                        <li>@dependency</li>
+                    }
+                </ul>
+            </article>
+        }
+    </section>
+</section>

@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // Build with the .NET 10 SDK explicitly (the PATH `dotnet` is only 6/7.x).
+            "label": "build-web",
+            "type": "process",
+            "command": "${userHome}/.dotnet/dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/Szaipa.Web/Szaipa.Web.csproj",
+                "-property:GenerateFullPaths=true",
+                "-consoleloggerparameters:NoSummary"
+            ],
+            "options": {
+                "env": { "DOTNET_ROOT": "${userHome}/.dotnet" }
+            },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

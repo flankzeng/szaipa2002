@@ -1,0 +1,56 @@
+﻿:root {
+  --bg: #f4efe7;
+  --paper: rgba(255, 252, 247, 0.82);
+  --ink: #1c2228;
+  --muted: #5f6b73;
+  --line: rgba(28, 34, 40, 0.12);
+  --accent: #1d5c4b;
+  --accent-soft: #d8e9de;
+}
+
+html {
+  font-size: 16px;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(29, 92, 75, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(186, 127, 66, 0.18), transparent 30%),
+    linear-gradient(180deg, #f6f1e8 0%, #efe7dc 100%);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+a {
+  color: var(--accent);
+}
+
+.site-nav {
+  padding: 1.25rem 0;
+}
+
+.brand-mark {
+  display: inline-flex;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  text-decoration: none;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.container {
+  width: min(1080px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.footer {
+  padding: 2rem 0 3rem;
+  color: var(--muted);
+}
