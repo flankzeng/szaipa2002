@@ -1,5 +1,17 @@
-/* SHARED，NAV & FOOTER */
+/* ==========================================================================
+   responsive/Artist.css — 艺术家页(newArt / _Artist) 专用响应式变量
+   --------------------------------------------------------------------------
+   仅 _Artist.cshtml 引入。承载艺术家页的 :root 变量（头像/新闻/info/详情等）。
+   断点口径对齐站点标准（详见 responsive.css 顶部）：手机+平板 ≤991px / 桌面 ≥992px。
 
+   ⚠️ 待办（需你拍板，会改变手机端展示，故本次"展示不变"未动）：
+      本文件手机层目前仍是旧的 `768–991px` 窄带 —— 与 responsive.css 已统一的 ≤991
+      不一致，导致 <768px 的真实手机仍套用桌面艺术家变量（手机端艺术家页偏大）。
+      若要像首页那样修正，把下面那条 768–991 改成 `max-width:991px` 即可，但这会
+      改变 <768 手机的渲染，属"修 bug"而非"展示不变"，留待确认。
+   ========================================================================== */
+
+/* ========== 全局共享：艺术家页变量（SHARED）========== */
 :root {
     --touxiang: 30%;
     --xinwenH: 15vh;
@@ -25,37 +37,19 @@
     --xijieBottom: 1%;
     --xijiePt: -3%;
 
-    /* NewsRead*/
+    /* NewsRead */
     --artistNewsHeader: 40vh;
     --artistNewsTitle: 3rem;
 }
-
-/* 初始化页面与响应式标准字号的设置 */
 
 body {
     overflow-x: hidden;
 }
 
-@media only screen and (min-width: 3840px) {
+/* ---------- 手机层：⚠️ 仍为旧窄带 768–991（见顶部待办，暂保持现状不改）---------- */
+@media only screen and (min-width:768px) and (max-width:991px) {
 
-    /* 4K 分辨率 */
-}
-
-@media only screen and (min-width: 2560px) and (max-width: 3839px) {
-
-    /* 1440p 分辨率 */
-}
-
-@media only screen and (min-width: 1920px) {
-
-    /* 1080p */
-}
-
-@media only screen and (min-width: 1200px) and (max-width:1399px) {}
-
-@media screen and (min-width:768px) and (max-width:991px) {
-
-    /* 手机尺寸 */
+    /* 手机/平板尺寸 */
     :root {
         --touxiang: 25%;
         --xinwenH: 13vh;
@@ -80,7 +74,7 @@ body {
         --xijieBottom: 7%;
         --xijiePt: -15%;
 
-        /* NewsRead*/
+        /* NewsRead */
         --artistNewsHeader: 20vh;
         --artistNewsTitle: 2rem;
     }
@@ -89,7 +83,6 @@ body {
     .jieshao {
         margin-bottom: 15%;
     }
-
 
     /* news */
     .xijie img {

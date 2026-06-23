@@ -27,11 +27,20 @@
     }
 } */
 
-/* 响应式栅格系统 */
+/* ==========================================================================
+   响应式栅格系统（.col-xs/.col-sm/.col-md/.col-lg + .*-hide）
+   --------------------------------------------------------------------------
+   断点为站点统一标准口径（与 responsive.css 顶部说明一致）：
+     xs 手机   ≤ 767px
+     sm 平板   768 – 991px
+     md 电脑   992 – 1199px
+     lg 大屏   ≥ 1200px
+   栅格被 25+ 个页面消费，断点为加载承重项，请勿改动数值。
+   书写约定：媒体查询一律 `@media only screen and (...)`。
+   ========================================================================== */
 
-
-/* 1.xs,手机屏幕 */
-@media screen and (max-width:767px) {
+/* 1.xs 手机屏幕  ≤767px */
+@media only screen and (max-width:767px) {
     .xs-hide {
         display: none !important;
     }
@@ -141,8 +150,8 @@
     }
 }
 
-/* 2.sm,平板屏幕 */
-@media screen and (min-width:768px) and (max-width:991px) {
+/* 2.sm 平板屏幕  768–991px */
+@media only screen and (min-width:768px) and (max-width:991px) {
     .sm-hide {
         display: none !important;
     }
@@ -252,8 +261,8 @@
     }
 }
 
-/* 3.md，电脑屏幕 */
-@media screen and (min-width:992px) and (max-width:1199px) {
+/* 3.md 电脑屏幕  992–1199px */
+@media only screen and (min-width:992px) and (max-width:1199px) {
     .md-hide {
         display: none !important;
     }
@@ -363,8 +372,8 @@
     }
 }
 
-/* 4.lg大屏幕 */
-@media screen and (min-width:1200px) {
+/* 4.lg 大屏幕  ≥1200px */
+@media only screen and (min-width:1200px) {
     .lg-hide {
         display: none !important;
     }

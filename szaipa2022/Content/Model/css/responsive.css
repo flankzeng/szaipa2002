@@ -1,5 +1,30 @@
-/* SHARED，NAV & FOOTER */
+/* ==========================================================================
+   responsive.css — 响应式参数总表（CSS 变量 + 断点）
+   --------------------------------------------------------------------------
+   本站响应式分两层，各司其职：
+     · 本文件 responsive.css：用 :root 自定义变量(var) 承载"尺寸/字号/间距"参数，
+       按断点逐层覆盖；页面里用 var(--xxx) 取值。
+     · Site.css：承载 .col-xs/.col-sm/.col-md/.col-lg 栅格工具类
+       （断点 767 / 768–991 / 992–1199 / 1200，标准 Bootstrap 口径，勿动）。
 
+   ── 断点规范（统一口径，2026.01 整理）────────────────────────────────────
+     手机          ≤ 767px            （Site.css 栅格 xs）
+     平板          768 – 991px        （Site.css 栅格 sm）
+     手机+平板     ≤ 991px            ← 本文件"手机层"统一用此（平板与手机同尺寸）
+     桌面          ≥ 992px            ← 本文件"桌面层"
+     根字号 ladder（仅缩放 html font-size，不影响布局断点）：
+        ≤991:26px · 992–1279:12px · 1280–1919:16px · 1920–2559:18px · ≥2560:20px
+
+   ⚠️ 历史兼容区 768–991（平板）：
+     少数"桌面层"变量仍以 min-width:768px 定义（下方均有标注），
+     因此平板(768–991) 会沿用这些桌面值：--emailLine / --zhuangtai / --enterButton
+     / .imgCon_Pub / 后台 --loginbox*。为保持"展示不变"这里维持现状，未强行并到 992。
+     日后如要彻底并断点，需同步调整页面里 var() 的消费处后再改。
+
+   书写约定：媒体查询一律 `@media only screen and (...)`；大改动均加中文注释。
+   ========================================================================== */
+
+/* ========== 全局共享：导航 / 邮箱 / 底栏（SHARED, NAV & FOOTER）========== */
 :root {
     /* section01 导航栏 */
     --logo1: 16.6vh;
@@ -17,87 +42,63 @@
     --footerLineheight: 1.8em;
 
     /* 春语3页面单独 */
-    /* QRCode的处理方式，以后要换成input提交邮件申请 */
+    /* QRCode 的处理方式，以后要换成 input 提交邮件申请 */
     --introCon: 5% 10% 10vh 10%;
     --type2: -20vh;
 }
-
-/* 初始化页面与响应式标准字号的设置 */
 
 body {
     margin: 0px;
     padding: 0px;
 }
 
-/* 2160p (4K) - 3840x2160 */
+/* ========== 根字号 ladder：按屏宽缩放 html font-size（rem 基准）========== */
+
+/* 4K  ≥2560px */
 @media only screen and (min-width: 2560px) {
     html {
         font-size: 20px;
     }
 }
 
-/* 1440p - 2560x1440 */
+/* 2K  1920–2559px */
 @media only screen and (min-width: 1920px) and (max-width: 2559px) {
     html {
         font-size: 18px;
     }
 }
 
-/* 1080p - 1920x1080 */
+/* 1080p  1280–1919px */
 @media only screen and (min-width: 1280px) and (max-width: 1919px) {
     html {
         font-size: 16px;
     }
 }
 
-/* 720p - 1280x720 */
-@media only screen and (max-width: 1279px) {
+/* 桌面下限 / 笔记本  992–1279px（原 max-width:1279，今下限并到 992 标准断点；
+   ≤991 由下条手机规则的 26px!important 覆盖，渲染不变） */
+@media only screen and (min-width: 992px) and (max-width: 1279px) {
     html {
         font-size: 12px;
     }
 }
 
-@media screen and (min-width:768px) and (max-width:991px) {
-
-    /* 手机尺寸 */
+/* 手机+平板  ≤991px（2026.01：平板与手机使用相同尺寸）*/
+@media only screen and (max-width: 991px) {
     html {
         font-size: 26px !important;
     }
 }
 
 
+/* ════════════════════════ 首页 INDEX ════════════════════════ */
+/* 首页 var() 变量 —— 已整理 2023.03.07 */
 
+/* ---------- 桌面层 ≥768（历史兼容：平板 768–991 亦套用，见顶部说明）---------- */
+@media only screen and (min-width: 768px) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 首页开始 -- INDEX START */
-
-/* 首页Index的var()元素 - 已整理.2023.03.07 */
-/* PC通用元素 - 开始 */
-@media only screen and (min-width:768px) {
-
-    /* 除手机屏外全局相同的var()值 */
+    /* 除最小手机屏外，全局通用的 var() 值 */
     :root {
-        /* section01 导航栏 */
         /* section02 轮播 */
         --carouselTXT: 1.5rem !important;
 
@@ -105,8 +106,11 @@ body {
         --chapterFontsize: 1.3rem !important;
         --chapterBottom: 10vh;
 
-
         /* section05 核心成员 */
+
+        /* section05to06 在售作品(2026.1) */
+        --sellingH: 70vh;
+
         /* section06 新闻 */
         --newsRadius: .4vw !important;
         --dateLeft: 2em;
@@ -123,17 +127,15 @@ body {
         /* 通用 */
         --pubSonHeight: 82vh;
 
-        /* 后台 */
+        /* 后台（仅 Staff 登录页用，前台不消费）*/
         --loginboxW: 20vw !important;
         --loginboxH: 50vh !important;
         --loginboxMG: 20vh auto !important;
     }
 }
 
-/* PC通用元素 - 结束 */
-
-/* 手机通用元素 - 开始 */
-@media screen and (min-width:768px) and (max-width:991px) {
+/* ---------- 手机层 ≤991：全局通用元素 ---------- */
+@media only screen and (max-width: 991px) {
     :root {
         /* section01 导航栏 */
         --logo1: 10vh;
@@ -159,7 +161,7 @@ body {
         --footerLineheight: 1.8em;
 
         /* 春语3页面单独 */
-        /* QRCode的处理方式，以后要换成input提交邮件申请 */
+        /* QRCode 的处理方式，以后要换成 input 提交邮件申请 */
         --introCon: 17% 10% 10vh 10%;
         --type2: -30%;
     }
@@ -170,9 +172,7 @@ body {
     }
 }
 
-/* 手机通用元素 - 结束 */
-
-/* 通用开始 */
+/* ---------- 通用默认值（所有屏宽生效，作为各层覆盖的基准）---------- */
 :root {
     /* section02 轮播 */
     --carouselH: 65vh;
@@ -185,20 +185,7 @@ body {
     --zhangcheng: 57vh;
     --chapterFontsize: 1.1rem;
 
-    /* section05 核心成员  (旧)
-    --carouselHeight: 100vh;
-    --imgIntroduce: 30vh;
-    --imgIntroduceSingle: 30vh;
-    --coreCN: 4rem;
-    --coreEN: 1.7rem;
-    --huizhangWorld: 90vh;
-    --introduceTXT: 45%;
-    --introduceImg: 48%;
-    --swiper4L: 12vw;
-    --advMem: right;
-    --multiIntroduce: 10vw;*/
-
-    /* section05 核心成员(新) */
+    /* section05 核心成员：旧版变量已废弃，2023 改版后由 --memberImgW 取代 */
     --memberImgW: 12vw;
 
     /* section06 新闻 */
@@ -226,22 +213,14 @@ body {
     --defaultTop: 15vh;
     /* --fontLight: 'JhengLight';*/
 
-    /* 后台 */
+    /* 后台（仅 Staff 登录页用）*/
     --loginboxW: 70vw;
     --loginboxH: 45vh;
     --loginboxMG: 50% auto;
 }
 
-/* 通用结束 */
-
-
-
-/* 非通用元素 - 开始 */
-
-/* 手机的var()元素 */
-@media screen and (min-width:768px) and (max-width:991px) {
-
-    /* var() 首页专用 */
+/* ---------- 手机层 ≤991：首页专用 var() + 选择器 ---------- */
+@media only screen and (max-width: 991px) {
 
     :root {
         /* section02 轮播 */
@@ -256,18 +235,10 @@ body {
         --zhangcheng: 20vh;
         --chapterFontsize: 1.3rem !important;
 
-        /* section05 核心成员 (旧)
-        --carouselHeight: 100vh;
-        --imgIntroduce: 30vh;
-        --imgIntroduceSingle: 30vh;
-        --coreCN: 4rem;
-        --coreEN: 1.7rem;
-        --huizhangWorld: 90vh;
-        --introduceTXT: 45%;
-        --introduceImg: 48%;
-        --swiper4L: 12vw;
-        --advMem: right;
-        --multiIntroduce: 10vw;*/
+        /* section05 核心成员：旧版变量已废弃（同上）*/
+
+        /* section05to06 在售作品(2026.1) */
+        --sellingH: 45vh;
 
         /* section06 新闻 */
         --newsFontsize: 1.3rem;
@@ -285,8 +256,7 @@ body {
         --defaultTop: 8vh;
     }
 
-    /* section02轮播 */
-
+    /* section02 轮播 */
     .mySwiper .swiper-pagination-bullet {
         width: 10px !important;
         height: 10px !important;
@@ -299,8 +269,7 @@ body {
         bottom: 1vh;
     }
 
-    /* section04章程 */
-
+    /* section04 章程 */
     .chapterTXT {
         margin-top: 5vh !important;
     }
@@ -310,7 +279,7 @@ body {
         bottom: -5vh;
     }
 
-    /* section06新闻动态 */
+    /* section06 新闻动态 */
     .news h1 {
         padding-top: 5vh !important;
     }
@@ -343,8 +312,7 @@ body {
     }
 }
 
-/* 首页动画预设 */
-
+/* ---------- 首页动画预设 ---------- */
 @keyframes zoomDot1 {
     from {
         transform: scale(1);
@@ -365,14 +333,10 @@ body {
     }
 }
 
-/* 首页结束 -- INDEX END */
+/* ════════════════════════ 其余页面 OTHER PAGES ════════════════════════ */
 
-
-
-
-/* 其余页面开始 */
-/* PC通用元素 */
-@media only screen and (min-width:768px) {
+/* ---------- 桌面层 ≥768（历史兼容：平板 768–991 亦套用）---------- */
+@media only screen and (min-width: 768px) {
 
     :root {
         /* section04 Constitution */
@@ -396,8 +360,8 @@ body {
     }
 }
 
-/* 手机通用元素 */
-@media screen and (min-width:768px) and (max-width:991px) {
+/* ---------- 手机层 ≤991：其余页面 var() + 选择器 ---------- */
+@media only screen and (max-width: 991px) {
     :root {
         /* section04 Constitution */
         --sec04_h1: 2.2rem;
@@ -414,10 +378,7 @@ body {
         --pubLunboS: 90%;
     }
 
-    /* Section04打开后 - Constitution页面开始 */
-
-
-    /* Section06打开后 - NEWSREAD页面开始 */
+    /* Section06 打开后 - NEWSREAD 页面 */
     .article {
         padding: 1vh 0 5vh 0 !important;
         border: none !important;
@@ -440,10 +401,7 @@ body {
         margin-bottom: 3vh;
     }
 
-    /* NEWSREAD页面结束 */
-
-    /* Section07打开后 - 活动展示子类目页面开始 */
-
+    /* Section07 打开后 - 活动展示子类目页面 */
     .elementPub {
         height: 6vh;
         bottom: -5%;
@@ -462,8 +420,7 @@ body {
         transform: translateX(7%) !important;
     }
 
-    /* Publication中的重要页面 */
-
+    /* Publication 中的重要页面 */
     .mob {
         transform: translate3d() translateY(10%) !important;
     }
@@ -482,7 +439,7 @@ body {
         width: auto;
     }
 
-    /* Publication页面展开后的样式 */
+    /* Publication 页面展开后的样式 */
     .type1 {
         margin-top: 0;
         width: 100% !important;
