@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 58 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 64 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Admin` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -12,7 +12,7 @@
 - **旧后台 bug**：news-add 丢正文 / newsImg 误删 已在 `szaipa2022` 源码打补丁。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
-1. **Phase 4**：Company、Tongou(Atrist/Works) CRUD —— 简单，照搬 Fav/Auction。
+1. **Phase 4 剩余**：Tongou(Atrist/Works) CRUD —— 照搬 Fav/Auction，但需先建可写 `TongouAdminContext`（Company 已完成，详见 `docs/updates/2026-06-24-company-admin-module.md`）。
 2. **Phase 5**：访问分析仪表盘（`AccessData` 省市聚合喂图表）+ Index 仪表盘 + OperationRecord / PasswordChange —— 中等，需选图表库。
 3. **展览「参展作品目录」**：新增 `ExhibitionWork` 实体 + works 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序）—— 中等偏新，重要型可选增强。
 4. **slug 页退役**：把 ~16 个 `Views/Publication/*.cshtml` 迁成 `Publication` 行后删硬编码视图、首页改链 —— 机械。
@@ -37,7 +37,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 58）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 64）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Admin)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

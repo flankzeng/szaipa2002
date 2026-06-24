@@ -1,0 +1,41 @@
+@model CompanyFormViewModel
+
+<div asp-validation-summary="All" class="mb-4 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand empty:hidden"></div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-1">
+        <label class="admin-label">企业 Logo</label>
+        <div class="rounded-xl border border-dashed border-black/15 bg-white p-3 text-center"
+             data-upload-field data-upload-url="/Admin/Upload/Image?folder=ArtImg/Company" data-target="ImgPath">
+            <div data-upload-trigger class="cursor-pointer rounded-lg px-4 py-8 text-sm text-muted hover:text-brand">点击上传 Logo</div>
+            <img data-upload-preview src="@Model.ImgUrl" alt="Logo 预览"
+                 class="mx-auto mt-2 max-h-48 rounded @(string.IsNullOrEmpty(Model.ImgUrl) ? "hidden" : "")" />
+            <div data-upload-status class="mt-1 text-xs text-muted"></div>
+        </div>
+        <input type="hidden" asp-for="ImgPath" />
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2">
+        <div>
+            <label asp-for="NameCN" class="admin-label"></label>
+            <input asp-for="NameCN" class="admin-input" autocomplete="off" />
+            <span asp-validation-for="NameCN" class="mt-1 block text-xs text-brand"></span>
+        </div>
+        <div>
+            <label asp-for="NameEN" class="admin-label"></label>
+            <input asp-for="NameEN" class="admin-input" autocomplete="off" />
+        </div>
+        <div>
+            <label asp-for="CEO" class="admin-label"></label>
+            <input asp-for="CEO" class="admin-input" autocomplete="off" />
+        </div>
+        <div>
+            <label asp-for="Address" class="admin-label"></label>
+            <input asp-for="Address" class="admin-input" autocomplete="off" />
+        </div>
+        <div class="sm:col-span-2">
+            <label asp-for="Business" class="admin-label"></label>
+            <textarea asp-for="Business" class="admin-textarea" rows="3" placeholder="经营范围"></textarea>
+        </div>
+    </div>
+</div>
