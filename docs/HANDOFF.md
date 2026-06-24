@@ -22,8 +22,10 @@
 5. **NewIndex 进一步优化**（用户说后面单独聊，用新 session）。
 
 ## 待用户本地操作
-- 配 `appsettings.Local.json`：`AdminWrite:EnableWrites=true` + `ConnectionStrings:SzaipaAdmin`（本地可写副本）+ 可写 `LegacyAssets:ContentRoot`。
-- 若要点测 Tongou 模块：再配 `TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`（Tongou 本地可写副本，与 Szaipa 是两个库）。
+- **本地只读登录检查（推荐，不写库）**：`appsettings.Local.json` 配 `AdminWrite:{EnableWrites:true, UseReadOnlyConnectionForDebug:true}`（Tongou 同），不设 `ConnectionStrings:SzaipaAdmin`——admin 上下文复用只读 `szaipa_ro` 连接，能登录/看仪表盘/浏览，写操作被 SQL 层挡掉。前提：`LegacyData:Szaipa` 的只读凭据当前有效（2026-06-24 实测遇到 `18456` 认证失败，需核对密码）。详见 `docs/updates/2026-06-24-admin-readonly-debug-login.md`。
+- **发布环境真实写入**：`AdminWrite:EnableWrites=true` + `ConnectionStrings:SzaipaAdmin`（真正可写副本）。写入推迟到发布/部署环境，agent 永不写库。
+- 若要点测 Tongou 写：再配 `TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`（Tongou 可写副本，与 Szaipa 是两个库）。
+- 可写 `LegacyAssets:ContentRoot`（上传图片落盘需要）。
 - 跑 `docs/sql/2026-06-exhibition-template-columns.sql`（给 Publication 加 Type/Preface/Signature；重要型渲染需要）。
 - 旧 `szaipa2022` .NET Framework 改动需在能跑该栈的机器上重新生成确认编译。
 

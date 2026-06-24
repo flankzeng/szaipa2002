@@ -13,6 +13,14 @@ public sealed class TongouAdminWriteOptions
     /// <summary>Master switch. When false, the Tongou admin write context is never constructed.</summary>
     public bool EnableWrites { get; set; }
 
+    /// <summary>
+    /// Local-debug convenience (mirrors <see cref="AdminWriteOptions.UseReadOnlyConnectionForDebug"/>): when
+    /// true and no Tongou admin connection string is supplied, the Tongou admin context reuses the existing
+    /// READ-ONLY Tongou connection (least-privilege <c>db_datareader</c>). Reads/login/inspection work; writes
+    /// fail at the SQL level. Never set in committed/production config.
+    /// </summary>
+    public bool UseReadOnlyConnectionForDebug { get; set; }
+
     /// <summary>Connection string to the local writable copy. Resolved from config/env at startup.</summary>
     public string ConnectionString { get; set; } = string.Empty;
 

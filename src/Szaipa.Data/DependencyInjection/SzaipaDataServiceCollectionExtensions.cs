@@ -45,9 +45,11 @@ public static class SzaipaDataServiceCollectionExtensions
             });
 
         // Admin (write) path. Gated and machine-local: writes are off unless AdminWrite:EnableWrites is true
-        // and a dedicated connection string is supplied. The connection is resolved ONLY from admin-specific
-        // keys (ConnectionStrings:SzaipaAdmin / env SZAIPA_ADMIN_CONNECTION) and never falls back to the
-        // read-only Szaipa connection, so the admin path can never accidentally reuse the production source.
+        // and a connection string is supplied. The connection resolves from admin-specific keys
+        // (ConnectionStrings:SzaipaAdmin / env SZAIPA_ADMIN_CONNECTION). As an explicit local-debug opt-in
+        // (UseReadOnlyConnectionForDebug), and only when no admin connection is set, it falls back to the
+        // existing read-only Szaipa connection — a db_datareader login, so the context can be browsed/logged
+        // into but cannot write (writes fail at the SQL level). Default config never opts in.
         services
             .AddOptions<AdminWriteOptions>()
             .Bind(configuration.GetSection(AdminWriteOptions.SectionName))
@@ -57,11 +59,26 @@ public static class SzaipaDataServiceCollectionExtensions
                     options,
                     configurationValue: configuration["ConnectionStrings:SzaipaAdmin"],
                     environmentValue: configuration[SzaipaAdminConnectionEnvVar]);
+
+                if (string.IsNullOrWhiteSpace(options.ConnectionString)
+                    && options.EnableWrites
+                    && options.UseReadOnlyConnectionForDebug)
+                {
+                    var readOnly = ResolveReadOnlyConnection(
+                        configuration,
+                        connectionStringsKey: "ConnectionStrings:Szaipa",
+                        legacyDataKey: "LegacyData:Szaipa:ConnectionString",
+                        environmentKey: SzaipaReadOnlyConnectionEnvVar);
+                    if (!string.IsNullOrWhiteSpace(readOnly))
+                    {
+                        options.ConnectionString = readOnly;
+                        options.ConnectionStringSource = "ReadOnlyDebug(Szaipa)";
+                    }
+                }
             });
 
-        // Tongou(同构) admin (write) path. Same gating posture as the Szaipa admin path above, but for the
-        // physically separate Tongou database — resolved ONLY from ConnectionStrings:TongouAdmin / env
-        // TONGOU_ADMIN_CONNECTION, never falling back to the read-only Tongou connection.
+        // Tongou(同构) admin (write) path. Same gating posture as the Szaipa admin path above, including the
+        // UseReadOnlyConnectionForDebug opt-in that reuses the read-only Tongou connection for local inspection.
         services
             .AddOptions<TongouAdminWriteOptions>()
             .Bind(configuration.GetSection(TongouAdminWriteOptions.SectionName))
@@ -71,6 +88,22 @@ public static class SzaipaDataServiceCollectionExtensions
                     options,
                     configurationValue: configuration["ConnectionStrings:TongouAdmin"],
                     environmentValue: configuration[TongouAdminConnectionEnvVar]);
+
+                if (string.IsNullOrWhiteSpace(options.ConnectionString)
+                    && options.EnableWrites
+                    && options.UseReadOnlyConnectionForDebug)
+                {
+                    var readOnly = ResolveReadOnlyConnection(
+                        configuration,
+                        connectionStringsKey: "ConnectionStrings:Tongou",
+                        legacyDataKey: "LegacyData:Tongou:ConnectionString",
+                        environmentKey: TongouReadOnlyConnectionEnvVar);
+                    if (!string.IsNullOrWhiteSpace(readOnly))
+                    {
+                        options.ConnectionString = readOnly;
+                        options.ConnectionStringSource = "ReadOnlyDebug(Tongou)";
+                    }
+                }
             });
 
         services.AddSingleton<ILegacyConnectionPolicy, LegacyConnectionPolicy>();
@@ -211,6 +244,31 @@ public static class SzaipaDataServiceCollectionExtensions
 
         options.ConnectionString = string.Empty;
         options.ConnectionStringSource = "None";
+    }
+
+    // Read-only-debug fallback: pull the existing least-privilege read-only connection from the same sources
+    // the read contexts use, so the admin context can reuse it for local login/inspection (writes still fail
+    // at the SQL level). Mirrors the precedence in ApplyConnectionStringResolution.
+    private static string? ResolveReadOnlyConnection(
+        IConfiguration configuration,
+        string connectionStringsKey,
+        string legacyDataKey,
+        string environmentKey)
+    {
+        var legacyData = configuration[legacyDataKey];
+        if (!string.IsNullOrWhiteSpace(legacyData))
+        {
+            return legacyData;
+        }
+
+        var environment = configuration[environmentKey];
+        if (!string.IsNullOrWhiteSpace(environment))
+        {
+            return environment;
+        }
+
+        var connectionStrings = configuration[connectionStringsKey];
+        return string.IsNullOrWhiteSpace(connectionStrings) ? null : connectionStrings;
     }
 
     private static void ApplyConnectionStringResolution(
