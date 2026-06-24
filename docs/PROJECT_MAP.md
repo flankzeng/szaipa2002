@@ -11,13 +11,13 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Admin）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（64 测试）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（69 测试）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 64）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 69）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Admin/* → 302 跳 /Admin/Account/Login
@@ -27,7 +27,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - **读侧**：`SzaipaLegacyReadContext`（`Contexts/Szaipa/`）—— NoTracking、SaveChanges 硬禁；连**只读生产库**（`ConnectionStrings:Szaipa` / 环境变量 `SZAIPA_READONLY_CONNECTION`）。读仓储一律 `.Select(投影)`（`Services/Home/SzaipaHomeProjections.cs`），所以**给实体加字段对读侧安全**（只 SELECT 投影引用的列）。
 - **写侧（后台）**：`SzaipaAdminContext`（`Contexts/SzaipaAdmin/`）—— 跟踪、可写；门控：`AdminWrite:EnableWrites=true` + `ConnectionStrings:SzaipaAdmin`，指向**本地可写副本**。生产库永不写、永不用生产凭据（见记忆 db-safety-constraints）。
 - **dev 现状**：读=生产只读，写=本地副本，**是两个库**；admin 建的数据在 dev 不被公开读侧看到（生产同库才打通）。端到端点击验证需用户本地配可写库 + 可写 `LegacyAssets:ContentRoot`。
-- Tongou 有独立只读上下文 `Contexts/Tongou/TongouLegacyReadContext`。
+- Tongou 有独立只读上下文 `Contexts/Tongou/TongouLegacyReadContext` 和独立写上下文 `Contexts/TongouAdmin/TongouAdminContext`（门控：`TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`，同样指向本地可写副本，与 Szaipa 是两个物理隔离的数据库）。Tongou 表无 `EditRecord` 列，操作审计仍写 Szaipa 库的 Diary/Staff（两个 SaveChanges，不能跨库共事务）。
 - 配置装配：`src/Szaipa.Data/DependencyInjection/SzaipaDataServiceCollectionExtensions.cs`（所有上下文/仓储在此注册）；`src/Szaipa.Web/Program.cs`（认证、DI、area 路由、静态文件、/Content 映射）。
 
 ## 后台（Areas/Admin）—— 加新 CRUD 模块照这个抄
@@ -42,8 +42,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 
 **艺术家子模块**（Fav/Auction/Exhibition/Works）用泛型基类 `Services/Admin/ArtistScopedAdminRepository<T>`（实体实现 `IArtistScopedRecord`）——子类只给 DbSet/名词/字段拷贝。列表共用 `Views/Shared/_ArtistScopedList.cshtml`。
 
-**已建模块**：Account(登录) / Dashboard / News / ArtNews / Artist(会员) / Works(作品) / Company(会员企业) / Publication(展览) / Fav / Auction / Exhibition / Upload。Artist/Company 是主表（非 `IArtistScopedRecord`），照 News 范本（独立仓储），不是泛型艺术家子类。
-**待建**：Tongou(Atrist/Works)（Phase 4 剩余，需先建可写 `TongouAdminContext`）；分析仪表盘（Phase 5）。
+**已建模块**：Account(登录) / Dashboard / News / ArtNews / Artist(会员) / Works(作品) / Company(会员企业) / Publication(展览) / Fav / Auction / Exhibition / Upload / TongouAtrist(同构艺术家) / TongouWorks(同构作品)。Artist/Company 是主表（非 `IArtistScopedRecord`），照 News 范本（独立仓储）。Tongou 两个模块走独立的 `TongouAdminContext`（与 Szaipa 物理隔离的另一个数据库，门控同 `AdminWrite`，详见 `docs/updates/2026-06-24-tongou-admin-module.md`）。
+**待建**：分析仪表盘（Phase 5）。
 **注（2026-06-24）**：旧后台「ArtWorks」≠ 独立实体，只是 legacy `StaffController` 里管理同一张 `Works` 表的另一套重复 action（`ArtWorksAdd/Edit`，图片目录 `works-narrow`），与 `WorkAdd/WorkEdit`（图片目录 `Works`，额外算 Width/Height/transverse/long）功能重叠、互相打架。新 Works 模块只实现公开页 `NewArt.cshtml` 实际渲染引用的字段/路径（`works-narrow` 目录 + Title/Content/Tags），未照搬已死的 Width/Height/transverse/long 计算逻辑——`HANDOFF.md` 旧待建列表里的「ArtWorks」已并入 Works，不再是独立模块。
 
 ## 富文本 / 图片 / 画廊（前端组件）

@@ -7,6 +7,7 @@ using Szaipa.Data.Configuration;
 using Szaipa.Data.Contexts.Szaipa;
 using Szaipa.Data.Contexts.SzaipaAdmin;
 using Szaipa.Data.Contexts.Tongou;
+using Szaipa.Data.Contexts.TongouAdmin;
 using Szaipa.Data.Contracts.Home;
 using Szaipa.Data.Contracts.Tongou;
 using Szaipa.Data.Services;
@@ -21,6 +22,7 @@ public static class SzaipaDataServiceCollectionExtensions
     private const string SzaipaReadOnlyConnectionEnvVar = "SZAIPA_READONLY_CONNECTION";
     private const string TongouReadOnlyConnectionEnvVar = "TONGOU_READONLY_CONNECTION";
     private const string SzaipaAdminConnectionEnvVar = "SZAIPA_ADMIN_CONNECTION";
+    private const string TongouAdminConnectionEnvVar = "TONGOU_ADMIN_CONNECTION";
 
     public static IServiceCollection AddSzaipaData(
         this IServiceCollection services,
@@ -55,6 +57,20 @@ public static class SzaipaDataServiceCollectionExtensions
                     options,
                     configurationValue: configuration["ConnectionStrings:SzaipaAdmin"],
                     environmentValue: configuration[SzaipaAdminConnectionEnvVar]);
+            });
+
+        // Tongou(同构) admin (write) path. Same gating posture as the Szaipa admin path above, but for the
+        // physically separate Tongou database — resolved ONLY from ConnectionStrings:TongouAdmin / env
+        // TONGOU_ADMIN_CONNECTION, never falling back to the read-only Tongou connection.
+        services
+            .AddOptions<TongouAdminWriteOptions>()
+            .Bind(configuration.GetSection(TongouAdminWriteOptions.SectionName))
+            .PostConfigure(options =>
+            {
+                ResolveTongouAdminConnectionString(
+                    options,
+                    configurationValue: configuration["ConnectionStrings:TongouAdmin"],
+                    environmentValue: configuration[TongouAdminConnectionEnvVar]);
             });
 
         services.AddSingleton<ILegacyConnectionPolicy, LegacyConnectionPolicy>();
@@ -100,6 +116,23 @@ public static class SzaipaDataServiceCollectionExtensions
             options.UseSqlServer(adminOptions.ConnectionString);
         });
 
+        // Write-capable admin context over a LOCAL writable copy of the Tongou database. Same gating posture
+        // as SzaipaAdminContext above, but resolved from TongouAdminWriteOptions/ConnectionStrings:TongouAdmin.
+        services.AddDbContext<TongouAdminContext>((serviceProvider, options) =>
+        {
+            var tongouAdminOptions = serviceProvider.GetRequiredService<IOptions<TongouAdminWriteOptions>>().Value;
+            if (!tongouAdminOptions.IsConfigured)
+            {
+                throw new InvalidOperationException(
+                    "TongouAdminContext was requested but the Tongou admin write path is not configured. Set "
+                    + "TongouAdminWrite:EnableWrites=true and ConnectionStrings:TongouAdmin (or env "
+                    + "TONGOU_ADMIN_CONNECTION) to a LOCAL writable copy of the Tongou database. Never point "
+                    + "this at the production / Windows-connected database.");
+            }
+
+            options.UseSqlServer(tongouAdminOptions.ConnectionString);
+        });
+
         services.AddScoped<INewsReadRepository, NewsReadRepository>();
         services.AddScoped<IArtistReadRepository, ArtistReadRepository>();
         services.AddScoped<IPublicationReadRepository, PublicationReadRepository>();
@@ -116,6 +149,8 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<ExhibitionAdminRepository>();
         services.AddScoped<WorksAdminRepository>();
         services.AddScoped<IPublicationAdminRepository, PublicationAdminRepository>();
+        services.AddScoped<ITongouAtristAdminRepository, TongouAtristAdminRepository>();
+        services.AddScoped<ITongouWorksAdminRepository, TongouWorksAdminRepository>();
         return services;
     }
 
@@ -127,6 +162,35 @@ public static class SzaipaDataServiceCollectionExtensions
         if (!string.IsNullOrWhiteSpace(options.ConnectionString))
         {
             options.ConnectionStringSource = "AdminWrite";
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(environmentValue))
+        {
+            options.ConnectionString = environmentValue;
+            options.ConnectionStringSource = "Environment";
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(configurationValue))
+        {
+            options.ConnectionString = configurationValue;
+            options.ConnectionStringSource = "ConnectionStrings";
+            return;
+        }
+
+        options.ConnectionString = string.Empty;
+        options.ConnectionStringSource = "None";
+    }
+
+    private static void ResolveTongouAdminConnectionString(
+        TongouAdminWriteOptions options,
+        string? configurationValue,
+        string? environmentValue)
+    {
+        if (!string.IsNullOrWhiteSpace(options.ConnectionString))
+        {
+            options.ConnectionStringSource = "TongouAdminWrite";
             return;
         }
 

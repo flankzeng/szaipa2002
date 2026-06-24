@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -50,6 +50,8 @@
                                 <a asp-area="Admin" asp-controller="Fav" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">收藏</a>
                                 <a asp-area="Admin" asp-controller="Auction" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">拍卖</a>
                                 <a asp-area="Admin" asp-controller="Exhibition" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">展览</a>
+                                <a asp-area="Admin" asp-controller="TongouAtrist" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">同构艺术家</a>
+                                <a asp-area="Admin" asp-controller="TongouWorks" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">同构作品</a>
                             </div>
                         </div>
                     </nav>

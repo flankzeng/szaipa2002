@@ -1,7 +1,9 @@
 // Plain-JS image upload field for the admin backend (cover images etc.). No bundling — served as-is.
 // Markup: a [data-upload-field] container with data-upload-url, an [data-upload-trigger], an optional
 // [data-upload-preview] <img>, and a hidden input (whose name is data-target). On upload the hidden input
-// receives the returned file name and the preview shows the URL.
+// receives the returned file name and the preview shows the URL. Add data-store="url" to store the full
+// /Content/... URL in the hidden field instead of the bare file name (e.g. Tongou's ImgPath/HeardPath
+// columns hold full paths, unlike the Szaipa-side modules which hold a bare name and prefix it in the view).
 (function () {
   'use strict';
 
@@ -16,6 +18,7 @@
     field.__wired = true;
 
     var url = field.getAttribute('data-upload-url') || '/Admin/Upload/Image?folder=newsImg';
+    var storeUrl = field.getAttribute('data-store') === 'url';
     var targetName = field.getAttribute('data-target');
     var hidden = field.querySelector('input[type="hidden"]')
       || (targetName ? document.querySelector('input[name="' + targetName + '"]') : null);
@@ -44,7 +47,7 @@
         .then(function (r) { return r.json(); })
         .then(function (data) {
           if (!data.success) throw new Error(data.error || '上传失败');
-          if (hidden) hidden.value = data.fileName;
+          if (hidden) hidden.value = storeUrl ? data.url : data.fileName;
           if (preview) {
             preview.src = data.url;
             preview.classList.remove('hidden');
