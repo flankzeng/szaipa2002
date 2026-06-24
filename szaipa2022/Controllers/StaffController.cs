@@ -1385,6 +1385,10 @@ namespace Szaipa.Controllers
             string path = "/Content/newsImg/";
             news.Date = DateTime.Now;
             string content = Request.Form["Content"];
+            // Fix: the editor content was read into this local but never persisted, so news added through
+            // this action saved with an empty body. Mirror newNewsAdd: store the HTML and rewrite inline
+            // image src from the temp folder (/Content/TempFile) to the permanent folder (/Content/newsImg).
+            news.Content = content?.Replace("TempFile", "newsImg");
 
             if (TempData["TempIntervalImg"] != null)
             {
@@ -2055,10 +2059,13 @@ namespace Szaipa.Controllers
                 }
                 else
                 {
+                    // Fix: only clean up the temp upload here. The original code ALSO hard-deleted from
+                    // /Content/newsImg/, so whenever the fragile content-substring match missed a filename
+                    // (e.g. an earlier issue's image), that permanent image was destroyed — this is the
+                    // "adding/editing news wipes a previous issue's images" bug. Orphaned newsImg files are
+                    // harmless; never hard-delete permanent images from this matching path.
                     string path = "/Content/TempFile/";
-                    string path2 = "/Content/newsImg/";
                     FileDelete(path, strs[a]);
-                    FileDelete(path2, strs[a]);
                 }
             }
 
