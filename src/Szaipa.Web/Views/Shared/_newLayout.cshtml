@@ -352,6 +352,9 @@
             line-height: var(--footerLineheight);
         }
     </style>
+
+    @* Page-specific stylesheets, loaded last so a page can override layout/library CSS. *@
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
@@ -397,6 +400,9 @@
 
 
     @RenderBody()
+
+    @* Page-specific scripts, run right after the page body (before the layout's footer scripts). *@
+    @await RenderSectionAsync("Scripts", required: false)
 
 
     <!-- 以下为共享部分 -->

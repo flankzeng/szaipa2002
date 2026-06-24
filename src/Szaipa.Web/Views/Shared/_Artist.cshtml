@@ -342,6 +342,9 @@
         }
     </style>
 
+    @* Page-specific stylesheets, loaded last so a page can override layout/library CSS. *@
+    @await RenderSectionAsync("Styles", required: false)
+
     <!-- 以上共享 -->
 
 </head>
@@ -354,6 +357,8 @@
 
     @RenderBody()
 
+    @* Page-specific scripts, run right after the page body (before the layout's footer scripts). *@
+    @await RenderSectionAsync("Scripts", required: false)
 
 
 

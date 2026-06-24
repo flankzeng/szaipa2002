@@ -1,0 +1,1058 @@
+    .magnify {
+        height: 35vh;
+    }
+
+    .magnify>.magnify-lens {
+        border: 1px solid white;
+    }
+
+    .zoom {
+        display: block;
+    }
+
+    #section5to6 {
+        /* 新闻动态 */
+        height: 100%;
+        width: 100vw;
+        background-color: #f7f7f7;
+        position: relative;
+    }
+
+    #section5to6 h1 {
+        margin-bottom: 5%;
+    }
+
+    #section5to6 .swiper-slide {
+        padding: 0 0 !important;
+    }
+
+    .mySwiper6 * {
+        text-align: center;
+        position: relative;
+        background-color: #f7f7f7;
+    }
+
+    .mySwiper6 div {
+        height: 100%;
+        position: relative;
+    }
+
+    .mySwiper6 img {
+        max-width: 80vw;
+        height: var(--sellingH);
+        margin: 0 auto;
+        position: relative;
+        object-fit: contain;
+        padding: 3%;
+    }
+
+    .mySwiper6 b {
+        font-family: sansMedium;
+        font-size: 1.1rem;
+    }
+
+    .mySwiper6 p {
+        padding-top: 1em;
+        font-family: sansLight;
+        font-size: 1rem;
+        line-height: 1.8em;
+        margin-bottom: 2em;
+    }
+
+    .mySwiper6 span {
+        display: block;
+        color: grey;
+        font-size: .8rem;
+        margin-top: -0.3em;
+    }
+    html {
+        overflow-x: hidden;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* Swiper1 */
+    .black {
+        background-color: black;
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        font-size: 18px;
+        background: #fff;
+        padding: 0 7vw 0 7vw;
+    }
+
+    .swiper-slide img {
+        display: block;
+        object-fit: cover;
+    }
+
+    .swiper-slide {
+        width: 100vw;
+    }
+
+    .swiper-slide:nth-child(2n) {
+        width: 100vw;
+    }
+
+    .swiper-slide:nth-child(3n) {
+        width: 100vw;
+    }
+
+    .mySwiper .swiper-pagination-bullet {
+        width: 0.5vw;
+        height: 1vh;
+        background-color: white;
+    }
+
+    .swiper-horizontal>.swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal,
+    .swiper-pagination-custom,
+    .swiper-pagination-fraction {
+        bottom: 1.5vh;
+    }
+
+    .swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet,
+    .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+        margin: 0 var(--swiper-pagination-bullet-horizontal-gap, 0.2vw);
+    }
+
+    /* 主要样式表 */
+
+    #topBtn {
+        display: none;
+
+        position: fixed;
+        bottom: 5vh;
+        right: 4vw;
+        z-index: 999;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    /* Section02 活动轮播 */
+
+    .carouselZoom:hover .logoCon img {
+        transform: scale(1.1);
+        animation: zoomDot1 100ms linear;
+    }
+
+    .carouselZoom:hover .imgCon {
+        transform: translate(-50%, -50%) scale(1.04);
+        animation: zoomDot04 100ms linear;
+    }
+
+    .main {
+        position: absolute;
+        right: 7%;
+        top: 0;
+        height: 100%;
+        width: 80vw;
+        background-color: black;
+    }
+
+    .sec {
+        position: absolute;
+        right: 7%;
+        top: 0;
+        height: 100%;
+        width: 85%;
+        background-color: black;
+        display: none;
+    }
+
+    .trd {
+        position: absolute;
+        right: 7%;
+        top: 0;
+        height: 100%;
+        width: 85%;
+        background-color: black;
+        display: none;
+    }
+
+    .outterL {
+        width: 7%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+    }
+
+    .outterR {
+        width: 7%;
+        height: 100%;
+        position: absolute;
+        right: 0;
+    }
+
+    .inner_new {
+        font-size: var(--carouselTXT);
+        color: black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        white-space: nowrap;
+    }
+
+    .rotate_new {
+        -moz-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+        transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+    }
+
+    .carousel {
+        position: relative;
+        margin-top: 4vh;
+    }
+
+    .logoCon {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+        width: 6.5vw;
+    }
+
+    .logoCon img {
+        width: 6.3vw;
+        height: auto;
+    }
+
+    .imgCon {
+        width: 70%;
+        height: 85%;
+        position: absolute;
+        left: 55%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-size: cover;
+    }
+
+    /* Section03 目录 */
+
+    .btn02 {
+        height: auto;
+        width: 2.5vw;
+        float: right;
+    }
+
+    #scroll-1 {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+    }
+
+    .content {
+        width: 17vw;
+        font-size: 1.7rem;
+        overflow: hidden;
+        position: absolute;
+        bottom: 10vh;
+        left: 7vw;
+    }
+
+    .content li {
+        margin-bottom: 3vh;
+        cursor: pointer;
+        border-bottom: 0.5px solid black;
+        padding-bottom: 1.2vh;
+    }
+
+    .content li>a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .logo2 {
+        width: 8vw;
+        height: auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .line {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+
+        height: auto;
+        width: 41.5vw;
+    }
+
+    /* Section04 章节 */
+
+    .chapter {
+        font-size: var(--title);
+        margin-top: var(--chapterTop);
+    }
+
+    .chapterTXT {
+        position: relative;
+        margin-top: 25vh;
+        margin-bottom: var(--chapterBottom);
+        text-align: justify;
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-size: var(--chapterFontsize);
+        line-height: 2em;
+    }
+
+    .autoHidden {
+        height: 25em;
+        padding-top: 1em;
+        overflow: hidden;
+    }
+
+    .autoHidden::after {
+        content: "......";
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 4em;
+        height: 2em;
+        text-align: right;
+        color: black;
+
+        background: -webkit-linear-gradient(left, transparent, #fff 55%);
+        background: -o-linear-gradient(right, transparent, #fff 55%);
+        background: -moz-linear-gradient(right, transparent, #fff 55%);
+        background: linear-gradient(to right, transparent, #fff 55%);
+    }
+
+    .chapterAllmobile {
+        position: absolute;
+        right: 0;
+        bottom: -2vh;
+        cursor: pointer;
+        border-bottom: solid 0.5px black;
+    }
+
+    .chapterAllpc {
+        cursor: pointer;
+        border-bottom: solid .5px black;
+        margin-top: 20vh;
+        width: 4em;
+        transform: translateX(-4em);
+        font-size: 1rem;
+    }
+
+    .zhangcheng {
+        margin-top: 6vh;
+        display: block;
+        background-color: black;
+        height: var(--zhangcheng);
+        background-image: url('/content/images/2021.5.30f2-2.jpg');
+        background-size: 100% 85%;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    /* 原Section05全部删除 */
+
+    /* Section06 新闻动态 */
+
+    .allNews {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        height: 6vh;
+        margin-top: 6vh;
+        margin-bottom: 6vh;
+        cursor: default;
+    }
+
+    .allNews a {
+        border: 1px solid #bf272d;
+        border-radius: var(--newsRadius);
+        padding: .5vh .5vw;
+        font-size: var(--newsPtag);
+        color: #bf272d;
+        text-decoration: none;
+        height: 100%;
+        width: auto;
+    }
+
+    .important .col-lg1 .enter {
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+        /* 这一条很重要！在响应式设计布局确定以后需要添加新的条件进入！ */
+    }
+
+    .important:hover {
+        background-color: #00000003;
+    }
+
+    .normal:hover {
+        background-color: #00000003;
+    }
+
+    .news h1 {
+        padding-top: 13vh;
+        font-size: var(--title);
+    }
+
+    .news ul {
+        /* 每个新闻信息的上下边距 */
+        padding-bottom: var(--newsPadding);
+        border-bottom: var(--normalNewsLine);
+    }
+
+    .news {
+        /* 重要新闻的样式 */
+        margin-top: 2vh;
+        color: black;
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-size: var(--newsFontsize);
+        overflow: hidden;
+    }
+
+    .news a {
+        color: #bf272d;
+        text-decoration: none;
+    }
+
+    .news ul>a>li {
+        /* 普通新闻的样式 */
+        margin-top: 2vh;
+        color: black;
+        font-size: var(--newsFontsize);
+    }
+
+    .date {
+        cursor: auto !important;
+        margin-top: 2vh;
+        color: black;
+        font-size: var(--newsFontsize);
+        padding-left: 2em;
+    }
+
+    .hr {
+        /* 普通分割线 */
+        height: 0.5px;
+        width: 100%;
+        margin-top: 4vh;
+        border-bottom: var(--normalNewsLine);
+    }
+
+    .enter {
+        /* 确认按钮 */
+        height: auto;
+        width: var(--newsEnter);
+        vertical-align: middle;
+    }
+
+    .normal:hover,
+    .date,
+    .title,
+    .enter {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .normal:hover,
+    .normal:active,
+    .normal:focus,
+    .date,
+    .title,
+    .enter {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .important {
+        /* 标记为重要的下划线 */
+        padding: 3vh 0 3vh 0 !important;
+    }
+
+    .important .date {
+        margin-top: 0;
+    }
+
+    .important:hover,
+    .date,
+    .importantTXT {
+        transform: var(--newsHoverValue);
+        transition: var(--newsHoverAnime);
+    }
+
+    .importantTXT {
+        position: relative;
+    }
+
+    .importantTXT .enter {
+        position: absolute;
+        bottom: 0;
+        right: -1.4vw;
+    }
+
+    .importantTXT a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .importantTXT p {
+        /* 标记为重要的h2、VIEW MORE以及设定img */
+        color: black;
+        margin-top: 20px;
+        padding-right: 15%;
+        text-align: justify;
+        font-weight: 200;
+        font-family: 'Noto Sans SC', sans-serif;
+        font-size: var(--newsPtag);
+    }
+
+    .importantTXT div {
+        width: 80%;
+        height: 80%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: left;
+        justify-content: left;
+        overflow: hidden;
+    }
+
+    .importantTXT div>img {
+        /* 使div内img实现类似bgimage的对齐效果 */
+        width: 40%;
+        max-height: 40vh;
+        object-fit: cover;
+    }
+
+    .importantTXT span {
+        font-size: var(--newsSpantag);
+        border-bottom: 1px solid black;
+        padding-bottom: 2px;
+        margin-bottom: 30px;
+    }
+
+    /* Section07展会活动 */
+
+    /* 展会活动轮播 */
+    .exhibitionSlider {
+        margin-top: 5vh;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .exhibitionSlide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s;
+    }
+
+    .exhibitionSlide img {
+        height: inherit;
+        width: inherit;
+        object-fit: cover;
+    }
+
+    .exhibitionSlide.borderActive {
+        opacity: 1;
+    }
+
+    .processing-lunbo {
+        /* 轮播大小 */
+        /* 2024.11.28 由70vh更改为50vh,修复了同屏无法直接观看活动标题的错误 */
+        height: 50vh;
+        width: 80vw;
+        color: transparent;
+    }
+
+    /* 正在进行的轮播文本大小 */
+
+    .exhibition {
+        position: relative;
+    }
+
+    #section07 .exhibition h1 {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 600;
+        font-size: var(--exhibitionH1);
+        padding-top: 4vh;
+        padding-bottom: 0;
+        margin-bottom: 1.5vh;
+    }
+
+    #section07 .exhibition h3 {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 300;
+        font-size: var(--exhibitionH3);
+        line-height: 1.7em;
+    }
+
+    .more {
+        margin-top: 10px;
+        width: -moz-fit-content;
+        width: fit-content;
+        border-bottom: 1px solid black;
+        font-size: var(--exhibitionMore);
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    .more a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .card-container {
+        position: relative;
+        display: flex;
+        overflow: hidden;
+    }
+
+    .card {
+        margin-top: 6vh;
+        margin-right: 3vw;
+        position: relative;
+        width: var(--cardWidth);
+        height: var(--cardHeight);
+        overflow: hidden;
+    }
+
+    .card img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: inherit;
+        height: var(--cardHeight);
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .card:hover img {
+        width: 105%;
+        height: 105%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 200ms ease-in-out;
+    }
+
+    .filter-ing:hover .card a {
+        font-size: 4rem;
+    }
+
+    .card p {
+        /* 展览简讯 */
+        width: 80%;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 30px;
+        transform: translate(0%, -50%);
+        color: white;
+        text-shadow: 1px 1px 8px #00000040;
+        font-size: var(--cardTXT);
+        line-height: 1.5em;
+        text-align: left;
+        z-index: 10;
+    }
+
+    .card span {
+        /* 查看更多 */
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        color: white;
+        font-size: var(--cardTXT);
+        text-shadow: 1px 1px 8px #00000020;
+        border-bottom: 1px solid white;
+        padding-bottom: 1vh;
+        z-index: 15;
+    }
+
+    .filter-ing {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        background-color: rgba(211, 46, 46, 0.568);
+        width: 100%;
+        height: 100%;
+    }
+
+    .filter-end {
+        z-index: 5;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #00000080;
+        width: 100%;
+        height: 100%;
+    }
+
+    .ended {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .ended img {
+        filter: grayscale(0%);
+    }
+
+    #section05 h1,
+    #section05guwen h1,
+    #section07 h1 {
+        padding-top: 11vh;
+        padding-bottom: 3vh;
+        font-size: var(--title);
+    }
+
+    .exhibitionBtn a {
+        text-decoration: none;
+        color: black;
+        cursor: default;
+    }
+
+    .exhibitionBtn {
+        border: 1px solid black;
+        color: black;
+        border-radius: var(--buttonRadius);
+        padding: 5px 20px 5px 20px;
+        background-color: transparent;
+        box-shadow: none;
+        margin-right: 1vw;
+        font-size: var(--zhuangtai);
+        cursor: default;
+    }
+
+    .exhibitionBtn .active {
+        border: 1px solid #bf272d;
+        padding: 5px 20px 5px 20px;
+        background-color: transparent;
+        box-shadow: none;
+        margin-right: 1vw;
+    }
+
+    .active a {
+        color: #bf272d;
+    }
+
+    .active {
+        color: #bf272d !important;
+        border: 1px solid #bf272d !important;
+    }
+
+    /* Section框架设定样式 */
+
+    /* 移动端 */
+
+    .section09m {
+        /* FOOTER */
+        height: 100%;
+        width: 100%;
+        background-color: black;
+        color: #939393;
+        overflow: hidden;
+    }
+
+    /* 桌面端 */
+
+    #section02 {
+        /* 轮播 */
+        position: relative;
+        height: var(--sectionHeight);
+        width: 100vw;
+        background-color: white;
+    }
+
+    #section03 {
+        /* 目录 */
+        position: relative;
+        height: var(--sectionHeight);
+        width: 100vw;
+        background-color: white;
+    }
+
+    #section04 {
+        /* 章程 */
+        position: relative;
+        height: var(--sectionHeight);
+        width: 100vw;
+        background-color: white;
+    }
+
+    #section05 {
+        /* 核心成员 */
+        position: relative;
+        min-height: 10vh;
+        height: auto;
+        width: 100vw;
+        background-color: #f7f7f7;
+        padding-bottom: 3vh;
+    }
+
+    #section05guwen {
+        /* 顾问团队 */
+        position: relative;
+        min-height: 5vh;
+        height: auto;
+        width: 100vw;
+        background-color: #f7f7f7;
+        padding-bottom: 3vh;
+    }
+
+    #section06 {
+        /* 新闻动态 */
+        height: 100%;
+        width: 100vw;
+        background-color: #f7f7f7;
+        position: relative;
+    }
+
+    #section07 {
+        /* 展讯 */
+        height: 100%;
+        width: 100vw;
+        background-color: white;
+        position: relative;
+    }
+
+    .section09 {
+        /* FOOTER */
+        height: 40vh;
+        width: 100%;
+        background-color: black;
+        color: #939393;
+        overflow: hidden;
+    }
+
+    /* 07专用 */
+    #processing {
+        display: block;
+    }
+
+    #ended {
+        display: none;
+    }
+
+    /* 05专用 SWITCH-CONTAINER */
+    .switch-container03 {
+        background-color: black;
+        z-index: 30;
+        height: 112vh;
+        width: 100vw;
+        position: relative;
+
+        padding-right: 10vw;
+        overflow-x: scroll;
+    }
+
+    .switch-container02 {
+        background-color: black;
+        z-index: 25;
+        height: 100vh;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 100%;
+
+        /* 以后再改 */
+        /* 以后再改 */
+        /* 以后再改 */
+
+        display: none;
+    }
+
+    .switch-container02 img {
+        height: 95vh;
+        width: 95vw;
+        padding-top: 5vh;
+    }
+
+    .switch-container01 {
+        background-color: black;
+        z-index: 520;
+        height: 65vh;
+        width: 100vw;
+        position: absolute;
+        top: 100vh;
+    }
+
+    .switch-container00 {
+        overflow-y: scroll;
+        position: sticky;
+    }
+
+    /*  后期更新 */
+
+    /* 后续修补 */
+    .entitle {
+        font-style: normal;
+        font-weight: 300;
+        font-family: 'Noto Sans SC', sans-serif;
+        vertical-align: text-top;
+        font-size: 1.3rem;
+        padding-right: 1em;
+        line-height: 1.3em;
+    }
+
+    /* 新增的展会Swiper */
+    .mySwiper10 .swiper {
+        height: 100%;
+        width: 100%;
+    }
+
+    .mySwiper10 .swiper-slide {
+        height: auto;
+        width: 100%;
+        padding: 0;
+    }
+
+    .mySwiper10 .swiper-pagination {
+        background-color: transparent;
+        top: auto;
+        bottom: var(--indexProgressBar);
+        height: .5vh;
+    }
+
+    .mySwiper10 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+        opacity: .7;
+    }
+
+    /* 新增展会prevEl/nextEl */
+    .swiper-button-prev {
+        position: absolute;
+        left: 0%;
+        width: 10vw;
+        height: 10vh;
+        color: #3a79fe;
+    }
+
+    .swiper-button-next {
+        position: absolute;
+        right: 0%;
+        width: 10vw;
+        height: 10vh;
+        color: #3a79fe;
+    }
+
+    #section07 .swiper-button-next,
+    #section07 .swiper-button-prev {
+        transform: translateY(81.5vh);
+
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 4rem;
+    }
+
+    /* Section05 核心成员(新) */
+    /* Core member / advisor avatars. A single flat flex-wrap list replaces the old table that duplicated
+       every person 2-3 times (desktop cells + mobile-only rows + opacity:0 fillers) just to vary heads/row.
+       Heads-per-row is now one width value per breakpoint: ~6/row on desktop, 3/row on mobile (<=991px). */
+    .member {
+        position: relative;
+        margin-top: 3vh;
+        transform: translateX(2%);
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .member a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .member-item {
+        position: relative;
+        display: block;
+        width: 13vw;
+        text-align: center;
+    }
+
+    @media only screen and (max-width: 991px) {
+        .member-item {
+            width: 33.333%;
+        }
+    }
+
+    .member img {
+        width: var(--memberImgW);
+    }
+
+    .member p {
+        font-size: 1.3rem;
+        padding-top: 1em;
+        margin-bottom: 30%;
+        line-height: 1.3em;
+    }
+
+    .member p>span {
+        font-size: 1.1rem;
+    }
+
+    .after {
+        width: 12vw;
+    }
+
+    .after::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ff000a10;
+        width: var(--memberImgW);
+        height: 100%;
+        z-index: 10;
+        opacity: 0;
+        transition: all 500ms ease-in-out;
+    }
+
+    .after::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 107%;
+        height: 105%;
+        z-index: -1;
+        background-color: #276bbf;
+        opacity: 0;
+        transition: all 1s;
+    }
+
+    .after:hover::before,
+    .after:hover::after {
+        opacity: 1;
+    }
+
+    /* Section05 核心成员(新) */
