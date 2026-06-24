@@ -38,7 +38,7 @@ function antiForgeryToken(root) {
 }
 
 async function uploadImage(root, file) {
-  const url = root.getAttribute('data-upload-url') || '/Admin/Upload/Image?folder=newsImg';
+  const url = root.getAttribute('data-upload-url') || '/Staff/Upload/Image?folder=newsImg';
   const form = new FormData();
   form.append('file', file);
   const token = antiForgeryToken(root);

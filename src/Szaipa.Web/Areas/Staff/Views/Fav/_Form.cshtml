@@ -1,0 +1,40 @@
+@model FavFormViewModel
+
+<div asp-validation-summary="All" class="mb-4 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand empty:hidden"></div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-1">
+        <label class="admin-label">封面</label>
+        <div class="rounded-xl border border-dashed border-black/15 bg-white p-3 text-center"
+             data-upload-field data-upload-url="/Staff/Upload/Image?folder=ArtImg/Artist/Fav" data-target="CoverPath">
+            <div data-upload-trigger class="cursor-pointer rounded-lg px-4 py-8 text-sm text-muted hover:text-brand">点击上传封面</div>
+            <img data-upload-preview src="@Model.CoverUrl" alt="封面预览"
+                 class="mx-auto mt-2 max-h-48 rounded @(string.IsNullOrEmpty(Model.CoverUrl) ? "hidden" : "")" />
+            <div data-upload-status class="mt-1 text-xs text-muted"></div>
+        </div>
+        <input type="hidden" asp-for="CoverPath" />
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2">
+        <div class="sm:col-span-2">
+            <label asp-for="ArtistId" class="admin-label"></label>
+            <select asp-for="ArtistId" asp-items="ViewBag.Artists" class="admin-input">
+                <option value="">请选择艺术家</option>
+            </select>
+            <span asp-validation-for="ArtistId" class="mt-1 block text-xs text-brand"></span>
+        </div>
+        <div class="sm:col-span-2">
+            <label asp-for="Title" class="admin-label"></label>
+            <input asp-for="Title" class="admin-input" autocomplete="off" />
+            <span asp-validation-for="Title" class="mt-1 block text-xs text-brand"></span>
+        </div>
+        <div><label asp-for="Creator" class="admin-label"></label><input asp-for="Creator" class="admin-input" /></div>
+        <div><label asp-for="Year" class="admin-label"></label><input asp-for="Year" class="admin-input" /></div>
+        <div><label asp-for="Location" class="admin-label"></label><input asp-for="Location" class="admin-input" /></div>
+        <div><label asp-for="Province" class="admin-label"></label><input asp-for="Province" class="admin-input" /></div>
+        <div><label asp-for="Size" class="admin-label"></label><input asp-for="Size" class="admin-input" /></div>
+        <div><label asp-for="Material" class="admin-label"></label><input asp-for="Material" class="admin-input" /></div>
+        <div><label asp-for="Type" class="admin-label"></label><input asp-for="Type" class="admin-input" /></div>
+        <div><label asp-for="CollectNumber" class="admin-label"></label><input asp-for="CollectNumber" class="admin-input" /></div>
+    </div>
+</div>

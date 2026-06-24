@@ -24,6 +24,19 @@ public sealed class AdminWriteOptions
     /// </summary>
     public bool UseReadOnlyConnectionForDebug { get; set; }
 
+    /// <summary>
+    /// Username for the local-debug fixed account. Only honoured when <see cref="UseReadOnlyConnectionForDebug"/>
+    /// is true — lets a developer sign in WITHOUT a real Staff row (so inspection works even when the prod
+    /// Staff table is unreachable). Never enabled in committed/production config; defaults to <c>debug</c>.
+    /// </summary>
+    public string DebugUserName { get; set; } = "debug";
+
+    /// <summary>Password for the local-debug fixed account (see <see cref="DebugUserName"/>); defaults to <c>debug</c>.</summary>
+    public string DebugPassword { get; set; } = "debug";
+
+    /// <summary>True when the local-debug fixed-account login is active (the read-only-debug flag is on).</summary>
+    public bool DebugLoginEnabled => UseReadOnlyConnectionForDebug;
+
     /// <summary>Connection string to the local writable copy. Resolved from config/env at startup.</summary>
     public string ConnectionString { get; set; } = string.Empty;
 

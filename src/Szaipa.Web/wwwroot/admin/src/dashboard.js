@@ -39,7 +39,7 @@ function showEmpty(el) {
 }
 
 function dailyVisits(chart, el) {
-  getJson('/Admin/Dashboard/DailyVisits?days=30').then(function (d) {
+  getJson('/Staff/Dashboard/DailyVisits?days=30').then(function (d) {
     if (!d.categories || d.categories.length === 0) { showEmpty(el); return; }
     chart.setOption({
       color: [PALETTE[0]],
@@ -56,7 +56,7 @@ function dailyVisits(chart, el) {
 }
 
 function contentAccess(chart, el) {
-  getJson('/Admin/Dashboard/ContentAccess').then(function (d) {
+  getJson('/Staff/Dashboard/ContentAccess').then(function (d) {
     var items = d.items || [];
     if (items.length === 0 || items.every(function (i) { return !i.value; })) { showEmpty(el); return; }
     chart.setOption({
@@ -74,7 +74,7 @@ function contentAccess(chart, el) {
 }
 
 function geo(chart, el, range) {
-  getJson('/Admin/Dashboard/Geo?range=' + range).then(function (d) {
+  getJson('/Staff/Dashboard/Geo?range=' + range).then(function (d) {
     var data = d.data || [];
     if (data.length === 0) { showEmpty(el); return; }
     chart.setOption({

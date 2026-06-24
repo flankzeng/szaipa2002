@@ -82,15 +82,15 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 
-                // Cookie authentication for the staff/admin backend (Areas/Admin), replacing the legacy
+                // Cookie authentication for the staff/admin backend (Areas/Staff), replacing the legacy
                 // Session["Staff"] check. Tickets are protected by the DataProtection keys configured above.
                 services
                     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
-                        options.LoginPath = "/Admin/Account/Login";
-                        options.LogoutPath = "/Admin/Account/Logout";
-                        options.AccessDeniedPath = "/Admin/Account/Login";
+                        options.LoginPath = "/Staff/Account/Login";
+                        options.LogoutPath = "/Staff/Account/Logout";
+                        options.AccessDeniedPath = "/Staff/Account/Login";
                         options.ExpireTimeSpan = TimeSpan.FromHours(8);
                         options.SlidingExpiration = true;
                         options.Cookie.Name = "Szaipa.Admin";

@@ -1,0 +1,10 @@
+@model RichTextEditorModel
+<div class="admin-editor"
+     data-editor
+     data-field="@Model.FieldId"
+     data-upload-url="/Staff/Upload/Image?folder=@Model.UploadFolder"
+     data-placeholder="@(Model.Placeholder ?? "在此撰写正文…")">
+    <div class="admin-editor__toolbar" data-editor-toolbar></div>
+    <div class="admin-editor__surface" data-editor-surface></div>
+    <input type="hidden" name="@Model.Name" id="@Model.FieldId" value="@(Model.InitialHtml ?? string.Empty)" />
+</div>

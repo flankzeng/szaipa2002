@@ -17,7 +17,7 @@
     if (field.__wired) return;
     field.__wired = true;
 
-    var url = field.getAttribute('data-upload-url') || '/Admin/Upload/Image?folder=newsImg';
+    var url = field.getAttribute('data-upload-url') || '/Staff/Upload/Image?folder=newsImg';
     var storeUrl = field.getAttribute('data-store') === 'url';
     var targetName = field.getAttribute('data-target');
     var hidden = field.querySelector('input[type="hidden"]')

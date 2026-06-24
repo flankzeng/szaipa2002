@@ -10,7 +10,7 @@
 
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
-- `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Admin）。
+- `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（75 测试）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
@@ -20,7 +20,7 @@
 ~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 75）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
-# 冒烟：/healthz 200；未登录 /Admin/* → 302 跳 /Admin/Account/Login
+# 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
 ```
 
 ## 双数据库架构（关键）
@@ -30,14 +30,16 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - Tongou 有独立只读上下文 `Contexts/Tongou/TongouLegacyReadContext` 和独立写上下文 `Contexts/TongouAdmin/TongouAdminContext`（门控：`TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`，同样指向本地可写副本，与 Szaipa 是两个物理隔离的数据库）。Tongou 表无 `EditRecord` 列，操作审计仍写 Szaipa 库的 Diary/Staff（两个 SaveChanges，不能跨库共事务）。
 - 配置装配：`src/Szaipa.Data/DependencyInjection/SzaipaDataServiceCollectionExtensions.cs`（所有上下文/仓储在此注册）；`src/Szaipa.Web/Program.cs`（认证、DI、area 路由、静态文件、/Content 映射）。
 
-## 后台（Areas/Admin）—— 加新 CRUD 模块照这个抄
-认证：cookie（`Program.cs` 配 `AddCookie`，登录 `/Admin/Account/Login`），策略 `AdminAuthorization.StaffPolicy`，控制器加 `[Authorize(Policy=...)]`。密码 MD5 兼容老账号（`Services/Admin/StaffPasswordHasher`）。
+## 后台（Areas/Staff）—— 加新 CRUD 模块照这个抄
+认证：cookie（`Program.cs` 配 `AddCookie`，登录 `/Staff/Account/Login`），策略 `AdminAuthorization.StaffPolicy`，控制器加 `[Authorize(Policy=...)]`。密码 MD5 兼容老账号（`Services/Admin/StaffPasswordHasher`）。
+- **命名约定（2026-06-24）**：URL/区是 `Staff`（`Areas/Staff`、`/Staff/...`），但**内部命名仍是 Admin**——数据/Web 服务层 `Services/Admin/`、`AdminWriteOptions`/`AdminWrite` 配置段、`AdminAuthorization` 策略类、静态资源 `wwwroot/admin/` 都不改（非 URL）。⚠️ 区改名后 `Szaipa.Web.Areas.Staff` 命名空间与 `Staff` 实体同名，区内引用 `Staff` 实体类型须全限定 `Szaipa.Data.Contexts.Szaipa.Staff`（见 `AccountController`）。
+- **本地登录**：`AdminWrite:UseReadOnlyConnectionForDebug=true` 时(1) admin 上下文复用只读 `szaipa_ro` 连接、(2) 启用固定调试账号（默认 `debug`/`debug`，可用 `DebugUserName`/`DebugPassword` 改）——不碰 Staff 表直接签发为「调试管理员（只读）」，即使生产 Staff 表连不上也能登录看后台。仅 gitignore 的 Local.json 启用，生产永不开。详见 `docs/updates/2026-06-24-staff-area-rename-branding-devlogin.md`。
 
 **一个 admin 模块 = 4 处**（以 News 为范本）：
 1. 写仓储：`src/Szaipa.Data/Services/Admin/NewsAdminRepository.cs`（+ `I…`）—— CRUD + 用 `IOperationRecorder` 记操作日志（写 Diary + Staff，同事务）。`AdminActor`(StaffId,StaffName)、`PagedResult<T>`。
-2. 控制器：`src/Szaipa.Web/Areas/Admin/Controllers/NewsController.cs` —— Index/Create/Edit/Delete，`CurrentActor()` 从 claims 取。
-3. 视图：`Areas/Admin/Views/News/{Index,_Form,Create,Edit}.cshtml`。
-4. 导航：`Areas/Admin/Views/Shared/_AdminLayout.cshtml`（「内容管理」下拉里加链接 + `contentControllers` 数组）。
+2. 控制器：`src/Szaipa.Web/Areas/Staff/Controllers/NewsController.cs` —— Index/Create/Edit/Delete，`CurrentActor()` 从 claims 取。
+3. 视图：`Areas/Staff/Views/News/{Index,_Form,Create,Edit}.cshtml`。
+4. 导航：`Areas/Staff/Views/Shared/_StaffLayout.cshtml`（「内容管理」下拉里加链接 + `contentControllers` 数组）。
 - DI 注册：`SzaipaDataServiceCollectionExtensions.cs`。
 
 **艺术家子模块**（Fav/Auction/Exhibition/Works）用泛型基类 `Services/Admin/ArtistScopedAdminRepository<T>`（实体实现 `IArtistScopedRecord`）——子类只给 DbSet/名词/字段拷贝。列表共用 `Views/Shared/_ArtistScopedList.cshtml`。
@@ -48,8 +50,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 **注（2026-06-24）**：旧后台「ArtWorks」≠ 独立实体，只是 legacy `StaffController` 里管理同一张 `Works` 表的另一套重复 action（`ArtWorksAdd/Edit`，图片目录 `works-narrow`），与 `WorkAdd/WorkEdit`（图片目录 `Works`，额外算 Width/Height/transverse/long）功能重叠、互相打架。新 Works 模块只实现公开页 `NewArt.cshtml` 实际渲染引用的字段/路径（`works-narrow` 目录 + Title/Content/Tags），未照搬已死的 Width/Height/transverse/long 计算逻辑——`HANDOFF.md` 旧待建列表里的「ArtWorks」已并入 Works，不再是独立模块。
 
 ## 富文本 / 图片 / 画廊（前端组件）
-- TipTap 编辑器：源 `wwwroot/admin/src/editor.js` → esbuild 打包 `wwwroot/admin/editor.js`；复用 partial `Areas/Admin/Views/Shared/_RichTextEditor.cshtml`（`RichTextEditorModel`）。内容存 HTML。
-- 通用图片上传：`Areas/Admin/Controllers/UploadController` + `Services/Admin/AdminAssetStorage`（唯一 GUID 命名，写 `{ContentRoot}/{subfolder}`，规避旧版「子串匹配删图」bug）。封面用插件 `wwwroot/admin/upload-field.js`。
+- TipTap 编辑器：源 `wwwroot/admin/src/editor.js` → esbuild 打包 `wwwroot/admin/editor.js`；复用 partial `Areas/Staff/Views/Shared/_RichTextEditor.cshtml`（`RichTextEditorModel`）。内容存 HTML。
+- 通用图片上传：`Areas/Staff/Controllers/UploadController` + `Services/Admin/AdminAssetStorage`（唯一 GUID 命名，写 `{ContentRoot}/{subfolder}`，规避旧版「子串匹配删图」bug）。封面用插件 `wwwroot/admin/upload-field.js`。
 - 展览多图画廊：`wwwroot/admin/gallery-manager.js`（多图上传/↑↓排序/删除）+ `Services/Admin/ExhibitionGalleryFolder`（自动编号 10001+、两段式防碰撞重排、保留封面 10000，**有单测**）+ Web 包装 `ExhibitionGalleryStorage`。
 - Tailwind：源 `wwwroot/admin/admin.input.css` → `admin.css`；设计令牌在 `tailwind.config.js`（brand #bf272d / canvas #f7f7f7 / muted #939393 / Noto 字体）。
 

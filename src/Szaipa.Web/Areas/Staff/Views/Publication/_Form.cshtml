@@ -1,0 +1,90 @@
+@model PublicationFormViewModel
+
+<div asp-validation-summary="All" class="mb-4 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand empty:hidden"></div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div class="sm:col-span-2">
+        <label asp-for="TitleCN" class="admin-label"></label>
+        <input asp-for="TitleCN" class="admin-input" autocomplete="off" />
+        <span asp-validation-for="TitleCN" class="mt-1 block text-xs text-brand"></span>
+    </div>
+    <div class="sm:col-span-2">
+        <label asp-for="TitleEN" class="admin-label"></label>
+        <input asp-for="TitleEN" class="admin-input" autocomplete="off" />
+    </div>
+    <div class="sm:col-span-2">
+        <label asp-for="Type" class="admin-label"></label>
+        <select asp-for="Type" class="admin-input">
+            <option value="0">普通（标题 + 画廊）</option>
+            <option value="1">重要（banner + 序 + 画廊）</option>
+        </select>
+    </div>
+    <div>
+        <label asp-for="StartDate" class="admin-label"></label>
+        <input asp-for="StartDate" type="date" class="admin-input" />
+    </div>
+    <div>
+        <label asp-for="EndDate" class="admin-label"></label>
+        <input asp-for="EndDate" type="date" class="admin-input" />
+    </div>
+    <div>
+        <label asp-for="FolderName" class="admin-label"></label>
+        <input asp-for="FolderName" class="admin-input" autocomplete="off" placeholder="如 zhongri（图片存储目录）" />
+        <span asp-validation-for="FolderName" class="mt-1 block text-xs text-brand"></span>
+    </div>
+    <div>
+        <label asp-for="Status" class="admin-label"></label>
+        <select asp-for="Status" class="admin-input">
+            <option value="true">进行中</option>
+            <option value="false">已结束</option>
+            <option value="">隐藏</option>
+        </select>
+    </div>
+    <div>
+        <label asp-for="Location" class="admin-label"></label>
+        <input asp-for="Location" class="admin-input" autocomplete="off" />
+    </div>
+    <div>
+        <label asp-for="zhuban" class="admin-label"></label>
+        <input asp-for="zhuban" class="admin-input" autocomplete="off" />
+    </div>
+    <div>
+        <label asp-for="chengban" class="admin-label"></label>
+        <input asp-for="chengban" class="admin-input" autocomplete="off" />
+    </div>
+    <div>
+        <label asp-for="xieban" class="admin-label"></label>
+        <input asp-for="xieban" class="admin-input" autocomplete="off" />
+    </div>
+</div>
+
+<div class="mt-6 rounded-xl border border-dashed border-black/10 bg-canvas/40 p-4">
+    <p class="mb-3 text-sm font-medium text-ink/70">序（仅「重要」类型展示）</p>
+    <div>
+        <label asp-for="Preface" class="admin-label"></label>
+        <textarea asp-for="Preface" rows="5" class="admin-textarea" placeholder="展览前言正文，可分多段"></textarea>
+    </div>
+    <div class="mt-3">
+        <label asp-for="Signature" class="admin-label"></label>
+        <input asp-for="Signature" class="admin-input" placeholder="如：清华大学　姚健伟　2024年8月" />
+    </div>
+</div>
+
+<div class="mt-6">
+    <label class="admin-label">展览图片（拖动 ↑↓ 排序，自动编号 10001+）</label>
+    <div data-gallery
+         data-upload-url="/Staff/Publication/UploadImage"
+         data-list-url="/Staff/Publication/Images"
+         data-folder-input="[name='FolderName']">
+        <input type="hidden" asp-for="GalleryOrder" />
+        <div class="mb-3 flex items-center gap-3">
+            <label class="admin-btn-ghost cursor-pointer">
+                ＋ 添加图片
+                <input type="file" data-gallery-add accept="image/*" multiple class="hidden" />
+            </label>
+            <span data-gallery-status class="text-xs text-muted"></span>
+        </div>
+        <div class="gallery-grid" data-gallery-grid></div>
+        <p class="mt-2 text-xs text-muted">先填写「图片文件夹」再上传；图片会按顺序存为 10001.jpg、10002.jpg…，公开页自动读取。</p>
+    </div>
+</div>
