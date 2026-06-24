@@ -1,0 +1,7 @@
+@model PagedResult<ArtistScopedListItem>
+@{
+    ViewData["Title"] = "拍卖管理";
+    ViewData["CreateLabel"] = "添加拍卖";
+    ViewData["TitleColumn"] = "作品名称";
+}
+<partial name="_ArtistScopedList" model="Model" />

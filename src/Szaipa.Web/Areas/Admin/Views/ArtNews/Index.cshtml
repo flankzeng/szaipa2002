@@ -1,0 +1,62 @@
+@model PagedResult<ArtNewsListItem>
+@{
+    ViewData["Title"] = "艺术家动态";
+}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">艺术家动态</h1>
+        <p class="mt-1 text-sm text-muted">共 @Model.TotalCount 条</p>
+    </div>
+    <a asp-action="Create" class="admin-btn-primary">＋ 添加动态</a>
+</div>
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">标题</th>
+                <th class="px-5 py-3 font-medium">艺术家</th>
+                <th class="px-5 py-3 font-medium">日期</th>
+                <th class="px-5 py-3 text-right font-medium">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @foreach (var a in Model.Items)
+            {
+                <tr class="hover:bg-canvas/40">
+                    <td class="px-5 py-3 font-medium text-ink">@a.Title</td>
+                    <td class="px-5 py-3 text-muted">@(string.IsNullOrEmpty(a.ArtistName) ? $"#{a.ArtistId}" : a.ArtistName)</td>
+                    <td class="px-5 py-3 text-muted">@(a.Date?.ToString("yyyy-MM-dd") ?? "—")</td>
+                    <td class="px-5 py-3">
+                        <div class="flex items-center justify-end gap-3">
+                            <a asp-action="Edit" asp-route-id="@a.Id" class="text-brand hover:underline">编辑</a>
+                            <form asp-action="Delete" asp-route-id="@a.Id" method="post" class="inline"
+                                  onsubmit="return confirm('确定删除这条艺术家动态？此操作不可撤销。');">
+                                <button type="submit" class="text-muted hover:text-brand">删除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (Model.Items.Count == 0)
+            {
+                <tr><td colspan="4" class="px-5 py-14 text-center text-muted">暂无艺术家动态，点击右上角添加。</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="mt-5 flex items-center justify-center gap-2 text-sm">
+        @if (Model.HasPrevious)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page - 1)" class="admin-btn-ghost px-3 py-1.5">上一页</a>
+        }
+        <span class="px-3 py-1.5 text-muted">第 @Model.Page / @Model.TotalPages 页</span>
+        @if (Model.HasNext)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page + 1)" class="admin-btn-ghost px-3 py-1.5">下一页</a>
+        }
+    </div>
+}

@@ -35,4 +35,11 @@ public sealed class PublicationDetailModel
     public string CoHost { get; init; } = string.Empty;
 
     public string EditRecord { get; init; } = string.Empty;
+
+    /// <summary>Template type: 0 = 普通 (simple gallery), 1 = 重要 (banner + preface skin).</summary>
+    public int Type { get; init; }
+
+    public string Preface { get; init; } = string.Empty;
+
+    public string Signature { get; init; } = string.Empty;
 }

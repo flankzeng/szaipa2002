@@ -1,0 +1,74 @@
+@model PagedResult<Publication>
+@{
+    ViewData["Title"] = "展览管理";
+}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">展览管理</h1>
+        <p class="mt-1 text-sm text-muted">共 @Model.TotalCount 个展览</p>
+    </div>
+    <a asp-action="Create" class="admin-btn-primary">＋ 新建展览</a>
+</div>
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">标题</th>
+                <th class="px-5 py-3 font-medium">时间</th>
+                <th class="px-5 py-3 font-medium">图片</th>
+                <th class="px-5 py-3 font-medium">状态</th>
+                <th class="px-5 py-3 text-right font-medium">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @foreach (var p in Model.Items)
+            {
+                <tr class="hover:bg-canvas/40">
+                    <td class="px-5 py-3">
+                        <div class="font-medium text-ink">@p.TitleCN</div>
+                        <a href="/Home/Publication/@p.Id" target="_blank" class="text-xs text-brand hover:underline">公开页 ↗</a>
+                    </td>
+                    <td class="px-5 py-3 text-muted">@(p.StartDate?.ToString("yyyy-MM-dd") ?? "—")</td>
+                    <td class="px-5 py-3 text-muted">@(p.MaxImg + 1) 张</td>
+                    <td class="px-5 py-3">
+                        @switch (p.Status)
+                        {
+                            case true: <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">进行中</span> break;
+                            case false: <span class="rounded-full bg-black/5 px-2 py-0.5 text-xs text-muted">已结束</span> break;
+                            default: <span class="text-xs text-muted">隐藏</span> break;
+                        }
+                    </td>
+                    <td class="px-5 py-3">
+                        <div class="flex items-center justify-end gap-3">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="text-brand hover:underline">编辑</a>
+                            <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="inline"
+                                  onsubmit="return confirm('确定删除这个展览？此操作不可撤销。');">
+                                <button type="submit" class="text-muted hover:text-brand">删除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (Model.Items.Count == 0)
+            {
+                <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无展览，点击右上角新建。</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <div class="mt-5 flex items-center justify-center gap-2 text-sm">
+        @if (Model.HasPrevious)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page - 1)" class="admin-btn-ghost px-3 py-1.5">上一页</a>
+        }
+        <span class="px-3 py-1.5 text-muted">第 @Model.Page / @Model.TotalPages 页</span>
+        @if (Model.HasNext)
+        {
+            <a asp-action="Index" asp-route-page="@(Model.Page + 1)" class="admin-btn-ghost px-3 py-1.5">下一页</a>
+        }
+    </div>
+}

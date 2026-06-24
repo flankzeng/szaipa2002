@@ -38,4 +38,15 @@ public sealed class Publication
     public string? chengban { get; set; }
 
     public string? xieban { get; set; }
+
+    // --- Exhibition template fields (added 2026-06 for the data-driven exhibition admin) ---
+
+    /// <summary>Template type: 0 = 普通 (simple gallery), 1 = 重要 (banner + preface + gallery skin).</summary>
+    public int Type { get; set; }
+
+    /// <summary>序 / preface body text shown on the 重要 skin.</summary>
+    public string? Preface { get; set; }
+
+    /// <summary>序 signature line (e.g. author + date) shown under the preface.</summary>
+    public string? Signature { get; set; }
 }

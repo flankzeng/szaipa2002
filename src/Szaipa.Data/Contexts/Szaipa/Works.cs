@@ -1,7 +1,7 @@
 namespace Szaipa.Data.Contexts.Szaipa;
 
 /// <summary>Read-only entity for the legacy <c>dbo.Works</c> table (translated from the EF6 model).</summary>
-public sealed class Works
+public sealed class Works : IArtistScopedRecord
 {
     public int Id { get; set; }
 

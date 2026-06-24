@@ -4,10 +4,21 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Front-end tooling (Tailwind/TipTap) installs into node_modules; keep it out of MSBuild globs. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Szaipa.Data\Szaipa.Data.csproj" />
+  </ItemGroup>
+
+  <!--
+    Tailwind source (admin.input.css) is compiled to wwwroot/admin/admin.css by the npm build; it uses
+    @@tailwind directives a browser can't parse, so never serve or publish the raw source.
+  -->
+  <ItemGroup>
+    <Content Update="wwwroot/admin/admin.input.css" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot/admin/src/**" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <!--

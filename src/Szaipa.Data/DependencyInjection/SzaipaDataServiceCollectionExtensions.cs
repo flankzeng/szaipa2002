@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.Contexts.Szaipa;
+using Szaipa.Data.Contexts.SzaipaAdmin;
 using Szaipa.Data.Contexts.Tongou;
 using Szaipa.Data.Contracts.Home;
 using Szaipa.Data.Contracts.Tongou;
 using Szaipa.Data.Services;
+using Szaipa.Data.Services.Admin;
 using Szaipa.Data.Services.Home;
 using Szaipa.Data.Services.Tongou;
 
@@ -17,6 +20,7 @@ public static class SzaipaDataServiceCollectionExtensions
 {
     private const string SzaipaReadOnlyConnectionEnvVar = "SZAIPA_READONLY_CONNECTION";
     private const string TongouReadOnlyConnectionEnvVar = "TONGOU_READONLY_CONNECTION";
+    private const string SzaipaAdminConnectionEnvVar = "SZAIPA_ADMIN_CONNECTION";
 
     public static IServiceCollection AddSzaipaData(
         this IServiceCollection services,
@@ -36,6 +40,21 @@ public static class SzaipaDataServiceCollectionExtensions
                     options.Tongou,
                     configurationValue: configuration["ConnectionStrings:Tongou"],
                     environmentValue: configuration[TongouReadOnlyConnectionEnvVar]);
+            });
+
+        // Admin (write) path. Gated and machine-local: writes are off unless AdminWrite:EnableWrites is true
+        // and a dedicated connection string is supplied. The connection is resolved ONLY from admin-specific
+        // keys (ConnectionStrings:SzaipaAdmin / env SZAIPA_ADMIN_CONNECTION) and never falls back to the
+        // read-only Szaipa connection, so the admin path can never accidentally reuse the production source.
+        services
+            .AddOptions<AdminWriteOptions>()
+            .Bind(configuration.GetSection(AdminWriteOptions.SectionName))
+            .PostConfigure(options =>
+            {
+                ResolveAdminConnectionString(
+                    options,
+                    configurationValue: configuration["ConnectionStrings:SzaipaAdmin"],
+                    environmentValue: configuration[SzaipaAdminConnectionEnvVar]);
             });
 
         services.AddSingleton<ILegacyConnectionPolicy, LegacyConnectionPolicy>();
@@ -61,11 +80,69 @@ public static class SzaipaDataServiceCollectionExtensions
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
+        // Write-capable admin context over a LOCAL writable copy of the Szaipa database. Only constructed when
+        // the admin write path is configured; if an admin feature is reached without configuration it throws a
+        // clear, actionable error. Admin controllers resolve it lazily, so the public read-only site boots and
+        // runs without any admin/write configuration. Default QueryTrackingBehavior (tracking) is intentional:
+        // this context performs edits, unlike the read contexts which force NoTracking.
+        services.AddDbContext<SzaipaAdminContext>((serviceProvider, options) =>
+        {
+            var adminOptions = serviceProvider.GetRequiredService<IOptions<AdminWriteOptions>>().Value;
+            if (!adminOptions.IsConfigured)
+            {
+                throw new InvalidOperationException(
+                    "SzaipaAdminContext was requested but the admin write path is not configured. Set "
+                    + "AdminWrite:EnableWrites=true and ConnectionStrings:SzaipaAdmin (or env "
+                    + "SZAIPA_ADMIN_CONNECTION) to a LOCAL writable copy of the Szaipa database. Never point "
+                    + "this at the production / Windows-connected database.");
+            }
+
+            options.UseSqlServer(adminOptions.ConnectionString);
+        });
+
         services.AddScoped<INewsReadRepository, NewsReadRepository>();
         services.AddScoped<IArtistReadRepository, ArtistReadRepository>();
         services.AddScoped<IPublicationReadRepository, PublicationReadRepository>();
         services.AddScoped<ITongouReadRepository, TongouReadRepository>();
+
+        // Admin (write) services. Scoped alongside SzaipaAdminContext; only resolved on admin routes.
+        services.AddScoped<IOperationRecorder, OperationRecorder>();
+        services.AddScoped<INewsAdminRepository, NewsAdminRepository>();
+        services.AddScoped<IArtNewsAdminRepository, ArtNewsAdminRepository>();
+        services.AddScoped<FavAdminRepository>();
+        services.AddScoped<AuctionAdminRepository>();
+        services.AddScoped<ExhibitionAdminRepository>();
+        services.AddScoped<IPublicationAdminRepository, PublicationAdminRepository>();
         return services;
+    }
+
+    private static void ResolveAdminConnectionString(
+        AdminWriteOptions options,
+        string? configurationValue,
+        string? environmentValue)
+    {
+        if (!string.IsNullOrWhiteSpace(options.ConnectionString))
+        {
+            options.ConnectionStringSource = "AdminWrite";
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(environmentValue))
+        {
+            options.ConnectionString = environmentValue;
+            options.ConnectionStringSource = "Environment";
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(configurationValue))
+        {
+            options.ConnectionString = configurationValue;
+            options.ConnectionStringSource = "ConnectionStrings";
+            return;
+        }
+
+        options.ConnectionString = string.Empty;
+        options.ConnectionStringSource = "None";
     }
 
     private static void ApplyConnectionStringResolution(

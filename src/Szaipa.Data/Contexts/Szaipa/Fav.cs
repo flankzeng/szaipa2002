@@ -1,7 +1,7 @@
 namespace Szaipa.Data.Contexts.Szaipa;
 
 /// <summary>Read-only entity for the legacy <c>dbo.Fav</c> table (translated from the EF6 model).</summary>
-public sealed class Fav
+public sealed class Fav : IArtistScopedRecord
 {
     public int Id { get; set; }
 

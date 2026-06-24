@@ -1,108 +1,34 @@
-﻿@model Szaipa.Data.Models.Home.PublicationDetailSnapshotModel
+@model Szaipa.Data.Models.Home.PublicationDetailSnapshotModel
 @{
     var publication = Model.Publication;
     ViewBag.Title = publication.TitleCn;
     Layout = "~/Views/Shared/_newLayout.cshtml";
+    var gallery = new ExhibitionGalleryModel
+    {
+        TitleCn = publication.TitleCn,
+        TitleEn = publication.TitleEn,
+        StartDate = publication.StartDate,
+        EndDate = publication.EndDate,
+        FolderName = publication.FolderName,
+        MaxImg = publication.MaxImg,
+        Preface = publication.Preface,
+        Signature = publication.Signature
+    };
+    var isImportant = publication.Type == 1;
 }
 
 <link rel="stylesheet" href="/Content/css/publication.css">
-<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--pubSonHeight);">
 
-    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
-    <div class="col-xs17 col-sm17 col-md7 col-lg7">
-        <div class="titlePub">
-            <h1 class="JhengRegular">@publication.TitleCn</h1>
-            <h3 class="JhengLight">
-                @publication.TitleEn
-                <br />
-                开幕时间：@string.Format("{0:yyyy年MM月dd日}", publication.StartDate)
-                <br />
-                结束时间：@string.Format("{0:yyyy年MM月dd日}", publication.EndDate)
-            </h3>
-
-            <a class="JhengLight xs-hide sm-hide" href="javascript:history.back()">
-                < 返回 </a>
-        </div>
-    </div>
-    <div class="col-xs1 col-sm1 col-md1 col-lg1"> &nbsp;</div>
-
-
-    <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
-    <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
-        <div class="col-md20 col-lg20">
-            <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
-                <div class="swiper-wrapper">
-                @for (var i = 10001; i <= 10001 + publication.MaxImg; i++)
-                    {
-                        <div class="swiper-slide">
-                            <img src="@string.Format("/Content/images/{0}/{1}.jpg", publication.FolderName,i)" />
-                        </div>
-                    }
-        </div>
-                </div>
-                <div class="swiper-button-next xs-hide sm-hide"></div>
-                <div class="swiper-button-prev xs-hide sm-hide"></div>
-            </div>
-            <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
-
-
-
-            <div thumbsSlider=""
-                class="col-xs16 col-sm16 col-md20 col-lg20 swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
-                <div class="swiper-wrapper">
-                @for (var i = 10000; i <= 10000 + publication.MaxImg; i++)
-            {
-                <div class="swiper-slide">
-                    <img src="@string.Format("/Content/images/{0}/{1}.jpg", publication.FolderName,i)" />
-                </div>
-            }
-                            </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
-
-</section>
-
-
-
-
-<script>// section04的双swiper,02是子，03是父
-
-    var swiper2 = new Swiper(".mySwiper2", {
-        loop: true,
-        grabCursor: true,
-        spaceBetween: 3,
-        slidesPerView: 7,
-        freeMode: true,
-        watchSlidesProgress: true,
-    });
-    var swiper3 = new Swiper(".mySwiper3", {
-        loop: true,
-        spaceBetween: 0,
-        grabCursor: true,
-        // slidesPerView: 0,
-        // 启用懒加载
-        lazy: true,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        thumbs: {
-            swiper: swiper2,
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-        },
-    });</script>
+@if (isImportant)
+{
+    <partial name="_ExhibitionImportant" model="gallery" />
+}
+else
+{
+    <partial name="_ExhibitionGallery" model="gallery" />
+}
 
 <!-- 以下为共享部分 -->
-
-
-
-
-
 <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
     <div class="emailContainerM">
         <div class="emailPosition">
@@ -130,3 +56,14 @@
 
     </div>
 </section>
+
+@section Styles {
+    @if (isImportant)
+    {
+        <link rel="stylesheet" href="~/css/exhibition-important.css" asp-append-version="true" />
+    }
+}
+
+@section Scripts {
+    <script src="~/js/publication-gallery.js" asp-append-version="true"></script>
+}

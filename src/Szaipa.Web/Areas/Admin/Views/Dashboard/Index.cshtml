@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "后台综合";
+}
+<div class="mb-8">
+    <h1 class="font-serif text-2xl font-bold text-ink">后台综合</h1>
+    <p class="mt-1 text-sm text-muted">欢迎回来，@User.Identity?.Name。内容管理与访问数据总览。</p>
+</div>
+
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <section class="admin-card">
+        <h2 class="admin-card__title">内容管理</h2>
+        <p class="admin-card__body">新闻、艺术家、作品、展会、公司等模块的增删改，迁移上线中。</p>
+        <span class="admin-card__tag">迁移进行中</span>
+    </section>
+    <section class="admin-card">
+        <h2 class="admin-card__title">访问数据</h2>
+        <p class="admin-card__body">访客省市分布与每日访问趋势图表，将在分析阶段接入。</p>
+        <span class="admin-card__tag">规划中</span>
+    </section>
+    <section class="admin-card">
+        <h2 class="admin-card__title">操作记录</h2>
+        <p class="admin-card__body">后台操作日志与账户安全（修改密码）即将迁移。</p>
+        <span class="admin-card__tag">规划中</span>
+    </section>
+</div>

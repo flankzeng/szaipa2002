@@ -71,7 +71,10 @@ internal static class SzaipaHomeProjections
             Organizer = publication.zhuban ?? string.Empty,
             Host = publication.chengban ?? string.Empty,
             CoHost = publication.xieban ?? string.Empty,
-            EditRecord = publication.EditRecord ?? string.Empty
+            EditRecord = publication.EditRecord ?? string.Empty,
+            Type = publication.Type,
+            Preface = publication.Preface ?? string.Empty,
+            Signature = publication.Signature ?? string.Empty
         };
 
     public static readonly Expression<Func<Artist, ArtistSummaryModel>> ArtistSummary =

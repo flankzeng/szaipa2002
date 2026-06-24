@@ -4,7 +4,7 @@ namespace Szaipa.Data.Contexts.Szaipa;
 /// Read-only entity for the legacy <c>dbo.Exhibition</c> table (the per-artist exhibition feed on newArt).
 /// Note <c>StartDate</c>/<c>EndDate</c> are <see cref="string"/> in this legacy table, unlike Publication.
 /// </summary>
-public sealed class Exhibition
+public sealed class Exhibition : IArtistScopedRecord
 {
     public int Id { get; set; }
 

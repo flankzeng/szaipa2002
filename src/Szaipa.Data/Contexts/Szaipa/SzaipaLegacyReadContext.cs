@@ -48,6 +48,7 @@ public sealed class SzaipaLegacyReadContext : DbContext
         {
             entity.ToTable("Publication");
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Type).HasDefaultValue(0);
         });
 
         modelBuilder.Entity<Artist>(entity =>

@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.FileProviders;
@@ -9,8 +10,10 @@ using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.DependencyInjection;
+using Szaipa.Web.Authorization;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Services;
+using Szaipa.Web.Services.Admin;
 
 var contentRoot = ResolveContentRoot();
 // Standard ASP.NET Core layering: appsettings.json (committed defaults) -> appsettings.{Environment}.json
@@ -76,6 +79,33 @@ var hostBuilder = new HostBuilder()
                     .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(contentRoot, "App_Data", "DataProtection-Keys")));
                 services.AddSzaipaData(configuration);
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
+                services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
+                services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
+
+                // Cookie authentication for the staff/admin backend (Areas/Admin), replacing the legacy
+                // Session["Staff"] check. Tickets are protected by the DataProtection keys configured above.
+                services
+                    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = "/Admin/Account/Login";
+                        options.LogoutPath = "/Admin/Account/Logout";
+                        options.AccessDeniedPath = "/Admin/Account/Login";
+                        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+                        options.SlidingExpiration = true;
+                        options.Cookie.Name = "Szaipa.Admin";
+                        options.Cookie.HttpOnly = true;
+                        options.Cookie.SameSite = SameSiteMode.Lax;
+                    });
+                services.AddAuthorization(options =>
+                {
+                    // Every authenticated cookie holder is a signed-in staff member; the policy gates the
+                    // whole admin area via [Authorize(Policy = AdminAuthorization.StaffPolicy)].
+                    options.AddPolicy(
+                        AdminAuthorization.StaffPolicy,
+                        policy => policy.RequireAuthenticatedUser());
+                });
+
                 services.AddControllersWithViews();
             })
             .Configure(app =>
@@ -156,6 +186,7 @@ var hostBuilder = new HostBuilder()
                 }
 
                 app.UseRouting();
+                app.UseAuthentication();
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints =>
                 {
@@ -185,6 +216,10 @@ var hostBuilder = new HostBuilder()
                                 item => item.Value.ScaffoldReady)
                         }));
                     });
+
+                    endpoints.MapControllerRoute(
+                        name: "areas",
+                        pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
                     endpoints.MapControllerRoute(
                         name: "default",

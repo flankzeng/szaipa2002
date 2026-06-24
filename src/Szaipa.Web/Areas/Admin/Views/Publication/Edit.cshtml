@@ -1,0 +1,21 @@
+@model PublicationFormViewModel
+@{
+    ViewData["Title"] = "编辑展览";
+}
+<div class="mb-6 flex items-center justify-between">
+    <h1 class="font-serif text-2xl font-bold text-ink">编辑展览</h1>
+    <div class="flex items-center gap-3">
+        <a href="/Home/Publication/@Model.Id" target="_blank" class="text-sm text-brand hover:underline">预览公开页 ↗</a>
+        <a asp-action="Index" class="admin-btn-ghost">返回列表</a>
+    </div>
+</div>
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="rounded-2xl border border-black/5 bg-white p-6 shadow-sm">
+    <partial name="_Form" model="Model" />
+    <div class="mt-6 flex gap-3 border-t border-black/5 pt-5">
+        <button type="submit" class="admin-btn-primary">保存修改</button>
+        <a asp-action="Index" class="admin-btn-ghost">取消</a>
+    </div>
+</form>
+@section Scripts {
+    <script src="~/admin/gallery-manager.js" defer></script>
+}

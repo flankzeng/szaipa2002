@@ -1,7 +1,7 @@
 namespace Szaipa.Data.Contexts.Szaipa;
 
 /// <summary>Read-only entity for the legacy <c>dbo.Auction</c> table (translated from the EF6 model).</summary>
-public sealed class Auction
+public sealed class Auction : IArtistScopedRecord
 {
     public int Id { get; set; }
 

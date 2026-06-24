@@ -1,0 +1,57 @@
+@model Szaipa.Web.Models.ExhibitionGalleryModel
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--pubSonHeight);">
+
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+    <div class="col-xs17 col-sm17 col-md7 col-lg7">
+        <div class="titlePub">
+            <h1 class="JhengRegular">@Model.TitleCn</h1>
+            <h3 class="JhengLight">
+                @Model.TitleEn
+                <br />
+                开幕时间：@string.Format("{0:yyyy年MM月dd日}", Model.StartDate)
+                <br />
+                结束时间：@string.Format("{0:yyyy年MM月dd日}", Model.EndDate)
+            </h3>
+
+            <a class="JhengLight xs-hide sm-hide" href="javascript:history.back()">
+                < 返回 </a>
+        </div>
+    </div>
+    <div class="col-xs1 col-sm1 col-md1 col-lg1"> &nbsp;</div>
+
+
+    <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+    <div class="col-xs16 col-sm16 col-md10 col-lg10 imgCon_Pub imgCon_PubMobCon">
+        <div class="col-md20 col-lg20">
+            <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
+                <div class="swiper-wrapper">
+                    @for (var i = 10001; i <= 10001 + Model.MaxImg; i++)
+                    {
+                        <div class="swiper-slide">
+                            <img src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                        </div>
+                    }
+                </div>
+                <div class="swiper-button-next xs-hide sm-hide"></div>
+                <div class="swiper-button-prev xs-hide sm-hide"></div>
+            </div>
+            <div class="col-xs2 col-sm2 md-hide lg-hide">&nbsp;</div>
+
+
+
+            <div thumbsSlider=""
+                 class="col-xs16 col-sm16 col-md20 col-lg20 swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
+                <div class="swiper-wrapper">
+                    @for (var i = 10000; i <= 10000 + Model.MaxImg; i++)
+                    {
+                        <div class="swiper-slide">
+                            <img src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
+
+</section>
