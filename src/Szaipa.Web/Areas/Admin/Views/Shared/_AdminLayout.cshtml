@@ -58,6 +58,8 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="hidden text-sm text-muted sm:inline">@staffName</span>
+                    <a asp-area="Admin" asp-controller="Account" asp-action="PasswordChange"
+                       class="hidden text-sm text-ink/70 transition-colors hover:text-brand sm:inline">修改密码</a>
                     <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post" class="inline">
                         @Html.AntiForgeryToken()
                         <button type="submit"

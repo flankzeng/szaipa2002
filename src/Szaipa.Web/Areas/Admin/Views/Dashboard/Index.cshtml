@@ -1,25 +1,91 @@
+@model DashboardViewModel
 @{
     ViewData["Title"] = "后台综合";
 }
-<div class="mb-8">
-    <h1 class="font-serif text-2xl font-bold text-ink">后台综合</h1>
-    <p class="mt-1 text-sm text-muted">欢迎回来，@User.Identity?.Name。内容管理与访问数据总览。</p>
+<div class="mb-8 flex items-end justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">后台综合</h1>
+        <p class="mt-1 text-sm text-muted">欢迎回来，@User.Identity?.Name。内容管理与访问数据总览。</p>
+    </div>
 </div>
 
-<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    <section class="admin-card">
-        <h2 class="admin-card__title">内容管理</h2>
-        <p class="admin-card__body">新闻、艺术家、作品、展会、公司等模块的增删改，迁移上线中。</p>
-        <span class="admin-card__tag">迁移进行中</span>
+@if (!Model.DataAvailable)
+{
+    <div class="mb-8 rounded-2xl border border-brand/20 bg-brand/5 px-5 py-4 text-sm text-brand">
+        @Model.UnavailableReason
+    </div>
+}
+
+@* KPI 指标卡 *@
+<div class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">今日访问</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink">@Model.Kpi.TodayVisits</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">本月访问</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink">@Model.Kpi.MonthVisits</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">内容总访问</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink">@Model.Kpi.ContentAccessTotal</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">近7天操作</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink">@Model.Kpi.RecentOperationCount</p>
+    </div>
+</div>
+
+@* 折线 + 饼图 *@
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <section class="admin-card lg:col-span-2">
+        <h2 class="admin-card__title mb-3">近 30 天访问趋势</h2>
+        <div id="chart-daily" class="h-72 w-full"></div>
     </section>
     <section class="admin-card">
-        <h2 class="admin-card__title">访问数据</h2>
-        <p class="admin-card__body">访客省市分布与每日访问趋势图表，将在分析阶段接入。</p>
-        <span class="admin-card__tag">规划中</span>
-    </section>
-    <section class="admin-card">
-        <h2 class="admin-card__title">操作记录</h2>
-        <p class="admin-card__body">后台操作日志与账户安全（修改密码）即将迁移。</p>
-        <span class="admin-card__tag">规划中</span>
+        <h2 class="admin-card__title mb-3">内容访问构成</h2>
+        <div id="chart-content" class="h-72 w-full"></div>
     </section>
 </div>
+
+@* 省市旭日图 *@
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">本月访客分布（省 / 市）</h2>
+        <div id="chart-geo-month" class="h-80 w-full"></div>
+    </section>
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">本年访客分布（省 / 市）</h2>
+        <div id="chart-geo-year" class="h-80 w-full"></div>
+    </section>
+</div>
+
+@* 操作记录 *@
+<section class="admin-card">
+    <h2 class="admin-card__title mb-4">近期操作记录</h2>
+    @if (Model.Operations.Count == 0)
+    {
+        <p class="text-sm text-muted">暂无操作记录。</p>
+    }
+    else
+    {
+        <div class="space-y-5">
+            @foreach (var day in Model.Operations)
+            {
+                <div>
+                    <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">@day.Date</p>
+                    <ul class="space-y-1.5 border-l-2 border-brand/20 pl-4">
+                        @foreach (var record in day.Records)
+                        {
+                            <li class="text-sm text-ink/80">@record</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script src="~/admin/dashboard.js" asp-append-version="true" defer></script>
+}

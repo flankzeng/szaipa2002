@@ -79,6 +79,42 @@ public sealed class AccountController : Controller
         return RedirectToAction(nameof(Login));
     }
 
+    [HttpGet]
+    [Authorize(Policy = AdminAuthorization.StaffPolicy)]
+    public IActionResult PasswordChange() => View(new PasswordChangeViewModel());
+
+    [HttpPost]
+    [Authorize(Policy = AdminAuthorization.StaffPolicy)]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> PasswordChange(PasswordChangeViewModel model, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var staffId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var parsed) ? parsed : 0;
+        var db = HttpContext.RequestServices.GetRequiredService<SzaipaAdminContext>();
+        var staff = await db.Staff.FirstOrDefaultAsync(s => s.Id == staffId, cancellationToken);
+
+        if (staff is null || !StaffPasswordHasher.Verify(model.CurrentPassword ?? string.Empty, staff.Password))
+        {
+            ModelState.AddModelError(nameof(model.CurrentPassword), "原密码错误！");
+            return View(model);
+        }
+
+        // Store the new password in the same lowercase-MD5 form legacy used, so it stays compatible.
+        staff.Password = StaffPasswordHasher.Md5Hex(model.NewPassword ?? string.Empty);
+
+        var recorder = HttpContext.RequestServices.GetRequiredService<IOperationRecorder>();
+        var actor = new AdminActor(staff.Id, staff.StaffName ?? string.Empty);
+        await recorder.RecordAsync(db, actor, "修改了登录密码。", cancellationToken);
+        await db.SaveChangesAsync(cancellationToken);
+
+        TempData["Success"] = "密码已修改。";
+        return RedirectToAction("Index", "Dashboard");
+    }
+
     private IActionResult RedirectToAdminHome(string? returnUrl) =>
         !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)
             ? Redirect(returnUrl)
