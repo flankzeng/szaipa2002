@@ -113,6 +113,7 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<FavAdminRepository>();
         services.AddScoped<AuctionAdminRepository>();
         services.AddScoped<ExhibitionAdminRepository>();
+        services.AddScoped<WorksAdminRepository>();
         services.AddScoped<IPublicationAdminRepository, PublicationAdminRepository>();
         return services;
     }

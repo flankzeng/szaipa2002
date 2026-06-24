@@ -79,6 +79,38 @@ public sealed class ArtistScopedAdminRepositoryTests
         Assert.Equal("1000000", saved.RMB);
     }
 
+    [Fact]
+    public async Task Works_create_update_delete_and_preserves_image_on_empty()
+    {
+        await using var fixture = CreateContext();
+        SeedArtist(fixture.Context, 7, "王五");
+        var repo = new WorksAdminRepository(fixture.Context, new OperationRecorder());
+
+        var id = await repo.CreateAsync(
+            new Works { ArtistId = 7, Title = "山居图", Content = "布面油画，120 X 180cm", Tags = "山水", Path = "p1.jpg" },
+            Actor, CancellationToken.None);
+
+        var created = await fixture.Context.Works.AsNoTracking().SingleAsync(w => w.Id == id);
+        Assert.Equal("p1.jpg", created.Path);
+        Assert.Contains("新增了此作品", created.EditRecord);
+
+        // Cover-preserve-on-empty: an update with no new image keeps the existing one.
+        await repo.UpdateAsync(
+            new Works { Id = id, ArtistId = 7, Title = "山居图2", Content = "纸本水墨", Tags = "山水,水墨", Path = null },
+            Actor, CancellationToken.None);
+        var updated = await fixture.Context.Works.AsNoTracking().SingleAsync(w => w.Id == id);
+        Assert.Equal("山居图2", updated.Title);
+        Assert.Equal("纸本水墨", updated.Content);
+        Assert.Equal("p1.jpg", updated.Path);
+        Assert.Contains("修改了此作品", updated.EditRecord);
+
+        var page = await repo.GetPagedAsync(1, 10, CancellationToken.None);
+        Assert.Equal("王五", page.Items.Single().ArtistName);
+
+        Assert.True(await repo.DeleteAsync(id, Actor, CancellationToken.None));
+        Assert.Empty(await fixture.Context.Works.AsNoTracking().ToListAsync());
+    }
+
     private static void SeedArtist(SzaipaAdminContext context, int id, string name)
     {
         context.Artist.Add(new Artist { Id = id, ArtistNameCN = name });

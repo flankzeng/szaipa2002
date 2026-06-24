@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Publication", "Fav", "Auction", "Exhibition" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Publication", "Fav", "Auction", "Exhibition" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -44,6 +44,7 @@
                                 <a asp-area="Admin" asp-controller="News" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">新闻</a>
                                 <a asp-area="Admin" asp-controller="ArtNews" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">艺术家动态</a>
                                 <a asp-area="Admin" asp-controller="Artist" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">会员管理</a>
+                                <a asp-area="Admin" asp-controller="Works" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">作品管理</a>
                                 <a asp-area="Admin" asp-controller="Publication" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">展览</a>
                                 <a asp-area="Admin" asp-controller="Fav" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">收藏</a>
                                 <a asp-area="Admin" asp-controller="Auction" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">拍卖</a>
