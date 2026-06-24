@@ -11,13 +11,13 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Admin）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（50 测试）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（57 测试）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 50）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 57）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Admin/* → 302 跳 /Admin/Account/Login
@@ -42,8 +42,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 
 **艺术家子模块**（Fav/Auction/Exhibition/将来 Works/ArtWorks）用泛型基类 `Services/Admin/ArtistScopedAdminRepository<T>`（实体实现 `IArtistScopedRecord`）——子类只给 DbSet/名词/字段拷贝。列表共用 `Views/Shared/_ArtistScopedList.cshtml`。
 
-**已建模块**：Account(登录) / Dashboard / News / ArtNews / Publication(展览) / Fav / Auction / Exhibition / Upload。
-**待建**：Artist、Works、ArtWorks（Phase 3 收尾）；Company、Tongou（Phase 4）；分析仪表盘（Phase 5）。
+**已建模块**：Account(登录) / Dashboard / News / ArtNews / Artist(会员) / Publication(展览) / Fav / Auction / Exhibition / Upload。Artist 是主表（非 `IArtistScopedRecord`），照 News 范本（独立仓储），不是泛型艺术家子类。
+**待建**：Works、ArtWorks（Phase 3 收尾）；Company、Tongou（Phase 4）；分析仪表盘（Phase 5）。
 
 ## 富文本 / 图片 / 画廊（前端组件）
 - TipTap 编辑器：源 `wwwroot/admin/src/editor.js` → esbuild 打包 `wwwroot/admin/editor.js`；复用 partial `Areas/Admin/Views/Shared/_RichTextEditor.cshtml`（`RichTextEditorModel`）。内容存 HTML。
