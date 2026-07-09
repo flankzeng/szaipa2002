@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Szaipa.Data.Contexts.Szaipa;
@@ -10,8 +11,9 @@ using Szaipa.Web.Services.Admin;
 namespace Szaipa.Web.Areas.Staff.Controllers;
 
 /// <summary>
-/// Exhibition (Publication) CRUD plus the numbered-gallery image manager. New exhibitions created here render
-/// automatically at the public <c>/Home/Publication/{id}</c> (no more hand-coded slug views).
+/// Exhibition (Publication) CRUD plus the numbered-gallery image manager and the optional works-catalog
+/// (参展作品目录) manager. New exhibitions created here render automatically at the public
+/// <c>/Home/Publication/{id}</c> (no more hand-coded slug views).
 /// </summary>
 [Area("Staff")]
 [Authorize(Policy = AdminAuthorization.StaffPolicy)]
@@ -20,13 +22,20 @@ public sealed class PublicationController : Controller
 {
     private const int PageSize = 20;
 
+    private static readonly JsonSerializerOptions WorksJsonOptions = new() { PropertyNameCaseInsensitive = true };
+
     private readonly IPublicationAdminRepository _repository;
     private readonly IExhibitionGalleryStorage _gallery;
+    private readonly IExhibitionWorkAdminRepository _works;
 
-    public PublicationController(IPublicationAdminRepository repository, IExhibitionGalleryStorage gallery)
+    public PublicationController(
+        IPublicationAdminRepository repository,
+        IExhibitionGalleryStorage gallery,
+        IExhibitionWorkAdminRepository works)
     {
         _repository = repository;
         _gallery = gallery;
+        _works = works;
     }
 
     [HttpGet("")]
@@ -49,6 +58,7 @@ public sealed class PublicationController : Controller
 
         var id = await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
         await SyncGalleryAsync(id, model, cancellationToken);
+        await SyncWorksAsync(id, model, cancellationToken);
         TempData["Success"] = "展览已创建，公开页 /Home/Publication/" + id + " 即可访问。";
         return RedirectToAction(nameof(Index));
     }
@@ -82,6 +92,7 @@ public sealed class PublicationController : Controller
         }
 
         await SyncGalleryAsync(id, model, cancellationToken);
+        await SyncWorksAsync(id, model, cancellationToken);
         TempData["Success"] = "展览已更新。";
         return RedirectToAction(nameof(Index));
     }
@@ -127,6 +138,45 @@ public sealed class PublicationController : Controller
 
         var images = _gallery.ListGallery(folder).Select(i => new { name = i.Name, url = i.Url });
         return Json(images);
+    }
+
+    /// <summary>Existing works-catalog rows for an exhibition (used to populate the edit page's works manager).</summary>
+    [HttpGet("Works/{id:int}")]
+    public async Task<IActionResult> Works(int id, CancellationToken cancellationToken)
+    {
+        var works = await _works.GetByPublicationAsync(id, cancellationToken);
+        return Json(works.Select(w => new
+        {
+            id = w.Id,
+            category = w.Category,
+            title = w.Title,
+            artist = w.Artist,
+            size = w.Size,
+            medium = w.Medium,
+            imagePath = w.ImagePath
+        }));
+    }
+
+    private async Task SyncWorksAsync(int id, PublicationFormViewModel model, CancellationToken cancellationToken)
+    {
+        // Null means the works-manager component wasn't touched (e.g. its hidden field wasn't submitted) —
+        // leave whatever catalog already exists alone. An explicit "[]" (all rows removed in the UI) clears it.
+        if (model.WorksJson is null)
+        {
+            return;
+        }
+
+        List<ExhibitionWorkInput>? items;
+        try
+        {
+            items = JsonSerializer.Deserialize<List<ExhibitionWorkInput>>(model.WorksJson, WorksJsonOptions);
+        }
+        catch (JsonException)
+        {
+            items = null;
+        }
+
+        await _works.ReplaceAsync(id, items ?? new List<ExhibitionWorkInput>(), CurrentActor(), cancellationToken);
     }
 
     private async Task SyncGalleryAsync(int id, PublicationFormViewModel model, CancellationToken cancellationToken)

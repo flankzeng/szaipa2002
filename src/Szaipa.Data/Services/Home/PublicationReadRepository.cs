@@ -63,6 +63,40 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
             return null;
         }
 
+        var works = await _context.ExhibitionWork
+            .AsNoTracking()
+            .Where(work => work.PublicationId == id)
+            .OrderBy(work => work.SortOrder)
+            .ThenBy(work => work.Id)
+            .Select(SzaipaHomeProjections.ExhibitionWorkSummary)
+            .ToListAsync(cancellationToken);
+
+        if (works.Count > 0)
+        {
+            detail = new PublicationDetailModel
+            {
+                Id = detail.Id,
+                TitleCn = detail.TitleCn,
+                TitleEn = detail.TitleEn,
+                StartDate = detail.StartDate,
+                EndDate = detail.EndDate,
+                FolderName = detail.FolderName,
+                MaxImg = detail.MaxImg,
+                CoverPath = detail.CoverPath,
+                LogoPath = detail.LogoPath,
+                MaxImagePath = detail.MaxImagePath,
+                Location = detail.Location,
+                Organizer = detail.Organizer,
+                Host = detail.Host,
+                CoHost = detail.CoHost,
+                EditRecord = detail.EditRecord,
+                Type = detail.Type,
+                Preface = detail.Preface,
+                Signature = detail.Signature,
+                Works = works
+            };
+        }
+
         IQueryable<Publication> relatedQuery = _context.Publication
             .AsNoTracking()
             .OrderByDescending(publication => publication.Id);

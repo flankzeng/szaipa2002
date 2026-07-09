@@ -24,6 +24,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<Publication> Publication => Set<Publication>();
 
+    public DbSet<ExhibitionWork> ExhibitionWork => Set<ExhibitionWork>();
+
     public DbSet<Artist> Artist => Set<Artist>();
 
     public DbSet<Works> Works => Set<Works>();
@@ -49,6 +51,13 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.ToTable("Publication");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Type).HasDefaultValue(0);
+        });
+
+        modelBuilder.Entity<ExhibitionWork>(entity =>
+        {
+            entity.ToTable("ExhibitionWork");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SortOrder).HasDefaultValue(0);
         });
 
         modelBuilder.Entity<Artist>(entity =>

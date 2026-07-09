@@ -56,4 +56,11 @@ public sealed class PublicationFormViewModel
 
     /// <summary>Comma-separated ordered gallery image file names submitted by the gallery JS component.</summary>
     public string? GalleryOrder { get; set; }
+
+    /// <summary>
+    /// JSON-encoded ordered array of works-catalog rows ({category,title,artist,size,medium,imagePath})
+    /// submitted by the works-manager JS component. Null when the component wasn't touched (leaves the
+    /// existing catalog, if any, untouched); an explicit "[]" clears it.
+    /// </summary>
+    public string? WorksJson { get; set; }
 }

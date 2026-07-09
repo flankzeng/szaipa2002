@@ -41,6 +41,43 @@
     </section>
 }
 
+@if (Model.Works.Count > 0)
+{
+    <section class="exh-works">
+        <h2 class="exh-section-h">参展作品目录 <span style="font-family:'Noto Sans SC',sans-serif;font-weight:300;">| WORKS</span></h2>
+        <div class="exh-works__grid">
+            @foreach (var work in Model.Works)
+            {
+                <div class="exh-works__item">
+                    @if (!string.IsNullOrWhiteSpace(work.ImagePath))
+                    {
+                        <div class="exh-works__img">
+                            <img src="@work.ImagePath" alt="@work.Title" loading="lazy" />
+                        </div>
+                    }
+                    <div class="exh-works__meta">
+                        @if (!string.IsNullOrWhiteSpace(work.Category))
+                        {
+                            <span class="exh-works__cat">@work.Category</span>
+                        }
+                        <div class="exh-works__title">@work.Title</div>
+                        @if (!string.IsNullOrWhiteSpace(work.Artist))
+                        {
+                            <div class="exh-works__artist">@work.Artist</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(work.Size) || !string.IsNullOrWhiteSpace(work.Medium))
+                        {
+                            <div class="exh-works__spec">
+                                @string.Join(" · ", new[] { work.Size, work.Medium }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
 <section class="col-xs20 col-sm20 col-md20 col-lg20">
     <h2 class="exh-section-h">现场照片 <span style="font-family:'Noto Sans SC',sans-serif;font-weight:300;">| GALLERY</span></h2>
     <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>

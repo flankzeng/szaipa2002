@@ -88,3 +88,20 @@
         <p class="mt-2 text-xs text-muted">先填写「图片文件夹」再上传；图片会按顺序存为 10001.jpg、10002.jpg…，公开页自动读取。</p>
     </div>
 </div>
+
+<div class="mt-6">
+    <label class="admin-label">参展作品目录（可选，仅「重要」类型公开页展示；↑↓ 排序）</label>
+    <div data-works
+         data-upload-url="/Staff/Upload/Image"
+         data-list-url="/Staff/Publication/Works"
+         data-folder-input="[name='FolderName']"
+         data-publication-id="@Model.Id">
+        <input type="hidden" asp-for="WorksJson" />
+        <div class="mb-3 flex items-center gap-3">
+            <button type="button" data-works-add class="admin-btn-ghost">＋ 添加作品</button>
+            <span data-works-status class="text-xs text-muted"></span>
+        </div>
+        <div class="works-list" data-works-list></div>
+        <p class="mt-2 text-xs text-muted">每件作品可单独上传图片；分类/标题/艺术家/尺寸/材质可留空。</p>
+    </div>
+</div>

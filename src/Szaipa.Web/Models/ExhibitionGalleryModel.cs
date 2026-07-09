@@ -1,3 +1,5 @@
+using Szaipa.Data.Models.Home;
+
 namespace Szaipa.Web.Models;
 
 /// <summary>
@@ -24,4 +26,7 @@ public sealed class ExhibitionGalleryModel
 
     /// <summary>序 signature line (重要 skin only).</summary>
     public string? Signature { get; init; }
+
+    /// <summary>Optional 参展作品目录 rows (重要 skin only), already ordered. Empty when none configured.</summary>
+    public IReadOnlyList<ExhibitionWorkModel> Works { get; init; } = Array.Empty<ExhibitionWorkModel>();
 }

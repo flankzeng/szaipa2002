@@ -42,4 +42,7 @@ public sealed class PublicationDetailModel
     public string Preface { get; init; } = string.Empty;
 
     public string Signature { get; init; } = string.Empty;
+
+    /// <summary>Optional 参展作品目录 rows (重要 skin only), ordered by SortOrder. Empty when none configured.</summary>
+    public IReadOnlyList<ExhibitionWorkModel> Works { get; init; } = Array.Empty<ExhibitionWorkModel>();
 }

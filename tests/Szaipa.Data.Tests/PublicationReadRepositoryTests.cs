@@ -80,6 +80,35 @@ public sealed class PublicationReadRepositoryTests
     }
 
     [Fact]
+    public async Task GetPublicationDetailSnapshotAsync_returns_works_ordered_by_sort_order()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        InsertWork(fixture.Context, id: 1, publicationId: 2, sortOrder: 1, title: "作品B");
+        InsertWork(fixture.Context, id: 2, publicationId: 2, sortOrder: 0, title: "作品A");
+        InsertWork(fixture.Context, id: 3, publicationId: 3, sortOrder: 0, title: "属于其它展览");
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        var snapshot = await repository.GetPublicationDetailSnapshotAsync(2, relatedCount: 0);
+
+        Assert.NotNull(snapshot);
+        Assert.Equal(new[] { "作品A", "作品B" }, snapshot!.Publication.Works.Select(w => w.Title).ToArray());
+    }
+
+    [Fact]
+    public async Task GetPublicationDetailSnapshotAsync_returns_empty_works_when_none_configured()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        var snapshot = await repository.GetPublicationDetailSnapshotAsync(1, relatedCount: 0);
+
+        Assert.NotNull(snapshot);
+        Assert.Empty(snapshot!.Publication.Works);
+    }
+
+    [Fact]
     public async Task GetPublicationDetailSnapshotAsync_returns_null_when_missing()
     {
         await using var fixture = TestDb.Szaipa();
@@ -118,5 +147,20 @@ public sealed class PublicationReadRepositoryTests
             new SqliteParameter("@chengban", chengban),
             new SqliteParameter("@xieban", xieban),
             new SqliteParameter("@logoPath", logoPath));
+    }
+
+    private static void InsertWork(
+        SzaipaLegacyReadContext context,
+        int id,
+        int publicationId,
+        int sortOrder,
+        string title)
+    {
+        context.Database.ExecuteSqlRaw(
+            "INSERT INTO ExhibitionWork (Id, PublicationId, Title, SortOrder) VALUES (@id, @publicationId, @title, @sortOrder)",
+            new SqliteParameter("@id", id),
+            new SqliteParameter("@publicationId", publicationId),
+            new SqliteParameter("@title", title),
+            new SqliteParameter("@sortOrder", sortOrder));
     }
 }

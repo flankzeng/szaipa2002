@@ -140,4 +140,41 @@
     .gallery-cell__bar button {
         @apply rounded px-1.5 py-0.5 transition-colors hover:bg-canvas hover:text-brand;
     }
+
+    /* 参展作品目录管理器：每行 = 缩略图 + 分类/标题/艺术家/尺寸/材质 输入框 + 排序/删除按钮 */
+    .works-list {
+        @apply flex flex-col gap-3;
+    }
+
+    .works-row {
+        @apply flex flex-col gap-3 rounded-lg border border-black/10 bg-white p-3 sm:flex-row sm:items-center;
+    }
+
+    .works-row__img {
+        @apply relative h-20 w-20 flex-none overflow-hidden rounded-md border border-black/10 bg-canvas/60;
+    }
+
+    .works-row__img img {
+        @apply block h-full w-full object-cover;
+    }
+
+    .works-row__placeholder {
+        @apply flex h-full w-full items-center justify-center text-xs text-muted;
+    }
+
+    .works-row__upload {
+        @apply absolute inset-x-0 bottom-0 cursor-pointer bg-black/50 py-0.5 text-center text-[10px] text-white;
+    }
+
+    .works-row__fields {
+        @apply grid flex-1 grid-cols-2 gap-2 sm:grid-cols-5;
+    }
+
+    .works-row__actions {
+        @apply flex flex-none items-center gap-1 text-xs text-muted;
+    }
+
+    .works-row__actions button {
+        @apply rounded px-1.5 py-0.5 transition-colors hover:bg-canvas hover:text-brand;
+    }
 }

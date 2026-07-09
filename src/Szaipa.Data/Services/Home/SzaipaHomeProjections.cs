@@ -77,6 +77,18 @@ internal static class SzaipaHomeProjections
             Signature = publication.Signature ?? string.Empty
         };
 
+    public static readonly Expression<Func<ExhibitionWork, ExhibitionWorkModel>> ExhibitionWorkSummary =
+        work => new ExhibitionWorkModel
+        {
+            Id = work.Id,
+            Category = work.Category ?? string.Empty,
+            Title = work.Title ?? string.Empty,
+            Artist = work.Artist ?? string.Empty,
+            Size = work.Size ?? string.Empty,
+            Medium = work.Medium ?? string.Empty,
+            ImagePath = work.ImagePath ?? string.Empty
+        };
+
     public static readonly Expression<Func<Artist, ArtistSummaryModel>> ArtistSummary =
         artist => new ArtistSummaryModel
         {

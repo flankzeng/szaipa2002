@@ -95,6 +95,64 @@
     margin: 7vh 0 3vh;
 }
 
+/* 参展作品目录（可选区块）：图 + 分类/标题/艺术家/尺寸材质 的卡片网格，风格与「现场照片」标题一致 */
+.exh-works {
+    max-width: 1200px;
+    margin: 0 auto 2vh;
+    padding: 0 6vw;
+}
+
+.exh-works__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2.2rem 1.6rem;
+}
+
+.exh-works__img {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #f2f2f2;
+}
+
+.exh-works__img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.exh-works__meta {
+    margin-top: .7rem;
+}
+
+.exh-works__cat {
+    display: inline-block;
+    margin-bottom: .3rem;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    color: #bf272d;
+}
+
+.exh-works__title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    color: #222;
+    line-height: 1.5;
+}
+
+.exh-works__artist {
+    margin-top: .15rem;
+    font-size: .88rem;
+    color: #555;
+}
+
+.exh-works__spec {
+    margin-top: .3rem;
+    font-size: .8rem;
+    color: #939393;
+}
+
 @media only screen and (max-width: 991px) {
     .exh-banner {
         height: 52vh;
@@ -103,5 +161,10 @@
 
     .exh-preface {
         margin: 6vh auto 4vh;
+    }
+
+    .exh-works__grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.6rem 1rem;
     }
 }
