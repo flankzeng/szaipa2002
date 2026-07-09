@@ -15,11 +15,12 @@
 - **旧后台 bug**：news-add 丢正文 / newsImg 误删 已在 `szaipa2022` 源码打补丁。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
-1. **展览「参展作品目录」**：新增 `ExhibitionWork` 实体 + works 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序）—— 中等偏新，重要型可选增强。
-2. **slug 页退役**：把 ~16 个 `Views/Publication/*.cshtml` 迁成 `Publication` 行后删硬编码视图、首页改链 —— 机械。
-3. **Phase 6 加固**：与 legacy 比对、anti-forgery/授权审、补单测。
+1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。
+2. ~~**slug 页退役**~~ **2026-07-09 完成**：14 个简单 slug 页迁成 `Publication` 数据行（预留 ID 92001-92015），对应 action 改 301 重定向、硬编码视图已删、首页/NewArt 改链。chunyu3/tonggou2/tonggou2024（3 个特大自定义页）+ zengfeng（翻页书迷你站，非画廊结构）保留原样未迁移。**注意**：9 个已迁移展览的磁盘图片目录编号不连续/不规范，画廊会 404，需用户重新编号（清单见 `docs/updates/2026-07-09-publication-slug-migration.md`）；且需先执行 `docs/sql/2026-07-09-publication-slug-migration.sql`（核对生产库 92001-92015 未被占用后再跑）。
+3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. **可选增强**：独立的全量操作记录页（分页查看历史，仪表盘现只显示近 7 天 feed）。
 5. **NewIndex 进一步优化**（用户说后面单独聊，用新 session）。
+6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
 
 ## 待用户本地操作
 - **本地只读登录检查（推荐，不写库）**：`appsettings.Local.json` 配 `AdminWrite:{EnableWrites:true, UseReadOnlyConnectionForDebug:true}`（Tongou 同），不设 `ConnectionStrings:SzaipaAdmin`——admin 上下文复用只读 `szaipa_ro` 连接，能登录/看仪表盘/浏览，写操作被 SQL 层挡掉。前提：`LegacyData:Szaipa` 的只读凭据当前有效（2026-06-24 实测遇到 `18456` 认证失败，需核对密码）。详见 `docs/updates/2026-06-24-admin-readonly-debug-login.md`。
