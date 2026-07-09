@@ -71,6 +71,15 @@ public sealed class TongouAdminRepositoryTests
     }
 
     [Fact]
+    public async Task Atrist_update_returns_false_when_missing()
+    {
+        await using var fixture = CreateFixture();
+        var repo = new TongouAtristAdminRepository(fixture.TongouContext, fixture.SzaipaContext, new OperationRecorder());
+
+        Assert.False(await repo.UpdateAsync(new TongouAtrist { id = 999, Name = "x" }, Actor, CancellationToken.None));
+    }
+
+    [Fact]
     public async Task Works_create_resolves_artist_name_and_list_joins_artist()
     {
         await using var fixture = CreateFixture();
@@ -112,6 +121,15 @@ public sealed class TongouAdminRepositoryTests
 
         Assert.True(await repo.DeleteAsync(id, Actor, CancellationToken.None));
         Assert.Empty(await fixture.TongouContext.TongouWorks.AsNoTracking().ToListAsync());
+    }
+
+    [Fact]
+    public async Task Works_update_returns_false_when_missing()
+    {
+        await using var fixture = CreateFixture();
+        var repo = new TongouWorksAdminRepository(fixture.TongouContext, fixture.SzaipaContext, new OperationRecorder());
+
+        Assert.False(await repo.UpdateAsync(new TongouWorks { id = 999, Title = "x" }, Actor, CancellationToken.None));
     }
 
     private static TongouFixture CreateFixture()

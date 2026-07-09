@@ -58,6 +58,30 @@ public sealed class ArtNewsAdminRepositoryTests
     }
 
     [Fact]
+    public async Task UpdateAsync_returns_false_when_missing()
+    {
+        await using var fixture = CreateContext();
+        var repository = new ArtNewsAdminRepository(fixture.Context, new OperationRecorder());
+
+        Assert.False(await repository.UpdateAsync(
+            new ArtNews { Id = 999, Title = "x" }, Actor, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task DeleteAsync_removes_row_and_returns_false_when_missing()
+    {
+        await using var fixture = CreateContext();
+        SeedArtist(fixture.Context, 1, "甲");
+        var repository = new ArtNewsAdminRepository(fixture.Context, new OperationRecorder());
+        var id = await repository.CreateAsync(
+            new ArtNews { ArtistId = 1, Title = "待删" }, Actor, CancellationToken.None);
+
+        Assert.True(await repository.DeleteAsync(id, Actor, CancellationToken.None));
+        Assert.False(await repository.DeleteAsync(id, Actor, CancellationToken.None));
+        Assert.Empty(await fixture.Context.ArtNews.AsNoTracking().ToListAsync());
+    }
+
+    [Fact]
     public async Task GetPagedAsync_joins_artist_name_and_orders_desc()
     {
         await using var fixture = CreateContext();
