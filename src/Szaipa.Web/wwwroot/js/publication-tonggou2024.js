@@ -12,7 +12,7 @@
             } else {
                 toTopButton.style.display = 'block';
             }
-        });
+        }, { passive: true });
 
         toTopButton.addEventListener('click', function () {
             window.scrollTo({
@@ -150,12 +150,13 @@
             },
         });
 
-        if (window.$webfont) {
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!window.$webfont) return;
             $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
             $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
             $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
             $webfont.draw();
-        }
+        }, { once: true });
 
         $(function () {
             var lastScrollPosition = $(window).scrollTop();

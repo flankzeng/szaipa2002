@@ -18,6 +18,7 @@
 - **前台清理 Phase 2（2026-07-10）**：本地 legacy 归档分支已建；zengfeng 退役并移除 140MB 专属资源；关于我们、真实会员列表、数据驱动展会列表上线；零引用模板库清理后 Release publish 约 35MB→24MB；三个大自定义展览页移除约 2.9MB/页无效依赖并补齐图片懒加载。详见 `docs/updates/2026-07-10-frontend-cleanup-phase2.md`。
 - **前台清理 Phase 3（2026-07-11）**：三个大自定义展览页的内联 CSS/JS 已外提；三页共享特殊页 CSS，chunyu3/tonggou2 共享行为脚本，页面差异由 CSS 变量/data 配置保留；远程原字库增加失败保护但未替换字形。详见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
 - **前台清理 Phase 4（2026-07-11）**：新增可复跑 Legacy Content 白名单审计；修复首页唯一真实缺图；当前分支归档旧 Content、两套旧 NuGet packages 和零引用静态副本，累计修剪约 501MB。运行资源根仍有约 95.9MB 候选，未取得生产日志前不删除。详见 `docs/updates/2026-07-11-frontend-cleanup-phase4.md`。
+- **前台清理 Phase 5（2026-07-11）**：保留原 Alibaba 普惠体，将六类公共页面的有字体第三方脚本改为延迟加载，字体初始化等待 DOM 就绪，滚动监听改为 passive。详见 `docs/updates/2026-07-11-frontend-cleanup-phase5.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
 1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。

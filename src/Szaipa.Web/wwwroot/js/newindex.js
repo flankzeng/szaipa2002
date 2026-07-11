@@ -45,7 +45,7 @@
         if (window.pageYOffset === 0) {
             toTopButton.style.display = 'none';
         }
-    });
+    }, { passive: true });
 
     toTopButton.addEventListener('click', function () {
         window.scrollTo(0, 0);
