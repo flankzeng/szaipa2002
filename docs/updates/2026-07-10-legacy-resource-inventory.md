@@ -32,7 +32,7 @@
 
 ### C：特殊页面处理结果
 
-- `zengfeng` 翻页书已确认无入口且现代运行资源根缺失，现已退役为 410；其 646 个文件、约 140MB 已从当前分支移除，并由本地 `legacy/archive-before-frontend-prune-20260710` 保存基线。
+- `zengfeng` 翻页书已确认无入口且现代运行资源根缺失，现已退役为 410；其 646 个文件、约 140MB 已从当前分支移除，并由远端 `legacy/archive-before-frontend-prune-20260710` 保存基线。
 - `publication/chunyu` 约 73MB 不属于 zengfeng，当前未删除。
 
 > 2026-07-11 更新：`publication/chunyu` 已确认现代站零引用并由 legacy 分支保存，现已从当前分支移除；同时归档旧 `TempFile` 约 31MB 和 `testfile` 约 1.9MB。外置运行资源根未执行这些删除。

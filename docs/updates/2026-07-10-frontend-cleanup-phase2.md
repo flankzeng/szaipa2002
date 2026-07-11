@@ -2,10 +2,10 @@
 
 ## 归档与 zengfeng 退役
 
-- 在当前基线提交 `d548edf` 建立本地分支 `legacy/archive-before-frontend-prune-20260710`，不切换工作树，因此不会混入用户尚未提交的旧 MVC5 修改。
+- 在基线提交 `d548edf` 建立分支 `legacy/archive-before-frontend-prune-20260710`，不切换工作树，因此不会混入用户尚未提交的旧 MVC5 修改。
 - `szaipa2022/Content/publication/zengfeng` 共 646 个 tracked 文件、约 140MB，已从当前分支工作树移除；同级 `chunyu` 约 73MB 保留。
 - 现代与旧 MVC5 `/Publication/zengfeng` 均返回 410；现代端响应不渲染视图、不访问数据库、不加载 legacy 资源。
-- 归档分支目前仅在本地。远端推送因需要额外的明确外发授权而未执行。
+- 归档分支已于 2026-07-11 经用户明确授权推送到远端。
 
 Git branch 只让当前工作树/当前分支不再携带文件；旧对象仍在 `.git` 历史中，不会立刻缩小本地仓库。正式 `dotnet publish` 原本也不会包含整个 `szaipa2022` 旧项目或外置 `/Content`。
 
