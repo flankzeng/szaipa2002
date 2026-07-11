@@ -19,3 +19,47 @@
     src: url("../fonts/NotoSansSC-Medium.core.woff2") format("woff2");
     font-display: swap;
 }
+
+/*
+ * 阿里巴巴普惠体 2.0 官方字形的站点核心子集。
+ * L/R/M 对应旧有字体服务中的 JhengLight/JhengRegular/JhengBold；
+ * 未包含的动态字符逐字回退到 Noto Sans SC / 系统中文字体。
+ */
+@font-face {
+    font-family: "Alibaba PuHuiTi Local";
+    src: url("../fonts/AlibabaPuHuiTi-Light.core.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Alibaba PuHuiTi Local";
+    src: url("../fonts/AlibabaPuHuiTi-Regular.core.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Alibaba PuHuiTi Local";
+    src: url("../fonts/AlibabaPuHuiTi-Medium.core.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+}
+
+.JhengLight {
+    font-family: "Alibaba PuHuiTi Local", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    font-weight: 300;
+}
+
+.JhengRegular {
+    font-family: "Alibaba PuHuiTi Local", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    font-weight: 400;
+}
+
+.JhengBold {
+    font-family: "Alibaba PuHuiTi Local", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    font-weight: 500;
+}

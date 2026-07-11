@@ -20,6 +20,8 @@
 - **前台清理 Phase 4（2026-07-11）**：新增可复跑 Legacy Content 白名单审计；修复首页唯一真实缺图；当前分支归档旧 Content、两套旧 NuGet packages 和零引用静态副本，累计修剪约 501MB。运行资源根仍有约 95.9MB 候选，未取得生产日志前不删除。详见 `docs/updates/2026-07-11-frontend-cleanup-phase4.md`。
 - **前台清理 Phase 5（2026-07-11）**：保留原 Alibaba 普惠体，将六类公共页面的有字体第三方脚本改为延迟加载，字体初始化等待 DOM 就绪，滚动监听改为 passive。详见 `docs/updates/2026-07-11-frontend-cleanup-phase5.md`。
 - **前台清理 Phase 6（2026-07-11）**：只读扫描旧发布版 `web24.05`；确认实际 Content 约 1.2GB，现代源码候选 95.9MB、旧版源码候选 87.8MB，旧版仍在线时不得删除差出的约 8.1MB。官方普惠体源已定位；旧 Web.config 明文凭据需轮换。详见 `docs/updates/2026-07-11-frontend-cleanup-phase6.md`。
+- **本地只读库状态（2026-07-11）**：Szaipa/Tongou 只读连接均可用，真实首页读取成功；`AllowLiveDatabase=false`。但当前库尚无 Publication 92001–92015 迁移行，首页硬编码展会暂不能退役。
+- **Alibaba 普惠体本地化（2026-07-11）**：官方 2.0 Light/Regular/Medium 已校验并生成约 170KB/档的本地核心子集，保留原 L/R/M 视觉层级；公共页已移除有字体第三方脚本。详见 `docs/updates/2026-07-11-alibaba-font-localization.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
 1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。

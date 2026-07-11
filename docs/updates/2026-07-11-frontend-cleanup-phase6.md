@@ -29,6 +29,13 @@
 - 已存在只读脚本 `.review/traffic-preview-audit/Analyze-IIS-Traffic.ps1`，默认从服务器 `C:\inetpub\logs\LogFiles\W3SVC*` 读取日志。
 - 数据库动态资源路径尚未导出，因此 `newsImg`、`images`、`ArtImg`、`Tongou` 继续整类保护。
 
+## 本地只读数据库验证
+
+- Local 环境已确认 Szaipa、Tongou 均以 `ReadOnly` 方式启用，`AllowLiveDatabase=false`。
+- `/healthz` 返回 200，真实 `/Home/newIndex` 从数据库读取新闻和 Publication 后返回 200。
+- 首页实测约 0.79 秒完成服务端响应；数据库查询成功且没有写操作。
+- 当前数据库尚无 `Publication` 92001–92015 的迁移行：渲染页面中这些链接的数量与源码硬编码数量完全一致，动态增量为 0；因此首页硬编码展会暂不能删除。
+
 ## 字体
 
 - 旧发布版本地只有得意黑、DIN、图标字体等，没有 Alibaba 普惠体原文件。
