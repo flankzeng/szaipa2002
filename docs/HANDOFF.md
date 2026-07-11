@@ -23,6 +23,7 @@
 - **本地只读库状态（2026-07-11）**：Szaipa/Tongou 只读连接均可用，真实首页读取成功；`AllowLiveDatabase=false`。但当前库尚无 Publication 92001–92015 迁移行，首页硬编码展会暂不能退役。
 - **数据库资源路径审计（2026-07-12）**：只读导出得到 19 条明确 `/Content/` 路径；加入审计后候选仍为 95.9MB，说明候选目录无数据库精确引用。物理删除仍等待 IIS 日志。
 - **Alibaba 普惠体本地化（2026-07-11）**：官方 2.0 Light/Regular/Medium 已校验并生成约 170KB/档的本地核心子集，保留原 L/R/M 视觉层级；公共页已移除有字体第三方脚本。详见 `docs/updates/2026-07-11-alibaba-font-localization.md`。
+- **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
 1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。
