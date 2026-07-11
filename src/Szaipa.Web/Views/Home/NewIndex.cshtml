@@ -924,7 +924,7 @@ Layout = "~/Views/Shared/_newLayout.cshtml";
                                 <div class="exhibitionSlider">
 
                                     @for (var i = 10001; i <= 10006; i++) { <div class="exhibitionSlide">
-                                        <img loading="lazy" decoding="async" src="@string.Format(" /Content/images/{0}/{1}.jpg", ex.FolderName, i)" />
+                                        <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" alt="" />
                                 </div>
 
                                 }
