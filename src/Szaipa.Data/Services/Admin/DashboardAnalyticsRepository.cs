@@ -144,6 +144,44 @@ public sealed class DashboardAnalyticsRepository : IDashboardAnalyticsRepository
             .ToList();
     }
 
+    public async Task<OperationRecordPage> GetOperationHistoryAsync(
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken)
+    {
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 5, 50);
+
+        var query = _db.Diary.AsNoTracking()
+            .Where(d => d.Date != null && d.OperationRecord != null && d.OperationRecord != "");
+        var totalDays = await query.CountAsync(cancellationToken);
+        var totalPages = totalDays == 0 ? 0 : (int)Math.Ceiling((double)totalDays / pageSize);
+        if (totalPages > 0)
+        {
+            page = Math.Min(page, totalPages);
+        }
+
+        var rows = await query
+            .OrderByDescending(d => d.Date)
+            .ThenByDescending(d => d.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(d => new { d.Date, d.OperationRecord })
+            .ToListAsync(cancellationToken);
+
+        return new OperationRecordPage
+        {
+            Items = rows.Select(r => new OperationRecordDay
+            {
+                Date = r.Date!.Value.ToString("yyyy年MM月dd日"),
+                Records = SplitRecords(r.OperationRecord)
+            }).ToList(),
+            Page = page,
+            PageSize = pageSize,
+            TotalDays = totalDays
+        };
+    }
+
     private static List<string> SplitRecords(string? operationRecord) =>
         string.IsNullOrEmpty(operationRecord)
             ? new List<string>()

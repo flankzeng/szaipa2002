@@ -22,4 +22,7 @@ public interface IDashboardAnalyticsRepository
 
     /// <summary>Operation-record feed for the last <paramref name="days"/> days, newest day first.</summary>
     Task<IReadOnlyList<OperationRecordDay>> GetRecentOperationsAsync(int days, CancellationToken cancellationToken);
+
+    /// <summary>Full operation-record history, paged by diary day and ordered newest first.</summary>
+    Task<OperationRecordPage> GetOperationHistoryAsync(int page, int pageSize, CancellationToken cancellationToken);
 }

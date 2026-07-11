@@ -1,0 +1,59 @@
+@model OperationHistoryViewModel
+@{
+    ViewData["Title"] = "操作记录";
+    var history = Model.History;
+}
+
+<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">操作记录</h1>
+        <p class="mt-1 text-sm text-muted">按日期查看后台完整操作历史。</p>
+    </div>
+    <a asp-controller="Dashboard" asp-action="Index" class="admin-btn-ghost">返回后台综合</a>
+</div>
+
+@if (!Model.DataAvailable)
+{
+    <div class="rounded-2xl border border-brand/20 bg-brand/5 px-5 py-4 text-sm text-brand">
+        @Model.UnavailableReason
+    </div>
+}
+else if (history.Items.Count == 0)
+{
+    <section class="admin-card">
+        <p class="text-sm text-muted">暂无操作记录。</p>
+    </section>
+}
+else
+{
+    <section class="admin-card">
+        <div class="space-y-6">
+            @foreach (var day in history.Items)
+            {
+                <article>
+                    <p class="mb-2 text-xs font-medium uppercase tracking-wide text-muted">@day.Date</p>
+                    <ul class="space-y-1.5 border-l-2 border-brand/20 pl-4">
+                        @foreach (var record in day.Records)
+                        {
+                            <li class="break-words text-sm leading-6 text-ink/80">@record</li>
+                        }
+                    </ul>
+                </article>
+            }
+        </div>
+    </section>
+
+    <nav class="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm" aria-label="操作记录分页">
+        <p class="text-muted">共 @history.TotalDays 天 · 第 @history.Page / @history.TotalPages 页</p>
+        <div class="flex items-center gap-2">
+            @if (history.Page > 1)
+            {
+                <a asp-action="Index" asp-route-page="@(history.Page - 1)" class="admin-btn-ghost">上一页</a>
+            }
+            @if (history.Page < history.TotalPages)
+            {
+                <a asp-action="Index" asp-route-page="@(history.Page + 1)" class="admin-btn-ghost">下一页</a>
+            }
+        </div>
+    </nav>
+}

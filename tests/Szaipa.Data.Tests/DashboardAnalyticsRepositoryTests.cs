@@ -111,6 +111,51 @@ public sealed class DashboardAnalyticsRepositoryTests
     }
 
     [Fact]
+    public async Task GetOperationHistoryAsync_pages_days_newest_first()
+    {
+        await using var fixture = CreateContext();
+        var today = DateTime.Today;
+        for (var i = 0; i < 12; i++)
+        {
+            fixture.Context.Diary.Add(new Diary
+            {
+                Date = today.AddDays(-i),
+                OperationRecord = $"操作{i}A/操作{i}B/"
+            });
+        }
+        fixture.Context.Diary.Add(new Diary { Date = today.AddDays(-20), OperationRecord = "" });
+        await fixture.Context.SaveChangesAsync();
+        var repo = new DashboardAnalyticsRepository(fixture.Context);
+
+        var result = await repo.GetOperationHistoryAsync(2, 5, CancellationToken.None);
+
+        Assert.Equal(2, result.Page);
+        Assert.Equal(5, result.PageSize);
+        Assert.Equal(12, result.TotalDays);
+        Assert.Equal(3, result.TotalPages);
+        Assert.Equal(today.AddDays(-5).ToString("yyyy年MM月dd日"), result.Items[0].Date);
+        Assert.Equal(new[] { "操作5A", "操作5B" }, result.Items[0].Records);
+    }
+
+    [Fact]
+    public async Task GetOperationHistoryAsync_clamps_page_to_last_page()
+    {
+        await using var fixture = CreateContext();
+        fixture.Context.Diary.AddRange(
+            new Diary { Date = DateTime.Today, OperationRecord = "今天/" },
+            new Diary { Date = DateTime.Today.AddDays(-1), OperationRecord = "昨天/" });
+        await fixture.Context.SaveChangesAsync();
+        var repo = new DashboardAnalyticsRepository(fixture.Context);
+
+        var result = await repo.GetOperationHistoryAsync(99, 5, CancellationToken.None);
+
+        Assert.Equal(1, result.Page);
+        Assert.Equal(2, result.TotalDays);
+        Assert.Equal(1, result.TotalPages);
+        Assert.Equal(2, result.Items.Count);
+    }
+
+    [Fact]
     public async Task GetKpiAsync_aggregates_today_month_content_and_recent_ops()
     {
         await using var fixture = CreateContext();

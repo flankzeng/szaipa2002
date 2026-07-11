@@ -62,7 +62,11 @@
 
 @* 操作记录 *@
 <section class="admin-card">
-    <h2 class="admin-card__title mb-4">近期操作记录</h2>
+    <div class="mb-4 flex items-center justify-between gap-4">
+        <h2 class="admin-card__title">近期操作记录</h2>
+        <a asp-area="Staff" asp-controller="Operations" asp-action="Index"
+           class="text-sm font-medium text-brand hover:underline">查看全部</a>
+    </div>
     @if (Model.Operations.Count == 0)
     {
         <p class="text-sm text-muted">暂无操作记录。</p>

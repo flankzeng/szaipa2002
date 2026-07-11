@@ -35,6 +35,8 @@
                     <nav class="hidden items-center gap-6 md:flex">
                         <a asp-area="Staff" asp-controller="Dashboard" asp-action="Index"
                            class="border-b-2 px-1 py-1 text-sm font-medium transition-colors @NavClass("Dashboard")">后台综合</a>
+                        <a asp-area="Staff" asp-controller="Operations" asp-action="Index"
+                           class="border-b-2 px-1 py-1 text-sm font-medium transition-colors @NavClass("Operations")">操作记录</a>
                         <div class="group relative">
                             <button type="button"
                                     class="flex items-center gap-1 border-b-2 px-1 py-1 text-sm font-medium transition-colors @(contentActive ? "text-brand border-brand" : "text-ink/70 border-transparent group-hover:text-brand")">

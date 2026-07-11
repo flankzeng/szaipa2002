@@ -38,3 +38,17 @@ public sealed class OperationRecordDay
 
     public IReadOnlyList<string> Records { get; init; } = Array.Empty<string>();
 }
+
+/// <summary>A page of operation-record days, newest first.</summary>
+public sealed class OperationRecordPage
+{
+    public IReadOnlyList<OperationRecordDay> Items { get; init; } = Array.Empty<OperationRecordDay>();
+
+    public int Page { get; init; }
+
+    public int PageSize { get; init; }
+
+    public int TotalDays { get; init; }
+
+    public int TotalPages => TotalDays == 0 ? 0 : (int)Math.Ceiling((double)TotalDays / PageSize);
+}
