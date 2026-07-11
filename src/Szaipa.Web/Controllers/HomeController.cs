@@ -215,11 +215,22 @@ public class HomeController : Controller
         return View("NewNewsReadSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeNewsDetailDefinition(id)));
     }
 
+    [HttpGet("vip")]
     [HttpGet("newvip")]
-    public IActionResult NewVip()
+    public async Task<IActionResult> NewVip(CancellationToken cancellationToken)
     {
-        return View(PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeArtistListDefinition()));
+        if (SzaipaReadModelsActive())
+        {
+            var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
+            var artists = await artistRepository.GetArtistsAsync(newestFirst: true, cancellationToken);
+            return View("NewVip", artists);
+        }
+
+        return View("NewVipSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeArtistListDefinition()));
     }
+
+    [HttpGet("newabout")]
+    public IActionResult NewAbout() => View("NewAbout");
 
     [HttpGet("newArt/{id:int}")]
     public async Task<IActionResult> NewArt(int id, CancellationToken cancellationToken)
@@ -241,9 +252,16 @@ public class HomeController : Controller
     }
 
     [HttpGet("PublicationList")]
-    public IActionResult PublicationList()
+    public async Task<IActionResult> PublicationList(CancellationToken cancellationToken)
     {
-        return View(PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationListDefinition()));
+        if (SzaipaReadModelsActive())
+        {
+            var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
+            var publications = await publicationRepository.GetLatestPublicationsAsync(0, cancellationToken);
+            return View("PublicationList", publications);
+        }
+
+        return View("PublicationListSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationListDefinition()));
     }
 
     [HttpGet("Publication/{id:int}")]
@@ -265,12 +283,6 @@ public class HomeController : Controller
         }
 
         return View("PublicationSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationDetailDefinition(id)));
-    }
-
-    [HttpGet("Privacy")]
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,8 +1,10 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
+using System.IO.Compression;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
@@ -107,6 +109,21 @@ var hostBuilder = new HostBuilder()
                 });
 
                 services.AddControllersWithViews();
+                services.AddResponseCompression(options =>
+                {
+                    options.EnableForHttps = true;
+                    options.Providers.Add<BrotliCompressionProvider>();
+                    options.Providers.Add<GzipCompressionProvider>();
+                    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+                    {
+                        "image/svg+xml",
+                        "application/manifest+json"
+                    });
+                });
+                services.Configure<BrotliCompressionProviderOptions>(options =>
+                    options.Level = CompressionLevel.Fastest);
+                services.Configure<GzipCompressionProviderOptions>(options =>
+                    options.Level = CompressionLevel.Fastest);
             })
             .Configure(app =>
             {
@@ -154,12 +171,20 @@ var hostBuilder = new HostBuilder()
                     app.UseHttpsRedirection();
                 }
 
+                app.UseResponseCompression();
+
                 var webRoot = Path.Combine(contentRoot, "wwwroot");
                 if (Directory.Exists(webRoot))
                 {
                     app.UseStaticFiles(new StaticFileOptions
                     {
-                        FileProvider = new PhysicalFileProvider(webRoot)
+                        FileProvider = new PhysicalFileProvider(webRoot),
+                        OnPrepareResponse = context =>
+                        {
+                            context.Context.Response.Headers.CacheControl = environment.IsDevelopment()
+                                ? "no-cache"
+                                : "public,max-age=604800";
+                        }
                     });
                 }
 
@@ -175,7 +200,13 @@ var hostBuilder = new HostBuilder()
                     app.UseStaticFiles(new StaticFileOptions
                     {
                         FileProvider = new PhysicalFileProvider(legacyAssetsRoot),
-                        RequestPath = "/Content"
+                        RequestPath = "/Content",
+                        OnPrepareResponse = context =>
+                        {
+                            context.Context.Response.Headers.CacheControl = environment.IsDevelopment()
+                                ? "no-cache"
+                                : "public,max-age=86400";
+                        }
                     });
                     Console.WriteLine($"Szaipa.Web boot: serving legacy assets from {legacyAssetsRoot} at /Content");
                 }

@@ -49,7 +49,7 @@
         }
 
         .bannerLink a {
-            font-family: 'smile';
+            font-family: 'smile-core', 'smile';
             font-size: var(--navFontsize);
             text-decoration: none;
             color: black;
@@ -377,6 +377,9 @@
         }
 
         #bread {
+            display: flex;
+            align-items: center;
+            gap: 0.65em;
             margin: 3vh 0 5vh 0;
             position: relative;
         }
@@ -392,10 +395,8 @@
             color: black;
         }
 
-        .el-breadcrumb__item:last-child .el-breadcrumb__inner,
-        .el-breadcrumb__item:last-child .el-breadcrumb__inner a,
-        .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover,
-        .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+        .article-breadcrumb [aria-current="page"] {
+            color: #606266;
             line-height: 1rem;
         }
 
@@ -522,3 +523,73 @@
             letter-spacing: 0.05em;
             text-decoration: underline;
         }
+
+@media (max-width: 79.9375em) {
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    body > nav {
+        width: 100%;
+        padding: 0;
+    }
+
+    .bannerCon {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 4rem;
+        padding: 0 0.625rem;
+    }
+
+    .bannerCon > a {
+        flex: 0 0 3.375rem;
+    }
+
+    .logo1 {
+        position: static;
+        width: 3rem;
+        height: auto;
+    }
+
+    .bannerCon > div:not(.bannerLink) {
+        display: none;
+    }
+
+    .bannerLink {
+        position: static;
+        flex: 1 1 auto;
+        width: auto;
+        height: auto;
+        padding: 0;
+    }
+
+    .topList {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        float: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .bannerLink li {
+        float: none;
+        margin: 0;
+        padding: 1.25rem 0.1875rem;
+        white-space: nowrap;
+        word-break: keep-all;
+        writing-mode: horizontal-tb;
+    }
+
+    .bannerLink a {
+        font-size: clamp(0.6875rem, 3.4vw, 0.9375rem);
+        line-height: 1.5rem;
+        white-space: nowrap;
+    }
+}

@@ -75,8 +75,9 @@ Browse on the server (or from your Mac if the test port is reachable):
 - `http://<server>:8080/healthz` → confirm `"liveDatabase":false`, `"hasReadWriteLegacySource":false`, and the
   Szaipa/Tongou connection sources show `HasConnectionString=true`.
 - `http://<server>:8080/Home/newIndex`, `/Home/newnews`, `/Home/newnewsread/1124`, `/Home/newArt/1000`,
-  `/Publication/chunyu`, `/Project_Tongou/Atrist/1`, `/Project_Tongou/beini` → all 200, real content, Chinese
-  rendered raw.
+  `/Home/newvip`, `/Home/newabout`, `/Home/PublicationList`, `/Publication/chunyu` → 200，使用真实只读内容。
+- `/Publication/index` → 301 到 `/Home/PublicationList`。
+- `/Publication/zengfeng`、`/Project_Tongou/Atrist/1`、`/Project_Tongou/beini` → 410（已退役且不查询数据库）。
 
 ## 6. Cut over (only after validation)
 

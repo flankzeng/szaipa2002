@@ -11,7 +11,7 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（75 测试）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（94 测试）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
@@ -58,6 +58,14 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 ## 公开站（Views/Home）
 - 布局：`Views/Shared/_newLayout.cshtml`（多数页）、`_Artist.cshtml`（NewArt）。两者都加了可选 `@RenderSectionAsync("Styles"/"Scripts")`——页面级 CSS/JS 用 `@section` 挂。
 - 已把巨量内联 CSS/JS **外提**到 `wwwroot/css/*.css`、`wwwroot/js/*.js`（newindex/newnews/newnewsread/newart + publication-gallery + exhibition-important）。NewArt 用「CSS 变量 + JS 桥接」保留动态值（`@artist.Color1/Path1`）。
+- 前台清理 Phase 1：公共库改按页加载、新闻详情去 Vue/Element Plus、图片懒加载、响应压缩/缓存、同字体子集、手机 viewport/navbar 修复。字体子集通过 `scripts/build-font-subsets.py` 重建，详情见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`。
+- ProjectTongou 公开浏览已退役：`Controllers/ProjectTongouController.cs` 仅保留无数据库访问的 410 兼容端点，视图为 `Views/ProjectTongou/Gone.cshtml`；Tongou 后台/数据层不受影响。
+- Legacy 资源不能按目录直接删除；第一轮 A/B/C/D 分级和两套 Content 差异见 `docs/updates/2026-07-10-legacy-resource-inventory.md`。
+- zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在本地 `legacy/archive-before-frontend-prune-20260710`。
+- 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
+- 特殊展览页共享资源：`wwwroot/css/publication-special.css`；chunyu3/tonggou2 使用 `wwwroot/js/publication-special.js`，tonggou2024 保留 `publication-tonggou2024.js` 的独有滚动行为。详情见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
+- Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
+- 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用本地 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。旧 `Views/Publication/*.cshtml`（slug 硬编码页）待迁数据后退役。
 - 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。
 

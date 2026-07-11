@@ -8,14 +8,12 @@ namespace Szaipa.Web.Controllers;
 // 2026-07-09 slug retirement: 14 of the simple gallery slugs were migrated to data-driven Publication rows
 // (see docs/sql/2026-07-09-publication-slug-migration.sql and docs/updates/2026-07-09-publication-slug-migration.md
 // for the slug -> fixed Id -> FolderName mapping) and now permanently redirect to /Home/Publication/{id} so old
-// links/bookmarks/search results keep working. `zengfeng` is NOT migrated: unlike the other slugs it is not an
-// image-gallery page at all but a self-contained flipbook mini-site (Layout=null, embeds a separate HTML5 app
-// under /Content/publication/zengfeng/) that the Publication/_ExhibitionGallery data model cannot represent, so
-// its action/view are left untouched. `index` (展会动态 listing) and the three large hand-coded pages
-// (`chunyu3`, `tonggou2`, `tonggou2024`) are also left untouched — see PROJECT_MAP.md.
+// links/bookmarks/search results keep working. `zengfeng` was a self-contained 140MB flipbook mini-site with no
+// current public ingress; it was retired in 2026-07 and now returns 410 without loading a view or legacy assets.
+// `index` (展会动态 listing) and the three large hand-coded pages (`chunyu3`, `tonggou2`, `tonggou2024`) remain.
 public class PublicationController : Controller
 {
-    public IActionResult index() => View();          // 展会动态
+    public IActionResult index() => RedirectToActionPermanent(nameof(HomeController.PublicationList), "Home");
 
     public IActionResult tonggouEurope() => RedirectToActionPermanent(nameof(HomeController.Publication), "Home", new { id = 92001 });
 
@@ -23,7 +21,11 @@ public class PublicationController : Controller
 
     public IActionResult chunyu() => RedirectToActionPermanent(nameof(HomeController.Publication), "Home", new { id = 92003 });
 
-    public IActionResult zengfeng() => View();        // custom flipbook mini-site, not data-driven — kept as-is
+    public IActionResult zengfeng()
+    {
+        Response.Headers.CacheControl = "public,max-age=86400";
+        return StatusCode(StatusCodes.Status410Gone);
+    }
 
     public IActionResult zhongyi() => RedirectToActionPermanent(nameof(HomeController.Publication), "Home", new { id = 92005 });
 

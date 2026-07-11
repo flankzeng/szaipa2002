@@ -11,6 +11,8 @@ swiper 双画廊）。这批已随「展览模块数据驱动」（`Publication`
 
 ## 范围调整：`zengfeng` 未迁移
 
+> 2026-07-10 后续：用户确认该翻页书前端退役。现代与旧 MVC 路由现返回 410，约 140MB 专属资源已从当前分支移除并由本地 legacy 归档分支保存。
+
 原计划的 15 个 slug 里，`zengfeng.cshtml` 读取后发现**不是画廊页**——`Layout = null`，
 整页是一个独立的 HTML5 翻页书（flipbook）迷你站，嵌入
 `/Content/publication/zengfeng/mobile/...` 下的一整套 CSS/JS/资源，没有

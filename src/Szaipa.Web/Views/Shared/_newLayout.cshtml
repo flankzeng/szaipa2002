@@ -7,27 +7,20 @@
     <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
     <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=0.4">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" href="/Content/123/favicon.ico" type="image/x-icon">
-    <script src="/Content/Model/jquery-3.6.1.min.js"></script>
-    <script src="/Content/Model/bootstrap.min.js"></script>
-    <script src="/Content/Model/layui.js"></script>
-    <script src="/Content/Model/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="https://cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
     <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
-    <link rel="stylesheet" href="/Content/Model/css/layui.css">
     <link rel="stylesheet" href="/Content/Model/css/Site.css">
+    <link rel="stylesheet" href="/css/font-subsets.css" asp-append-version="true">
     <link rel="stylesheet" href="/Content/Model/css/responsive.css">
-    <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css">
 
     <link rel="preconnect" href="//fonts.googleapis.com">
     <link href='//fonts.loli.net/css?family=Noto+Sans+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
         type='text/css'>
     <link href='//fonts.loli.net/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
         type='text/css'>
-
-    <link rel="stylesheet" href="/Content/Model/css/magnify.css">
 
     <style>
         html {
@@ -63,12 +56,15 @@
 
         .bannerLink a {
             float: left;
-            font-family: 'smile';
+            font-family: 'smile-core', 'smile';
             font-size: var(--navFontsize);
             margin-right: var(--navRight);
             margin-top: var(--navTop);
             text-decoration: none;
             color: black;
+            white-space: nowrap;
+            word-break: keep-all;
+            writing-mode: horizontal-tb;
         }
 
         .topList {
@@ -78,6 +74,11 @@
             list-style: none;
             margin: 0px;
             padding: 0px;
+            flex-wrap: nowrap;
+        }
+
+        .topList li {
+            flex: 0 0 auto;
         }
 
         .lineL {
@@ -351,6 +352,82 @@
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
+
+        @@media (max-width: 79.9375em) {
+            html,
+            body {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                overflow-x: hidden;
+            }
+
+            .bannerCon {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                height: 4rem;
+                padding: 0 0.625rem;
+                margin-bottom: 0 !important;
+            }
+
+            .brandLink {
+                position: relative;
+                flex: 0 0 3.375rem;
+                width: 3.375rem;
+                height: 100%;
+                padding: 0;
+            }
+
+            .logo1 {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 3rem;
+                height: auto;
+                transform: translateY(-50%);
+            }
+
+            .navSpacer,
+            .lineL,
+            .lineR,
+            .navDesktopGap {
+                display: none;
+            }
+
+            .bannerLink {
+                position: static;
+                flex: 1 1 auto;
+                width: auto;
+                height: 100%;
+                padding: 0;
+            }
+
+            .topList {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                float: none;
+                width: 100%;
+                height: 100%;
+            }
+
+            .topList li {
+                flex: 0 0 auto;
+            }
+
+            .bannerLink a {
+                display: block;
+                float: none;
+                margin: 0;
+                padding: 1.25rem 0.25rem;
+                font-size: clamp(0.6875rem, 3.4vw, 0.9375rem);
+                line-height: 1.5rem;
+                white-space: nowrap;
+                word-break: keep-all;
+                writing-mode: horizontal-tb;
+            }
+        }
     </style>
 
     @* Page-specific stylesheets, loaded last so a page can override layout/library CSS. *@
@@ -361,17 +438,17 @@
 
     <nav class="col-xs20 col-sm20 col-md20 col-lg20 bannerCon" style="margin-bottom:1vh;">
         <!-- 电脑端 -->
-        <a href="/Home/newIndex" class="col-sm3 col-md4 col-lg4">
+        <a href="/Home/newIndex" class="brandLink col-xs3 col-sm3 col-md4 col-lg4">
             &nbsp;
             <img class="logo1" src="/content/images/LOGO_01.png" alt="" />
         </a>
-        <div class="col-xs2 col-sm2 col-md4 col-lg8">&nbsp;</div>
+        <div class="navSpacer col-xs2 col-sm2 col-md4 col-lg8">&nbsp;</div>
         <div class="col-xs15 col-sm15 col-md12 col-lg8 bannerLink">
             <ul class="topList">
 
                 <div class="lineL"></div>
                 <li>
-                    <a href="/Home/newIndex">首&#12288;&#12288;页</a>
+                    <a href="/Home/newIndex">首<span class="navDesktopGap">&#12288;&#12288;</span>页</a>
                 </li>
                 <div class="lineR"></div>
 
@@ -386,7 +463,7 @@
                 <div class="lineR" style="margin-right: 40px;"></div>
 
                 <li style="padding-right: 1vw;">
-                    <a href="/Home/newvip">关于我们</a>
+                    <a href="/Home/newabout">关于我们</a>
                 </li>
 
             </ul>
@@ -434,7 +511,7 @@
                 </div>
                 <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="/Home/newvip">合作案例 </a><br />
+                        <a href="/Home/newabout#section02">合作案例 </a><br />
                         <a href="/Home/newvip" target="_blank">艺术家首页</a><br />
                         &#12288;<br />
                         &#12288;<br />
@@ -443,7 +520,7 @@
                 </div>
                 <div class="col-md3 col-lg3 footerList">
                     <p style="padding-left: 10%;">
-                        <a href="/Home/newvip">联系我们</a><br />
+                        <a href="/Home/newabout">联系我们</a><br />
                         @* 后台登录入口：迁移到 ASP.NET Core 后旧 /Staff 入口失效，改指向新后台登录页 *@
                         <a href="/Staff/Account/Login">后台登录</a><br />
                         &#12288;<br />
@@ -470,7 +547,7 @@
     </footer>
 
 
-    <script type="text/javascript">
+    <script>
         if (window.$webfont) {
             $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
             $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
@@ -478,31 +555,34 @@
             $webfont.draw();
         }
 
-        $(function () {
-            var lastScrollPosition = $(window).scrollTop();
-            var downThreshold = 10;
-            var upThreshold = 5;
+        (() => {
+            const banner = document.querySelector('.bannerCon');
+            if (!banner) return;
 
-            $(window).scroll(function () {
-                var currentScrollPosition = $(window).scrollTop();
-                var distanceScrolled = Math.abs(currentScrollPosition - lastScrollPosition);
+            let lastScrollPosition = window.scrollY;
+            let ticking = false;
 
-                if (currentScrollPosition > lastScrollPosition && distanceScrolled >= downThreshold) {
-                    $(".bannerCon").css({
-                        "transition": "transform 250ms",
-                        "transform": "translateY(-100%)"
-                    });
-                } else if (currentScrollPosition < lastScrollPosition && distanceScrolled >= upThreshold) {
-                    $(".bannerCon").css({
-                        "transition": "transform 250ms",
-                        "transform": "translateY(0)"
-                    });
-                }
+            window.addEventListener('scroll', () => {
+                if (ticking) return;
+                ticking = true;
 
-                lastScrollPosition = currentScrollPosition;
-            });
-        });
+                window.requestAnimationFrame(() => {
+                    const currentScrollPosition = window.scrollY;
+                    const distanceScrolled = Math.abs(currentScrollPosition - lastScrollPosition);
 
+                    if (currentScrollPosition > lastScrollPosition && distanceScrolled >= 10) {
+                        banner.style.transition = 'transform 250ms';
+                        banner.style.transform = 'translateY(-100%)';
+                    } else if (currentScrollPosition < lastScrollPosition && distanceScrolled >= 5) {
+                        banner.style.transition = 'transform 250ms';
+                        banner.style.transform = 'translateY(0)';
+                    }
+
+                    lastScrollPosition = currentScrollPosition;
+                    ticking = false;
+                });
+            }, { passive: true });
+        })();
     </script>
 
 </body>

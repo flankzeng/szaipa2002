@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 75 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 94 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -13,6 +13,11 @@
 - **展览模块**：普通型 + 重要型（数据驱动 `Publication` + 画廊上传器 + 两套皮肤）。
 - **前台优化**：NewIndex / NewNews / NewNewsRead / NewArt 内联 CSS/JS 外提到缓存文件；成员头像区 table→flex 去重复。
 - **旧后台 bug**：news-add 丢正文 / newsImg 误删 已在 `szaipa2022` 源码打补丁。
+- **前台清理 Phase 1（2026-07-10）**：公共依赖按页加载、新闻详情移除 Vue/Element Plus、图片懒加载、Brotli/Gzip + 缓存、同字体核心子集、手机 viewport/navbar 修复、隐藏 Swiper 不再误初始化。详见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`。
+- **ProjectTongou 公开层退役（2026-07-10）**：线上和本地均确认无前台入口；12 个公开视图及迁移仪表盘死入口已移除，历史 URL 返回可缓存 410 且不查库。Tongou 后台、实体、仓储和上传资源保留。
+- **前台清理 Phase 2（2026-07-10）**：本地 legacy 归档分支已建；zengfeng 退役并移除 140MB 专属资源；关于我们、真实会员列表、数据驱动展会列表上线；零引用模板库清理后 Release publish 约 35MB→24MB；三个大自定义展览页移除约 2.9MB/页无效依赖并补齐图片懒加载。详见 `docs/updates/2026-07-10-frontend-cleanup-phase2.md`。
+- **前台清理 Phase 3（2026-07-11）**：三个大自定义展览页的内联 CSS/JS 已外提；三页共享特殊页 CSS，chunyu3/tonggou2 共享行为脚本，页面差异由 CSS 变量/data 配置保留；远程原字库增加失败保护但未替换字形。详见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
+- **前台清理 Phase 4（2026-07-11）**：新增可复跑 Legacy Content 白名单审计；修复首页唯一真实缺图；当前分支归档旧 Content、两套旧 NuGet packages 和零引用静态副本，累计修剪约 501MB。运行资源根仍有约 95.9MB 候选，未取得生产日志前不删除。详见 `docs/updates/2026-07-11-frontend-cleanup-phase4.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
 1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。
@@ -21,6 +26,7 @@
 4. **可选增强**：独立的全量操作记录页（分页查看历史，仪表盘现只显示近 7 天 feed）。
 5. **NewIndex 进一步优化**（用户说后面单独聊，用新 session）。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
+7. **前台清理 Phase 5**：Legacy 审计工具已完成；下一步需要生产 `/Content` 访问日志和数据库资源路径导出，复跑 `scripts/audit-legacy-content.py` 后才能处理运行根约 95.9MB 候选。Alibaba 普惠体需取得准确原文件后才能本地子集化。公众号需求继续后置。
 
 ## 待用户本地操作
 - **本地只读登录检查（推荐，不写库）**：`appsettings.Local.json` 配 `AdminWrite:{EnableWrites:true, UseReadOnlyConnectionForDebug:true}`（Tongou 同），不设 `ConnectionStrings:SzaipaAdmin`——admin 上下文复用只读 `szaipa_ro` 连接，能登录/看仪表盘/浏览，写操作被 SQL 层挡掉。前提：`LegacyData:Szaipa` 的只读凭据当前有效（2026-06-24 实测遇到 `18456` 认证失败，需核对密码）。详见 `docs/updates/2026-06-24-admin-readonly-debug-login.md`。

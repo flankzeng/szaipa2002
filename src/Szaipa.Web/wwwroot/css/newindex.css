@@ -47,13 +47,13 @@
     }
 
     .mySwiper6 b {
-        font-family: sansMedium;
+        font-family: 'sans-medium-core', sansMedium;
         font-size: 1.1rem;
     }
 
     .mySwiper6 p {
         padding-top: 1em;
-        font-family: sansLight;
+        font-family: 'sans-light-core', sansLight;
         font-size: 1rem;
         line-height: 1.8em;
         margin-bottom: 2em;
@@ -999,7 +999,12 @@
         text-align: center;
     }
 
-    @media only screen and (max-width: 991px) {
+    @media only screen and (max-width: 61.9375em) {
+        .member {
+            width: 100%;
+            transform: none;
+        }
+
         .member-item {
             width: 33.333%;
         }

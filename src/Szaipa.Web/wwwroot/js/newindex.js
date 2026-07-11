@@ -1,29 +1,32 @@
-    // 第一个轮播，滑动切换，悬浮停止
-    document.querySelector('.mySwiper').addEventListener('mouseenter', function () {
-        swiper.autoplay.stop();
-    });
-    document.querySelector('.mySwiper').addEventListener('mouseleave', function () {
-        swiper.autoplay.start();
-    });
+    // 第一个轮播在手机端由 xs-hide 隐藏；隐藏状态初始化 Swiper 会抛错并中断整页脚本。
+    var heroSwiperElement = document.querySelector('.mySwiper');
+    if (heroSwiperElement && heroSwiperElement.offsetParent !== null) {
+        var swiper = new Swiper(heroSwiperElement, {
+            slidesPerView: "auto",
+            centeredSlides: true,
+            spaceBetween: 0,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
+            },
+        });
 
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: "auto",
-        centeredSlides: true,
-        spaceBetween: 0,
-        loop: true,
-        autoplay: {
-            delay: 5000,
-            disableOnInteraction: false,
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-        },
-    });
+        heroSwiperElement.addEventListener('mouseenter', function () {
+            swiper.autoplay.stop();
+        });
+        heroSwiperElement.addEventListener('mouseleave', function () {
+            swiper.autoplay.start();
+        });
+    }
 
     // topFunction
     const toTopButton = document.querySelector('#topBtn');

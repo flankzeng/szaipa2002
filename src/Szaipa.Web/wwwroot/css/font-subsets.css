@@ -1,0 +1,21 @@
+/*
+ * 得意黑核心子集：字形来自原 SmilelySans，仅减少未使用字符。
+ * 页面以原 smile 字体作为逐字兜底，未来出现生僻字时仍保持原设计。
+ */
+@font-face {
+    font-family: "smile-core";
+    src: url("../fonts/SmilelySans.core.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sans-light-core";
+    src: url("../fonts/NotoSansSC-Light.core.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sans-medium-core";
+    src: url("../fonts/NotoSansSC-Medium.core.woff2") format("woff2");
+    font-display: swap;
+}

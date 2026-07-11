@@ -28,7 +28,7 @@
                     @for (var i = 10001; i <= 10001 + Model.MaxImg; i++)
                     {
                         <div class="swiper-slide">
-                            <img src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                            <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
                         </div>
                     }
                 </div>
@@ -45,7 +45,7 @@
                     @for (var i = 10000; i <= 10000 + Model.MaxImg; i++)
                     {
                         <div class="swiper-slide">
-                            <img src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                            <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
                         </div>
                     }
                 </div>

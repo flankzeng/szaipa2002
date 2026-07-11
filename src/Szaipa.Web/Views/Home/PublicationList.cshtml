@@ -1,5 +1,64 @@
-@model Szaipa.Web.Models.PageSkeletonViewModel
+@model IReadOnlyList<Szaipa.Data.Models.Home.PublicationSummaryModel>
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = "展会动态";
+    Layout = "~/Views/Shared/_newLayout.cshtml";
 }
-<partial name="_PageSkeletonContent" model="Model" />
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/publication-list.css" asp-append-version="true" />
+}
+
+<main class="publication-list-page">
+    <header class="publication-list-heading">
+        <p class="publication-list-heading__title JhengBold">展会动态 <span>|</span></p>
+        <p class="publication-list-heading__english">EXHIBITIONS</p>
+    </header>
+
+    @if (Model.Count == 0)
+    {
+        <p class="publication-list-empty">暂时没有可展示的展会。</p>
+    }
+    else
+    {
+        <section class="publication-list-grid" aria-label="展会列表">
+            @foreach (var exhibition in Model)
+            {
+                var ended = exhibition.Status == false || exhibition.EndDate is { } endDate && endDate.Date < DateTime.Today;
+                var dateText = exhibition.StartDate?.ToString("yyyy.M.d") ?? string.Empty;
+                if (exhibition.EndDate is { } end)
+                {
+                    dateText += $" – {end:yyyy.M.d}";
+                }
+
+                <a class="publication-card @(ended ? "publication-card--ended" : string.Empty)"
+                   href="/Home/Publication/@exhibition.Id">
+                    <div class="publication-card__image">
+                        <img src="/Content/images/@exhibition.FolderName/@exhibition.CoverPath"
+                             alt="@exhibition.TitleCn"
+                             loading="lazy"
+                             decoding="async" />
+                        @if (ended)
+                        {
+                            <span>已结束</span>
+                        }
+                    </div>
+                    <div class="publication-card__info">
+                        <strong>@exhibition.TitleCn</strong>
+                        @if (!string.IsNullOrWhiteSpace(exhibition.TitleEn))
+                        {
+                            <small>@exhibition.TitleEn</small>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(exhibition.Location))
+                        {
+                            <p>地点：@exhibition.Location</p>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(dateText))
+                        {
+                            <p>时间：@dateText</p>
+                        }
+                    </div>
+                </a>
+            }
+        </section>
+    }
+</main>

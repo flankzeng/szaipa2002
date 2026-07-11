@@ -4,22 +4,14 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
     <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
     <link rel="icon" href="/Content/123/favicon.ico" type="image/x-icon">
-    <script src="/Content/Model/jquery-3.6.1.min.js"></script>
-    <script src="/Content/Model/bootstrap.min.js"></script>
-    <script src="/Content/Model/layui.js"></script>
-    <script src="/Content/Model/swiper-bundle.min.js"></script>
-
-    <!-- 引入MagnifyJS -->
-    <script src="/Content/Model/jquery.magnify.js"></script>
-
-    <script src="/Content/Model/Site.js"></script>
     <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
-    <link rel="stylesheet" href="/Content/Model/css/layui.css">
     <link rel="stylesheet" href="/Content/Model/css/Site.css">
+    <link rel="stylesheet" href="/css/font-subsets.css" asp-append-version="true">
     <link rel="stylesheet" href="/content/model/css/responsive/Artist.css">
     <link rel="stylesheet" href="/Content/Model/css/responsive.css">
     <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css">
@@ -35,9 +27,7 @@
     <link href='//fonts.loli.net/css?family=Noto+Serif+SC:100,300,400,500,700,900&display=swap' rel='stylesheet'
         type='text/css'>
 
-    <!-- 引入有字体 2023.08.04 -->
     <script type="text/javascript" src="//cdn.repository.webfont.com/wwwroot/js/wf/youziku.api.min.js"></script>
-
 
     <style>
         html {
@@ -454,13 +444,13 @@
 
     </footer>
 
-    <script type="text/javascript">
-        $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
-        $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
-        $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
-        /*$webfont.load("#id1,.class1,h1", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");*/
-        /*．．．*/
-        $webfont.draw();
+    <script>
+        if (window.$webfont) {
+            $webfont.load(".JhengLight", "06160355f36d4c6eb1fab55d87e32063", "Alibaba-PuHuiTi-L");
+            $webfont.load(".JhengRegular", "b548e9e03fa64c0b81a0702c4ac5c8c5", "Alibaba-PuHuiTi-R");
+            $webfont.load(".JhengBold", "4424d76bbef84a768011752cfd843c1d", "Alibaba-PuHuiTi-M");
+            $webfont.draw();
+        }
     </script>
 </body>
 

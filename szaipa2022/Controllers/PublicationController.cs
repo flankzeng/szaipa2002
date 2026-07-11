@@ -25,12 +25,12 @@ namespace Szaipa.Controllers
         }
         public ActionResult chunyu()//2022年《春雨》 深圳南油动漫园
         {
-            return View();
+            return new HttpStatusCodeResult(410);
         }
 
         public ActionResult zengfeng()
         {
-            return View();
+            return new HttpStatusCodeResult(410);
         }
 
         public ActionResult zhongyi()

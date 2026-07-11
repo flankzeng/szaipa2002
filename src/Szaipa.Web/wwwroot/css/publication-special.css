@@ -1,0 +1,793 @@
+body.publication-chunyu3 {
+    --special-hero-background: url('/Content/images/chunyu-color2.jpg');
+    --special-heading-margin-bottom: 8vh;
+    --special-intro-padding: var(--introCon);
+    --special-type2-margin-top: var(--type2);
+    --special-copyright-bottom: 17.5vh;
+}
+
+body.publication-tonggou2 {
+    --special-hero-background: url('/Content/images/DSC05345-color.jpg');
+    --special-heading-margin-bottom: 3vh;
+    --special-intro-padding: 5% 10% 10vh 10%;
+    --special-type2-margin-top: -20vh;
+    --special-copyright-bottom: 10vh;
+}
+
+body.publication-tonggou2024 {
+    --special-hero-background: url('/Content/images/tonggou2024/100000.jpg');
+    --special-heading-margin-bottom: 3vh;
+    --special-intro-padding: 5% 10% 10vh 10%;
+    --special-type2-margin-top: -20vh;
+    --special-copyright-bottom: 10vh;
+}
+
+html {
+            scroll-behavior: smooth;
+        }
+
+        /* 以下为footer */
+        #section08 {
+            /* EMAIL */
+            height: 30vh;
+            width: 100%;
+            background-color: white;
+            position: relative;
+            margin-top: 5vh;
+        }
+
+        #section08m {
+            /* EMAIL */
+            height: 80vh;
+            width: 100%;
+            background-color: black;
+            color: white;
+            position: relative;
+            border-top: 1px solid #ededed;
+        }
+
+        /* Section08 邮箱填写 */
+
+        .fuzhu {
+            width: 100%;
+            transform: translateY(25%);
+        }
+
+        .dui {
+            height: 1em;
+            width: 1em;
+            display: inline-block;
+            background-image: url('/content/images/dui-06.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .enter02 {
+            /* 去色 */
+            filter: grayscale(100%);
+
+            /* 去button默认样式 */
+            box-shadow: none;
+            background-color: transparent;
+            border: none;
+
+            float: right;
+            transform: translateY(-140%);
+        }
+
+        .enter02 img {
+            width: 1.5vw;
+            height: auto;
+        }
+
+        .emailPosition h1 {
+            text-align: center;
+            font-family: var(--fontLight);
+        }
+
+        .emailPosition h1 {
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 5vh;
+        }
+
+        .emailPosition p {
+            text-align: justify;
+            color: #939393;
+            margin-top: 3vh;
+            font-weight: 200;
+            font-size: 1.2rem;
+            line-height: 1.8em;
+        }
+
+        .emailPosition {
+            height: auto;
+            width: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #section08m button {
+            display: flex;
+            background-color: transparent;
+            color: white;
+            font-family: var(--fontLight);
+            font-size: 1.3rem;
+            margin: 5vh auto;
+            box-shadow: none;
+            border: 1px solid white;
+            padding: .5vh 2vw;
+        }
+
+        .guanzhu {
+            width: 8vw;
+            height: auto;
+            margin-right: 3vw;
+        }
+
+        .logoContainerM {
+            height: 100%;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .email {
+            position: relative;
+            width: var(--emailLine);
+            margin-bottom: 1.3vh;
+            border-bottom: 1.5px solid black;
+        }
+
+        .emailInput {
+            width: var(--emailLine);
+            margin-bottom: 0.5vh;
+            padding-left: 0.1em;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: var(--email);
+            letter-spacing: 0.05em;
+        }
+
+        .emailInput::placeholder {
+            color: black;
+        }
+
+        #section08m .email input::placeholder {
+            padding-left: 2vw;
+            color: white;
+            font-size: 1rem;
+            font-family: 'dinLight';
+        }
+
+        #section08m .email input {
+            margin-bottom: 0px;
+        }
+
+        .email input::placeholder {
+            color: black;
+            font-size: var(--emailHolder);
+            font-family: 'dinLight';
+        }
+
+        .jieshou {
+            line-height: 20px;
+            vertical-align: middle;
+            white-space: nowrap;
+            font-size: var(--jieshou);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-display: swap;
+            font-weight: 400;
+        }
+
+        .jieshou span {
+            display: inline-block;
+            transform: translateY(-8%);
+        }
+
+        .emailContainerM {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        .emailM {
+            background-color: transparent;
+            width: 100%;
+            height: 2vh;
+            font-size: 1.3rem;
+            outline: none;
+            border: 1px solid white;
+            padding: 1em 1em;
+        }
+
+        .logoContainerM a {
+            margin-bottom: 5vh;
+        }
+
+        /* Section09 版权 */
+
+        .section09 {
+            /* FOOTER */
+            height: 40vh;
+            width: 100%;
+            background-color: black;
+            color: #939393;
+            overflow: hidden;
+        }
+
+        .section09m {
+            /* FOOTER */
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            color: #939393;
+            overflow: hidden;
+        }
+
+        .footer {
+            width: 100%;
+            height: auto;
+            position: relative;
+            padding-top: 5vh;
+        }
+
+        .footerList {
+            position: relative;
+            border-left: var(--footerBorder);
+            height: 100%;
+        }
+
+        .copyrightM {
+            border-top: 1.5px solid #939393;
+            padding: 5vh 0 5vh 0;
+            line-height: var(--footerLineheight);
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            font-size: var(--footerFontsize);
+        }
+
+        .copyrightM a {
+            color: #939393;
+            text-decoration: none;
+        }
+
+        .copyright {
+            position: relative;
+            height: 100%;
+        }
+
+        .copyright p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright p>br {
+            font-size: var(--footerFontsize);
+            line-height: 1.5em;
+        }
+
+        .copyright-container {
+            border-top: var(--footerBorder);
+            height: 35vh;
+        }
+
+        .copyright-container p {
+            position: absolute;
+            top: 55%;
+            transform: translateY(-50%);
+        }
+
+        .copyright-container a,
+        .copyright-container p {
+            color: #939393;
+            text-decoration: none;
+            /* font-family: 'sansLight';*/
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: var(--footerLineheight);
+        }
+
+#topBtn {
+            display: block;
+
+            filter: invert();
+            padding: 0;
+            position: fixed;
+            bottom: 5vh;
+            right: 4vw;
+            z-index: 999;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* section01 banner */
+        .banner {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            background: var(--special-hero-background);
+            background-size: cover;
+        }
+
+        .banner * {
+            color: white;
+        }
+
+
+        .title {
+            height: 100px;
+            width: auto;
+            position: absolute;
+            left: 7vw;
+            top: 55%;
+            color: white;
+        }
+
+        .title h1 {
+            /* font-family: 'JhengRegular';*/
+            font-size: 2.7rem;
+            margin-bottom: 0;
+        }
+
+        .title h3 {
+            /* font-family: 'JhengLight';*/
+            letter-spacing: 0.03em;
+            margin-top: 2vh;
+            margin-bottom: 3vh;
+            font-size: 1rem;
+        }
+
+        .title button {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        button {
+            background: none;
+            border: .2vh solid white;
+            color: white;
+            border-radius: 10px;
+            padding: 1vh 3vw 1vh 3vw;
+            margin: 0;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .nav {
+            list-style: none;
+            display: flex;
+            padding: 0 4vw 0 0;
+
+            position: absolute;
+            right: 0;
+            bottom: 8%;
+        }
+
+        .nav li {
+            margin-right: 3vw;
+            font-size: 1.3rem;
+            font-weight: 200;
+            font-family: 'Noto Sans SC', sans-serif;
+            opacity: 0.7;
+        }
+
+        .active {
+            opacity: 1 !important;
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif !important;
+        }
+
+        .black02 {
+            height: inherit;
+            background-color: black;
+            opacity: 0.2;
+        }
+
+        /* section02 */
+        #section02 {
+            position: relative;
+            height: auto;
+            padding: 0 10vw 10vh 10vw;
+        }
+
+        #section02 h1 {
+            padding: 0;
+            /* font-family: 'JhengBold'; */
+            font-size: 3rem;
+            margin-bottom: 2vh;
+            text-align: center;
+        }
+
+        #section02 p {
+            margin: 0;
+            padding: 0;
+            font-size: 1.3rem;
+            font-weight: 300;
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 2.7em;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .nameCN {
+            margin-top: 3vh;
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+
+        .xu {
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+            position: relative;
+            width: 100%;
+            height: 15vh;
+            margin-top: 10vh;
+            margin-bottom: 7vh;
+        }
+
+        .tonggou {
+            height: 15vh;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .elementPub {
+            height: 8vh;
+            position: absolute;
+            bottom: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* section03 */
+        #section03 {
+            position: relative;
+            color: #f7f7f7;
+            background-color: black;
+            padding-bottom: 10vh;
+        }
+
+
+        /* section03 目录的介绍以及列表 */
+
+        #content h1 {
+            margin-top: 10vh;
+            margin-bottom: var(--special-heading-margin-bottom);
+            padding: 0;
+            font-family: 'dinLightI'
+                /* 'JhengBold' */
+            ;
+            font-size: 2.5rem;
+        }
+
+        #swiperAndFilter {
+            margin-bottom: 3vh;
+        }
+
+        .imgFilter {
+            margin-bottom: 5vh;
+        }
+
+        .mySwiper {
+            max-width: 100vw;
+        }
+
+        .swiper {
+            width: 120%;
+            margin-left: -10%;
+            margin-right: -10%;
+            padding-bottom: 4vh;
+        }
+
+        .swiper-slide {
+            height: auto;
+            max-height: 70vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            margin-bottom: 15vh;
+            width: auto;
+            height: 75%;
+            max-width: 90%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .swiper-slide a {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            font-family: 'smile-core', 'smile', 'dinLightI';
+            letter-spacing: 0.2em;
+            font-size: 2rem;
+
+            height: 100%;
+            width: 60%;
+            position: absolute;
+            bottom: 5%;
+            color: white;
+            text-decoration: none;
+        }
+
+
+        .swiper-button-next {
+            color: white;
+            /* padding-right: 5vw; */
+            opacity: 0.7;
+            height: 100%;
+            width: 10%;
+            transform: translateY(-50%);
+        }
+
+        .swiper-button-prev {
+            color: white;
+            /* padding-left: 5vw; */
+            opacity: 0.7;
+            height: 100%;
+            width: 10%;
+            transform: translateY(-50%);
+        }
+
+        .swiper-pagination-bullet {
+            background-color: white;
+            outline: none;
+        }
+
+        /* .link:hover {
+            scale: 1.1;
+            transition: 500ms;
+            transform: translateY(-10%);
+        } */
+
+
+        /* .link {
+            border: 0.2vh solid white;
+
+
+            弃用
+            padding: 1vh 5vw;
+            border-radius: 10px;
+        } */
+
+        .remind {
+            height: 10vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 2vh;
+            /* font-family: 'JhengLight';*/
+            color: #939393;
+        }
+
+        /* 交易页面 */
+        .introCon {
+            padding: var(--special-intro-padding);
+            color: white;
+            background-color: black;
+            position: relative;
+            height: auto;
+            width: 100%;
+
+            /* 清除浮动 */
+            /* display: table; */
+            /* display:table 使元素像表格一样能够自适应内容 */
+            content: "";
+            clear: both;
+        }
+
+        .introCon,
+        .target,
+        .displayInfo {
+            overflow-x: hidden;
+        }
+
+        .target {
+            display: none;
+            overflow: hidden;
+        }
+
+        .displayInfo {
+            display: table;
+        }
+
+        .introCon input {
+            border: 1px solid #f7f7f7;
+            padding: 1vh 1vw;
+            margin-bottom: 2vh;
+            outline: none;
+            background: none;
+            box-shadow: none;
+        }
+
+        .introCon button {
+            border-radius: 0;
+            box-sizing: border-box;
+        }
+
+        .introCon div {
+            float: left;
+        }
+
+        .introCon p {
+            font-size: 3.5rem;
+            /* font-family: 'JhengBold';*/
+            white-space: pre-line;
+            height: auto;
+            width: auto;
+        }
+
+        .type1 {
+            /* type1是横着的 */
+            /* max-height: 50vh; */
+            max-width: 50vw;
+            float: right;
+            margin-top: -10vh;
+        }
+
+        .type2 {
+            /* type2是竖着的 */
+            max-width: 40vw;
+            max-height: 65vh;
+            height: auto;
+            float: right;
+            margin-top: var(--special-type2-margin-top);
+        }
+
+        /* type1和type2的横向竖向输入框不等长 */
+        .btn1 input,
+        .btn1 button {
+            width: 25vw;
+        }
+
+        .btn2 input,
+        .btn2 button {
+            width: 35vw;
+        }
+
+        .msg {
+            /* padding-top: 8vh; */
+            padding-bottom: 15vh;
+            /* margin-top: 5vh; */
+        }
+
+        .msg button {
+            cursor: pointer;
+        }
+
+        .introCon .msg p {
+            font-size: 1rem;
+            /* font-family: 'JhengLight';*/
+            letter-spacing: 0.1em;
+            color: #939393;
+            height: auto;
+            padding-top: 10vh;
+            margin: 0 0 2vh 0;
+        }
+
+        .trading {
+            height: 6vh;
+            position: absolute;
+            right: 10%;
+            top: 8%;
+        }
+
+        .trading-copyright {
+            width: 97%;
+            position: absolute;
+            bottom: var(--special-copyright-bottom);
+            color: #939393;
+        }
+
+        /* section04 现场照片儿 */
+        #section04 {
+            background-color: black;
+            color: white;
+            padding: 5vh 0 10vh 0;
+        }
+
+        #section04 h1 {
+            margin-bottom: 5vh;
+            padding: 0;
+            font-family: 'dinLightI'
+                /*'JhengBold' */
+            ;
+            font-size: 2.5rem;
+        }
+
+        .mySwiper3 {
+            height: 75vh;
+            padding-bottom: 0;
+        }
+
+        .mySwiper3 .swiper-slide {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+        }
+
+        .mySwiper3 .swiper-slide img {
+            /* height: 100%;
+            width: auto;
+            object-fit: cover;*/
+            object-fit: contain;
+            object-position: center center;
+        }
+
+        .mySwiper2 {
+            box-sizing: border-box;
+            padding: 0;
+            height: 15vh;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .mySwiper2 .swiper-slide {
+            width: 10vw;
+        }
+
+        .mySwiper2 .swiper-slide img {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .mySwiper2 .swiper-slide:not(.swiper-slide-thumb-active) img {
+            opacity: 0.5;
+        }
+
+.filter {
+                        font-weight: 300;
+                        font-family: 'Noto Sans SC', sans-serif;
+                    }
+
+                    .filterCon {
+                        list-style: none;
+                        display: flex;
+                        padding: 0;
+                        margin-bottom: 3vh;
+                    }
+
+                    .filterCon li {
+                        margin-right: 2vw;
+                    }
+
+                    .hidden {
+                        display: none;
+                    }
+
+                    .bold {
+                        font-weight: 700;
+                        font-family: 'Noto Sans SC', sans-serif;
+                    }

@@ -59,6 +59,7 @@ else
 </section>
 
 @section Styles {
+    <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css" />
     @if (isImportant)
     {
         <link rel="stylesheet" href="~/css/exhibition-important.css" asp-append-version="true" />
@@ -66,5 +67,7 @@ else
 }
 
 @section Scripts {
+    <script src="/Content/Model/jquery-3.6.1.min.js"></script>
+    <script src="/Content/Model/swiper-bundle.min.js"></script>
     <script src="~/js/publication-gallery.js" asp-append-version="true"></script>
 }
