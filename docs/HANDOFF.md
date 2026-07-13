@@ -22,6 +22,7 @@
 - **前台清理 Phase 6（2026-07-11）**：只读扫描旧发布版 `web24.05`；确认实际 Content 约 1.2GB，现代源码候选 95.9MB、旧版源码候选 87.8MB，旧版仍在线时不得删除差出的约 8.1MB。官方普惠体源已定位；旧 Web.config 明文凭据需轮换。详见 `docs/updates/2026-07-11-frontend-cleanup-phase6.md`。
 - **本地只读库状态（2026-07-11）**：Szaipa/Tongou 只读连接均可用，真实首页读取成功；`AllowLiveDatabase=false`。但当前库尚无 Publication 92001–92015 迁移行，首页硬编码展会暂不能退役。
 - **数据库资源路径审计（2026-07-12）**：只读导出得到 19 条明确 `/Content/` 路径；加入审计后候选仍为 95.9MB，说明候选目录无数据库精确引用。物理删除仍等待 IIS 日志。
+- **生产 IIS 访问审计（2026-07-13）**：只读扫描近 90 天 92 个日志、553,963 条请求行；`_preview`/`TempFile`/`js`/`Filme` 均有成功访问，必须保留；仅 `Award`（94 文件/7,197,911 B）和 `layui`（15 文件/876,709 B）在源码、数据库、IIS 三层均为零引用。服务器未移动/删除任何文件，下一步可逆隔离需用户明确确认。详见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - **Alibaba 普惠体本地化（2026-07-11）**：官方 2.0 Light/Regular/Medium 已校验并生成约 170KB/档的本地核心子集，保留原 L/R/M 视觉层级；公共页已移除有字体第三方脚本。详见 `docs/updates/2026-07-11-alibaba-font-localization.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
@@ -32,7 +33,7 @@
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
 5. **NewIndex 进一步优化**（用户说后面单独聊，用新 session）。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
-7. **前台清理 Phase 5**：Legacy 审计工具已完成；下一步需要生产 `/Content` 访问日志和数据库资源路径导出，复跑 `scripts/audit-legacy-content.py` 后才能处理运行根约 95.9MB 候选。Alibaba 普惠体需取得准确原文件后才能本地子集化。公众号需求继续后置。
+7. **前台 Legacy 清理**：生产数据库和 IIS 日志审计均已完成；`Award` 与 `layui` 已缩小为可逆隔离候选，但任何服务器移动/删除仍需人工确认。其余候选根有真实访问，继续保留。公众号需求继续后置。
 
 ## 待用户本地操作
 - **本地只读登录检查（推荐，不写库）**：`appsettings.Local.json` 配 `AdminWrite:{EnableWrites:true, UseReadOnlyConnectionForDebug:true}`（Tongou 同），不设 `ConnectionStrings:SzaipaAdmin`——admin 上下文复用只读 `szaipa_ro` 连接，能登录/看仪表盘/浏览，写操作被 SQL 层挡掉。前提：`LegacyData:Szaipa` 的只读凭据当前有效（2026-06-24 实测遇到 `18456` 认证失败，需核对密码）。详见 `docs/updates/2026-06-24-admin-readonly-debug-login.md`。

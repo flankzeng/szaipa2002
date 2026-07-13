@@ -65,6 +65,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
 - 特殊展览页共享资源：`wwwroot/css/publication-special.css`；chunyu3/tonggou2 使用 `wwwroot/js/publication-special.js`，tonggou2024 保留 `publication-tonggou2024.js` 的独有滚动行为。详情见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
 - Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
+- 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，仅 `Award` 与 `layui` 可进入人工确认后的可逆隔离；见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 有字体脚本在公共页使用 `defer`，原 Alibaba 普惠体字库和本地核心子集保持不变；初始化统一等待 DOM 就绪。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
