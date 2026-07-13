@@ -360,12 +360,20 @@
     .zhangcheng {
         margin-top: 6vh;
         display: block;
+        position: relative;
+        overflow: hidden;
         background-color: black;
         height: var(--zhangcheng);
-        background-image: url('/content/images/2021.5.30f2-2.jpg');
-        background-size: 100% 85%;
-        background-position: center center;
-        background-repeat: no-repeat;
+    }
+
+    .zhangcheng-image {
+        position: absolute;
+        top: 7.5%;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 85%;
+        object-fit: fill;
     }
 
     /* 原Section05全部删除 */

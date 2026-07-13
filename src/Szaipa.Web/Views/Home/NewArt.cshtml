@@ -1,6 +1,7 @@
 ﻿@model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
 @{
     var artist = Model.Artist;
+    var artistBannerUrl = Url.Content($"~/content/ArtImg/Artist/Banner/{artist.Path1}");
     ViewBag.Title = artist.ArtistNameCn + " - 艺术家官网";
     Layout = "_Artist";
 }
@@ -293,11 +294,15 @@
     </section>
 
 @section Styles {
+    @if (!string.IsNullOrWhiteSpace(artist.Path1))
+    {
+        <link rel="preload" as="image" href="@artistBannerUrl" fetchpriority="high" />
+    }
     <style>
         :root {
             --artist-grad1: @artist.Color1;
             --artist-grad2: @artist.Color2;
-            --artist-banner: url('/content/ArtImg/Artist/Banner/@artist.Path1');
+            --artist-banner: url('@artistBannerUrl');
         }
     </style>
     <link rel="stylesheet" href="~/css/newart.css" asp-append-version="true" />
