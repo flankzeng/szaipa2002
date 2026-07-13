@@ -14,8 +14,8 @@ module.exports = {
         canvas: "#f7f7f7"
       },
       fontFamily: {
-        sans: ["'Noto Sans SC'", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-        serif: ["'Noto Serif SC'", "Georgia", "serif"]
+        sans: ["'Szaipa Noto Sans SC'", "'Szaipa Noto Sans SC GB'", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+        serif: ["'Szaipa Noto Serif SC Staff'", "'Szaipa Noto Serif SC Staff GB'", "Georgia", "serif"]
       }
     }
   },

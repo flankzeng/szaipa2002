@@ -180,7 +180,7 @@ html {
             vertical-align: middle;
             white-space: nowrap;
             font-size: var(--jieshou);
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
             font-display: swap;
             font-weight: 400;
         }
@@ -289,9 +289,8 @@ html {
         .copyright-container p {
             color: #939393;
             text-decoration: none;
-            /* font-family: 'sansLight';*/
             font-weight: 300;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
             font-size: 1rem;
             line-height: var(--footerLineheight);
         }
@@ -352,7 +351,7 @@ html {
             font-size: 1.2rem;
             letter-spacing: 0.2em;
             font-weight: 300;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         }
 
         button {
@@ -387,14 +386,14 @@ html {
             margin-right: 3vw;
             font-size: 1.3rem;
             font-weight: 200;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
             opacity: 0.7;
         }
 
         .active {
             opacity: 1 !important;
             font-weight: 400;
-            font-family: 'Noto Sans SC', sans-serif !important;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif !important;
         }
 
         .black02 {
@@ -423,7 +422,7 @@ html {
             padding: 0;
             font-size: 1.3rem;
             font-weight: 300;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
             line-height: 2.7em;
             text-align: justify;
             text-indent: 2em;
@@ -434,7 +433,7 @@ html {
             text-align: right;
             font-size: 1.3rem;
             font-weight: 400;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         }
 
         .xu {
@@ -769,7 +768,7 @@ html {
 
 .filter {
                         font-weight: 300;
-                        font-family: 'Noto Sans SC', sans-serif;
+                        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
                     }
 
                     .filterCon {
@@ -789,5 +788,5 @@ html {
 
                     .bold {
                         font-weight: 700;
-                        font-family: 'Noto Sans SC', sans-serif;
+                        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
                     }

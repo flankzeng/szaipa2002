@@ -29,7 +29,7 @@
 }
 
 .exh-banner__title {
-    font-family: 'Noto Serif SC', serif;
+    font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
     font-size: clamp(1.8rem, 4vw, 3.2rem);
     font-weight: 700;
     letter-spacing: .12em;
@@ -38,7 +38,7 @@
 
 .exh-banner__sub {
     margin-top: 1.2rem;
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     font-weight: 300;
     font-size: clamp(.85rem, 1.4vw, 1.1rem);
     letter-spacing: .18em;
@@ -47,7 +47,7 @@
 
 .exh-banner__date {
     margin-top: .6rem;
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     font-size: .9rem;
     letter-spacing: .1em;
     opacity: .8;
@@ -61,7 +61,7 @@
 
 .exh-preface__h {
     text-align: center;
-    font-family: 'Noto Serif SC', serif;
+    font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
     font-size: 2rem;
     color: #bf272d;
     letter-spacing: .4em;
@@ -88,7 +88,7 @@
 
 .exh-section-h {
     text-align: center;
-    font-family: 'Noto Serif SC', serif;
+    font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
     font-size: 1.6rem;
     color: #bf272d;
     letter-spacing: .25em;
@@ -128,14 +128,14 @@
 .exh-works__cat {
     display: inline-block;
     margin-bottom: .3rem;
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     font-size: .72rem;
     letter-spacing: .12em;
     color: #bf272d;
 }
 
 .exh-works__title {
-    font-family: 'Noto Serif SC', serif;
+    font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
     font-size: 1rem;
     color: #222;
     line-height: 1.5;

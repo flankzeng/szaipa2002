@@ -47,13 +47,15 @@
     }
 
     .mySwiper6 b {
-        font-family: 'sans-medium-core', sansMedium;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+        font-weight: 500;
         font-size: 1.1rem;
     }
 
     .mySwiper6 p {
         padding-top: 1em;
-        font-family: 'sans-light-core', sansLight;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+        font-weight: 300;
         font-size: 1rem;
         line-height: 1.8em;
         margin-bottom: 2em;
@@ -311,7 +313,7 @@
         margin-bottom: var(--chapterBottom);
         text-align: justify;
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-size: var(--chapterFontsize);
         line-height: 2em;
     }
@@ -430,7 +432,7 @@
         margin-top: 2vh;
         color: black;
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-size: var(--newsFontsize);
         overflow: hidden;
     }
@@ -526,7 +528,7 @@
         padding-right: 15%;
         text-align: justify;
         font-weight: 200;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-size: var(--newsPtag);
     }
 
@@ -600,7 +602,7 @@
     }
 
     #section07 .exhibition h1 {
-        font-family: 'Noto Serif SC', serif;
+        font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
         font-weight: 600;
         font-size: var(--exhibitionH1);
         padding-top: 4vh;
@@ -609,7 +611,7 @@
     }
 
     #section07 .exhibition h3 {
-        font-family: 'Noto Serif SC', serif;
+        font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
         font-weight: 300;
         font-size: var(--exhibitionH3);
         line-height: 1.7em;
@@ -622,7 +624,7 @@
         border-bottom: 1px solid black;
         font-size: var(--exhibitionMore);
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     }
 
     .more a {
@@ -917,7 +919,7 @@
     .entitle {
         font-style: normal;
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         vertical-align: text-top;
         font-size: 1.3rem;
         padding-right: 1em;

@@ -119,7 +119,7 @@
     }
 
     .hoverLine:hover {
-        font-family: 'Noto Serif SC', serif !important;
+        font-family: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif !important;
         font-display: swap;
         font-weight: 500;
         font-size: 3rem;
@@ -145,7 +145,7 @@
         right: 0;
         display: flex;
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif !important;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif !important;
         font-size: 1rem;
         opacity: 0;
         transform: translateY(100%);
@@ -306,7 +306,7 @@
         font-size: .9rem;
         line-height: 1.5em;
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         z-index: 10;
     }
 

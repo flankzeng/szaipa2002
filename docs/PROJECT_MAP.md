@@ -59,7 +59,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 ## 公开站（Views/Home）
 - 布局：`Views/Shared/_newLayout.cshtml`（多数页）、`_Artist.cshtml`（NewArt）。两者都加了可选 `@RenderSectionAsync("Styles"/"Scripts")`——页面级 CSS/JS 用 `@section` 挂。
 - 已把巨量内联 CSS/JS **外提**到 `wwwroot/css/*.css`、`wwwroot/js/*.js`（newindex/newnews/newnewsread/newart + publication-gallery + exhibition-important）。NewArt 用「CSS 变量 + JS 桥接」保留动态值（`@artist.Color1/Path1`）。
-- 前台清理 Phase 1：公共库改按页加载、新闻详情去 Vue/Element Plus、图片懒加载、响应压缩/缓存、同字体子集、手机 viewport/navbar 修复。字体子集通过 `scripts/build-font-subsets.py` 重建，详情见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`。
+- 前台清理 Phase 1：公共库改按页加载、新闻详情去 Vue/Element Plus、图片懒加载、响应压缩/缓存、同字体子集、手机 viewport/navbar 修复。字体子集通过 `scripts/build-font-subsets.py` 重建；Noto 批处理还需 `scripts/font-db-codepoints.txt`，全量源从远端 `legacy/archive-before-frontend-prune-20260710` 临时 worktree 读取。详情见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`、`2026-07-13-noto-font-localization.md`。
 - ProjectTongou 公开浏览已退役：`Controllers/ProjectTongouController.cs` 仅保留无数据库访问的 410 兼容端点，视图为 `Views/ProjectTongou/Gone.cshtml`；Tongou 后台/数据层不受影响。
 - Legacy 资源不能按目录直接删除；第一轮 A/B/C/D 分级和两套 Content 差异见 `docs/updates/2026-07-10-legacy-resource-inventory.md`。
 - zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在远端 `legacy/archive-before-frontend-prune-20260710`。
@@ -69,7 +69,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，仅 `Award` 与 `layui` 可进入人工确认后的可逆隔离；见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - 静态缓存：`Infrastructure/StaticAssetCachePolicy.cs` 统一选择响应头；自有带 `?v=` 的资源为 1 年 `immutable`，外接 `/Content` 图片/字体 30 天、CSS/JS 7 天、未知类型 1 天，Development 始终 `no-cache`。规则由 `tests/Szaipa.Web.Tests` 覆盖；见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
-- 有字体脚本在公共页使用 `defer`，原 Alibaba 普惠体字库和本地核心子集保持不变；初始化统一等待 DOM 就绪。
+- 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。旧 `Views/Publication/*.cshtml`（slug 硬编码页）待迁数据后退役。
 - 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。

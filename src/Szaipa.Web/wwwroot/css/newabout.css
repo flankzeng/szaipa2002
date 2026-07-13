@@ -6,9 +6,8 @@
     /* 后续修补 */
     .entitle {
         font-style: normal;
-        /* font-family: 'sansLight';*/
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         vertical-align: text-top;
         font-size: 1.3rem;
     }
@@ -18,15 +17,14 @@
         margin-bottom: var(--chapterBottom);
         margin-top: 0 !important;
         text-align: justify;
-        /* font-family:'sansLight';*/
         font-weight: 300;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-size: 1rem;
         line-height: 2.4em;
     }
 
     .chapterTXT span {
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-weight: 500;
     }
 
@@ -59,7 +57,7 @@
         padding: .5em 2em;
         margin-top: 3%;
 
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-weight: 300;
     }
 
@@ -70,7 +68,7 @@
 
     #section02 .partner h1 {
         font-size: 1.2rem;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-weight: 400;
         padding: 1em;
     }
@@ -82,7 +80,7 @@
     .partner p {
         padding: 0 2em;
         text-align: justify;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-weight: 300;
         font-size: 1rem;
         white-space: pre-line;

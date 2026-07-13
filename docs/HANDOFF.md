@@ -25,6 +25,7 @@
 - **生产 IIS 访问审计（2026-07-13）**：只读扫描近 90 天 92 个日志、553,963 条请求行；`_preview`/`TempFile`/`js`/`Filme` 均有成功访问，必须保留；仅 `Award`（94 文件/7,197,911 B）和 `layui`（15 文件/876,709 B）在源码、数据库、IIS 三层均为零引用。服务器未移动/删除任何文件，下一步可逆隔离需用户明确确认。详见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - **静态资源缓存防回退（2026-07-13）**：新增可测试的缓存策略；带 `?v=` 的自有资源改为 1 年 `immutable`，普通自有 CSS/JS 保留 7 天，外接 `/Content` 图片/字体恢复生产基线 30 天、CSS/JS 7 天、未知类型 1 天；新增 Web 测试项目 14 项，总测试 96→110。详见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
 - **Alibaba 普惠体本地化（2026-07-11）**：官方 2.0 Light/Regular/Medium 已校验并生成约 170KB/档的本地核心子集，保留原 L/R/M 视觉层级；公共页已移除有字体第三方脚本。详见 `docs/updates/2026-07-11-alibaba-font-localization.md`。
+- **Noto Sans/Serif SC 本地化（2026-07-13）**：保留仓库旧 Noto 轮廓与原字重匹配；只读扫描两库 2,716,118 个文本值，将当前 2,922 个 codepoint 纳入 core，GB2312 余字按需拆成小分片。121 个本地 WOFF2 合计 17,820,936B，7 个正式路由验证只加载 core、无远程/legacy Noto；刻意新字只加载一个 74,428B 分片。13 个 92,580,992B 全量源逐 blob 核对后仅保留在远端 legacy archive，已从当前分支移除。详见 `docs/updates/2026-07-13-noto-font-localization.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）

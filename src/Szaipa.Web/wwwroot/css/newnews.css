@@ -30,7 +30,7 @@
 
     .news {
         color: #bf272d;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-display: swap;
         font-weight: 300;
         font-size: var(--newsFontsize);
@@ -51,7 +51,7 @@
     .news ul>a>li {
         margin-top: 2vh;
         color: #bf272d;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-display: swap;
         font-weight: 300;
         font-size: var(--newsFontsize);
@@ -132,7 +132,7 @@
         margin-top: 20px;
         padding-right: 15%;
         text-align: justify;
-        font-family: 'Noto Sans SC', sans-serif;
+        font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
         font-display: swap;
         font-weight: 200;
         font-size: var(--newsPtag);
