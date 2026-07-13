@@ -27,6 +27,7 @@
 - **Alibaba 普惠体本地化（2026-07-11）**：官方 2.0 Light/Regular/Medium 已校验并生成约 170KB/档的本地核心子集，保留原 L/R/M 视觉层级；公共页已移除有字体第三方脚本。详见 `docs/updates/2026-07-11-alibaba-font-localization.md`。
 - **Noto Sans/Serif SC 本地化（2026-07-13）**：保留仓库旧 Noto 轮廓与原字重匹配；只读扫描两库 2,716,118 个文本值，将当前 2,922 个 codepoint 纳入 core，GB2312 余字按需拆成小分片。121 个本地 WOFF2 合计 17,820,936B，7 个正式路由验证只加载 core、无远程/legacy Noto；刻意新字只加载一个 74,428B 分片。13 个 92,580,992B 全量源逐 blob 核对后仅保留在远端 legacy archive，已从当前分支移除。详见 `docs/updates/2026-07-13-noto-font-localization.md`。
 - **首页首图优先级（2026-07-13）**：把唯一 `fetchpriority="high"` 从装饰文字图转移到实际首张轮播封面；数据库轮播为空时自动落到首张硬编码封面，其余图片继续 lazy。真实只读首页验证仅首张封面 eager/high。详见 `docs/updates/2026-07-13-home-carousel-lcp-priority.md`。
+- **公共布局 CSS 外提（2026-07-13）**：`_newLayout` / `_Artist` 的静态内联样式拆为 common + main/artist 三个带版本的缓存文件；两页面、两视口 computed style 前后等价，均无横向溢出，首页 navbar 保持单行横排。首页 HTML 减少 9,625B（12.84%），NewArt 减少 7,201B（8.83%）。详见 `docs/updates/2026-07-13-layout-css-extraction.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
@@ -59,7 +60,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 110）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 110）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Staff)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

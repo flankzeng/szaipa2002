@@ -1,0 +1,61 @@
+.subNav {
+    height: var(--subnavH);
+    width: 100vw;
+    padding: var(--subnavPad);
+    position: relative;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    font-size: var(--subnavSize);
+    letter-spacing: .2em;
+}
+
+.fuzhu {
+    height: 12vh;
+    width: auto;
+    position: absolute;
+    top: 30%;
+    transform: translateY(-50%);
+    right: 10%;
+}
+
+.dui {
+    height: 2vh;
+    width: auto;
+    vertical-align: middle;
+}
+
+.footer {
+    background-color: black;
+}
+
+.copyrightM {
+    border-top: 1.5px solid white;
+}
+
+.copyright-container a,
+.copyright-container p {
+    color: white;
+}
+
+#ArtistNav {
+    position: fixed;
+    top: 3%;
+    right: 1%;
+    font-size: 1rem;
+    z-index: 999;
+}
+
+#ArtistNav a {
+    color: black;
+    background-color: white;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-decoration: none !important;
+    padding: .5vh 1vw;
+}
+
+.activeLink a {
+    color: white !important;
+    background-color: black !important;
+}
