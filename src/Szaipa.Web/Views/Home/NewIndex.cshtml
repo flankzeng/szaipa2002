@@ -2,6 +2,7 @@
 @{
 ViewBag.Title = "首页";
 Layout = "~/Views/Shared/_newLayout.cshtml";
+var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
 }
 
 
@@ -19,7 +20,7 @@ Layout = "~/Views/Shared/_newLayout.cshtml";
     <!-- 文本LOGO -->
     <div class="col-xs3 col-sm3 col-md3 col-lg3">&nbsp;</div>
     <div class="col-xs14 col-sm14 col-md14 col-lg14" style="display: flex;justify-content: center;align-items: center;">
-        <img decoding="async" fetchpriority="high" src="/content/images/TEXT.png" alt=""
+        <img decoding="async" src="/content/images/TEXT.png" alt=""
             style="height: var(--logoTXT);width: auto;margin-top: 2vh;margin-bottom: 2vh;" />
     </div>
     <div class="col-xs3 col-sm3 col-md3 col-lg3">&nbsp;</div>
@@ -31,8 +32,10 @@ Layout = "~/Views/Shared/_newLayout.cshtml";
             <div class="swiper-wrapper">
 
                 @* 暂时没用上，2025.11.25 *@
-                @foreach (var ex in Model.FeaturedPublications)
+                @for (var featuredIndex = 0; featuredIndex < Model.FeaturedPublications.Count; featuredIndex++)
                 {
+                var ex = Model.FeaturedPublications[featuredIndex];
+                var isFirstSlide = featuredIndex == 0;
                 <div class="swiper-slide">
 
                     <a href="/Home/Publication/@ex.Id" class="carouselZoom">
@@ -51,10 +54,10 @@ Layout = "~/Views/Shared/_newLayout.cshtml";
                         <div class="black">
 
                             <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
                             </div>
 
-                            <img loading="lazy" decoding="async" src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
+                            <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
 
                         </div>
 
@@ -81,10 +84,10 @@ Layout = "~/Views/Shared/_newLayout.cshtml";
                         <div class="black">
 
                             <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/tangqishan.png" alt="">
+                                <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" src="/Content/images/tangqishan.png" alt="">
                             </div>
 
-                            <img loading="lazy" decoding="async" src="/Content/images/tangqishan/100002.jpg" class="imgCon" alt="">
+                            <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" fetchpriority="@(hasFeaturedPublications ? "auto" : "high")" src="/Content/images/tangqishan/100002.jpg" class="imgCon" alt="">
 
                         </div>
 
