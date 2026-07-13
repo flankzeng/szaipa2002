@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <!-- Front-end tooling (Tailwind/TipTap) installs into node_modules; keep it out of MSBuild globs. -->
     <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**</DefaultItemExcludes>
+    <!--
+      The app serves files through UseStaticFiles and negotiates compression at runtime with
+      UseResponseCompression; it does not map Static Web Asset endpoints. Do not duplicate CSS/JS
+      as publish-time .gz/.br files that this serving path will not select. Versioned URLs and the
+      existing static-file cache policy still keep repeat-request CPU/network cost low.
+    -->
+    <CompressionEnabled>false</CompressionEnabled>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +26,10 @@
   <ItemGroup>
     <Content Update="wwwroot/admin/admin.input.css" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot/admin/src/**" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot/legacy/**/.gitkeep" CopyToPublishDirectory="Never" />
+    <Content Update="package.json" CopyToPublishDirectory="Never" />
+    <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Local.example.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <!--

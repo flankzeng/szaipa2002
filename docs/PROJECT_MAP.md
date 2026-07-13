@@ -66,10 +66,13 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在远端 `legacy/archive-before-frontend-prune-20260710`。
 - 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
 - 特殊展览页共享资源：`wwwroot/css/publication-special.css`；chunyu3/tonggou2 使用 `wwwroot/js/publication-special.js`，tonggou2024 保留 `publication-tonggou2024.js` 的独有滚动行为。详情见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
+- 展览页 JS 已不依赖 jQuery：普通展览用原生 `publication-gallery.js`，特殊页脚本也已原生化；Swiper 与页面脚本按顺序 `defer`。三个 `Layout=null` 特殊页必须保留 viewport meta，否则手机 390px 会退回 1440px 桌面布局。见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
 - Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
 - 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，`Award` 与 `layui` 仅为审计候选。服务器只供只读参考，发布版不隔离、不删除、不部署、不改 IIS；任何必须的服务器改动先停下征得用户确认。见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - 静态缓存：`Infrastructure/StaticAssetCachePolicy.cs` 统一选择响应头；自有带 `?v=` 的资源为 1 年 `immutable`，外接 `/Content` 图片/字体 30 天、CSS/JS 7 天、未知类型 1 天，Development 始终 `no-cache`。规则由 `tests/Szaipa.Web.Tests` 覆盖；见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
 - 首页轮播的首张实际可见封面由 `NewIndex.cshtml` 动态选择为唯一 eager/high 图片；若数据库轮播为空则落到首张硬编码展览，其余封面继续 lazy。见 `docs/updates/2026-07-13-home-carousel-lcp-priority.md`。
+- NewArt 的 Path1 首屏背景图由页面输出唯一 preload/high；首页章程原图已从 CSS background 改为保持原几何的 lazy `<img>`。见 `docs/updates/2026-07-13-image-loading-priorities.md`。
+- 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
