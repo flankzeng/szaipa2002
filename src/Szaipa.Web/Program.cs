@@ -14,6 +14,7 @@ using Szaipa.Data.Configuration;
 using Szaipa.Data.DependencyInjection;
 using Szaipa.Web.Authorization;
 using Szaipa.Web.Configuration;
+using Szaipa.Web.Infrastructure;
 using Szaipa.Web.Services;
 using Szaipa.Web.Services.Admin;
 
@@ -181,9 +182,14 @@ var hostBuilder = new HostBuilder()
                         FileProvider = new PhysicalFileProvider(webRoot),
                         OnPrepareResponse = context =>
                         {
-                            context.Context.Response.Headers.CacheControl = environment.IsDevelopment()
-                                ? "no-cache"
-                                : "public,max-age=604800";
+                            var request = context.Context.Request;
+                            var hasContentVersion = request.Query.TryGetValue("v", out var version)
+                                && !string.IsNullOrWhiteSpace(version.ToString());
+                            context.Context.Response.Headers.CacheControl = StaticAssetCachePolicy.Select(
+                                environment.IsDevelopment(),
+                                StaticAssetSource.WebRoot,
+                                request.Path.Value,
+                                hasContentVersion);
                         }
                     });
                 }
@@ -203,9 +209,10 @@ var hostBuilder = new HostBuilder()
                         RequestPath = "/Content",
                         OnPrepareResponse = context =>
                         {
-                            context.Context.Response.Headers.CacheControl = environment.IsDevelopment()
-                                ? "no-cache"
-                                : "public,max-age=86400";
+                            context.Context.Response.Headers.CacheControl = StaticAssetCachePolicy.Select(
+                                environment.IsDevelopment(),
+                                StaticAssetSource.LegacyContent,
+                                context.Context.Request.Path.Value);
                         }
                     });
                     Console.WriteLine($"Szaipa.Web boot: serving legacy assets from {legacyAssetsRoot} at /Content");
