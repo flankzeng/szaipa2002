@@ -87,14 +87,23 @@
         swiper10.slidePrev();
     });
 
-    // 放大镜
+    // 放大镜：首次交互时再请求原图，列表首屏只下载缩略图。
     $(function () {
-        $('.zoom').magnify({
-            speed: 200,
-            // limitBounds: true,
-            magnifiedWidth: 1000,
-            magnifiedHeight: 1000,
-        })
+        $('.zoom').on('pointermove.magnifyLazy mousemove.magnifyLazy focusin.magnifyLazy touchstart.magnifyLazy', function () {
+            var $image = $(this);
+            if ($image.data('magnifyInitialized')) {
+                return;
+            }
+
+            $image.data('magnifyInitialized', true);
+            $image.off('.magnifyLazy');
+            $image.magnify({
+                speed: 200,
+                // limitBounds: true,
+                magnifiedWidth: 1000,
+                magnifiedHeight: 1000,
+            });
+        });
     });
 
     $(function () {
