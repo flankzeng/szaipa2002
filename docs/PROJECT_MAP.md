@@ -72,6 +72,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 静态缓存：`Infrastructure/StaticAssetCachePolicy.cs` 统一选择响应头；自有带 `?v=` 的资源为 1 年 `immutable`，外接 `/Content` 图片/字体 30 天、CSS/JS 7 天、未知类型 1 天，Development 始终 `no-cache`。规则由 `tests/Szaipa.Web.Tests` 覆盖；见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
 - 首页轮播的首张实际可见封面由 `NewIndex.cshtml` 动态选择为唯一 eager/high 图片；若数据库轮播为空则落到首张硬编码展览，其余封面继续 lazy。见 `docs/updates/2026-07-13-home-carousel-lcp-priority.md`。
 - NewArt 的 Path1 首屏背景图由页面输出唯一 preload/high；首页章程原图已从 CSS background 改为保持原几何的 lazy `<img>`。见 `docs/updates/2026-07-13-image-loading-priorities.md`。
+- 首页下折静态图优先复用既有 `/Content/_preview/q30w1200/Content/...`：在售 6 图通过 `data-magnify-src` 保留原图，并由 `newindex.js` 到首次 pointer/touch/focus 交互才初始化 Magnify；另有 29 张章程/成员/活动图使用预览。两批完整滚动合计减少 21,716,650B。顶部/LCP、Logo/透明装饰及同页复用的原图不得直接换 q30。见 `docs/updates/2026-07-13-selling-thumbnail-previews.md`、`2026-07-13-homepage-static-preview-expansion.md`。
+- 静态位图的 HTML `width`/`height` 是源比例元数据，不是 CSS 像素布局；已有 vh/vw/%/rem 和 object-fit 继续控制显示。本轮另为公共 Logo、NewArt、NewAbout 和特殊展览页补 16 处，见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。

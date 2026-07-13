@@ -30,6 +30,8 @@
 - **公共布局 CSS 外提（2026-07-13）**：`_newLayout` / `_Artist` 的静态内联样式拆为 common + main/artist 三个带版本的缓存文件；两页面、两视口 computed style 前后等价，均无横向溢出，首页 navbar 保持单行横排。首页 HTML 减少 9,625B（12.84%），NewArt 减少 7,201B（8.83%）。详见 `docs/updates/2026-07-13-layout-css-extraction.md`。
 - **展览页 jQuery/移动 viewport（2026-07-13）**：普通展览和三个特殊展览页移除无必要 jQuery（每页约省 30,977B gzip），Swiper/页面脚本改为有序 `defer`；同时修复特殊页缺 viewport 导致手机 390px 按 1440px 桌面画布渲染的问题。三页手机均 `scrollWidth=clientWidth=390`，Swiper 3/3/2、0 控制台错误。详见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
 - **图片加载时机（2026-07-13）**：NewArt 的真实 Path1 首屏背景图加入唯一 preload/high，未重复下载；首页 849KB 章程 CSS background 改为同原图 lazy `<img>`，手机截图逐字节一致、桌面几何一致。详见 `docs/updates/2026-07-13-image-loading-priorities.md`。
+- **首页静态缩略图（2026-07-13）**：用户确认无需视觉 pilot，直接复用既有 q30w1200。6 张在售图列表由 9,860,285B→981,672B，Magnify 改为首次真实交互才请求对应原图；另 29 张章程/成员/活动下折图由 14,315,658B→1,477,621B。两批完整滚动合计减少 21,716,650B（约 89.83%），顶部/LCP、Logo、透明装饰和同页复用原图均未替换。详见 `docs/updates/2026-07-13-selling-thumbnail-previews.md`、`2026-07-13-homepage-static-preview-expansion.md`。
+- **公共图片固有比例（2026-07-13）**：为公共 Logo、NewArt 静态活动图、关于我们合作伙伴图和三个特殊展览开篇图共 16 处补真实 `width`/`height`；只提供比例元数据，不改变现有 vh/vw/%/rem 响应式 CSS。详见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - **未来发布包瘦身（2026-07-13）**：禁用当前 `UseStaticFiles` 不会选取的 SDK `.br/.gz` 发布副本，并排除 Node 清单、示例配置和 `.gitkeep`；本地对照实测少 761,732B，发布进程仍正确协商 Brotli/Gzip。仅影响未来本地生成包，服务器未部署/改动。详见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
@@ -38,7 +40,7 @@
 2. ~~**slug 页退役**~~ **2026-07-09 完成**：14 个简单 slug 页迁成 `Publication` 数据行（预留 ID 92001-92015），对应 action 改 301 重定向、硬编码视图已删、首页/NewArt 改链。chunyu3/tonggou2/tonggou2024（3 个特大自定义页）+ zengfeng（翻页书迷你站，非画廊结构）保留原样未迁移。**注意**：9 个已迁移展览的磁盘图片目录编号不连续/不规范，画廊会 404，需用户重新编号（清单见 `docs/updates/2026-07-09-publication-slug-migration.md`）；且需先执行 `docs/sql/2026-07-09-publication-slug-migration.sql`（核对生产库 92001-92015 未被占用后再跑）。
 3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
-5. **NewIndex 进一步优化（待视觉确认）**：现有 `_preview/q30w1200` 可覆盖首页 41 个静态图片，完整浏览理论上可由 29.18MB 降到 2.97MB（约省 26.21MB），但 q30 画质需先做“在售作品”小范围视觉 pilot；首页 LCP 封面应另制 1200/1920 高质量响应式版本，不能直接换 q30。服务器只供参考，不在发布版生成/替换图片。
+5. **NewIndex 进一步优化**：静态 q30 缩略图批次已完成。下一步可为动态新闻/展览/艺术家图片实现“预览存在则使用、否则回退原图”的只读解析器；首页 LCP 和 NewArt 全屏图仍需另制 1200/1920 高质量响应式版本，不能直接换 q30。服务器只供参考，不在发布版生成/替换图片。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
 7. **前台 Legacy 清理**：生产数据库和 IIS 日志审计均已完成；`Award` 与 `layui` 只是审计候选。服务器当前只供参考，不移动、不删除、不部署；若未来确有必要，必须先向用户说明并确认。其余候选根有真实访问，继续保留。公众号需求继续后置。
 
