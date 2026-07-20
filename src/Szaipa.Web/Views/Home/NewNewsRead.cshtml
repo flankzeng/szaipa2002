@@ -111,7 +111,7 @@
         </script>
     </button>
 
-    <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
+    <div class="article-spacer col-xs1 col-sm1 md-hide lg-hide" aria-hidden="true">&nbsp;</div>
 
     <article class="article col-xs18 col-sm18 col-md12 col-lg12">
         <!-- 标题 -->
@@ -134,13 +134,15 @@
 
         <!-- 正文 -->
 
-        @Html.Raw(Model.Article.Content)
+        <div class="article-body">
+            @Html.Raw(Model.Article.Content)
+        </div>
 
 
 
     </article>
 
-    <div class="col-xs1 col-sm1">&nbsp;</div>
+    <div class="article-spacer col-xs1 col-sm1" aria-hidden="true">&nbsp;</div>
 
     <!-- 子类新闻 -->
 

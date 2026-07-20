@@ -594,3 +594,98 @@
         white-space: nowrap;
     }
 }
+
+@media (max-width: 61.9375em) {
+    html {
+        /* 旧 responsive.css 会在窄屏把 1rem 放大到约 26px；只在新闻详情页恢复可读尺度。 */
+        font-size: clamp(93.75%, 4.1vw, 112.5%) !important;
+    }
+
+    .bannerCon {
+        height: auto;
+    }
+
+    .article-spacer {
+        display: none !important;
+    }
+
+    body > .article {
+        box-sizing: border-box;
+        float: none;
+        clear: both;
+        width: 100%;
+        margin: 0;
+        padding: 2rem 1.25rem 5rem !important;
+        border-right: 0;
+    }
+
+    #bread {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 2rem;
+        padding-top: 1.5rem;
+    }
+
+    #bread * {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+    #bread .time {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 0.75rem;
+    }
+
+    .article > header {
+        max-width: 18em;
+        margin: 2rem auto 2.5rem;
+        padding: 0;
+        font-size: clamp(1.45rem, 6.4vw, 1.75rem);
+        line-height: 1.45;
+        letter-spacing: 0.02em;
+        overflow-wrap: anywhere;
+    }
+
+    .article-body {
+        max-width: 100%;
+        font-size: 1rem;
+        line-height: 1.75;
+        overflow-wrap: anywhere;
+    }
+
+    .article .article-body :where(p, div, li, span, strong, em) {
+        max-width: 100%;
+        font-size: inherit !important;
+        line-height: inherit !important;
+    }
+
+    .article .article-body :where(h1, h2, h3, h4) {
+        height: auto !important;
+        margin: 2rem 0 1rem;
+        line-height: 1.45 !important;
+        letter-spacing: 0.04em;
+    }
+
+    .article .article-body h1 {
+        font-size: 1.35rem !important;
+    }
+
+    .article .article-body :where(h2, h3, h4) {
+        font-size: 1.2rem !important;
+    }
+
+    .article .article-body img {
+        display: block;
+        width: auto !important;
+        max-width: 100%;
+        height: auto !important;
+        margin: 1.5rem auto !important;
+    }
+}

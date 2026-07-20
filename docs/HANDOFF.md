@@ -34,6 +34,7 @@
 - **公共图片固有比例（2026-07-13）**：为公共 Logo、NewArt 静态活动图、关于我们合作伙伴图和三个特殊展览开篇图共 16 处补真实 `width`/`height`；只提供比例元数据，不改变现有 vh/vw/%/rem 响应式 CSS。详见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - **动态图片预览回退（2026-07-13）**：新增只读 `ILegacyImagePreviewResolver`，以大小写不敏感的安全索引查找现有 q30w1200，命中用预览、缺失/歧义/非法路径自动回原图；首批接入首页/新闻列表封面、会员卡/艺术家头像、展会列表卡片。新增 34 个 Web 测试用例，总测试 110→144。详见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
 - **动态预览扩展（2026-07-20）**：额度恢复后补齐 5 个真实只读路由冒烟；NewArt 作品在已有 q30 时先显示预览，Magnify 首次真实交互才加载原图，真实王玉波样本少传 1,908,434B；新闻详情侧栏和重要展览作品卡片也接安全回退解析器，并修复新闻详情手机 navbar 最后一项被裁切。详见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`。
+- **新闻详情手机/平板排版（2026-07-20）**：局部覆盖 legacy ≤991 的 26px 根字号和正文 `5em` 强制行高，清理正文两侧浮动占位；320/390/768/991 实页均无横向溢出，navbar 四项保持单行横排。详见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
 - **未来发布包瘦身（2026-07-13）**：禁用当前 `UseStaticFiles` 不会选取的 SDK `.br/.gz` 发布副本，并排除 Node 清单、示例配置和 `.gitkeep`；本地对照实测少 761,732B，发布进程仍正确协商 Brotli/Gzip。仅影响未来本地生成包，服务器未部署/改动。详见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
