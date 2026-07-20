@@ -1,13 +1,22 @@
     var B = window.__artistBanners || { base: '', path1: '', path2: '' };
 
-    // 放大镜
+    // 放大镜：有预览图时先显示预览，首次真实交互才请求原图。
     $(function () {
-        $('.zoom').magnify({
-            speed: 200,
-            // limitBounds: true,
-            magnifiedWidth: 1000,
-            magnifiedHeight: 1000,
-        })
+        $('.zoom').on('pointermove.magnifyLazy mousemove.magnifyLazy focusin.magnifyLazy touchstart.magnifyLazy', function () {
+            var $image = $(this);
+            if ($image.data('magnifyInitialized')) {
+                return;
+            }
+
+            $image.data('magnifyInitialized', true);
+            $image.off('.magnifyLazy');
+            $image.magnify({
+                speed: 200,
+                // limitBounds: true,
+                magnifiedWidth: 1000,
+                magnifiedHeight: 1000,
+            });
+        });
     });
 
     // 导航栏的焦点切换

@@ -541,6 +541,7 @@
     .bannerCon {
         display: flex;
         align-items: center;
+        box-sizing: border-box;
         width: 100%;
         min-height: 4rem;
         padding: 0 0.625rem;

@@ -1,4 +1,5 @@
 ﻿@model Szaipa.Web.Models.NewsDetailPageViewModel
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @{
     ViewBag.Title = Model.Article.Title;
     Layout = null;
@@ -151,8 +152,9 @@
             {
                 if (news.Title != Model.Article.Title)
                 {
+                    var relatedCoverUrl = ImagePreviewResolver.Resolve($"/Content/newsImg/{news.CoverPath}");
                     <a href="/Home/newnewsread/@news.Id">
-                        <li class="contentSon" style="background-image: url('/content/newsImg/@news.CoverPath');">
+                        <li class="contentSon" style="background-image: url('@relatedCoverUrl');">
                             <h3 class="JhengRegular">@string.Format("{0:yyyy.MM.dd}", news.Date)</h3>
                             <h1>@news.Title</h1>
                             <h4 class="JhengLight">查看更多</h4>

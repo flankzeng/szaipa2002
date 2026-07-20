@@ -59,4 +59,4 @@
 - 全量测试 144/144：Data 96、Web 48；相较此前 Web 14 项，新增的 34 个执行用例覆盖命中、转换、编码和安全回退。
 - `npm --prefix src/Szaipa.Web run build` 与 `git diff --check`：通过。
 - 静态断言确认五个目标 View 各有且仅有一次注入/解析调用；Hero、动态大轮播、Banner、Magnify 作品和相关展览路径保持原样。
-- 本轮尝试启动新的本地动态页面冒烟时被执行环境额度限制拒绝，没有绕过限制；因此不声称完成接入后的真实数据库页面 GET。解析器行为由临时目录单测覆盖，页面接入由 Razor 编译和静态断言覆盖。
+- 2026-07-20 额度恢复后补做只读真实接入冒烟：`NewIndex`、`NewNews`、`NewVip`、`NewArt`、`PublicationList` 均返回 200；命中与缺失回退同时出现，390px 视口均无横向溢出，控制台 0 error。当前只读库没有可展示的 Publication 行，因此展会卡片的真实数据渲染仍由 Razor 编译与解析器单测覆盖。

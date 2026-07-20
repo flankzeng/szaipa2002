@@ -1,3 +1,4 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model Szaipa.Web.Models.ExhibitionGalleryModel
 @{
     var bannerBg = $"/Content/images/{Model.FolderName}/10000.jpg";
@@ -52,7 +53,7 @@
                     @if (!string.IsNullOrWhiteSpace(work.ImagePath))
                     {
                         <div class="exh-works__img">
-                            <img src="@work.ImagePath" alt="@work.Title" loading="lazy" decoding="async" />
+                            <img src="@ImagePreviewResolver.Resolve(work.ImagePath)" alt="@work.Title" loading="lazy" decoding="async" />
                         </div>
                     }
                     <div class="exh-works__meta">

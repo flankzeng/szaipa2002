@@ -183,13 +183,17 @@
                     }
                     @foreach (var w in Model.Works)
                     {
+                    var workOriginalUrl = $"/Content/ArtImg/Artist/works-narrow/{w.Path}";
                     <div class="swiper-slide">
                         <div class="material JhengLight">
                             <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
                         </div>
 
-                        <a href="/Content/ArtImg/Artist/works-narrow/@w.Path">
-                            <img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/works-narrow/@w.Path" class="zoom">
+                        <a href="@workOriginalUrl">
+                            <img loading="lazy" decoding="async"
+                                src="@ImagePreviewResolver.Resolve(workOriginalUrl)"
+                                data-magnify-src="@workOriginalUrl"
+                                class="zoom" alt="@w.Title">
                         </a>
 
 
