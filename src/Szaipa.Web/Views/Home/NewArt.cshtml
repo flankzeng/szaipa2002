@@ -1,8 +1,72 @@
 ﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
 @{
+    static string? GetSafeBannerFileName(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var candidate = value.Trim();
+        if (candidate.Length > 255
+            || candidate is "." or ".."
+            || candidate.Contains("..", StringComparison.Ordinal)
+            || candidate.Any(character => !char.IsLetterOrDigit(character) && character is not ('-' or '_' or '.')))
+        {
+            return null;
+        }
+
+        var extension = System.IO.Path.GetExtension(candidate);
+        return extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".png", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".webp", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".avif", StringComparison.OrdinalIgnoreCase)
+                ? candidate
+                : null;
+    }
+
     var artist = Model.Artist;
-    var artistBannerUrl = Url.Content($"~/content/ArtImg/Artist/Banner/{artist.Path1}");
+    const string bannerRoot = "/Content/ArtImg/Artist/Banner/";
+    var path1FileName = GetSafeBannerFileName(artist.Path1);
+    var path2FileName = GetSafeBannerFileName(artist.Path2);
+    var path1Url = path1FileName is null ? null : bannerRoot + Uri.EscapeDataString(path1FileName);
+    var path2Url = path2FileName is null ? null : bannerRoot + Uri.EscapeDataString(path2FileName);
+    var path1Derived = path1Url is null ? null : DerivedImageResolver.Resolve(path1Url);
+    var path2Derived = path2Url is null ? null : DerivedImageResolver.Resolve(path2Url);
+    var path1OriginalUrl = path1Derived?.OriginalUrl is { Length: > 0 } path1Original
+        ? path1Original
+        : path1Url;
+    var path2OriginalUrl = path2Derived?.OriginalUrl is { Length: > 0 } path2Original
+        ? path2Original
+        : path2Url;
+    var path1AvifUrl = path1Derived?.AvifUrl is { Length: > 0 } path1Avif ? path1Avif : null;
+    var path2AvifUrl = path2Derived?.AvifUrl is { Length: > 0 } path2Avif ? path2Avif : null;
+    var primaryOriginalUrl = path1OriginalUrl ?? path2OriginalUrl;
+    var primaryAvifUrl = path1OriginalUrl is not null ? path1AvifUrl : path2AvifUrl;
+    var primaryPayload = primaryOriginalUrl is null
+        ? null
+        : new { originalUrl = primaryOriginalUrl, avifUrl = primaryAvifUrl };
+    var path1Payload = path1OriginalUrl is null
+        ? null
+        : new { originalUrl = path1OriginalUrl, avifUrl = path1AvifUrl };
+    var path2Payload = path2OriginalUrl is null
+        ? null
+        : new { originalUrl = path2OriginalUrl, avifUrl = path2AvifUrl };
+    var bannerPayloadJson = System.Text.Json.JsonSerializer.Serialize(new
+    {
+        primary = primaryPayload,
+        path1 = path1Payload,
+        path2 = path2Payload
+    });
+    var primaryOriginalCssUrl = primaryOriginalUrl is null
+        ? null
+        : System.Text.Json.JsonSerializer.Serialize(primaryOriginalUrl);
+    var primaryAvifCssUrl = primaryAvifUrl is null
+        ? null
+        : System.Text.Json.JsonSerializer.Serialize(primaryAvifUrl);
     ViewBag.Title = artist.ArtistNameCn + " - 艺术家官网";
     Layout = "_Artist";
 }
@@ -299,15 +363,36 @@
     </section>
 
 @section Styles {
-    @if (!string.IsNullOrWhiteSpace(artist.Path1))
+    @if (primaryAvifUrl is not null)
     {
-        <link rel="preload" as="image" href="@artistBannerUrl" fetchpriority="high" />
+        <link rel="preload" as="image" href="@primaryAvifUrl" type="image/avif" fetchpriority="high" />
+    }
+    else if (primaryOriginalUrl is not null)
+    {
+        <link rel="preload" as="image" href="@primaryOriginalUrl" fetchpriority="high" />
     }
     <style>
         :root {
             --artist-grad1: @artist.Color1;
             --artist-grad2: @artist.Color2;
-            --artist-banner: url('@artistBannerUrl');
+            @if (primaryOriginalCssUrl is null)
+            {
+                <text>--artist-banner: none;</text>
+            }
+            else if (primaryAvifCssUrl is not null)
+            {
+                <text>
+                    --artist-banner: url(@Html.Raw(primaryOriginalCssUrl));
+                    --artist-banner: image-set(
+                        url(@Html.Raw(primaryAvifCssUrl)) type("image/avif"),
+                        url(@Html.Raw(primaryOriginalCssUrl))
+                    );
+                </text>
+            }
+            else
+            {
+                <text>--artist-banner: url(@Html.Raw(primaryOriginalCssUrl));</text>
+            }
         }
     </style>
     <link rel="stylesheet" href="~/css/newart.css" asp-append-version="true" />
@@ -315,7 +400,7 @@
 
 @section Scripts {
     <script>
-        window.__artistBanners = { base: '/content/ArtImg/Artist/Banner/', path1: '@artist.Path1', path2: '@artist.Path2' };
+        window.__artistBanners = @Html.Raw(bannerPayloadJson);
     </script>
     <script src="/Content/Model/jquery-3.6.1.min.js"></script>
     <script src="/Content/Model/swiper-bundle.min.js"></script>

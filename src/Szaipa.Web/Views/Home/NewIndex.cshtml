@@ -1,9 +1,12 @@
 ﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.HomePageSnapshotModel
 @{
 ViewBag.Title = "首页";
 Layout = "~/Views/Shared/_newLayout.cshtml";
 var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
+var tangqishanCoverUrl = "/Content/images/tangqishan/100002.jpg";
+var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 }
 
 
@@ -37,6 +40,8 @@ var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
                 {
                 var ex = Model.FeaturedPublications[featuredIndex];
                 var isFirstSlide = featuredIndex == 0;
+                var coverUrl = $"/Content/images/{ex.FolderName}/{ex.CoverPath}";
+                var coverSource = DerivedImageResolver.Resolve(coverUrl);
                 <div class="swiper-slide">
 
                     <a href="/Home/Publication/@ex.Id" class="carouselZoom">
@@ -58,7 +63,13 @@ var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
                                 <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
                             </div>
 
-                            <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="/Content/images/@ex.FolderName/@ex.CoverPath" class="imgCon" alt="">
+                            <picture>
+                                @if (coverSource?.AvifUrl is not null)
+                                {
+                                    <source type="image/avif" srcset="@coverSource.AvifUrl">
+                                }
+                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="@(coverSource?.OriginalUrl ?? coverUrl)" class="imgCon" alt="">
+                            </picture>
 
                         </div>
 
@@ -88,7 +99,13 @@ var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
                                 <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" src="/Content/images/tangqishan.png" alt="">
                             </div>
 
-                            <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" fetchpriority="@(hasFeaturedPublications ? "auto" : "high")" src="/Content/images/tangqishan/100002.jpg" class="imgCon" alt="">
+                            <picture>
+                                @if (tangqishanCoverSource?.AvifUrl is not null)
+                                {
+                                    <source type="image/avif" srcset="@tangqishanCoverSource.AvifUrl">
+                                }
+                                <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" fetchpriority="@(hasFeaturedPublications ? "auto" : "high")" src="@(tangqishanCoverSource?.OriginalUrl ?? tangqishanCoverUrl)" width="1080" height="791" class="imgCon" alt="">
+                            </picture>
 
                         </div>
 

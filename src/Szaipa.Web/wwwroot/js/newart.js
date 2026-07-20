@@ -1,4 +1,38 @@
-    var B = window.__artistBanners || { base: '', path1: '', path2: '' };
+    var bannerPayload = window.__artistBanners || {};
+
+    function normalizeBannerSource(source) {
+        if (!source || typeof source.originalUrl !== 'string' || source.originalUrl.length === 0) {
+            return null;
+        }
+
+        return {
+            originalUrl: source.originalUrl,
+            avifUrl: typeof source.avifUrl === 'string' && source.avifUrl.length > 0
+                ? source.avifUrl
+                : null,
+        };
+    }
+
+    function getBannerBackground(source) {
+        if (!source) {
+            return 'none';
+        }
+
+        var originalBackground = 'url(' + JSON.stringify(source.originalUrl) + ')';
+        if (!source.avifUrl) {
+            return originalBackground;
+        }
+
+        var imageSetBackground = 'image-set(url(' + JSON.stringify(source.avifUrl)
+            + ') type("image/avif"), url(' + JSON.stringify(source.originalUrl) + '))';
+        return window.CSS && CSS.supports('background-image', imageSetBackground)
+            ? imageSetBackground
+            : originalBackground;
+    }
+
+    var primaryBanner = normalizeBannerSource(bannerPayload.primary);
+    var path1Banner = normalizeBannerSource(bannerPayload.path1) || primaryBanner;
+    var path2Banner = normalizeBannerSource(bannerPayload.path2) || primaryBanner;
 
     // 放大镜：有预览图时先显示预览，首次真实交互才请求原图。
     $(function () {
@@ -36,27 +70,10 @@
     $(function () {
         $('.hoverLine').hover(function () {
             var index = $('.hoverLine').index(this); // 获取当前 li 元素的下标
-            var bgImg = '';
-
-            switch (index) {
-                case 0:
-                    bgImg = (B.base + B.path1);
-                    break;
-                case 1:
-                    bgImg = (B.base + B.path2);
-                    break;
-                case 2:
-                    bgImg = (B.base + B.path1);
-                    break;
-                case 3:
-                    bgImg = (B.base + B.path2);
-                    break;
-
-            }
-
-            $('#section01').css('background-image', 'url("' + bgImg + '")');
+            var banner = index % 2 === 0 ? path1Banner : path2Banner;
+            $('#section01').css('background-image', getBannerBackground(banner));
         }, function () {
-            $('#section01').css('background-image', ('url("' + B.base + B.path1 + '")'));
+            $('#section01').css('background-image', getBannerBackground(primaryBanner));
         });
     });
 

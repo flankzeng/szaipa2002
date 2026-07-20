@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 48 项；全解决方案合计 144）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 85 项；全解决方案合计 181）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 144）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 181）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -74,6 +74,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - NewArt 的 Path1 首屏背景图由页面输出唯一 preload/high；首页章程原图已从 CSS background 改为保持原几何的 lazy `<img>`。见 `docs/updates/2026-07-13-image-loading-priorities.md`。
 - 首页下折静态图优先复用既有 `/Content/_preview/q30w1200/Content/...`：在售 6 图通过 `data-magnify-src` 保留原图，并由 `newindex.js` 到首次 pointer/touch/focus 交互才初始化 Magnify；另有 29 张章程/成员/活动图使用预览。两批完整滚动合计减少 21,716,650B。顶部/LCP、Logo/透明装饰及同页复用的原图不得直接换 q30。见 `docs/updates/2026-07-13-selling-thumbnail-previews.md`、`2026-07-13-homepage-static-preview-expansion.md`。
 - 数据库动态小图通过单例 `Services/LegacyImagePreviewResolver` 只读索引现有预览树；仅 jpg/jpeg/png，大小写唯一匹配并返回磁盘实际 case，缺失/歧义/非法路径原图回退。首批只用于首页/新闻列表封面、会员/艺术家头像、展会列表卡片；LCP/大图/Magnify 作品不直接套 q30。见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
+- 高质量大图通过独立单例 `Services/DerivedImageResolver` 读取现代仓库 `wwwroot/media/derived/manifest.json` 的严格 allowlist；仅返回仓库内真实 AVIF，合法未命中时保留原 `/Content`。首页唐岐山 LCP 已从 1,783,805B 降至 167,097B，浏览器原图 fallback、尺寸和 eager/high 规则不变。NewArt 空 Path 输出 none 且不再请求 Banner 目录；现有全屏 Banner 未因追求体积而降质替换。见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
 - NewArt 的 `works-narrow` 作品已在解析器命中时使用 q30，并通过 `data-magnify-src` 保留原图；`newart.js` 只在 pointer/mouse/focus/touch 首次真实交互时初始化 Magnify，避免插件启动即下载原图。新闻详情侧栏与重要展览作品卡片也走相同回退。见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`。
 - NewNewsRead 的手机/平板字号和行高必须在 `newnewsread.css` 内局部覆盖 legacy `responsive.css` 在 ≤991 宽度下的 26px 根字号和 `.article p { line-height: 5em !important; }`；富文本作用域为 `.article-body`，不要去修改数据库内容。320/390/768/991 验证见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
 - 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css`、独立新闻详情在 `newnewsread.css` 局部覆盖 legacy 的 ≤991 26px 与 992–1279 12px 根字号；不修改外置参考 Content。公共 navbar 在 `public-layout-main.css` / `newnewsread.css` 用 `rem + vw` 从 15px 连续接到 24px，并强制单行横排。320/390/768/991/992/1024/1199/1200/1279/1280 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。

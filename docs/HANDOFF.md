@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 144 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 181 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -37,6 +37,7 @@
 - **新闻详情手机/平板排版（2026-07-20）**：局部覆盖 legacy ≤991 的 26px 根字号和正文 `5em` 强制行高，清理正文两侧浮动占位；320/390/768/991 实页均无横向溢出，navbar 四项保持单行横排。详见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
 - **公共页手机/平板/窄桌面字号（2026-07-20）**：修复 legacy ≤991 强制 26px 和 992–1279 强制 12px 的两段根字号；现代公共布局、新闻详情与特殊展览在 991→1280 连续为 16px 基准，公共 navbar 从 15px 平滑接到 24px 且始终单行。另修 NewAbout 合作伙伴图溢出卡片。详见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
 - **特殊展览图库分层加载（2026-07-20）**：三页 201 张现场图的主/缩标记收敛为同一数组；170 张已有 q30 先显示预览，图库接近视口后只预载 active/prev/next 原图，理论首轮少传 50,506,952B。三页统一共享 JS，退役重复的 tonggou2024 脚本。详见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
+- **高质量首页首图（2026-07-20）**：现代仓库内置 1080×791 AVIF，首页当前 LCP 从 1,783,805B 降到 167,097B（约 -90.63%），原 `/Content` 图保留为 fallback；新增严格 allowlist 派生解析器。NewArt 空 Path 不再拼 Banner 目录/产生 404；三张现有全屏 Banner 经审计后因高 DPR 画质风险暂不强换 1600px 版本。总测试 144→181。详见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
 - **未来发布包瘦身（2026-07-13）**：禁用当前 `UseStaticFiles` 不会选取的 SDK `.br/.gz` 发布副本，并排除 Node 清单、示例配置和 `.gitkeep`；本地对照实测少 761,732B，发布进程仍正确协商 Brotli/Gzip。仅影响未来本地生成包，服务器未部署/改动。详见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
@@ -45,7 +46,7 @@
 2. ~~**slug 页退役**~~ **2026-07-09 完成**：14 个简单 slug 页迁成 `Publication` 数据行（预留 ID 92001-92015），对应 action 改 301 重定向、硬编码视图已删、首页/NewArt 改链。chunyu3/tonggou2/tonggou2024（3 个特大自定义页）+ zengfeng（翻页书迷你站，非画廊结构）保留原样未迁移。**注意**：9 个已迁移展览的磁盘图片目录编号不连续/不规范，画廊会 404，需用户重新编号（清单见 `docs/updates/2026-07-09-publication-slug-migration.md`）；且需先执行 `docs/sql/2026-07-09-publication-slug-migration.sql`（核对生产库 92001-92015 未被占用后再跑）。
 3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
-5. **前台图片继续优化**：静态/动态卡片图、NewArt 作品预览和三个特殊展览现场图分层加载均已完成。下一批图片优化只剩首页 LCP 和 NewArt 全屏图的高质量派生版本，不能直接换 q30；不在服务器或旧稳定发布版生成/替换图片。
+5. **前台图片继续优化**：静态/动态卡片图、NewArt 作品预览、三个特殊展览现场图分层加载和首页 LCP 高质量 AVIF 均已完成。NewArt 全屏图的 1600px 试验不足以安全覆盖高 DPR 桌面，继续时先验证 2400px 高质量档，不能直接换 q30；不在服务器或旧稳定发布版生成/替换图片。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
 7. **前台 Legacy 清理**：生产数据库和 IIS 日志审计均已完成；`Award` 与 `layui` 只是审计候选。服务器当前只供参考，不移动、不删除、不部署；若未来确有必要，必须先向用户说明并确认。其余候选根有真实访问，继续保留。公众号需求继续后置。
 8. ~~**992–1279 窄桌面字号**~~ **2026-07-20 完成**：用户确认采用连续缩放；根字号与两侧统一为 16px，navbar 用 `rem + vw` 从 992 的 15px 平滑接到 1280 的 24px。991/992/1024/1199/1200/1279/1280 及主要前台实页均无横向溢出或换行。
@@ -71,7 +72,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 144）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 181）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Staff)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

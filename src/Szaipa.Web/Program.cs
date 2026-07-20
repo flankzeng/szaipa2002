@@ -83,6 +83,7 @@ var hostBuilder = new HostBuilder()
                 services.AddSzaipaData(configuration);
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
+                services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 
@@ -181,6 +182,7 @@ var hostBuilder = new HostBuilder()
                     app.UseStaticFiles(new StaticFileOptions
                     {
                         FileProvider = new PhysicalFileProvider(webRoot),
+                        ContentTypeProvider = StaticAssetContentTypes.CreateProvider(),
                         OnPrepareResponse = context =>
                         {
                             var request = context.Context.Request;
