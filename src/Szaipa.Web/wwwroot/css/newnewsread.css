@@ -53,6 +53,9 @@
             font-size: var(--navFontsize);
             text-decoration: none;
             color: black;
+            white-space: nowrap;
+            word-break: keep-all;
+            writing-mode: horizontal-tb;
         }
 
         .lineL {
@@ -592,6 +595,17 @@
         font-size: clamp(0.6875rem, 3.4vw, 0.9375rem);
         line-height: 1.5rem;
         white-space: nowrap;
+    }
+}
+
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    html {
+        /* 覆盖 legacy 992–1279 的 12px 根字号，并与两侧断点连续。 */
+        font-size: 100%;
+    }
+
+    .bannerLink a {
+        font-size: clamp(0.9375rem, calc(3.125vw - 1rem), 1.5rem);
     }
 }
 

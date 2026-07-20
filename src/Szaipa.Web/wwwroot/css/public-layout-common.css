@@ -7,7 +7,13 @@ html {
         /* 覆盖 legacy responsive.css 误将手机/平板 rem 基准放大到 26px 的全局规则。 */
         font-size: clamp(93.75%, 4.1vw, 100%) !important;
     }
+}
 
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    html {
+        /* 避免 legacy 720p 规则在 992–1279 宽度把 1rem 突降为 12px。 */
+        font-size: 100%;
+    }
 }
 
 /* Shared email/footer layout used by the public and artist shells. */

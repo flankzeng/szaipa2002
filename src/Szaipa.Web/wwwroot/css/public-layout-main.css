@@ -178,3 +178,10 @@
         writing-mode: horizontal-tb;
     }
 }
+
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    .bannerLink a {
+        /* 991px 的 0.9375rem 平滑衔接 1280px 桌面导航的 1.5rem。 */
+        font-size: clamp(0.9375rem, calc(3.125vw - 1rem), 1.5rem);
+    }
+}

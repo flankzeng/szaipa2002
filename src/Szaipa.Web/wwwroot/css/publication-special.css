@@ -31,7 +31,13 @@ html {
         /* 三个特殊展览页不继承 legacy 窄屏 26px 根字号。 */
         font-size: clamp(93.75%, 4.1vw, 100%) !important;
     }
+}
 
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    html {
+        /* 与 991px 手机/平板及 1280px 桌面基准连续衔接。 */
+        font-size: 100%;
+    }
 }
 
         /* 以下为footer */
@@ -396,6 +402,9 @@ html {
             font-weight: 200;
             font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
             opacity: 0.7;
+            white-space: nowrap;
+            word-break: keep-all;
+            writing-mode: horizontal-tb;
         }
 
         .active {
@@ -799,6 +808,12 @@ html {
                         font-weight: 700;
                         font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
                     }
+
+@media (max-width: 20.5em) {
+    .nav {
+        padding-right: 2.5vw;
+    }
+}
 
 @media (max-width: 61.9375em) {
     #section08m {
