@@ -26,6 +26,14 @@ html {
             scroll-behavior: smooth;
         }
 
+@media (max-width: 61.9375em) {
+    html {
+        /* 三个特殊展览页不继承 legacy 窄屏 26px 根字号。 */
+        font-size: clamp(93.75%, 4.1vw, 100%) !important;
+    }
+
+}
+
         /* 以下为footer */
         #section08 {
             /* EMAIL */
@@ -407,6 +415,7 @@ html {
             position: relative;
             height: auto;
             padding: 0 10vw 10vh 10vw;
+            overflow-x: hidden;
         }
 
         #section02 h1 {
@@ -790,3 +799,15 @@ html {
                         font-weight: 700;
                         font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
                     }
+
+@media (max-width: 61.9375em) {
+    #section08m {
+        height: max(80vh, 42rem);
+    }
+
+    .emailPosition h1 {
+        font-size: clamp(1.5rem, 6.8vw, 2rem);
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+}

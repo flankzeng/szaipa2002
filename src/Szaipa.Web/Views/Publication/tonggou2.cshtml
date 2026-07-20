@@ -1,5 +1,12 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @{
     Layout = null;
+    var onsiteImages = Enumerable.Range(0, 48)
+        .Select(index => $"/Content/images/tonggou/{index}.jpg")
+        .Select(originalUrl => (
+            OriginalUrl: originalUrl,
+            PreviewUrl: ImagePreviewResolver.Resolve(originalUrl)))
+        .ToArray();
 }
 
 <!DOCTYPE html>
@@ -460,315 +467,24 @@
             <section>
                 <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/0.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/1.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/4.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/5.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/6.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/7.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/8.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/9.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/10.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/11.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/12.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/13.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/14.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/15.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/16.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/17.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/18.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/19.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/20.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/21.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/22.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/23.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/24.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/25.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/26.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/27.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/28.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/29.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/30.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/31.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/32.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/33.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/34.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/35.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/36.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/37.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/38.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/39.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/40.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/41.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/42.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/43.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/44.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/45.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/46.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/47.jpg" />
-                        </div>
-
+                        @foreach (var image in onsiteImages)
+                        {
+                            <div class="swiper-slide">
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" data-original-src="@image.OriginalUrl" />
+                            </div>
+                        }
                     </div>
                     <div class="swiper-button-next xs-hide sm-hide"></div>
                     <div class="swiper-button-prev xs-hide sm-hide"></div>
                 </div>
                 <div thumbsSlider="" class="swiper mySwiper2">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/0.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/1.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/2.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/3.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/4.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/5.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/6.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/7.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/8.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/9.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/10.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/11.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/12.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/13.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/14.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/15.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/16.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/17.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/18.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/19.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/20.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/21.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/22.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/23.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/24.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/25.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/26.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/27.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/28.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/29.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/30.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/31.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/32.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/33.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/34.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/35.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/36.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/37.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/38.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/39.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/40.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/41.jpg" />
-                        </div>
-
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/42.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/43.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/44.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/45.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/46.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou/47.jpg" />
-                        </div>
+                        @foreach (var image in onsiteImages)
+                        {
+                            <div class="swiper-slide">
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" />
+                            </div>
+                        }
                     </div>
                 </div>
             </section>

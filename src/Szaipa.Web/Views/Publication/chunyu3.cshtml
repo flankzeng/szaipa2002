@@ -1,5 +1,15 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @{
     Layout = null;
+    var onsiteImageNames = new[] { "10004", "10002", "10003", "10001" }
+        .Concat(Enumerable.Range(10005, 5).Select(index => index.ToString()))
+        .Concat(Enumerable.Range(100010, 37).Select(index => index.ToString()));
+    var onsiteImages = onsiteImageNames
+        .Select(fileName => $"/Content/images/chunyu3/{fileName}.jpg")
+        .Select(originalUrl => (
+            OriginalUrl: originalUrl,
+            PreviewUrl: ImagePreviewResolver.Resolve(originalUrl)))
+        .ToArray();
 }
 
 <!DOCTYPE html>
@@ -1503,288 +1513,24 @@
             <section>
                 <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10004.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10002.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10003.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10001.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10005.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10006.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10007.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10008.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10009.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100010.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100011.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100012.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100013.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100014.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100015.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100016.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100017.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100018.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100019.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100020.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100021.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100022.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100023.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100024.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100025.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100026.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100027.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100028.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100029.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100030.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100031.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100032.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100033.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100034.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100035.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100036.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100037.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100038.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100039.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100040.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100041.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100042.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100043.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100044.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100045.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100046.jpg" />
-                        </div>
+                        @foreach (var image in onsiteImages)
+                        {
+                            <div class="swiper-slide">
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" data-original-src="@image.OriginalUrl" />
+                            </div>
+                        }
                     </div>
                     <div class="swiper-button-next xs-hide sm-hide"></div>
                     <div class="swiper-button-prev xs-hide sm-hide"></div>
                 </div>
                 <div thumbsSlider="" class="swiper mySwiper2">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10004.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10002.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10003.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10001.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10005.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10006.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10007.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10008.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/10009.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100010.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100011.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100012.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100013.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100014.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100015.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100016.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100017.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100018.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100019.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100020.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100021.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100022.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100023.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100024.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100025.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100026.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100027.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100028.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100029.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100030.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100031.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100032.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100033.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100034.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100035.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100036.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100037.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100038.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100039.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100040.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100041.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100042.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100043.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100044.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100045.jpg" />
-                        </div>
-                        <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/100046.jpg" />
-                        </div>
+                        @foreach (var image in onsiteImages)
+                        {
+                            <div class="swiper-slide">
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" />
+                            </div>
+                        }
                     </div>
                 </div>
             </section>

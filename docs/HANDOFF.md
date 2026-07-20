@@ -35,6 +35,8 @@
 - **动态图片预览回退（2026-07-13）**：新增只读 `ILegacyImagePreviewResolver`，以大小写不敏感的安全索引查找现有 q30w1200，命中用预览、缺失/歧义/非法路径自动回原图；首批接入首页/新闻列表封面、会员卡/艺术家头像、展会列表卡片。新增 34 个 Web 测试用例，总测试 110→144。详见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
 - **动态预览扩展（2026-07-20）**：额度恢复后补齐 5 个真实只读路由冒烟；NewArt 作品在已有 q30 时先显示预览，Magnify 首次真实交互才加载原图，真实王玉波样本少传 1,908,434B；新闻详情侧栏和重要展览作品卡片也接安全回退解析器，并修复新闻详情手机 navbar 最后一项被裁切。详见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`。
 - **新闻详情手机/平板排版（2026-07-20）**：局部覆盖 legacy ≤991 的 26px 根字号和正文 `5em` 强制行高，清理正文两侧浮动占位；320/390/768/991 实页均无横向溢出，navbar 四项保持单行横排。详见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
+- **公共页手机/平板字号（2026-07-20）**：确认 `emailPosition` 等公共排版集体放大的根因是 legacy ≤991 强制 26px 根字号；现代公共布局与特殊展览局部恢复约 15–16px rem 基准，短屏邮件区不再与社交图标重叠。详见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
+- **特殊展览图库分层加载（2026-07-20）**：三页 201 张现场图的主/缩标记收敛为同一数组；170 张已有 q30 先显示预览，图库接近视口后只预载 active/prev/next 原图，理论首轮少传 50,506,952B。三页统一共享 JS，退役重复的 tonggou2024 脚本。详见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - **未来发布包瘦身（2026-07-13）**：禁用当前 `UseStaticFiles` 不会选取的 SDK `.br/.gz` 发布副本，并排除 Node 清单、示例配置和 `.gitkeep`；本地对照实测少 761,732B，发布进程仍正确协商 Brotli/Gzip。仅影响未来本地生成包，服务器未部署/改动。详见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
@@ -43,9 +45,10 @@
 2. ~~**slug 页退役**~~ **2026-07-09 完成**：14 个简单 slug 页迁成 `Publication` 数据行（预留 ID 92001-92015），对应 action 改 301 重定向、硬编码视图已删、首页/NewArt 改链。chunyu3/tonggou2/tonggou2024（3 个特大自定义页）+ zengfeng（翻页书迷你站，非画廊结构）保留原样未迁移。**注意**：9 个已迁移展览的磁盘图片目录编号不连续/不规范，画廊会 404，需用户重新编号（清单见 `docs/updates/2026-07-09-publication-slug-migration.md`）；且需先执行 `docs/sql/2026-07-09-publication-slug-migration.sql`（核对生产库 92001-92015 未被占用后再跑）。
 3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
-5. **前台图片继续优化**：静态与动态卡片图、NewArt 作品预览均已完成。下一步优先给三个特殊展览页做“缩略图 q30 + 主图接近视口后只恢复 active/相邻原图”的分层加载，现有预览覆盖理论可少传约 50.5MB；首页 LCP 和 NewArt 全屏图仍需另制高质量派生版本，不能直接换 q30。服务器只供参考，不在发布版生成/替换图片。
+5. **前台图片继续优化**：静态/动态卡片图、NewArt 作品预览和三个特殊展览现场图分层加载均已完成。下一批图片优化只剩首页 LCP 和 NewArt 全屏图的高质量派生版本，不能直接换 q30；不在服务器或旧稳定发布版生成/替换图片。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
 7. **前台 Legacy 清理**：生产数据库和 IIS 日志审计均已完成；`Award` 与 `layui` 只是审计候选。服务器当前只供参考，不移动、不删除、不部署；若未来确有必要，必须先向用户说明并确认。其余候选根有真实访问，继续保留。公众号需求继续后置。
+8. **需视觉确认：992–1279 窄桌面字号**：legacy 在该区间使用 12px 根字号，并在 1280px 切换到 16px 和另一套桌面导航；NewIndex 导航实测 1279→1280 会从 11.25px 跳到 24px。本次只修复 ≤991 的错误放大，未擅自改变这套旧桌面布局。若继续统一，需要先确认是保留紧凑的 720p 风格，还是重做为连续缩放。
 
 ## 待用户本地操作
 - **本地只读登录检查（推荐，不写库）**：`appsettings.Local.json` 配 `AdminWrite:{EnableWrites:true, UseReadOnlyConnectionForDebug:true}`（Tongou 同），不设 `ConnectionStrings:SzaipaAdmin`——admin 上下文复用只读 `szaipa_ro` 连接，能登录/看仪表盘/浏览，写操作被 SQL 层挡掉。前提：`LegacyData:Szaipa` 的只读凭据当前有效（2026-06-24 实测遇到 `18456` 认证失败，需核对密码）。详见 `docs/updates/2026-06-24-admin-readonly-debug-login.md`。

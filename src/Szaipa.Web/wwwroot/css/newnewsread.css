@@ -598,7 +598,7 @@
 @media (max-width: 61.9375em) {
     html {
         /* 旧 responsive.css 会在窄屏把 1rem 放大到约 26px；只在新闻详情页恢复可读尺度。 */
-        font-size: clamp(93.75%, 4.1vw, 112.5%) !important;
+        font-size: clamp(93.75%, 4.1vw, 100%) !important;
     }
 
     .bannerCon {

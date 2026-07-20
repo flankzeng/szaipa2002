@@ -65,7 +65,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - Legacy 资源不能按目录直接删除；第一轮 A/B/C/D 分级和两套 Content 差异见 `docs/updates/2026-07-10-legacy-resource-inventory.md`。
 - zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在远端 `legacy/archive-before-frontend-prune-20260710`。
 - 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
-- 特殊展览页共享资源：`wwwroot/css/publication-special.css`；chunyu3/tonggou2 使用 `wwwroot/js/publication-special.js`，tonggou2024 保留 `publication-tonggou2024.js` 的独有滚动行为。详情见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`。
+- 特殊展览页共享 `wwwroot/css/publication-special.css` 和 `wwwroot/js/publication-special.js`；chunyu3/tonggou2/tonggou2024 的现场图库均由同一脚本初始化，tonggou2024 的重复脚本已退役。历史拆分见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`，当前分层加载见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - 展览页 JS 已不依赖 jQuery：普通展览用原生 `publication-gallery.js`，特殊页脚本也已原生化；Swiper 与页面脚本按顺序 `defer`。三个 `Layout=null` 特殊页必须保留 viewport meta，否则手机 390px 会退回 1440px 桌面布局。见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
 - Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
 - 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，`Award` 与 `layui` 仅为审计候选。服务器只供只读参考，发布版不隔离、不删除、不部署、不改 IIS；任何必须的服务器改动先停下征得用户确认。见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
@@ -76,6 +76,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 数据库动态小图通过单例 `Services/LegacyImagePreviewResolver` 只读索引现有预览树；仅 jpg/jpeg/png，大小写唯一匹配并返回磁盘实际 case，缺失/歧义/非法路径原图回退。首批只用于首页/新闻列表封面、会员/艺术家头像、展会列表卡片；LCP/大图/Magnify 作品不直接套 q30。见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
 - NewArt 的 `works-narrow` 作品已在解析器命中时使用 q30，并通过 `data-magnify-src` 保留原图；`newart.js` 只在 pointer/mouse/focus/touch 首次真实交互时初始化 Magnify，避免插件启动即下载原图。新闻详情侧栏与重要展览作品卡片也走相同回退。见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`。
 - NewNewsRead 的手机/平板字号和行高必须在 `newnewsread.css` 内局部覆盖 legacy `responsive.css` 在 ≤991 宽度下的 26px 根字号和 `.article p { line-height: 5em !important; }`；富文本作用域为 `.article-body`，不要去修改数据库内容。320/390/768/991 验证见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
+- 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css` 局部覆盖 legacy `responsive.css` 的 ≤991 26px 根字号；不修改外置参考 Content。邮件区的字号/短屏防重叠和 320/390/768/991 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
+- 特殊展览现场图主/缩使用同一 Razor 数组；主图初始 `src` 走预览解析器并保留 `data-original-src`，缩略图永久使用预览。`publication-special.js` 只在图库接近视口后预载 active/prev/next 原图，170/201 张命中预览，理论首轮少传 50,506,952B。
 - 静态位图的 HTML `width`/`height` 是源比例元数据，不是 CSS 像素布局；已有 vh/vw/%/rem 和 object-fit 继续控制显示。本轮另为公共 Logo、NewArt、NewAbout 和特殊展览页补 16 处，见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。

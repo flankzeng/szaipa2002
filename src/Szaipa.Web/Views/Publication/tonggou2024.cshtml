@@ -1,5 +1,12 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @{
     Layout = null;
+    var onsiteImages = Enumerable.Range(100001, 107)
+        .Select(index => $"/Content/images/tonggou2024/{index}.jpg")
+        .Select(originalUrl => (
+            OriginalUrl: originalUrl,
+            PreviewUrl: ImagePreviewResolver.Resolve(originalUrl)))
+        .ToArray();
 }
 
 <!DOCTYPE html>
@@ -108,10 +115,10 @@
                 <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper3">
                     <div class="swiper-wrapper">
                         <!-- ++ -->
-                        @for (var i = 100001; i <= 100107; i++)
+                        @foreach (var image in onsiteImages)
                         {
                             <div class="swiper-slide">
-                                <img loading="lazy" decoding="async" src="@string.Format("/Content/images/tonggou2024/{0}.jpg", i)" />
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" data-original-src="@image.OriginalUrl" />
                             </div>
                         }
                     </div>
@@ -121,10 +128,10 @@
                 <div thumbsSlider="" class="swiper mySwiper2">
                     <div class="swiper-wrapper">
                         <!-- ++ -->
-                        @for (var i = 100001; i <= 100107; i++)
+                        @foreach (var image in onsiteImages)
                         {
                             <div class="swiper-slide">
-                                <img loading="lazy" decoding="async" src="@string.Format("/Content/images/tonggou2024/{0}.jpg", i)" />
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" />
                             </div>
                         }
                     </div>
@@ -204,7 +211,7 @@
     </footer>
 
 
-    <script defer src="/js/publication-tonggou2024.js" asp-append-version="true"></script>
+    <script defer src="/js/publication-special.js" asp-append-version="true"></script>
 
 </body>
 

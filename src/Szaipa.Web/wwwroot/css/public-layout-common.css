@@ -2,6 +2,14 @@ html {
     scroll-behavior: smooth;
 }
 
+@media (max-width: 61.9375em) {
+    html {
+        /* 覆盖 legacy responsive.css 误将手机/平板 rem 基准放大到 26px 的全局规则。 */
+        font-size: clamp(93.75%, 4.1vw, 100%) !important;
+    }
+
+}
+
 /* Shared email/footer layout used by the public and artist shells. */
 #section08 {
     height: 30vh;
@@ -230,4 +238,16 @@ html {
     font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     font-size: 1rem;
     line-height: var(--footerLineheight);
+}
+
+@media (max-width: 61.9375em) {
+    #section08m {
+        height: max(80vh, 42rem);
+    }
+
+    .emailPosition h1 {
+        font-size: clamp(1.5rem, 6.8vw, 2rem);
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
 }
