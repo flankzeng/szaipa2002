@@ -1,4 +1,5 @@
-﻿@model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
+﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
 @{
     var artist = Model.Artist;
     var artistBannerUrl = Url.Content($"~/content/ArtImg/Artist/Banner/{artist.Path1}");
@@ -123,7 +124,7 @@
             <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
                 <div class="touxiang">
                     <div class="line xs-hide sm-hide"> </div>
-                    <img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/@artist.Path" style="width: var(--touxiang);border-radius: 100%;"
+                    <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")" style="width: var(--touxiang);border-radius: 100%;"
                         alt="艺术家头像">
                 </div>
 

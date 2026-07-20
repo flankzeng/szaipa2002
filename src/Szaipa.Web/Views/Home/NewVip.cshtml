@@ -1,3 +1,4 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model IReadOnlyList<Szaipa.Data.Models.Home.ArtistSummaryModel>
 @{
     ViewData["Title"] = "会员风采";
@@ -25,7 +26,7 @@
             {
                 <a class="member-card" href="/Home/newArt/@artist.Id">
                     <figure>
-                        <img src="/Content/ArtImg/Artist/@artist.Path"
+                        <img src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")"
                              alt="@artist.ArtistNameCn"
                              loading="lazy"
                              decoding="async" />

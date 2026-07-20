@@ -1,3 +1,4 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model IReadOnlyList<Szaipa.Data.Models.Home.PublicationSummaryModel>
 @{
     ViewData["Title"] = "展会动态";
@@ -33,7 +34,7 @@
                 <a class="publication-card @(ended ? "publication-card--ended" : string.Empty)"
                    href="/Home/Publication/@exhibition.Id">
                     <div class="publication-card__image">
-                        <img src="/Content/images/@exhibition.FolderName/@exhibition.CoverPath"
+                        <img src="@ImagePreviewResolver.Resolve($"/Content/images/{exhibition.FolderName}/{exhibition.CoverPath}")"
                              alt="@exhibition.TitleCn"
                              loading="lazy"
                              decoding="async" />

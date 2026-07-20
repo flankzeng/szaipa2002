@@ -82,6 +82,7 @@ var hostBuilder = new HostBuilder()
                     .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(contentRoot, "App_Data", "DataProtection-Keys")));
                 services.AddSzaipaData(configuration);
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
+                services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 

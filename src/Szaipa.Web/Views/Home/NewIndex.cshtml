@@ -1,4 +1,5 @@
-﻿@model Szaipa.Data.Models.Home.HomePageSnapshotModel
+﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model Szaipa.Data.Models.Home.HomePageSnapshotModel
 @{
 ViewBag.Title = "首页";
 Layout = "~/Views/Shared/_newLayout.cshtml";
@@ -838,7 +839,7 @@ var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
                     @n.Title
                     <p>@n.Subtitle</p>
                     <div>
-                        <img loading="lazy" decoding="async" src="/Content/newsImg/@n.CoverPath" alt="">
+                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}")" alt="">
                     </div>
                     <span class="JhengLight">查看全部 VIEW MORE</span>
 

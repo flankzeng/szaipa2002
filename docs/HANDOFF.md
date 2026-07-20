@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 110 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 144 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -32,6 +32,7 @@
 - **图片加载时机（2026-07-13）**：NewArt 的真实 Path1 首屏背景图加入唯一 preload/high，未重复下载；首页 849KB 章程 CSS background 改为同原图 lazy `<img>`，手机截图逐字节一致、桌面几何一致。详见 `docs/updates/2026-07-13-image-loading-priorities.md`。
 - **首页静态缩略图（2026-07-13）**：用户确认无需视觉 pilot，直接复用既有 q30w1200。6 张在售图列表由 9,860,285B→981,672B，Magnify 改为首次真实交互才请求对应原图；另 29 张章程/成员/活动下折图由 14,315,658B→1,477,621B。两批完整滚动合计减少 21,716,650B（约 89.83%），顶部/LCP、Logo、透明装饰和同页复用原图均未替换。详见 `docs/updates/2026-07-13-selling-thumbnail-previews.md`、`2026-07-13-homepage-static-preview-expansion.md`。
 - **公共图片固有比例（2026-07-13）**：为公共 Logo、NewArt 静态活动图、关于我们合作伙伴图和三个特殊展览开篇图共 16 处补真实 `width`/`height`；只提供比例元数据，不改变现有 vh/vw/%/rem 响应式 CSS。详见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
+- **动态图片预览回退（2026-07-13）**：新增只读 `ILegacyImagePreviewResolver`，以大小写不敏感的安全索引查找现有 q30w1200，命中用预览、缺失/歧义/非法路径自动回原图；首批接入首页/新闻列表封面、会员卡/艺术家头像、展会列表卡片。新增 34 个 Web 测试用例，总测试 110→144。详见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
 - **未来发布包瘦身（2026-07-13）**：禁用当前 `UseStaticFiles` 不会选取的 SDK `.br/.gz` 发布副本，并排除 Node 清单、示例配置和 `.gitkeep`；本地对照实测少 761,732B，发布进程仍正确协商 Brotli/Gzip。仅影响未来本地生成包，服务器未部署/改动。详见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - **旧凭据清理（2026-07-12）**：旧 MVC Web.config 与跟踪中的 bin 配置副本已改为部署占位符；历史密码仍必须在数据库服务器轮换。详见 `docs/updates/2026-07-12-legacy-credential-sanitization.md`。
 
@@ -65,7 +66,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 110）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 144）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Staff)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

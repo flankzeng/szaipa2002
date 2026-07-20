@@ -1,4 +1,5 @@
 @using Szaipa.Data.Models.Home
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model IReadOnlyList<NewsSummaryModel>
 @{
     ViewBag.Title = "新闻动态";
@@ -30,7 +31,7 @@
                             @news.Title
                             <p>@news.Subtitle</p>
                             <div>
-                                <img loading="lazy" decoding="async" src="/content/newsImg/@news.CoverPath" alt="">
+                                <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/content/newsImg/{news.CoverPath}")" alt="">
                             </div>
                             <span>查看全部 VIEW MORE</span>
 
