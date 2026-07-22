@@ -1,0 +1,147 @@
+/*!
+ * Minimal public baseline derived from Bootstrap v3.3.7 and normalize.css v3.0.3.
+ * Bootstrap Copyright 2011-2016 Twitter, Inc.; normalize.css by Nicolas Gallagher and Jonathan Neal.
+ * Both projects are licensed under MIT.
+ * https://github.com/twbs/bootstrap/blob/v3.3.7/LICENSE
+ */
+html {
+    font-family: sans-serif;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: #fff;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.42857143;
+    -webkit-text-size-adjust: none;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block;
+}
+
+[hidden],
+template {
+    display: none;
+}
+
+a {
+    background-color: transparent;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+a:hover,
+a:focus {
+    color: #23527c;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+b,
+strong {
+    font-weight: bold;
+}
+
+small {
+    font-size: 85%;
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+figure {
+    margin: 0;
+}
+
+p {
+    margin: 0 0 10px;
+}
+
+ul,
+ol {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+    margin-bottom: 0;
+}
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

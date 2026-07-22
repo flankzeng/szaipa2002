@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 122 项；全解决方案合计 218）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 123 项；全解决方案合计 219）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 218）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 219）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -60,6 +60,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 ## 公开站（Views/Home）
 - 布局：`Views/Shared/_newLayout.cshtml`（多数页）、`_Artist.cshtml`（NewArt）。两者都加了可选 `@RenderSectionAsync("Styles"/"Scripts")`——页面级 CSS/JS 用 `@section` 挂。
 - 两套布局的静态公共样式已外提为 `wwwroot/css/public-layout-common.css`，差异分别在 `public-layout-main.css` / `public-layout-artist.css`；加载顺序必须保持“common → 布局差异 → 页面 Styles”，三者均用 `asp-append-version`。两页面、手机/桌面视口的 computed style 已做前后等价验证；见 `docs/updates/2026-07-13-layout-css-extraction.md`。
+- `_newLayout` 默认仍加载 Bootstrap；NewVip/PublicationList 显式 `UseBootstrapCss=false`，在相同层级改载带版本的 `public-bootstrap-baseline.css`。两页没有 Bootstrap 组件/标准栅格，轻量基线保留公共布局实际需要的 reset；其他页面不得未经逐页验证直接退出。见 `docs/updates/2026-07-22-bootstrap-optout-pilot.md`。
 - 已把巨量内联 CSS/JS **外提**到 `wwwroot/css/*.css`、`wwwroot/js/*.js`（newindex/newnews/newnewsread/newart + publication-gallery + exhibition-important）。NewArt 用「CSS 变量 + JS 桥接」保留动态值（`@artist.Color1/Path1`）。
 - 前台清理 Phase 1：公共库改按页加载、新闻详情去 Vue/Element Plus、图片懒加载、响应压缩/缓存、同字体子集、手机 viewport/navbar 修复。字体子集通过 `scripts/build-font-subsets.py` 重建；Noto 批处理还需 `scripts/font-db-codepoints.txt`，全量源从远端 `legacy/archive-before-frontend-prune-20260710` 临时 worktree 读取。详情见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`、`2026-07-13-noto-font-localization.md`。
 - ProjectTongou 公开浏览已退役：`Controllers/ProjectTongouController.cs` 仅保留无数据库访问的 410 兼容端点，视图为 `Views/ProjectTongou/Gone.cshtml`；Tongou 后台/数据层不受影响。
