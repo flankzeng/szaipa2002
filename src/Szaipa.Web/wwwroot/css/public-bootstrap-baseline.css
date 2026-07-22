@@ -78,17 +78,40 @@ small {
     font-size: 85%;
 }
 
-button {
+button,
+input,
+optgroup,
+select,
+textarea {
     margin: 0;
-    overflow: visible;
     color: inherit;
     font: inherit;
+}
+
+button {
+    overflow: visible;
+}
+
+button,
+select {
     text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
     -webkit-appearance: button;
     cursor: pointer;
 }
 
-button::-moz-focus-inner {
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
     padding: 0;
     border: 0;
 }
@@ -100,6 +123,21 @@ img {
 
 figure {
     margin: 0;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+td,
+th {
+    padding: 0;
+}
+
+th {
+    text-align: left;
 }
 
 h1,

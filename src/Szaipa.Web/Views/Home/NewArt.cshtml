@@ -68,6 +68,7 @@
         ? null
         : System.Text.Json.JsonSerializer.Serialize(primaryAvifUrl);
     ViewBag.Title = artist.ArtistNameCn + " - 艺术家官网";
+    ViewData["UseBootstrapCss"] = false;
     Layout = "_Artist";
 }
 

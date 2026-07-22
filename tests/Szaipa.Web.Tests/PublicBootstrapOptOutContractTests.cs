@@ -5,32 +5,43 @@ namespace Szaipa.Web.Tests;
 public sealed class PublicBootstrapOptOutContractTests
 {
     [Fact]
-    public void Modern_grid_pages_use_the_versioned_minimal_baseline_instead_of_bootstrap()
+    public void Modern_public_pages_use_the_versioned_minimal_baseline_instead_of_bootstrap()
     {
         var repositoryRoot = FindRepositoryRoot();
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
         var viewsRoot = Path.Combine(webProject, "Views");
         var layout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_newLayout.cshtml"));
+        var artistLayout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_Artist.cshtml"));
 
-        Assert.Contains("ViewData[\"UseBootstrapCss\"] is not false", layout, StringComparison.Ordinal);
-        Assert.Contains(
-            "<link rel=\"stylesheet\" href=\"~/css/public-bootstrap-baseline.css\" asp-append-version=\"true\">",
-            layout,
-            StringComparison.Ordinal);
-        Assert.Contains(
-            "<link rel=\"stylesheet\" href=\"/Content/Model/css/bootstrap.css\">",
-            layout,
-            StringComparison.Ordinal);
+        foreach (var publicLayout in new[] { layout, artistLayout })
+        {
+            Assert.Contains("ViewData[\"UseBootstrapCss\"] is not false", publicLayout, StringComparison.Ordinal);
+            Assert.Contains(
+                "<link rel=\"stylesheet\" href=\"~/css/public-bootstrap-baseline.css\" asp-append-version=\"true\">",
+                publicLayout,
+                StringComparison.Ordinal);
+            Assert.Contains(
+                "<link rel=\"stylesheet\" href=\"/Content/Model/css/bootstrap.css\">",
+                publicLayout,
+                StringComparison.Ordinal);
+        }
 
         var layoutStyleIndex = layout.IndexOf("/css/public-layout-main.css", StringComparison.Ordinal);
         var pageStyleIndex = layout.IndexOf("RenderSectionAsync(\"Styles\"", StringComparison.Ordinal);
         Assert.True(layoutStyleIndex >= 0 && pageStyleIndex > layoutStyleIndex);
+
+        var artistLayoutStyleIndex = artistLayout.IndexOf("/css/public-layout-artist.css", StringComparison.Ordinal);
+        var artistPageStyleIndex = artistLayout.IndexOf("RenderSectionAsync(\"Styles\"", StringComparison.Ordinal);
+        Assert.True(artistLayoutStyleIndex >= 0 && artistPageStyleIndex > artistLayoutStyleIndex);
 
         foreach (var viewName in new[] { "NewVip.cshtml", "PublicationList.cshtml", "NewNews.cshtml", "NewAbout.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
             Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", view, StringComparison.Ordinal);
         }
+
+        var newArt = File.ReadAllText(Path.Combine(viewsRoot, "Home", "NewArt.cshtml"));
+        Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", newArt, StringComparison.Ordinal);
 
         var baselinePath = Path.Combine(webProject, "wwwroot", "css", "public-bootstrap-baseline.css");
         var baseline = File.ReadAllText(baselinePath);
@@ -41,19 +52,61 @@ public sealed class PublicBootstrapOptOutContractTests
         Assert.Contains("h1,\nh2,\nh3,\nh4,\nh5,\nh6 {", baseline, StringComparison.Ordinal);
         Assert.Contains(
             """
-            button {
+            button,
+            input,
+            optgroup,
+            select,
+            textarea {
                 margin: 0;
-                overflow: visible;
                 color: inherit;
                 font: inherit;
+            }
+
+            button {
+                overflow: visible;
+            }
+
+            button,
+            select {
                 text-transform: none;
+            }
+
+            button,
+            html input[type="button"],
+            input[type="reset"],
+            input[type="submit"] {
                 -webkit-appearance: button;
                 cursor: pointer;
             }
 
-            button::-moz-focus-inner {
+            button[disabled],
+            html input[disabled] {
+                cursor: default;
+            }
+
+            button::-moz-focus-inner,
+            input::-moz-focus-inner {
                 padding: 0;
                 border: 0;
+            }
+            """,
+            baseline,
+            StringComparison.Ordinal);
+        Assert.Contains(
+            """
+            table {
+                border-spacing: 0;
+                border-collapse: collapse;
+                background-color: transparent;
+            }
+
+            td,
+            th {
+                padding: 0;
+            }
+
+            th {
+                text-align: left;
             }
             """,
             baseline,
