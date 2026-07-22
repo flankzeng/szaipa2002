@@ -1,4 +1,4 @@
-// Dashboard charts for the staff backend (Areas/Admin Dashboard/Index). Bundled by esbuild into
+// Dashboard charts for the staff backend (Areas/Staff Dashboard/Index). Bundled by esbuild into
 // wwwroot/admin/dashboard.js. Replaces the legacy ECharts-from-CDN dashboard (StaffController.Index):
 // daily-visit line, content-access doughnut, and month/year province→city sunbursts. Modular ECharts
 // imports keep the bundle small (only the chart types/components we use are included).

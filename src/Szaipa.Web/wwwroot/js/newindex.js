@@ -52,8 +52,8 @@
     });
 
     // 新增样式不可抓取
-    $(function () {
-        $(".undraggable").on("dragstart", function (event) {
+    document.querySelectorAll('.undraggable').forEach(function (element) {
+        element.addEventListener('dragstart', function (event) {
             event.preventDefault();
         });
     });
@@ -79,90 +79,75 @@
         disableOnInteraction: true
     })
 
-    $('.next-button').on('click', function () {
-        swiper10.slideNext();
-    });
-
-    $('.prev-button').on('click', function () {
-        swiper10.slidePrev();
-    });
-
     // 放大镜：首次交互时再请求原图，列表首屏只下载缩略图。
-    $(function () {
-        $('.zoom').on('pointermove.magnifyLazy mousemove.magnifyLazy focusin.magnifyLazy touchstart.magnifyLazy', function () {
-            var $image = $(this);
-            if ($image.data('magnifyInitialized')) {
-                return;
-            }
+    window.SzaipaMagnifyLoader?.bind(document);
 
-            $image.data('magnifyInitialized', true);
-            $image.off('.magnifyLazy');
-            $image.magnify({
-                speed: 200,
-                // limitBounds: true,
-                magnifiedWidth: 1000,
-                magnifiedHeight: 1000,
-            });
-        });
+    // 展会轮播
+    document.querySelectorAll('.processing-lunbo').forEach(function (carousel) {
+        var slides = carousel.querySelectorAll('.exhibitionSlide');
+        var currentSlide = 0;
+        if (slides.length === 0) {
+            return;
+        }
+
+        function showSlide() {
+            slides[currentSlide].classList.remove('borderActive');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('borderActive');
+        }
+
+        setInterval(showSlide, 2300);
     });
 
-    $(function () {
+    // 展会活动激活状态
+    var btn01 = document.querySelector('#btn01');
+    var btn02 = document.querySelector('#btn02');
+    var processing = document.querySelector('#processing');
+    var ended = document.querySelector('#ended');
+    btn01?.classList.add('active');
 
-        // 展会轮播
-        $(".processing-lunbo").each(function () {
-            var slides = $(this).find(".exhibitionSlide");
-            var currentSlide = 0;
+    btn01?.addEventListener('click', function () {
+        btn02?.classList.remove('active');
+        this.classList.add('active');
+        if (processing) {
+            processing.style.display = 'block';
+        }
+        if (ended) {
+            ended.style.display = 'none';
+        }
+    });
 
-            function showSlide() {
-                $(slides[currentSlide]).removeClass("borderActive");
-                currentSlide = (currentSlide + 1) % slides.length;
-                $(slides[currentSlide]).addClass("borderActive");
-            }
+    btn02?.addEventListener('click', function () {
+        btn01?.classList.remove('active');
+        this.classList.add('active');
+        if (processing) {
+            processing.style.display = 'none';
+        }
+        if (ended) {
+            ended.style.display = 'flex';
+            ended.style.flexWrap = 'wrap';
+        }
+    });
 
-            setInterval(showSlide, 2300);
-        });
-
-        // 展会活动激活状态
-        $("#btn01").addClass("active");
-
-        $("#btn01").click(function () {
-            $("#btn02").removeClass("active");
-            $(this).addClass("active");
-            $('#processing').css('display', 'block')
-            $('#ended').css('display', 'none')
-            // $('#section07').css('height', '125vh')
-        });
-
-        $("#btn02").click(function () {
-            $("#btn01").removeClass("active");
-            $(this).addClass("active");
-            $('#processing').css('display', 'none')
-            $('#ended').css('display', 'flex')
-            $('#ended').css('flex-wrap', 'wrap')
-            // $('#section07').css('height', '100vh')
-        });
-
-        // 关于在售作品的Swiper
-        var swiper6 = new Swiper(".mySwiper6", {
-            pagination: {
-                el: ".swiper-pagination",
-                type: "progressbar",
-            },
-            keyboard: {
-                enabled: true,
-                onlyInViewport: true,
-            },
-            loop: true,
-            // autoplay: false,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-            disableOnInteraction: true
-        })
-
+    // 关于在售作品的Swiper
+    var swiper6 = new Swiper(".mySwiper6", {
+        pagination: {
+            el: ".swiper-pagination",
+            type: "progressbar",
+        },
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+        loop: true,
+        // autoplay: false,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        disableOnInteraction: true
     })

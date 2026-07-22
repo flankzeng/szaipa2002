@@ -2,7 +2,7 @@
   "name": "szaipa-web-admin",
   "private": true,
   "version": "1.0.0",
-  "description": "Tailwind + TipTap front-end build for the Szaipa staff admin backend (Areas/Admin).",
+  "description": "Tailwind + TipTap front-end build for the Szaipa staff backend (Areas/Staff).",
   "scripts": {
     "build:css": "tailwindcss -i ./wwwroot/admin/admin.input.css -o ./wwwroot/admin/admin.css --minify",
     "watch:css": "tailwindcss -i ./wwwroot/admin/admin.input.css -o ./wwwroot/admin/admin.css --watch",

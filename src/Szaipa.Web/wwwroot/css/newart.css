@@ -505,15 +505,25 @@
         left: 0;
     }
 
-    .magnify {
+    body .magnify {
         height: 35vh;
     }
 
-    .magnify>.magnify-lens {
+    body .magnify > .magnify-lens {
         border: 1px solid white;
     }
 
 @media (max-width: 61.9375em) {
+    #ArtistNav a {
+        white-space: nowrap;
+        word-break: keep-all;
+        writing-mode: horizontal-tb;
+    }
+
+    .arrow-right {
+        right: 0.25rem;
+    }
+
     .information {
         --information-inline-space: clamp(1rem, 5vw, 2rem);
 

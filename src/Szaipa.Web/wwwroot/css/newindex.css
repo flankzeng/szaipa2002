@@ -1,8 +1,8 @@
-    .magnify {
+    body .magnify {
         height: 35vh;
     }
 
-    .magnify>.magnify-lens {
+    body .magnify > .magnify-lens {
         border: 1px solid white;
     }
 
