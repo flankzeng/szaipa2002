@@ -66,6 +66,7 @@ public sealed class DerivedImageResolverTests : IDisposable
     [InlineData("/Content/images/folder%2fsecret.jpg")]
     [InlineData("/Content/images/folder%252fsecret.jpg")]
     [InlineData("/Content/images/folder\\secret.jpg")]
+    [InlineData("/Content/images/file:stream.jpg")]
     [InlineData("/Content/images/hero.avif")]
     [InlineData("/Content/images/hero.webp")]
     [InlineData("/Content/images/hero.svg")]
@@ -163,6 +164,52 @@ public sealed class DerivedImageResolverTests : IDisposable
 
         Assert.NotNull(result);
         Assert.Null(result.AvifUrl);
+    }
+
+    [Fact]
+    public void IntermediateMediaSymlinkOutsideWebRootIsRejected()
+    {
+        var outsideMedia = Path.Combine(_root, "outside-media");
+        var outsideDerived = Path.Combine(outsideMedia, "derived");
+        Directory.CreateDirectory(outsideDerived);
+        File.WriteAllBytes(Path.Combine(outsideDerived, "hero.avif"), [1, 2, 3]);
+        File.WriteAllText(
+            Path.Combine(outsideDerived, "manifest.json"),
+            """
+            {
+              "schemaVersion": 1,
+              "images": [
+                { "original": "/Content/images/hero.jpg", "avif": "/media/derived/hero.avif" }
+              ]
+            }
+            """);
+
+        EnsureDirectory(WebRoot);
+        try
+        {
+            Directory.CreateSymbolicLink(Path.Combine(WebRoot, "media"), outsideMedia);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or NotSupportedException)
+        {
+            return; // The host does not permit directory symlinks (common on Windows without Developer Mode).
+        }
+
+        var resolver = CreateResolver();
+
+        var result = resolver.Resolve("/Content/images/hero.jpg");
+
+        Assert.NotNull(result);
+        Assert.Null(result.AvifUrl);
+    }
+
+    [Fact]
+    public void UnpairedSurrogateInOriginalPathIsRejectedWithoutThrowing()
+    {
+        var resolver = CreateResolver();
+
+        var result = resolver.Resolve("/Content/images/\ud800.jpg");
+
+        Assert.Null(result);
     }
 
     [Theory]

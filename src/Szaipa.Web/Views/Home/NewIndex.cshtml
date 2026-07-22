@@ -4,7 +4,15 @@
 @{
 ViewBag.Title = "首页";
 Layout = "~/Views/Shared/_newLayout.cshtml";
-var hasFeaturedPublications = Model.FeaturedPublications.Count > 0;
+var featuredSlides = Model.FeaturedPublications
+    .Select(publication =>
+    {
+        var coverUrl = $"/Content/images/{publication.FolderName}/{publication.CoverPath}";
+        return (Publication: publication, Cover: DerivedImageResolver.Resolve(coverUrl));
+    })
+    .Where(slide => slide.Cover is not null)
+    .ToList();
+var hasFeaturedPublications = featuredSlides.Count > 0;
 var tangqishanCoverUrl = "/Content/images/tangqishan/100002.jpg";
 var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 }
@@ -36,12 +44,12 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             <div class="swiper-wrapper">
 
                 @* 暂时没用上，2025.11.25 *@
-                @for (var featuredIndex = 0; featuredIndex < Model.FeaturedPublications.Count; featuredIndex++)
+                @for (var featuredIndex = 0; featuredIndex < featuredSlides.Count; featuredIndex++)
                 {
-                var ex = Model.FeaturedPublications[featuredIndex];
+                var ex = featuredSlides[featuredIndex].Publication;
+                var coverSource = featuredSlides[featuredIndex].Cover
+                    ?? throw new InvalidOperationException("Filtered featured slides must have a safe cover source.");
                 var isFirstSlide = featuredIndex == 0;
-                var coverUrl = $"/Content/images/{ex.FolderName}/{ex.CoverPath}";
-                var coverSource = DerivedImageResolver.Resolve(coverUrl);
                 <div class="swiper-slide">
 
                     <a href="/Home/Publication/@ex.Id" class="carouselZoom">
@@ -64,11 +72,11 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                             </div>
 
                             <picture>
-                                @if (coverSource?.AvifUrl is not null)
+                                @if (coverSource.AvifUrl is not null)
                                 {
                                     <source type="image/avif" srcset="@coverSource.AvifUrl">
                                 }
-                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="@(coverSource?.OriginalUrl ?? coverUrl)" class="imgCon" alt="">
+                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="@coverSource.OriginalUrl" class="imgCon" alt="">
                             </picture>
 
                         </div>

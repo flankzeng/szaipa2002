@@ -48,6 +48,11 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
         try
         {
             var manifestPath = Path.Combine(derivedRoot, "manifest.json");
+            if (!IsRegularNonReparseFile(manifestPath))
+            {
+                return EmptyManifest();
+            }
+
             using var stream = File.OpenRead(manifestPath);
             document = JsonSerializer.Deserialize<ManifestDocument>(stream, ManifestJsonOptions);
         }
@@ -104,7 +109,9 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
         {
             webRoot = Path.GetFullPath(configuredWebRoot);
             derivedRoot = Path.GetFullPath(Path.Combine(webRoot, "media", "derived"));
-            return IsPathWithin(derivedRoot, webRoot);
+            return IsPathWithin(derivedRoot, webRoot)
+                && (!Directory.Exists(derivedRoot)
+                    || !HasReparsePointInDirectoryChain(derivedRoot, webRoot));
         }
         catch (Exception exception) when (IsFileSystemException(exception))
         {
@@ -158,7 +165,7 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
         if (!IsPathWithin(physicalPath, derivedRoot)
             || !IsPathWithin(physicalPath, webRoot)
             || !IsRegularNonReparseFile(physicalPath)
-            || HasReparsePointBetween(physicalPath, derivedRoot))
+            || HasReparsePointInDirectoryChain(Path.GetDirectoryName(physicalPath), webRoot))
         {
             return false;
         }
@@ -245,22 +252,55 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
                 || segment is "." or ".."
                 || segment.Contains('/')
                 || segment.Contains('\\')
+                || segment.Contains(':')
                 || segment.Contains('%')
                 || segment.Contains('?')
                 || segment.Contains('#')
                 || segment.IndexOf('\0') >= 0
-                || segment.Any(char.IsControl))
+                || segment.Any(char.IsControl)
+                || HasInvalidUtf16(segment))
             {
                 return false;
             }
 
             decodedSegments[index] = segment;
-            encodedSegments[index] = Uri.EscapeDataString(segment);
+            try
+            {
+                encodedSegments[index] = Uri.EscapeDataString(segment);
+            }
+            catch (UriFormatException)
+            {
+                // Invalid UTF-16 (for example an unpaired surrogate from legacy data) is not a safe URL segment.
+                return false;
+            }
         }
 
         decodedRelativePath = string.Join('/', decodedSegments);
         encodedNormalizedPath = string.Join('/', encodedSegments);
         return true;
+    }
+
+    private static bool HasInvalidUtf16(string value)
+    {
+        for (var index = 0; index < value.Length; index++)
+        {
+            var character = value[index];
+            if (char.IsHighSurrogate(character))
+            {
+                if (index + 1 >= value.Length || !char.IsLowSurrogate(value[index + 1]))
+                {
+                    return true;
+                }
+
+                index++;
+            }
+            else if (char.IsLowSurrogate(character))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static bool IsSafeOriginalSuffix(string suffix)
@@ -313,8 +353,13 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
         }
     }
 
-    private static bool HasReparsePointBetween(string filePath, string rootPath)
+    private static bool HasReparsePointInDirectoryChain(string? directoryPath, string rootPath)
     {
+        if (string.IsNullOrWhiteSpace(directoryPath))
+        {
+            return true;
+        }
+
         try
         {
             var root = new DirectoryInfo(rootPath);
@@ -323,7 +368,7 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
                 return true;
             }
 
-            for (var directory = new FileInfo(filePath).Directory;
+            for (var directory = new DirectoryInfo(directoryPath);
                  directory is not null && IsPathWithin(directory.FullName, rootPath);
                  directory = directory.Parent)
             {
@@ -334,11 +379,12 @@ public sealed class DerivedImageResolver : IDerivedImageResolver
 
                 if (PathEquals(directory.FullName, rootPath))
                 {
-                    break;
+                    return false;
                 }
             }
 
-            return false;
+            // A lexically contained path whose parent walk never reaches root is not trustworthy.
+            return true;
         }
         catch (Exception exception) when (IsFileSystemException(exception))
         {

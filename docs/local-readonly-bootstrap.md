@@ -109,13 +109,13 @@ Run these against the exact login string you plan to put in the environment vari
 
 ## Debugging on macOS vs Windows
 
-Both platforms use the same repository layout and the same environment-variable names; only the shell mechanics differ.
+Both platforms use the same repository layout and the same environment-variable names; only the shell mechanics differ. The connection strings below contain placeholders only; never replace them in this tracked document.
 
 ### macOS (this machine)
 
 ```bash
-export SZAIPA_READONLY_CONNECTION='Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True'
-export TONGOU_READONLY_CONNECTION='Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True'
+export SZAIPA_READONLY_CONNECTION='Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True'
+export TONGOU_READONLY_CONNECTION='Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True'
 /Users/arthur/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 ```
 
@@ -126,8 +126,8 @@ export TONGOU_READONLY_CONNECTION='Server=...;Database=...;User Id=...;Password=
 ### Windows
 
 ```powershell
-setx SZAIPA_READONLY_CONNECTION "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
-setx TONGOU_READONLY_CONNECTION "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
+setx SZAIPA_READONLY_CONNECTION "Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True"
+setx TONGOU_READONLY_CONNECTION "Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True"
 # open a new shell so setx values are visible, then:
 dotnet run --project src\Szaipa.Web\Szaipa.Web.csproj --urls http://127.0.0.1:5057
 ```

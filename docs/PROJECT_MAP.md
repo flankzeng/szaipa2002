@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 85 项；全解决方案合计 181）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 120 项；全解决方案合计 216）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 181）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 216）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -30,6 +30,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - **dev 现状**：读=生产只读，写=本地副本，**是两个库**；admin 建的数据在 dev 不被公开读侧看到（生产同库才打通）。端到端点击验证需用户本地配可写库 + 可写 `LegacyAssets:ContentRoot`。
 - Tongou 有独立只读上下文 `Contexts/Tongou/TongouLegacyReadContext` 和独立写上下文 `Contexts/TongouAdmin/TongouAdminContext`（门控：`TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`，同样指向本地可写副本，与 Szaipa 是两个物理隔离的数据库）。Tongou 表无 `EditRecord` 列，操作审计仍写 Szaipa 库的 Diary/Staff（两个 SaveChanges，不能跨库共事务）。
 - 配置装配：`src/Szaipa.Data/DependencyInjection/SzaipaDataServiceCollectionExtensions.cs`（所有上下文/仓储在此注册）；`src/Szaipa.Web/Program.cs`（认证、DI、area 路由、静态文件、/Content 映射）。
+- 独立仓库/原子发布：新版只迁 `src/`、`tests/`、`scripts/`、`docs/` 和现代 solution/config 文件；约 1.2GB Content 继续由 `LegacyAssets:ContentRoot` 外接，绝非删除。Production 的 Data Protection key 必须通过 `DataProtection:KeysPath` 放在 release 根之外，并固定 `ApplicationName=Szaipa.Web`；缺失/相对/release 内路径会在启动前失败。见 `docs/repository-split.md`。
 
 ## 后台（Areas/Staff）—— 加新 CRUD 模块照这个抄
 认证：cookie（`Program.cs` 配 `AddCookie`，登录 `/Staff/Account/Login`），策略 `AdminAuthorization.StaffPolicy`，控制器加 `[Authorize(Policy=...)]`。密码 MD5 兼容老账号（`Services/Admin/StaffPasswordHasher`）。

@@ -33,4 +33,6 @@ Temporary Items
 bin/
 obj/
 src/Szaipa.Web/appsettings.Local.json
+src/Szaipa.Web/appsettings.Production.json
 src/Szaipa.Web/App_Data/
+/artifacts/

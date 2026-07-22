@@ -379,20 +379,23 @@
             {
                 <text>--artist-banner: none;</text>
             }
-            else if (primaryAvifCssUrl is not null)
-            {
-                <text>
-                    --artist-banner: url(@Html.Raw(primaryOriginalCssUrl));
-                    --artist-banner: image-set(
-                        url(@Html.Raw(primaryAvifCssUrl)) type("image/avif"),
-                        url(@Html.Raw(primaryOriginalCssUrl))
-                    );
-                </text>
-            }
             else
             {
                 <text>--artist-banner: url(@Html.Raw(primaryOriginalCssUrl));</text>
             }
+        }
+        @if (primaryOriginalCssUrl is not null && primaryAvifCssUrl is not null)
+        {
+            <text>
+                @@supports (background-image: image-set(url("") type("image/avif"), url(""))) {
+                    :root {
+                        --artist-banner: image-set(
+                        url(@Html.Raw(primaryAvifCssUrl)) type("image/avif"),
+                        url(@Html.Raw(primaryOriginalCssUrl))
+                        );
+                    }
+                }
+            </text>
         }
     </style>
     <link rel="stylesheet" href="~/css/newart.css" asp-append-version="true" />

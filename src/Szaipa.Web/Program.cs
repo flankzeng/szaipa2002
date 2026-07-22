@@ -21,9 +21,16 @@ using Szaipa.Web.Services.Admin;
 var contentRoot = ResolveContentRoot();
 // Standard ASP.NET Core layering: appsettings.json (committed defaults) -> appsettings.{Environment}.json
 // (e.g. Development on the Mac dev box, Production on the Windows server) -> appsettings.Local.json
-// (gitignored, publish-excluded, machine-specific secrets: read-only DB conn + legacy asset path) -> env vars.
-// Defaults to Production when ASPNETCORE_ENVIRONMENT is unset (the IIS deployment case).
-var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+// (gitignored, publish-excluded, machine-specific DB/assets/keys config) -> env vars.
+// A command-line environment is authoritative; conflicting ASPNETCORE/DOTNET variables fail closed.
+var environmentName = HostEnvironmentNameResolver.Resolve(
+    args,
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+    Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT"));
+var isDevelopment = string.Equals(
+    environmentName,
+    Environments.Development,
+    StringComparison.OrdinalIgnoreCase);
 Console.WriteLine($"Szaipa.Web boot: loading configuration from {contentRoot} (environment={environmentName})");
 var configuration = new ConfigurationBuilder()
     .SetBasePath(contentRoot)
@@ -32,8 +39,28 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
     .AddEnvironmentVariables()
     .AddCommandLine(args)
+    // Keep the generic host, web host, selected appsettings file, and security policy on one canonical value.
+    .AddInMemoryCollection(new Dictionary<string, string?>
+    {
+        [HostDefaults.EnvironmentKey] = environmentName
+    })
     .Build();
 
+var persistentDataProtection = configuration
+    .GetSection(PersistentDataProtectionOptions.SectionName)
+    .Get<PersistentDataProtectionOptions>()
+    ?? new PersistentDataProtectionOptions();
+var dataProtectionApplicationName = DataProtectionApplicationNamePolicy.Resolve(
+    persistentDataProtection.EffectiveApplicationName,
+    environmentName);
+var dataProtectionKeysPath = DataProtectionKeyPathResolver.Resolve(
+    contentRoot,
+    persistentDataProtection.KeysPath,
+    isDevelopment);
+var protectKeysWithMachineDpapi = DataProtectionKeyProtectionPolicy.ShouldUseMachineDpapi(
+    isDevelopment,
+    OperatingSystem.IsWindows());
+var staffAuthenticationCookie = StaffAuthenticationCookiePolicy.Resolve(environmentName);
 var urls = ResolveUrls(args, configuration);
 
 Console.WriteLine($"Szaipa.Web boot: configured contentRoot={contentRoot}, urls={urls}");
@@ -59,6 +86,7 @@ var hostBuilder = new HostBuilder()
             .UseContentRoot(contentRoot)
             .UseWebRoot(Path.Combine(contentRoot, "wwwroot"))
             .UseConfiguration(configuration)
+            .UseEnvironment(environmentName)
             .UseUrls(urls)
             .ConfigureServices(services =>
             {
@@ -77,9 +105,14 @@ var hostBuilder = new HostBuilder()
                 services
                     .AddOptions<LegacyAssetsOptions>()
                     .Bind(configuration.GetSection(LegacyAssetsOptions.SectionName));
-                services
+                var dataProtectionBuilder = services
                     .AddDataProtection()
-                    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(contentRoot, "App_Data", "DataProtection-Keys")));
+                    .SetApplicationName(dataProtectionApplicationName)
+                    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+                if (protectKeysWithMachineDpapi && OperatingSystem.IsWindows())
+                {
+                    dataProtectionBuilder.ProtectKeysWithDpapi(protectToLocalMachine: true);
+                }
                 services.AddSzaipaData(configuration);
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
@@ -98,9 +131,10 @@ var hostBuilder = new HostBuilder()
                         options.AccessDeniedPath = "/Staff/Account/Login";
                         options.ExpireTimeSpan = TimeSpan.FromHours(8);
                         options.SlidingExpiration = true;
-                        options.Cookie.Name = "Szaipa.Admin";
+                        options.Cookie.Name = staffAuthenticationCookie.Name;
                         options.Cookie.HttpOnly = true;
                         options.Cookie.SameSite = SameSiteMode.Lax;
+                        options.Cookie.SecurePolicy = staffAuthenticationCookie.SecurePolicy;
                     });
                 services.AddAuthorization(options =>
                 {
@@ -141,6 +175,11 @@ var hostBuilder = new HostBuilder()
                 var legacyScaffoldCommandService = app.ApplicationServices.GetRequiredService<ILegacyScaffoldCommandService>();
                 var workspaceDiagnostics = app.ApplicationServices.GetRequiredService<IMigrationWorkspaceDiagnosticsService>()
                     .GetDiagnostics();
+
+                if (protectKeysWithMachineDpapi)
+                {
+                    ValidateProtectedKeyRing(app.ApplicationServices);
+                }
 
                 Console.WriteLine(
                     $"Szaipa.Web boot: contentRoot={environment.ContentRootPath}, urls={urls}");
@@ -273,6 +312,23 @@ Console.WriteLine("Szaipa.Web boot: building host");
 var host = hostBuilder.Build();
 Console.WriteLine("Szaipa.Web boot: running host");
 host.Run();
+
+static void ValidateProtectedKeyRing(IServiceProvider services)
+{
+    const string validationPayload = "szaipa-data-protection-startup-check";
+    var protector = services
+        .GetRequiredService<IDataProtectionProvider>()
+        .CreateProtector("Szaipa.Web.DataProtection.StartupValidation.v1");
+    var protectedPayload = protector.Protect(validationPayload);
+    var roundTripPayload = protector.Unprotect(protectedPayload);
+
+    if (!string.Equals(validationPayload, roundTripPayload, StringComparison.Ordinal))
+    {
+        throw new InvalidOperationException("The persistent Data Protection key ring failed its startup round trip.");
+    }
+
+    Console.WriteLine("Szaipa.Web boot: persistent Data Protection key ring passed the DPAPI startup check");
+}
 
 static string ResolveContentRoot()
 {

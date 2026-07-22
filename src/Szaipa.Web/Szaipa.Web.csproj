@@ -30,6 +30,7 @@
     <Content Update="package.json" CopyToPublishDirectory="Never" />
     <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Local.example.json" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Production.example.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <!--
@@ -39,6 +40,7 @@
   -->
   <ItemGroup>
     <Content Update="appsettings.Local.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Production.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
 </Project>

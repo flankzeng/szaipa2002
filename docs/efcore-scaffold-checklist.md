@@ -30,11 +30,12 @@ validator, not a from-scratch step.
 
 ## Local secret inputs
 
-Use environment variables instead of checking connection strings into the repo.
+Use environment variables instead of checking connection strings into the repo. Every value below is an
+explicit placeholder; never replace it in this tracked document.
 
 ```bash
-export SZAIPA_READONLY_CONNECTION='Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True'
-export TONGOU_READONLY_CONNECTION='Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True'
+export SZAIPA_READONLY_CONNECTION='Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True'
+export TONGOU_READONLY_CONNECTION='Server=__SQL_HOST__;Database=...;User Id=__READONLY_USER__;Password=__SET_ME__;TrustServerCertificate=True'
 ```
 
 ## First intended scaffold commands

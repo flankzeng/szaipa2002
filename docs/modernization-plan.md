@@ -21,7 +21,7 @@
 
 - The new ASP.NET Core app must default to **not connecting** to any legacy database.
 - Local debugging defaults to HTTP only. HTTPS redirection can be enabled per-machine with `RuntimeSafety:UseHttpsRedirection=true`.
-- ASP.NET Core DataProtection keys are stored under local ignored `src/Szaipa.Web/App_Data/` during development, not in the user profile.
+- ASP.NET Core DataProtection keys use ignored `src/Szaipa.Web/App_Data/` only as the Development fallback; every non-Development release requires an absolute persistent `DataProtection:KeysPath` outside the release root and a stable `ApplicationName`.
 - The new `src/Szaipa.Data` project defines `Szaipa` and `Tongou` as separate legacy data sources with explicit `Disabled`, `ReadOnly`, and `ReadWrite` modes.
 - Any future live database access should require both:
   - `RuntimeSafety:UseLegacyDataSources=true`
