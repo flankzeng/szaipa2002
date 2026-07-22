@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC";
-    src: url("../fonts/NotoSansSC-Thin.core.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.core.woff2?v=75e25d675c67") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -15,7 +15,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb00.woff2?v=b2bafe61c53b") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb01.woff2?v=75cce4e09948") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -33,7 +33,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb02.woff2?v=78f7c4239e8e") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -42,7 +42,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb03.woff2?v=104444783bfe") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -51,7 +51,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb04.woff2?v=d1f35af80788") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -60,7 +60,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb05.woff2?v=a62ae834d21e") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -69,7 +69,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb06.woff2?v=9bfe7efab148") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -78,7 +78,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb07.woff2?v=ec742d9244cf") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -87,7 +87,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb08.woff2?v=867267db49ac") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -96,7 +96,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Thin.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Thin.gb09.woff2?v=c681d1424fe1") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -105,7 +105,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC";
-    src: url("../fonts/NotoSansSC-Light.core.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.core.woff2?v=6d962d1559ee") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -113,7 +113,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb00.woff2?v=2ae5b8f0c959") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -122,7 +122,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb01.woff2?v=9eaa94e251ff") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -131,7 +131,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb02.woff2?v=6bf5ed0219f3") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -140,7 +140,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb03.woff2?v=1fb8cf340721") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -149,7 +149,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb04.woff2?v=c01c78c6a76c") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -158,7 +158,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb05.woff2?v=ba7176f7c6b2") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -167,7 +167,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb06.woff2?v=55276a41035b") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -176,7 +176,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb07.woff2?v=a2509546435f") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -185,7 +185,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb08.woff2?v=f35d3b329f35") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -194,7 +194,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Light.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Light.gb09.woff2?v=cea049a6f850") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -203,7 +203,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC";
-    src: url("../fonts/NotoSansSC-Regular.core.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.core.woff2?v=ec1901a9e92f") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -211,7 +211,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb00.woff2?v=61fe970ab413") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -220,7 +220,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb01.woff2?v=e5ea0a52cf9f") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -229,7 +229,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb02.woff2?v=7c7fceeca6b4") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -238,7 +238,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb03.woff2?v=bc95b36d5e04") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -247,7 +247,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb04.woff2?v=f3d8e05a5e7f") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -256,7 +256,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb05.woff2?v=5495289da0a6") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -265,7 +265,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb06.woff2?v=e73af9423a79") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -274,7 +274,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb07.woff2?v=11ae27b5abc8") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -283,7 +283,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb08.woff2?v=40283dcda60b") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -292,7 +292,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Regular.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Regular.gb09.woff2?v=136193412180") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -301,7 +301,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC";
-    src: url("../fonts/NotoSansSC-Medium.core.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.core.woff2?v=5b036bae5f8c") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -309,7 +309,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb00.woff2?v=6746c60c1319") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -318,7 +318,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb01.woff2?v=6b9835d186d5") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -327,7 +327,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb02.woff2?v=b0be7b79a49e") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -336,7 +336,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb03.woff2?v=96fcbd11c4b9") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -345,7 +345,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb04.woff2?v=84996a6c8f6a") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -354,7 +354,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb05.woff2?v=c42f6e1aa88e") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -363,7 +363,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb06.woff2?v=1959f6d4be9e") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -372,7 +372,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb07.woff2?v=482e632ee57e") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -381,7 +381,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb08.woff2?v=e4ef4d62d616") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -390,7 +390,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Medium.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Medium.gb09.woff2?v=73a7de74a692") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -399,7 +399,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC";
-    src: url("../fonts/NotoSansSC-Bold.core.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.core.woff2?v=149656a39687") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -407,7 +407,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb00.woff2?v=176e8ea1b677") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -416,7 +416,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb01.woff2?v=43dcc4daef88") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -425,7 +425,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb02.woff2?v=78e56f3f6a29") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -434,7 +434,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb03.woff2?v=92db132aa558") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -443,7 +443,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb04.woff2?v=b6257c102277") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -452,7 +452,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb05.woff2?v=65a4a89287f2") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -461,7 +461,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb06.woff2?v=1b05e1f03519") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -470,7 +470,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb07.woff2?v=1ac65731645e") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -479,7 +479,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb08.woff2?v=927740924f0f") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -488,7 +488,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Sans SC GB";
-    src: url("../fonts/NotoSansSC-Bold.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSansSC-Bold.gb09.woff2?v=4544c8350f93") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -497,7 +497,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC";
-    src: url("../fonts/NotoSerifSC-ExtraLight.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.core.woff2?v=a30d3412bbe1") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -505,7 +505,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb00.woff2?v=854c35b89671") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -514,7 +514,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb01.woff2?v=22430b2a6d74") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -523,7 +523,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb02.woff2?v=7a1001f7e30c") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -532,7 +532,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb03.woff2?v=ab9538e3f76b") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -541,7 +541,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb04.woff2?v=e991bfe60c7e") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -550,7 +550,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb05.woff2?v=3d9acbbcf6e7") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -559,7 +559,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb06.woff2?v=859b4fe03fb1") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -568,7 +568,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb07.woff2?v=c1ff45eca457") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -577,7 +577,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb08.woff2?v=29959fb2c86f") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -586,7 +586,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-ExtraLight.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-ExtraLight.gb09.woff2?v=a2f768edf419") format("woff2");
     font-style: normal;
     font-weight: 100;
     font-display: swap;
@@ -595,7 +595,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC";
-    src: url("../fonts/NotoSerifSC-Light.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.core.woff2?v=fbd1d223b99d") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -603,7 +603,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb00.woff2?v=836cefd78c38") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -612,7 +612,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb01.woff2?v=2293eb49af57") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -621,7 +621,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb02.woff2?v=31fc3a2d045c") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -630,7 +630,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb03.woff2?v=5a2cd7875e3d") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -639,7 +639,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb04.woff2?v=14799d003986") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -648,7 +648,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb05.woff2?v=fb33530f4709") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -657,7 +657,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb06.woff2?v=5f6743772045") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -666,7 +666,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb07.woff2?v=00f06af16631") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -675,7 +675,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb08.woff2?v=27bd240b4c54") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -684,7 +684,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Light.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Light.gb09.woff2?v=9e08327b3838") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -693,7 +693,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC";
-    src: url("../fonts/NotoSerifSC-Regular.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.core.woff2?v=a36f6b02c1e2") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -701,7 +701,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff";
-    src: url("../fonts/NotoSerifSC-Regular.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.core.woff2?v=a36f6b02c1e2") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -709,7 +709,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb00.woff2?v=de7697fa1387") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -718,7 +718,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb00.woff2?v=de7697fa1387") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -727,7 +727,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb01.woff2?v=55acb31a09ae") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -736,7 +736,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb01.woff2?v=55acb31a09ae") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -745,7 +745,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb02.woff2?v=2b8110fe76af") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -754,7 +754,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb02.woff2?v=2b8110fe76af") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -763,7 +763,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb03.woff2?v=d03afe0b6630") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -772,7 +772,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb03.woff2?v=d03afe0b6630") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -781,7 +781,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb04.woff2?v=a7cc1284e617") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -790,7 +790,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb04.woff2?v=a7cc1284e617") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -799,7 +799,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb05.woff2?v=ca636f451038") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -808,7 +808,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb05.woff2?v=ca636f451038") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -817,7 +817,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb06.woff2?v=19599c9eb2f3") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -826,7 +826,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb06.woff2?v=19599c9eb2f3") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -835,7 +835,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb07.woff2?v=040ebfb09042") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -844,7 +844,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb07.woff2?v=040ebfb09042") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -853,7 +853,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb08.woff2?v=0d621ee784dd") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -862,7 +862,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb08.woff2?v=0d621ee784dd") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -871,7 +871,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb09.woff2?v=0825f3729995") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -880,7 +880,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Regular.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Regular.gb09.woff2?v=0825f3729995") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -889,7 +889,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC";
-    src: url("../fonts/NotoSerifSC-Medium.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.core.woff2?v=296820130ec8") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -897,7 +897,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb00.woff2?v=4e415aeb46d3") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -906,7 +906,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb01.woff2?v=6da3b67a8491") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -915,7 +915,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb02.woff2?v=46e62430fc34") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -924,7 +924,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb03.woff2?v=7c82cf7ae5f3") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -933,7 +933,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb04.woff2?v=55084837b91a") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -942,7 +942,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb05.woff2?v=35f09c823e7a") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -951,7 +951,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb06.woff2?v=2f2942401852") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -960,7 +960,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb07.woff2?v=0882e94b3c78") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -969,7 +969,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb08.woff2?v=8eafc68f8ba5") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -978,7 +978,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Medium.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Medium.gb09.woff2?v=d59f94166008") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;
@@ -987,7 +987,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff";
-    src: url("../fonts/NotoSerifSC-SemiBold.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.core.woff2?v=a88fb96d2af8") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -995,7 +995,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb00.woff2?v=a713ea25f1ca") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1004,7 +1004,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb01.woff2?v=cc1ddc6485b2") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1013,7 +1013,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb02.woff2?v=b4dc7ad16f52") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1022,7 +1022,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb03.woff2?v=127f6c713594") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1031,7 +1031,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb04.woff2?v=89389984a7eb") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1040,7 +1040,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb05.woff2?v=f273014f9aa4") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1049,7 +1049,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb06.woff2?v=dbf9fe0c04f8") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1058,7 +1058,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb07.woff2?v=b672e694905b") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1067,7 +1067,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb08.woff2?v=1052ff775b1c") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1076,7 +1076,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-SemiBold.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-SemiBold.gb09.woff2?v=b7b8a9c0bf3c") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
@@ -1085,7 +1085,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC";
-    src: url("../fonts/NotoSerifSC-Bold.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.core.woff2?v=1db76ac268cc") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1093,7 +1093,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff";
-    src: url("../fonts/NotoSerifSC-Bold.core.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.core.woff2?v=1db76ac268cc") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1101,7 +1101,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb00.woff2?v=8d64dc907da6") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1110,7 +1110,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb00.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb00.woff2?v=8d64dc907da6") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1119,7 +1119,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb01.woff2?v=a932f7e238b0") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1128,7 +1128,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb01.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb01.woff2?v=a932f7e238b0") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1137,7 +1137,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb02.woff2?v=0dc46844d369") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1146,7 +1146,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb02.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb02.woff2?v=0dc46844d369") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1155,7 +1155,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb03.woff2?v=0bd5a14958f6") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1164,7 +1164,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb03.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb03.woff2?v=0bd5a14958f6") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1173,7 +1173,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb04.woff2?v=99205d65d0a7") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1182,7 +1182,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb04.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb04.woff2?v=99205d65d0a7") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1191,7 +1191,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb05.woff2?v=0cbbd9de4f2c") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1200,7 +1200,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb05.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb05.woff2?v=0cbbd9de4f2c") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1209,7 +1209,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb06.woff2?v=3330a56b0cd2") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1218,7 +1218,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb06.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb06.woff2?v=3330a56b0cd2") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1227,7 +1227,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb07.woff2?v=2eb65609f220") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1236,7 +1236,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb07.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb07.woff2?v=2eb65609f220") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1245,7 +1245,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb08.woff2?v=7c0b70fc1742") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1254,7 +1254,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb08.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb08.woff2?v=7c0b70fc1742") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1263,7 +1263,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb09.woff2?v=1d25cea3551f") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1272,7 +1272,7 @@
 
 @font-face {
     font-family: "Szaipa Noto Serif SC Staff GB";
-    src: url("../fonts/NotoSerifSC-Bold.gb09.woff2") format("woff2");
+    src: url("../fonts/NotoSerifSC-Bold.gb09.woff2?v=1d25cea3551f") format("woff2");
     font-style: normal;
     font-weight: 700;
     font-display: swap;
@@ -1286,7 +1286,7 @@
  */
 @font-face {
     font-family: "smile-core";
-    src: url("../fonts/SmilelySans.core.woff2") format("woff2");
+    src: url("../fonts/SmilelySans.core.woff2?v=a5ee55b0683a") format("woff2");
     font-display: swap;
 }
 
@@ -1297,7 +1297,7 @@
  */
 @font-face {
     font-family: "Alibaba PuHuiTi Local";
-    src: url("../fonts/AlibabaPuHuiTi-Light.core.woff2") format("woff2");
+    src: url("../fonts/AlibabaPuHuiTi-Light.core.woff2?v=d3e61e10ff29") format("woff2");
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -1305,7 +1305,7 @@
 
 @font-face {
     font-family: "Alibaba PuHuiTi Local";
-    src: url("../fonts/AlibabaPuHuiTi-Regular.core.woff2") format("woff2");
+    src: url("../fonts/AlibabaPuHuiTi-Regular.core.woff2?v=37861b984c1a") format("woff2");
     font-style: normal;
     font-weight: 400;
     font-display: swap;
@@ -1313,7 +1313,7 @@
 
 @font-face {
     font-family: "Alibaba PuHuiTi Local";
-    src: url("../fonts/AlibabaPuHuiTi-Medium.core.woff2") format("woff2");
+    src: url("../fonts/AlibabaPuHuiTi-Medium.core.woff2?v=80896fdc6eda") format("woff2");
     font-style: normal;
     font-weight: 500;
     font-display: swap;

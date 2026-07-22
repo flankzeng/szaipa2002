@@ -825,4 +825,81 @@ html {
         letter-spacing: 0.03em;
         white-space: nowrap;
     }
+
+    /*
+     * Legacy desktop details use floats and negative viewport margins to place
+     * the description, enquiry form and artwork side by side. On narrow
+     * screens each active detail returns to document flow so those regions
+     * cannot overlap or extend beyond the viewport.
+     */
+    .introCon {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 7vh 6vw 10vh;
+        clear: both;
+    }
+
+    .introCon.displayInfo {
+        display: block;
+    }
+
+    .introCon div {
+        float: none;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .introCon > p {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        font-size: clamp(1.5rem, 5.6vw, 2rem);
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .introCon > a {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        clear: both;
+    }
+
+    .introCon .type1,
+    .introCon .type2 {
+        display: block;
+        float: none;
+        width: auto;
+        /* Override responsive.css's legacy max-width: none !important. */
+        max-width: 100% !important;
+        max-height: none;
+        height: auto;
+        margin: 4vh auto 0;
+    }
+
+    .introCon .msg,
+    .introCon .btn1,
+    .introCon .btn2 {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        padding-bottom: 5vh;
+    }
+
+    .introCon .btn1 input,
+    .introCon .btn1 button,
+    .introCon .btn2 input,
+    .introCon .btn2 button {
+        box-sizing: border-box;
+        /* Override responsive.css's fixed 80vw form width. */
+        width: 100% !important;
+        max-width: 100%;
+    }
+
+    .introCon .trading-copyright {
+        position: static;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 6vh;
+    }
 }

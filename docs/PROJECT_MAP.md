@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 120 项；全解决方案合计 216）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 121 项；全解决方案合计 217）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 216）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 217）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -79,11 +79,13 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - NewArt 的 `works-narrow` 作品已在解析器命中时使用 q30，并通过 `data-magnify-src` 保留原图；`newart.js` 只在 pointer/mouse/focus/touch 首次真实交互时初始化 Magnify，避免插件启动即下载原图。新闻详情侧栏与重要展览作品卡片也走相同回退。见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`。
 - NewNewsRead 的手机/平板字号和行高必须在 `newnewsread.css` 内局部覆盖 legacy `responsive.css` 在 ≤991 宽度下的 26px 根字号和 `.article p { line-height: 5em !important; }`；富文本作用域为 `.article-body`，不要去修改数据库内容。320/390/768/991 验证见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
 - 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css`、独立新闻详情在 `newnewsread.css` 局部覆盖 legacy 的 ≤991 26px 与 992–1279 12px 根字号；不修改外置参考 Content。公共 navbar 在 `public-layout-main.css` / `newnewsread.css` 用 `rem + vw` 从 15px 连续接到 24px，并强制单行横排。320/390/768/991/992/1024/1199/1200/1279/1280 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
+- 三个特殊展览的作品详情在 ≤61.9375em 下取消桌面浮动/负边距并改为单列；NewArt 展讯、NewNewsRead 富文本和数据展览 CSS 顺序的窄屏保护见 `docs/updates/2026-07-22-responsive-font-cache-hardening.md`。
 - 特殊展览现场图主/缩使用同一 Razor 数组；主图初始 `src` 走预览解析器并保留 `data-original-src`，缩略图永久使用预览。`publication-special.js` 只在图库接近视口后预载 active/prev/next 原图，170/201 张命中预览，理论首轮少传 50,506,952B。
 - 静态位图的 HTML `width`/`height` 是源比例元数据，不是 CSS 像素布局；已有 vh/vw/%/rem 和 object-fit 继续控制显示。本轮另为公共 Logo、NewArt、NewAbout 和特殊展览页补 16 处，见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。
+- `font-subsets.css` 中每个本地 WOFF2 URL 均带字体二进制 SHA-256 前 12 位；`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 负责刷新/验证，`FontSubsetManifestTests` 防止清单、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。旧 `Views/Publication/*.cshtml`（slug 硬编码页）待迁数据后退役。
 - 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。

@@ -96,6 +96,18 @@ python3 scripts/build-font-subsets.py \
 git worktree remove /tmp/szaipa-font-origin
 ```
 
+2026-07-22 起，生成器会在 Noto 批处理后自动刷新整个字体清单的内容版本。单独重建 Alibaba/Smile 字体或手工替换任一 WOFF2 后，须显式刷新并验证：
+
+```bash
+python3 scripts/build-font-subsets.py \
+  --refresh-css-versions src/Szaipa.Web/wwwroot/css/font-subsets.css
+
+python3 scripts/build-font-subsets.py \
+  --check-css-versions src/Szaipa.Web/wwwroot/css/font-subsets.css
+```
+
+版本值是字体二进制 SHA-256 的前 12 位；不改变字体内容或 `unicode-range`，只让实际命中的本地分片安全进入长期 immutable 缓存。Web 层 `FontSubsetManifestTests` 会核对清单、磁盘文件和内容哈希，避免漏刷新。
+
 ## 验证
 
 - `python3 -m py_compile scripts/build-font-subsets.py`：通过。

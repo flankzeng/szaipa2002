@@ -16,6 +16,7 @@ credential is used by this script.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
 import shutil
 import subprocess
@@ -34,6 +35,11 @@ GB_SHARD_SIZE = 512
 GENERATED_BEGIN = "/* BEGIN GENERATED NOTO SUBSETS -- scripts/build-font-subsets.py */"
 GENERATED_END = "/* END GENERATED NOTO SUBSETS */"
 REQUIRED_TOOLS = ("hb-subset", "woff2_decompress", "woff2_compress")
+FONT_URL_PATTERN = re.compile(
+    r"(?P<url>\.\./fonts/(?P<file>[^?\"')]+\.woff2))"
+    r"(?:\?v=(?P<version>[^\"')\s]+))?(?=[\"')])"
+)
+FONT_VERSION_LENGTH = 12
 
 
 @dataclass(frozen=True)
@@ -287,6 +293,48 @@ def font_face(family: str, file_name: str, weight: int, unicode_range: set[int] 
     return "\n".join(lines)
 
 
+def font_content_version(font_path: Path) -> str:
+    return hashlib.sha256(font_path.read_bytes()).hexdigest()[:FONT_VERSION_LENGTH]
+
+
+def version_font_urls(css_path: Path, *, check_only: bool) -> int:
+    """Refresh or verify content versions for every local WOFF2 URL in one CSS manifest."""
+    text = css_path.read_text(encoding="utf-8")
+    font_dir = css_path.parent.parent / "fonts"
+    failures: list[str] = []
+    matched_files: set[str] = set()
+
+    def replace(match: re.Match[str]) -> str:
+        file_name = match.group("file")
+        if Path(file_name).name != file_name or "/" in file_name or "\\" in file_name:
+            raise ValueError(f"Unsafe font URL in {css_path}: {file_name}")
+
+        font_path = font_dir / file_name
+        if not font_path.is_file():
+            raise FileNotFoundError(f"Font referenced by {css_path} does not exist: {font_path}")
+
+        expected = font_content_version(font_path)
+        actual = match.group("version")
+        matched_files.add(file_name)
+        if check_only:
+            if actual != expected:
+                failures.append(f"{file_name}: expected ?v={expected}, found {actual or 'no version'}")
+            return match.group(0)
+        return f"{match.group('url')}?v={expected}"
+
+    refreshed = FONT_URL_PATTERN.sub(replace, text)
+    if not matched_files:
+        raise RuntimeError(f"No local WOFF2 URLs found in {css_path}")
+    if failures:
+        raise RuntimeError("Font CSS version check failed: " + "; ".join(failures))
+    if not check_only and refreshed != text:
+        css_path.write_text(refreshed, encoding="utf-8")
+
+    action = "verified" if check_only else "versioned"
+    print(f"font_urls={len(matched_files)};action={action};css={css_path}")
+    return len(matched_files)
+
+
 def update_generated_css(path: Path, blocks: list[str]) -> None:
     text = path.read_text(encoding="utf-8")
     generated = GENERATED_BEGIN + "\n" + "\n\n".join(blocks) + "\n" + GENERATED_END
@@ -368,6 +416,7 @@ def build_noto_batch(
             )
 
     update_generated_css(css_output, css_blocks)
+    version_font_urls(css_output, check_only=False)
     print(
         f"database_codepoints={len(database_codepoints)};source_codepoints={len(source_codepoints)};"
         f"gb2312_codepoints={len(collect_gb2312_codepoints())};total_bytes={total_bytes};css={css_output}"
@@ -375,7 +424,6 @@ def build_noto_batch(
 
 
 def main() -> None:
-    require_font_tools()
     parser = argparse.ArgumentParser()
     source_group = parser.add_mutually_exclusive_group(required=True)
     source_group.add_argument("--font", type=Path)
@@ -384,13 +432,33 @@ def main() -> None:
         type=Path,
         help="Build all Noto faces used by the modern public and Staff pages.",
     )
-    parser.add_argument("--source-root", type=Path, required=True)
+    source_group.add_argument(
+        "--refresh-css-versions",
+        type=Path,
+        metavar="CSS",
+        help="Add or refresh content hashes on every local WOFF2 URL without rebuilding fonts.",
+    )
+    source_group.add_argument(
+        "--check-css-versions",
+        type=Path,
+        metavar="CSS",
+        help="Fail unless every local WOFF2 URL carries the current content hash.",
+    )
+    parser.add_argument("--source-root", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--codepoints-file", type=Path)
     parser.add_argument("--css-output", type=Path)
     args = parser.parse_args()
 
+    if args.refresh_css_versions is not None or args.check_css_versions is not None:
+        css_path = args.refresh_css_versions or args.check_css_versions
+        version_font_urls(css_path, check_only=args.check_css_versions is not None)
+        return
+
+    require_font_tools()
+    if args.source_root is None:
+        parser.error("font build modes require --source-root")
     source_codepoints = {ord(character) for character in collect_source_characters(args.source_root)}
 
     if args.font is not None:

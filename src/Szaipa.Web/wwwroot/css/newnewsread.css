@@ -702,4 +702,44 @@
         height: auto !important;
         margin: 1.5rem auto !important;
     }
+
+    .article .article-body table {
+        display: block;
+        box-sizing: border-box;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .article .article-body iframe {
+        display: block;
+        box-sizing: border-box;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        margin-inline: auto;
+    }
+
+    .article .article-body video {
+        display: block;
+        box-sizing: border-box;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin-inline: auto;
+    }
+
+    .article .article-body pre {
+        box-sizing: border-box;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+    }
 }

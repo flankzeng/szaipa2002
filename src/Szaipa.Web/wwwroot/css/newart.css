@@ -512,3 +512,22 @@
     .magnify>.magnify-lens {
         border: 1px solid white;
     }
+
+@media (max-width: 61.9375em) {
+    .information {
+        --information-inline-space: clamp(1rem, 5vw, 2rem);
+
+        box-sizing: border-box;
+        right: var(--information-inline-space);
+        bottom: clamp(2.5rem, 10vh, 5rem);
+        left: var(--information-inline-space);
+        width: auto;
+        max-width: none;
+    }
+
+    .information span {
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+}

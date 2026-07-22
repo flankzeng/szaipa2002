@@ -18,8 +18,6 @@
     var isImportant = publication.Type == 1;
 }
 
-<link rel="stylesheet" href="/Content/css/publication.css">
-
 @if (isImportant)
 {
     <partial name="_ExhibitionImportant" model="gallery" />
@@ -60,6 +58,7 @@ else
 
 @section Styles {
     <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/Content/css/publication.css" />
     @if (isImportant)
     {
         <link rel="stylesheet" href="~/css/exhibition-important.css" asp-append-version="true" />
