@@ -2,8 +2,9 @@
 @inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.HomePageSnapshotModel
 @{
-ViewBag.Title = "首页";
-Layout = "~/Views/Shared/_newLayout.cshtml";
+    ViewBag.Title = "首页";
+    ViewData["UseBootstrapCss"] = false;
+    Layout = "~/Views/Shared/_newLayout.cshtml";
 var featuredSlides = Model.FeaturedPublications
     .Select(publication =>
     {

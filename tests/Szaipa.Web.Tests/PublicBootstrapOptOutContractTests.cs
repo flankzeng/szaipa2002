@@ -34,7 +34,7 @@ public sealed class PublicBootstrapOptOutContractTests
         var artistPageStyleIndex = artistLayout.IndexOf("RenderSectionAsync(\"Styles\"", StringComparison.Ordinal);
         Assert.True(artistLayoutStyleIndex >= 0 && artistPageStyleIndex > artistLayoutStyleIndex);
 
-        foreach (var viewName in new[] { "NewVip.cshtml", "PublicationList.cshtml", "NewNews.cshtml", "NewAbout.cshtml" })
+        foreach (var viewName in new[] { "NewIndex.cshtml", "NewVip.cshtml", "PublicationList.cshtml", "NewNews.cshtml", "NewAbout.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
             Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", view, StringComparison.Ordinal);
@@ -46,10 +46,25 @@ public sealed class PublicBootstrapOptOutContractTests
         var baselinePath = Path.Combine(webProject, "wwwroot", "css", "public-bootstrap-baseline.css");
         var baseline = File.ReadAllText(baselinePath);
         Assert.Contains("box-sizing: border-box;", baseline, StringComparison.Ordinal);
+        Assert.Contains(
+            """
+            .clearfix:before,
+            .clearfix:after {
+                display: table;
+                content: " ";
+            }
+
+            .clearfix:after {
+                clear: both;
+            }
+            """,
+            baseline,
+            StringComparison.Ordinal);
         Assert.Contains("font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;", baseline, StringComparison.Ordinal);
         Assert.Contains("line-height: 1.42857143;", baseline, StringComparison.Ordinal);
         Assert.Contains("figure {", baseline, StringComparison.Ordinal);
         Assert.Contains("h1,\nh2,\nh3,\nh4,\nh5,\nh6 {", baseline, StringComparison.Ordinal);
+        Assert.Contains("h1 {\n    font-size: 36px;\n}", baseline, StringComparison.Ordinal);
         Assert.Contains(
             """
             button,
