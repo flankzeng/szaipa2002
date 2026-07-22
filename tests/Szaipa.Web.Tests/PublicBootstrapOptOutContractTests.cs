@@ -26,7 +26,7 @@ public sealed class PublicBootstrapOptOutContractTests
         var pageStyleIndex = layout.IndexOf("RenderSectionAsync(\"Styles\"", StringComparison.Ordinal);
         Assert.True(layoutStyleIndex >= 0 && pageStyleIndex > layoutStyleIndex);
 
-        foreach (var viewName in new[] { "NewVip.cshtml", "PublicationList.cshtml" })
+        foreach (var viewName in new[] { "NewVip.cshtml", "PublicationList.cshtml", "NewNews.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
             Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", view, StringComparison.Ordinal);
@@ -38,6 +38,7 @@ public sealed class PublicBootstrapOptOutContractTests
         Assert.Contains("font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;", baseline, StringComparison.Ordinal);
         Assert.Contains("line-height: 1.42857143;", baseline, StringComparison.Ordinal);
         Assert.Contains("figure {", baseline, StringComparison.Ordinal);
+        Assert.Contains("h1,\nh2,\nh3,\nh4,\nh5,\nh6 {", baseline, StringComparison.Ordinal);
         Assert.Contains("margin: 0;", baseline, StringComparison.Ordinal);
     }
 
