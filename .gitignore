@@ -4,10 +4,14 @@
 .LSOverride
 .git/
 
-# Front-end tooling (Tailwind/TipTap build for Areas/Admin). The compiled wwwroot/admin/admin.css is
+# Front-end tooling (Tailwind/TipTap build for Areas/Staff). The compiled wwwroot/admin/admin.css is
 # committed; its node_modules toolchain is not.
 node_modules/
 src/Szaipa.Web/node_modules/
+
+# Python tooling caches
+__pycache__/
+*.py[cod]
 
 # Thumbnails
 ._*

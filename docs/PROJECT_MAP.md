@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 123 项；全解决方案合计 219）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 125 项；全解决方案合计 221）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 219）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 221）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -30,7 +30,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - **dev 现状**：读=生产只读，写=本地副本，**是两个库**；admin 建的数据在 dev 不被公开读侧看到（生产同库才打通）。端到端点击验证需用户本地配可写库 + 可写 `LegacyAssets:ContentRoot`。
 - Tongou 有独立只读上下文 `Contexts/Tongou/TongouLegacyReadContext` 和独立写上下文 `Contexts/TongouAdmin/TongouAdminContext`（门控：`TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`，同样指向本地可写副本，与 Szaipa 是两个物理隔离的数据库）。Tongou 表无 `EditRecord` 列，操作审计仍写 Szaipa 库的 Diary/Staff（两个 SaveChanges，不能跨库共事务）。
 - 配置装配：`src/Szaipa.Data/DependencyInjection/SzaipaDataServiceCollectionExtensions.cs`（所有上下文/仓储在此注册）；`src/Szaipa.Web/Program.cs`（认证、DI、area 路由、静态文件、/Content 映射）。
-- 独立仓库/原子发布：新版只迁 `src/`、`tests/`、`scripts/`、`docs/` 和现代 solution/config 文件；约 1.2GB Content 继续由 `LegacyAssets:ContentRoot` 外接，绝非删除。Production 的 Data Protection key 必须通过 `DataProtection:KeysPath` 放在 release 根之外，并固定 `ApplicationName=Szaipa.Web`；缺失/相对/release 内路径会在启动前失败。见 `docs/repository-split.md`。
+- 独立仓库/原子发布：目标已建在 Gitee 及本地 `~/Project/GitClone/szaipa2026`，目前只有初始 README，UI 验收前不导出源码。新版只迁 `src/`、`tests/`、`scripts/`、`docs/` 和现代 solution/config 文件；约 1.2GB Content 继续由 `LegacyAssets:ContentRoot` 外接，绝非删除。Production 的 Data Protection key 必须通过 `DataProtection:KeysPath` 放在 release 根之外，并固定 `ApplicationName=Szaipa.Web`；缺失/相对/release 内路径会在启动前失败。见 `docs/repository-split.md`。
 
 ## 后台（Areas/Staff）—— 加新 CRUD 模块照这个抄
 认证：cookie（`Program.cs` 配 `AddCookie`，登录 `/Staff/Account/Login`），策略 `AdminAuthorization.StaffPolicy`，控制器加 `[Authorize(Policy=...)]`。密码 MD5 兼容老账号（`Services/Admin/StaffPasswordHasher`）。
@@ -86,7 +86,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。
 - 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。
-- `font-subsets.css` 中每个本地 WOFF2 URL 均带字体二进制 SHA-256 前 12 位；`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 负责刷新/验证，`FontSubsetManifestTests` 防止清单、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
+- 字体清单按页面边界拆成 `font-subsets-public.css`（114 faces）与 `font-subsets-staff.css`（88 faces）；两者并集仍是原 147 faces、共同 55 faces，合计仍覆盖磁盘全部 125 个 WOFF2。`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 对单个清单刷新/验证，`--split-css-manifests` 可安全拆已有完整清单；不要仅为清单维护随意运行 `--font-dir`，它会重建字体二进制。`FontSubsetManifestTests` 防止页面边界、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。旧 `Views/Publication/*.cshtml`（slug 硬编码页）待迁数据后退役。
 - 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。

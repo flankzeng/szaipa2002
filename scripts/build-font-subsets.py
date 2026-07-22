@@ -7,7 +7,7 @@ Single-font mode keeps the original Phase 1 workflow. Batch Noto mode builds:
   codepoint snapshot;
 * small GB2312 buffer shards for future common Chinese, loaded only when a new
   character is not already in the core;
-* the generated @font-face section in font-subsets.css.
+* the generated @font-face sections in the public and Staff CSS manifests.
 
 The database snapshot contains Unicode codepoints only. No database value or
 credential is used by this script.
@@ -19,6 +19,7 @@ import argparse
 import hashlib
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 from dataclasses import dataclass
@@ -40,6 +41,8 @@ FONT_URL_PATTERN = re.compile(
     r"(?:\?v=(?P<version>[^\"')\s]+))?(?=[\"')])"
 )
 FONT_VERSION_LENGTH = 12
+FONT_FACE_BLOCK_PATTERN = re.compile(r"@font-face\s*\{.*?\}\s*", re.DOTALL)
+FONT_FAMILY_PATTERN = re.compile(r'font-family:\s*"(?P<family>[^"]+)";')
 
 
 @dataclass(frozen=True)
@@ -59,6 +62,8 @@ class FontSpec:
 PUBLIC_SANS = ("Szaipa Noto Sans SC", "Szaipa Noto Sans SC GB")
 PUBLIC_SERIF = ("Szaipa Noto Serif SC", "Szaipa Noto Serif SC GB")
 STAFF_SERIF = ("Szaipa Noto Serif SC Staff", "Szaipa Noto Serif SC Staff GB")
+PUBLIC_MANIFEST_FAMILIES = frozenset((*PUBLIC_SANS, *PUBLIC_SERIF))
+STAFF_MANIFEST_FAMILIES = frozenset((*PUBLIC_SANS, *STAFF_SERIF))
 
 # Public families retain the exact weight set that the removed loli.net request
 # exposed to the browser. Staff has separate families because its old Google
@@ -347,23 +352,260 @@ def update_generated_css(path: Path, blocks: list[str]) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def manifest_names_for_role(role: FaceRole) -> tuple[str, ...]:
+    family_pair = (role.core_family, role.buffer_family)
+    if family_pair == PUBLIC_SANS:
+        return ("public", "staff")
+    if family_pair == PUBLIC_SERIF:
+        return ("public",)
+    if family_pair == STAFF_SERIF:
+        return ("staff",)
+    raise ValueError(f"Unknown font manifest role: {family_pair!r}")
+
+
+def validate_manifest_pair_paths(
+    public_path: Path,
+    staff_path: Path,
+    *,
+    require_existing: bool,
+) -> None:
+    if public_path.resolve() == staff_path.resolve():
+        raise ValueError("Public and Staff font manifests must use different paths")
+    if require_existing:
+        missing = [str(path) for path in (public_path, staff_path) if not path.is_file()]
+        if missing:
+            raise FileNotFoundError(
+                "Both tracked font manifest templates must exist before rebuilding Noto subsets: "
+                + ", ".join(missing)
+            )
+
+
+def write_manifest_pair(
+    public_path: Path,
+    public_text: str,
+    staff_path: Path,
+    staff_text: str,
+    *,
+    refresh_versions: bool,
+) -> None:
+    """Validate both manifests before replacing either tracked destination."""
+    validate_manifest_pair_paths(public_path, staff_path, require_existing=False)
+
+    public_path.parent.mkdir(parents=True, exist_ok=True)
+    staff_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_paths: list[Path] = []
+    destination_modes: list[int] = []
+    backup_paths: list[Path | None] = []
+    preserve_backups = False
+    try:
+        for destination, text in ((public_path, public_text), (staff_path, staff_text)):
+            destination_mode = (
+                stat.S_IMODE(destination.stat().st_mode) if destination.exists() else 0o644
+            )
+            destination_modes.append(destination_mode)
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                prefix=f".{destination.stem}-",
+                suffix=destination.suffix,
+                dir=destination.parent,
+                delete=False,
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+                temporary_paths.append(temporary_path)
+                temporary.write(text)
+
+        for temporary_path in temporary_paths:
+            version_font_urls(temporary_path, check_only=not refresh_versions)
+        for temporary_path, destination_mode in zip(temporary_paths, destination_modes):
+            temporary_path.chmod(destination_mode)
+
+        destinations = (public_path, staff_path)
+        for destination in destinations:
+            if not destination.exists():
+                backup_paths.append(None)
+                continue
+            with tempfile.NamedTemporaryFile(
+                prefix=f".{destination.stem}-backup-",
+                suffix=destination.suffix,
+                dir=destination.parent,
+                delete=False,
+            ) as backup:
+                backup_path = Path(backup.name)
+                backup_paths.append(backup_path)
+            shutil.copy2(destination, backup_path)
+
+        replaced_count = 0
+        try:
+            for temporary_path, destination in zip(temporary_paths, destinations):
+                temporary_path.replace(destination)
+                replaced_count += 1
+        except Exception as replacement_error:
+            rollback_errors: list[str] = []
+            for index in reversed(range(replaced_count)):
+                destination = destinations[index]
+                backup_path = backup_paths[index]
+                try:
+                    if backup_path is None:
+                        destination.unlink(missing_ok=True)
+                    else:
+                        backup_path.replace(destination)
+                except Exception as rollback_error:
+                    rollback_errors.append(f"{destination}: {rollback_error}")
+            if rollback_errors:
+                preserve_backups = True
+                backup_locations = ", ".join(
+                    str(path) for path in backup_paths if path is not None and path.exists()
+                )
+                raise RuntimeError(
+                    "Font manifest replacement and rollback both failed; "
+                    f"backups preserved at: {backup_locations}; rollback errors: "
+                    + "; ".join(rollback_errors)
+                ) from replacement_error
+            raise
+
+        temporary_paths.clear()
+    finally:
+        for temporary_path in temporary_paths:
+            temporary_path.unlink(missing_ok=True)
+        if not preserve_backups:
+            for backup_path in backup_paths:
+                if backup_path is not None:
+                    backup_path.unlink(missing_ok=True)
+
+
+def update_generated_css_pair(
+    public_path: Path,
+    public_blocks: list[str],
+    staff_path: Path,
+    staff_blocks: list[str],
+) -> None:
+    validate_manifest_pair_paths(public_path, staff_path, require_existing=True)
+
+    with tempfile.TemporaryDirectory(prefix="szaipa-font-manifests-") as temporary_directory:
+        temporary_root = Path(temporary_directory)
+        public_temporary = temporary_root / public_path.name
+        staff_temporary = temporary_root / staff_path.name
+        shutil.copyfile(public_path, public_temporary)
+        shutil.copyfile(staff_path, staff_temporary)
+        update_generated_css(public_temporary, public_blocks)
+        update_generated_css(staff_temporary, staff_blocks)
+        public_text = public_temporary.read_text(encoding="utf-8")
+        staff_text = staff_temporary.read_text(encoding="utf-8")
+
+    write_manifest_pair(
+        public_path,
+        public_text,
+        staff_path,
+        staff_text,
+        refresh_versions=True,
+    )
+
+
+def split_existing_manifest(source_path: Path, public_path: Path, staff_path: Path) -> None:
+    """Split complete existing face blocks without rebuilding or rewriting font files."""
+    source_text = source_path.read_text(encoding="utf-8")
+    if GENERATED_BEGIN not in source_text or GENERATED_END not in source_text:
+        raise ValueError(f"Generated font markers are missing from {source_path}")
+
+    before_generated, remainder = source_text.split(GENERATED_BEGIN, 1)
+    generated_text, public_tail = remainder.split(GENERATED_END, 1)
+    if before_generated.strip():
+        raise ValueError(f"Unexpected content before the generated font section in {source_path}")
+
+    matches = list(FONT_FACE_BLOCK_PATTERN.finditer(generated_text))
+    if not matches:
+        raise ValueError(f"No generated @font-face blocks found in {source_path}")
+
+    for previous, current in zip(matches, matches[1:]):
+        if generated_text[previous.end() : current.start()].strip():
+            raise ValueError(f"Unexpected content between generated font faces in {source_path}")
+    if generated_text[matches[-1].end() :].strip():
+        raise ValueError(f"Unexpected content after generated font faces in {source_path}")
+
+    preamble = generated_text[:matches[0].start()].strip()
+    public_blocks: list[str] = []
+    staff_blocks: list[str] = []
+    source_blocks: list[str] = []
+    public_sans_blocks: list[str] = []
+    for match in matches:
+        block = match.group(0).strip()
+        family_match = FONT_FAMILY_PATTERN.search(block)
+        if family_match is None:
+            raise ValueError(f"Generated @font-face block has no family in {source_path}")
+        family = family_match.group("family")
+        source_blocks.append(block)
+        if family in PUBLIC_MANIFEST_FAMILIES:
+            public_blocks.append(block)
+        if family in STAFF_MANIFEST_FAMILIES:
+            staff_blocks.append(block)
+        if family in PUBLIC_SANS:
+            public_sans_blocks.append(block)
+        if family not in PUBLIC_MANIFEST_FAMILIES | STAFF_MANIFEST_FAMILIES:
+            raise ValueError(f"Unknown generated font family in {source_path}: {family}")
+
+    if set(public_blocks) | set(staff_blocks) != set(source_blocks):
+        raise RuntimeError("Split font manifests do not cover every original generated face")
+    if set(public_blocks) & set(staff_blocks) != set(public_sans_blocks):
+        raise RuntimeError("Only public Noto Sans faces may be shared by both manifests")
+
+    def generated_manifest(blocks: list[str]) -> str:
+        body = "\n\n".join((preamble, *blocks))
+        return f"{GENERATED_BEGIN}\n{body}\n{GENERATED_END}"
+
+    public_text = generated_manifest(public_blocks) + public_tail
+    staff_text = (
+        generated_manifest(staff_blocks)
+        + "\n\n/* Staff uses shared public Noto Sans plus its isolated Serif 400/600/700 faces. */\n"
+    )
+    write_manifest_pair(
+        public_path,
+        public_text,
+        staff_path,
+        staff_text,
+        refresh_versions=False,
+    )
+    print(
+        f"source_faces={len(source_blocks)};public_generated_faces={len(public_blocks)};"
+        f"staff_generated_faces={len(staff_blocks)};shared_faces={len(public_sans_blocks)};"
+        f"public_css={public_path};staff_css={staff_path}"
+    )
+
+
 def build_noto_batch(
     font_dir: Path,
     output_dir: Path,
-    css_output: Path,
+    public_css_output: Path,
+    staff_css_output: Path,
     source_codepoints: set[int],
     database_codepoints: set[int],
 ) -> None:
+    validate_manifest_pair_paths(public_css_output, staff_css_output, require_existing=True)
+    missing_sources = [
+        str(font_dir / spec.source_name)
+        for spec in SITE_NOTO_FONTS
+        if not (font_dir / spec.source_name).is_file()
+    ]
+    if missing_sources:
+        raise FileNotFoundError(
+            "Noto batch source fonts are missing; no output was changed: "
+            + ", ".join(missing_sources)
+        )
+
     core_requested = source_codepoints | database_codepoints
     buffer_requested = collect_gb2312_codepoints() - core_requested
     buffer_shards = split_shards(buffer_requested)
-    css_blocks = [
+    generated_comment = (
         "/*\n"
         " * Local Noto cores use the repository's original outlines. Current source and\n"
         " * read-only database characters are in core; GB2312-only future characters\n"
         " * fall through to small same-outline buffer shards.\n"
         " */"
-    ]
+    )
+    css_blocks = {
+        "public": [generated_comment],
+        "staff": [generated_comment],
+    }
     total_bytes = 0
 
     with tempfile.TemporaryDirectory(prefix="szaipa-noto-sources-") as source_tmp:
@@ -392,7 +634,8 @@ def build_noto_batch(
                 raise RuntimeError(f"{core_name} misses {len(missing_supported_database)} supported database codepoints")
 
             for role in spec.roles:
-                css_blocks.append(font_face(role.core_family, core_name, role.weight))
+                for manifest_name in manifest_names_for_role(role):
+                    css_blocks[manifest_name].append(font_face(role.core_family, core_name, role.weight))
 
             shard_count = 0
             shard_bytes = 0
@@ -406,7 +649,10 @@ def build_noto_batch(
                 shard_bytes += size
                 total_bytes += size
                 for role in spec.roles:
-                    css_blocks.append(font_face(role.buffer_family, shard_name, role.weight, shard))
+                    for manifest_name in manifest_names_for_role(role):
+                        css_blocks[manifest_name].append(
+                            font_face(role.buffer_family, shard_name, role.weight, shard)
+                        )
 
             print(
                 f"font={source.name};core_codepoints={len(core)};core_bytes={core_bytes};"
@@ -415,11 +661,16 @@ def build_noto_batch(
                 flush=True,
             )
 
-    update_generated_css(css_output, css_blocks)
-    version_font_urls(css_output, check_only=False)
+    update_generated_css_pair(
+        public_css_output,
+        css_blocks["public"],
+        staff_css_output,
+        css_blocks["staff"],
+    )
     print(
         f"database_codepoints={len(database_codepoints)};source_codepoints={len(source_codepoints)};"
-        f"gb2312_codepoints={len(collect_gb2312_codepoints())};total_bytes={total_bytes};css={css_output}"
+        f"gb2312_codepoints={len(collect_gb2312_codepoints())};total_bytes={total_bytes};"
+        f"public_css={public_css_output};staff_css={staff_css_output}"
     )
 
 
@@ -444,16 +695,33 @@ def main() -> None:
         metavar="CSS",
         help="Fail unless every local WOFF2 URL carries the current content hash.",
     )
+    source_group.add_argument(
+        "--split-css-manifests",
+        type=Path,
+        metavar="CSS",
+        help="Split the existing combined CSS into public and Staff manifests without rebuilding fonts.",
+    )
     parser.add_argument("--source-root", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--codepoints-file", type=Path)
-    parser.add_argument("--css-output", type=Path)
+    parser.add_argument("--public-css-output", type=Path)
+    parser.add_argument("--staff-css-output", type=Path)
     args = parser.parse_args()
 
     if args.refresh_css_versions is not None or args.check_css_versions is not None:
         css_path = args.refresh_css_versions or args.check_css_versions
         version_font_urls(css_path, check_only=args.check_css_versions is not None)
+        return
+
+    if args.split_css_manifests is not None:
+        if args.public_css_output is None or args.staff_css_output is None:
+            parser.error("--split-css-manifests requires --public-css-output and --staff-css-output")
+        split_existing_manifest(
+            args.split_css_manifests,
+            args.public_css_output,
+            args.staff_css_output,
+        )
         return
 
     require_font_tools()
@@ -476,12 +744,15 @@ def main() -> None:
 
     if args.output_dir is None or args.output is not None:
         parser.error("--font-dir requires --output-dir and cannot be combined with --output")
-    if args.codepoints_file is None or args.css_output is None:
-        parser.error("--font-dir requires --codepoints-file and --css-output")
+    if args.codepoints_file is None or args.public_css_output is None or args.staff_css_output is None:
+        parser.error(
+            "--font-dir requires --codepoints-file, --public-css-output, and --staff-css-output"
+        )
     build_noto_batch(
         args.font_dir,
         args.output_dir,
-        args.css_output,
+        args.public_css_output,
+        args.staff_css_output,
         source_codepoints,
         read_codepoint_set(args.codepoints_file),
     )

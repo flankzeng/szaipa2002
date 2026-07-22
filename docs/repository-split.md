@@ -4,7 +4,9 @@
 
 The modern ASP.NET Core application has reached a clean project boundary and can be moved to a dedicated repository without carrying the MVC5 source or its large tracked asset tree. This document defines the allowed paths, external runtime dependencies, migration sequence, release acceptance criteria, and the manual decision required before enabling backend writes.
 
-This document is preparatory only. It does **not** create a local or remote repository, change Git remotes, publish an artifact, alter a server or IIS site, repoint a hook, write a database, or modify the production `Content` directory.
+The user has created the dedicated target repository at `https://gitee.com/arthur953/szaipa2026.git` and a local clone at `~/Project/GitClone/szaipa2026`. At the current checkpoint it contains only its initial README commit: no modern source has been exported, no artifact has been published, and no server, IIS site, hook, database, or production `Content` directory has been changed.
+
+The target's existing README commit creates one unresolved release decision. Keeping the strict single-fresh-root rule below requires explicit approval to replace the target `master` history; preserving that initial commit instead creates a documented two-commit deviation. Do not choose or force-push either outcome before the user's UI acceptance and explicit direction.
 
 ## Repository whitelist
 
@@ -44,9 +46,9 @@ The split must be based on a clean committed revision, not a copy of the current
 3. Create a signed or annotated source-baseline tag and record its full commit SHA.
 4. Export only the whitelist paths from that exact commit into a new disposable directory. Do not copy the active working directory and do not run history-rewriting commands in it.
 5. Initialize a new repository in the exported directory and create one reviewed root commit. Its commit message and repository metadata must record the original baseline SHA and archive branch.
-6. Scan the exported tree, the new commit, and every ref/object in the new repository for secrets. A clean checkout alone is insufficient. Any real credential or private key must be removed and rotated before the remote exists.
+6. Scan the exported tree, the new commit, and every ref/object in the new repository for secrets. A clean checkout alone is insufficient. Any real credential or private key must be removed and rotated before any modern source or history is pushed to the target remote.
 7. Perform all acceptance checks from a fresh clone of this local single-root repository.
-8. Only after all checks pass, create and attach the new remote repository.
+8. Only after all checks pass, attach and populate the already-created target remote using the user-approved root-history choice.
 
 The fresh-root rule is deliberate. A masked audit found that early modern `src/`/`docs/` history contained
 connection-string examples without explicit placeholder markers. They do not match the known legacy
@@ -62,8 +64,8 @@ The fresh-root checkout is acceptable only when:
 - `git ls-files` contains no `szaipa2022/`, legacy solution, `Web.config`, `Content`, `App_Data`, `bin`, `obj`, `node_modules`, or machine-local appsettings;
 - no project XML references a path outside `src/` and `tests/`;
 - the root commit records the original source-baseline SHA and legacy archive branch;
-- a secret scanner has covered all refs and historical blobs, with its tool/version/result recorded; any real hit has been rotated and removed before the remote is created;
-- npm build, .NET build, and all 216 current tests pass from a fresh clone;
+- a secret scanner has covered all refs and historical blobs, with its tool/version/result recorded; any real hit has been rotated and removed before the target remote is populated with modern source/history;
+- npm build, .NET build, and all 221 current tests pass from a fresh clone;
 - Release publish succeeds without access to the legacy source repository;
 - the publish output contains neither secrets nor the external `Content` tree.
 

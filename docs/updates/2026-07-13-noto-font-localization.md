@@ -8,7 +8,7 @@
 - `Szaipa Noto Serif SC` / `Szaipa Noto Serif SC GB`
 - Staff 仅为 Serif 保留独立的 `Szaipa Noto Serif SC Staff` family，用于保持后台原有 600 字重匹配。
 
-`font-subsets.css` 还覆盖 legacy `.notosans` / `.notoserif` helper，因此数据库富文本中的旧 class 也会转到本地 Szaipa Noto，不会请求已不存在的 `/Content/fonts/Noto*`。
+`font-subsets-public.css` 还覆盖 legacy `.notosans` / `.notoserif` helper，因此数据库富文本中的旧 class 也会转到本地 Szaipa Noto，不会请求已不存在的 `/Content/fonts/Noto*`。Staff 使用独立的 `font-subsets-staff.css`；2026-07-22 的页面边界拆分见 `2026-07-22-font-manifest-split.md`。
 
 ## 字符覆盖策略
 
@@ -42,7 +42,7 @@
 - 本地 Noto：121 个 WOFF2，合计 **17,820,936B**。
   - 11 个 core：6,195,492B，单文件 467,332–653,368B。
   - 110 个 GB2312 按需分片：11,625,444B，单文件 24,612–162,272B。
-- 生成的 `font-subsets.css`：349,895B；本地 Kestrel Brotli 实测传输 128,950B。
+- 当时生成的合并 `font-subsets.css`：349,895B；本地 Kestrel Brotli 实测传输 128,950B。该历史基线已在 2026-07-22 拆成 public/Staff 两份清单，字体二进制不变。
 - 旧归档中 13 个全量 Noto 源文件为 **92,580,992B**；逐一比较 Git blob ID 后确认当前文件与 `origin/legacy/archive-before-frontend-prune-20260710` 完全一致，随后已从 modernization 分支及旧 MVC `Content` 项目清单移除。现代分支只保留子集，全量源留在 legacy archive 作为可复现输入。
 
 浏览器在真实本地页面观察到的 Noto 请求：
@@ -91,7 +91,8 @@ python3 scripts/build-font-subsets.py \
   --source-root src/Szaipa.Web \
   --output-dir src/Szaipa.Web/wwwroot/fonts \
   --codepoints-file scripts/font-db-codepoints.txt \
-  --css-output src/Szaipa.Web/wwwroot/css/font-subsets.css
+  --public-css-output src/Szaipa.Web/wwwroot/css/font-subsets-public.css \
+  --staff-css-output src/Szaipa.Web/wwwroot/css/font-subsets-staff.css
 
 git worktree remove /tmp/szaipa-font-origin
 ```
@@ -100,10 +101,16 @@ git worktree remove /tmp/szaipa-font-origin
 
 ```bash
 python3 scripts/build-font-subsets.py \
-  --refresh-css-versions src/Szaipa.Web/wwwroot/css/font-subsets.css
+  --refresh-css-versions src/Szaipa.Web/wwwroot/css/font-subsets-public.css
 
 python3 scripts/build-font-subsets.py \
-  --check-css-versions src/Szaipa.Web/wwwroot/css/font-subsets.css
+  --refresh-css-versions src/Szaipa.Web/wwwroot/css/font-subsets-staff.css
+
+python3 scripts/build-font-subsets.py \
+  --check-css-versions src/Szaipa.Web/wwwroot/css/font-subsets-public.css
+
+python3 scripts/build-font-subsets.py \
+  --check-css-versions src/Szaipa.Web/wwwroot/css/font-subsets-staff.css
 ```
 
 版本值是字体二进制 SHA-256 的前 12 位；不改变字体内容或 `unicode-range`，只让实际命中的本地分片安全进入长期 immutable 缓存。Web 层 `FontSubsetManifestTests` 会核对清单、磁盘文件和内容哈希，避免漏刷新。
