@@ -24,11 +24,8 @@ public sealed class LazyMagnifyAssetContractTests
         foreach (var viewName in new[] { "NewIndex.cshtml", "NewArt.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
-            var loaderReference = viewName == "NewArt.cshtml"
-                ? "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>"
-                : "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\"></script>";
             Assert.Contains(
-                loaderReference,
+                "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>",
                 view,
                 StringComparison.Ordinal);
         }
@@ -59,6 +56,22 @@ public sealed class LazyMagnifyAssetContractTests
         Assert.Contains("new window.Swiper('.mySwiper',", script, StringComparison.Ordinal);
         Assert.Contains("new window.Swiper('.mySwiper3',", script, StringComparison.Ordinal);
         Assert.DoesNotContain(".mySwiper2", script, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void New_index_defers_its_ordered_runtime_dependencies()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
+        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewIndex.cshtml"));
+
+        var swiperIndex = view.IndexOf("<script src=\"/Content/Model/swiper-bundle.min.js\" defer></script>", StringComparison.Ordinal);
+        var magnifyIndex = view.IndexOf("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
+        var pageScriptIndex = view.IndexOf("<script src=\"~/js/newindex.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
+
+        Assert.True(swiperIndex >= 0);
+        Assert.True(magnifyIndex > swiperIndex);
+        Assert.True(pageScriptIndex > magnifyIndex);
     }
 
     private static string FindRepositoryRoot()
