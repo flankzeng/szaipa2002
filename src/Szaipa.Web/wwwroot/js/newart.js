@@ -158,16 +158,6 @@
             },
         });
 
-        new window.Swiper('.mySwiper2', {
-            direction: 'vertical',
-            spaceBetween: 50,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-        });
-
-        // Swiper3
         new window.Swiper('.mySwiper3', {
             spaceBetween: 0,
             pagination: {

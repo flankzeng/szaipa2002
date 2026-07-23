@@ -24,8 +24,11 @@ public sealed class LazyMagnifyAssetContractTests
         foreach (var viewName in new[] { "NewIndex.cshtml", "NewArt.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
+            var loaderReference = viewName == "NewArt.cshtml"
+                ? "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>"
+                : "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\"></script>";
             Assert.Contains(
-                "<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\"></script>",
+                loaderReference,
                 view,
                 StringComparison.Ordinal);
         }
@@ -40,6 +43,22 @@ public sealed class LazyMagnifyAssetContractTests
             Assert.Contains("body .magnify {", pageStyle, StringComparison.Ordinal);
             Assert.Contains("body .magnify > .magnify-lens {", pageStyle, StringComparison.Ordinal);
         }
+    }
+
+    [Fact]
+    public void New_art_defers_its_ordered_runtime_dependencies_and_omits_the_removed_swiper()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
+        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewArt.cshtml"));
+        var script = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "newart.js"));
+
+        Assert.Contains("<script src=\"/Content/Model/swiper-bundle.min.js\" defer></script>", view, StringComparison.Ordinal);
+        Assert.Contains("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
+        Assert.Contains("<script src=\"~/js/newart.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
+        Assert.Contains("new window.Swiper('.mySwiper',", script, StringComparison.Ordinal);
+        Assert.Contains("new window.Swiper('.mySwiper3',", script, StringComparison.Ordinal);
+        Assert.DoesNotContain(".mySwiper2", script, StringComparison.Ordinal);
     }
 
     private static string FindRepositoryRoot()

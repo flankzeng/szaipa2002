@@ -65,7 +65,7 @@ The fresh-root checkout is acceptable only when:
 - no project XML references a path outside `src/` and `tests/`;
 - the root commit records the original source-baseline SHA and legacy archive branch;
 - a secret scanner has covered all refs and historical blobs, with its tool/version/result recorded; any real hit has been rotated and removed before the target remote is populated with modern source/history;
-- npm build, .NET build, and all 221 current tests pass from a fresh clone;
+- npm build, .NET build, and all 222 current tests pass from a fresh clone;
 - Release publish succeeds without access to the legacy source repository;
 - the publish output contains neither secrets nor the external `Content` tree.
 
