@@ -11,14 +11,14 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（96 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 127 项；全解决方案合计 223）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（98 测试）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 127 项；全解决方案合计 225）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 223）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 225）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login

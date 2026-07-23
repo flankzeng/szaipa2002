@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Szaipa.Data.Composition;
 using Szaipa.Data.Contexts.Szaipa;
@@ -55,7 +56,7 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         var detail = await _context.Publication
             .AsNoTracking()
             .Where(publication => publication.Id == id)
-            .Select(SzaipaHomeProjections.PublicationDetail)
+            .Select(SzaipaHomeProjections.PublicationDetailLegacy)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (detail is null)
@@ -63,39 +64,72 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
             return null;
         }
 
-        var works = await _context.ExhibitionWork
-            .AsNoTracking()
-            .Where(work => work.PublicationId == id)
-            .OrderBy(work => work.SortOrder)
-            .ThenBy(work => work.Id)
-            .Select(SzaipaHomeProjections.ExhibitionWorkSummary)
-            .ToListAsync(cancellationToken);
-
-        if (works.Count > 0)
+        var type = 0;
+        var preface = string.Empty;
+        var signature = string.Empty;
+        try
         {
-            detail = new PublicationDetailModel
+            var template = await _context.Publication
+                .AsNoTracking()
+                .Where(publication => publication.Id == id)
+                .Select(publication => new { publication.Type, publication.Preface, publication.Signature })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (template is not null)
             {
-                Id = detail.Id,
-                TitleCn = detail.TitleCn,
-                TitleEn = detail.TitleEn,
-                StartDate = detail.StartDate,
-                EndDate = detail.EndDate,
-                FolderName = detail.FolderName,
-                MaxImg = detail.MaxImg,
-                CoverPath = detail.CoverPath,
-                LogoPath = detail.LogoPath,
-                MaxImagePath = detail.MaxImagePath,
-                Location = detail.Location,
-                Organizer = detail.Organizer,
-                Host = detail.Host,
-                CoHost = detail.CoHost,
-                EditRecord = detail.EditRecord,
-                Type = detail.Type,
-                Preface = detail.Preface,
-                Signature = detail.Signature,
-                Works = works
-            };
+                type = template.Type;
+                preface = template.Preface ?? string.Empty;
+                signature = template.Signature ?? string.Empty;
+            }
         }
+        catch (DbException exception) when (IsMissingOptionalTemplateColumn(exception))
+        {
+            // Type/Preface/Signature are additive fields. Before their schema migration, retain the legacy
+            // gallery rather than making every historic Publication route fail.
+        }
+
+        IReadOnlyList<ExhibitionWorkModel> works = Array.Empty<ExhibitionWorkModel>();
+        if (type == 1)
+        {
+            try
+            {
+                works = await _context.ExhibitionWork
+                    .AsNoTracking()
+                    .Where(work => work.PublicationId == id)
+                    .OrderBy(work => work.SortOrder)
+                    .ThenBy(work => work.Id)
+                    .Select(SzaipaHomeProjections.ExhibitionWorkSummary)
+                    .ToListAsync(cancellationToken);
+            }
+            catch (DbException exception) when (IsMissingExhibitionWorkTable(exception))
+            {
+                // ExhibitionWork is an additive modern feature. Older read-only databases do not have the table yet;
+                // the existing gallery must remain available with an empty optional works catalogue.
+            }
+        }
+
+        detail = new PublicationDetailModel
+        {
+            Id = detail.Id,
+            TitleCn = detail.TitleCn,
+            TitleEn = detail.TitleEn,
+            StartDate = detail.StartDate,
+            EndDate = detail.EndDate,
+            FolderName = detail.FolderName,
+            MaxImg = detail.MaxImg,
+            CoverPath = detail.CoverPath,
+            LogoPath = detail.LogoPath,
+            MaxImagePath = detail.MaxImagePath,
+            Location = detail.Location,
+            Organizer = detail.Organizer,
+            Host = detail.Host,
+            CoHost = detail.CoHost,
+            EditRecord = detail.EditRecord,
+            Type = type,
+            Preface = preface,
+            Signature = signature,
+            Works = works
+        };
 
         IQueryable<Publication> relatedQuery = _context.Publication
             .AsNoTracking()
@@ -111,5 +145,20 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
             .ToListAsync(cancellationToken);
 
         return LegacyReadModelComposer.CreatePublicationDetailSnapshot(detail, related);
+    }
+
+    private static bool IsMissingExhibitionWorkTable(DbException exception)
+    {
+        var message = exception.Message;
+        return message.Contains("ExhibitionWork", StringComparison.OrdinalIgnoreCase)
+            && (message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("no such table", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsMissingOptionalTemplateColumn(DbException exception)
+    {
+        var message = exception.Message;
+        return message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
+            || message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
     }
 }

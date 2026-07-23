@@ -84,6 +84,7 @@ public sealed class PublicationReadRepositoryTests
     {
         await using var fixture = TestDb.Szaipa();
         Seed(fixture.Context);
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Publication SET Type = 1 WHERE Id = 2");
         InsertWork(fixture.Context, id: 1, publicationId: 2, sortOrder: 1, title: "作品B");
         InsertWork(fixture.Context, id: 2, publicationId: 2, sortOrder: 0, title: "作品A");
         InsertWork(fixture.Context, id: 3, publicationId: 3, sortOrder: 0, title: "属于其它展览");
@@ -106,6 +107,38 @@ public sealed class PublicationReadRepositoryTests
 
         Assert.NotNull(snapshot);
         Assert.Empty(snapshot!.Publication.Works);
+    }
+
+    [Fact]
+    public async Task GetPublicationDetailSnapshotAsync_keeps_legacy_gallery_available_when_optional_works_table_is_missing()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Publication SET Type = 1 WHERE Id = 1");
+        fixture.Context.Database.ExecuteSqlRaw("DROP TABLE ExhibitionWork");
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        var snapshot = await repository.GetPublicationDetailSnapshotAsync(1, relatedCount: 0);
+
+        Assert.NotNull(snapshot);
+        Assert.Equal(1, snapshot!.Publication.Id);
+        Assert.Empty(snapshot.Publication.Works);
+    }
+
+    [Fact]
+    public async Task GetPublicationDetailSnapshotAsync_keeps_legacy_gallery_available_when_template_columns_are_missing()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN Type");
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        var snapshot = await repository.GetPublicationDetailSnapshotAsync(1, relatedCount: 0);
+
+        Assert.NotNull(snapshot);
+        Assert.Equal(1, snapshot!.Publication.Id);
+        Assert.Equal(0, snapshot.Publication.Type);
+        Assert.Empty(snapshot.Publication.Works);
     }
 
     [Fact]

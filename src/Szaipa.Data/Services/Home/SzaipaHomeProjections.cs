@@ -53,7 +53,12 @@ internal static class SzaipaHomeProjections
             Status = publication.Status
         };
 
-    public static readonly Expression<Func<Publication, PublicationDetailModel>> PublicationDetail =
+    /// <summary>
+    /// The fields in this projection are present in the legacy publication schema. Additive template
+    /// fields (Type/Preface/Signature) are loaded separately so an un-migrated read-only database can
+    /// continue serving the original gallery.
+    /// </summary>
+    public static readonly Expression<Func<Publication, PublicationDetailModel>> PublicationDetailLegacy =
         publication => new PublicationDetailModel
         {
             Id = publication.Id,
@@ -72,9 +77,9 @@ internal static class SzaipaHomeProjections
             Host = publication.chengban ?? string.Empty,
             CoHost = publication.xieban ?? string.Empty,
             EditRecord = publication.EditRecord ?? string.Empty,
-            Type = publication.Type,
-            Preface = publication.Preface ?? string.Empty,
-            Signature = publication.Signature ?? string.Empty
+            Type = 0,
+            Preface = string.Empty,
+            Signature = string.Empty
         };
 
     public static readonly Expression<Func<ExhibitionWork, ExhibitionWorkModel>> ExhibitionWorkSummary =
