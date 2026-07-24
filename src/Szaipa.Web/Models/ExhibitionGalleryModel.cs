@@ -4,8 +4,8 @@ namespace Szaipa.Web.Models;
 
 /// <summary>
 /// Drives the shared <c>_ExhibitionGallery</c> partial: an exhibition's title block plus the dual-swiper
-/// image gallery. Images follow the legacy convention <c>/Content/images/{FolderName}/{n}.jpg</c>, numbered
-/// from 10001 (the main swiper) and 10000 (the thumbnail swiper, where 10000 is the cover).
+/// image gallery. Normal database-managed galleries follow the legacy numeric convention; retired slug
+/// pages may supply their exact historical paths through <see cref="ImagePaths"/> without copying Content.
 /// </summary>
 public sealed class ExhibitionGalleryModel
 {
@@ -20,6 +20,12 @@ public sealed class ExhibitionGalleryModel
     public string? FolderName { get; init; }
 
     public int MaxImg { get; init; }
+
+    /// <summary>
+    /// Optional exact image order for a retired hand-written gallery. When empty, the partial preserves
+    /// the existing 10001/10000 numeric main/thumbnail conventions.
+    /// </summary>
+    public IReadOnlyList<string> ImagePaths { get; init; } = Array.Empty<string>();
 
     /// <summary>序 / preface body (重要 skin only). May contain newlines for multiple paragraphs.</summary>
     public string? Preface { get; init; }

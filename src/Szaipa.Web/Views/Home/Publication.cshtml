@@ -1,4 +1,5 @@
 @model Szaipa.Data.Models.Home.PublicationDetailSnapshotModel
+@using Szaipa.Web.Services
 @{
     var publication = Model.Publication;
     ViewBag.Title = publication.TitleCn;
@@ -11,6 +12,7 @@
         EndDate = publication.EndDate,
         FolderName = publication.FolderName,
         MaxImg = publication.MaxImg,
+        ImagePaths = LegacyPublicationGalleryCatalog.GetImages(publication.Id),
         Preface = publication.Preface,
         Signature = publication.Signature,
         Works = publication.Works

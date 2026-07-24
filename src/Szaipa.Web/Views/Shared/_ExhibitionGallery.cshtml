@@ -1,4 +1,16 @@
 @model Szaipa.Web.Models.ExhibitionGalleryModel
+@{
+    var mainImages = Model.ImagePaths.Count > 0
+        ? Model.ImagePaths
+        : Enumerable.Range(10001, Model.MaxImg + 1)
+            .Select(number => $"/Content/images/{Model.FolderName}/{number}.jpg")
+            .ToArray();
+    var thumbnailImages = Model.ImagePaths.Count > 0
+        ? Model.ImagePaths
+        : Enumerable.Range(10000, Model.MaxImg + 1)
+            .Select(number => $"/Content/images/{Model.FolderName}/{number}.jpg")
+            .ToArray();
+}
 <section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20" style="height: var(--pubSonHeight);">
 
     <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
@@ -25,10 +37,10 @@
         <div class="col-md20 col-lg20">
             <div style=" --swiper-pagination-color: #fff" class="swiper mySwiper3">
                 <div class="swiper-wrapper">
-                    @for (var i = 10001; i <= 10001 + Model.MaxImg; i++)
+                    @foreach (var imagePath in mainImages)
                     {
                         <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                            <img loading="lazy" decoding="async" src="@imagePath" />
                         </div>
                     }
                 </div>
@@ -42,10 +54,10 @@
             <div thumbsSlider=""
                  class="col-xs16 col-sm16 col-md20 col-lg20 swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
                 <div class="swiper-wrapper">
-                    @for (var i = 10000; i <= 10000 + Model.MaxImg; i++)
+                    @foreach (var imagePath in thumbnailImages)
                     {
                         <div class="swiper-slide">
-                            <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", Model.FolderName, i)" />
+                            <img loading="lazy" decoding="async" src="@imagePath" />
                         </div>
                     }
                 </div>
