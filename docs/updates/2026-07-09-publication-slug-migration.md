@@ -87,10 +87,11 @@ ID 提供旧页面实际使用的精确路径顺序；主图和缩略图共用�
 
 ## 用户仍需做的事
 
-1. 核对生产库 `dbo.Publication` 表 `Id BETWEEN 92001 AND 92015` 当前为空，再执行
-   `docs/sql/2026-07-09-publication-slug-migration.sql`（本地可写副本或生产写库，
-   agent 不会代为执行）。
-2. 执行完 SQL 后，本地起 `~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj`
-   点击验证：旧 slug（如 `/Publication/tonggou`）应 301 到
-   `/Home/Publication/{id}` 并正确渲染标题/日期；`man`/`yijia`/`zhongri`/`tonggou`
-   等 14 个固定 ID 都应通过精确路径目录看到完整画廊。
+无需数据库操作即可验证：应用会在数据库缺少固定 ID 时使用只读兼容元数据，数据库真实行
+存在时则自动优先使用真实行。启动
+`~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj` 后，旧 slug（如
+`/Publication/tonggou`）应 301 到 `/Home/Publication/{id}` 并正确渲染标题/日期；
+14 个固定 ID 都应通过精确路径目录看到完整画廊。
+
+未来若需要在 Staff 后台编辑这 14 场历史展览，可再把 SQL 作为可选的数据归一化步骤；
+公开页面运行不依赖它。

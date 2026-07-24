@@ -267,19 +267,31 @@ public class HomeController : Controller
     [HttpGet("Publication/{id:int}")]
     public async Task<IActionResult> Publication(int id, CancellationToken cancellationToken)
     {
-        if (SzaipaReadModelsActive())
+        var readModelsActive = SzaipaReadModelsActive();
+        if (readModelsActive)
         {
             var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
 
             // Legacy Publication(id) loaded the detail row plus the full publication list (relatedCount 0 = no cap).
             var snapshot = await publicationRepository.GetPublicationDetailSnapshotAsync(id, 0, cancellationToken);
-            if (snapshot is null)
+            if (snapshot is not null)
             {
-                // Legacy Publication NRE'd on a missing id (and incremented ReadCount); the read-only flow returns 404 and never writes.
-                return NotFound();
+                return View("Publication", snapshot);
             }
+        }
 
-            return View("Publication", snapshot);
+        // These fourteen retired hand-written galleries predate the database migration. Keep them available
+        // without requiring a writable database; an actual database row always wins when one exists.
+        var fallback = LegacyPublicationGalleryCatalog.GetFallbackPublication(id);
+        if (fallback is not null)
+        {
+            return View("Publication", fallback);
+        }
+
+        if (readModelsActive)
+        {
+            // Legacy Publication NRE'd on a missing id (and incremented ReadCount); the read-only flow returns 404 and never writes.
+            return NotFound();
         }
 
         return View("PublicationSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationDetailDefinition(id)));

@@ -88,7 +88,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 公共页不再请求有字体、Google Fonts 或 loli 字体域；Alibaba 普惠体与 Noto Sans/Serif SC 均使用原字形的本地子集。Noto 使用唯一 `Szaipa Noto ...` family 隔离 legacy `Site.css`，当前源码/数据库字符进 core，GB2312 余字按 `unicode-range` 分片按需加载。
 - 字体清单按页面边界拆成 `font-subsets-public.css`（114 faces）与 `font-subsets-staff.css`（88 faces）；两者并集仍是原 147 faces、共同 55 faces，合计仍覆盖磁盘全部 125 个 WOFF2。`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 对单个清单刷新/验证，`--split-css-manifests` 可安全拆已有完整清单；不要仅为清单维护随意运行 `--font-dir`，它会重建字体二进制。`FontSubsetManifestTests` 防止页面边界、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
-- 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。14 个已退役 slug 对应固定 ID 92001–92015（跳过 92004），由 `Services/LegacyPublicationGalleryCatalog.cs` 复用旧 Content 的 604 张精确路径，不重编号、不复制；代码已退役，数据库行仍等待本地可写副本执行迁移脚本。
+- 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。14 个已退役 slug 对应固定 ID 92001–92015（跳过 92004），由 `Services/LegacyPublicationGalleryCatalog.cs` 提供缺行时的只读页面元数据并复用旧 Content 的 604 张精确路径；数据库真实行优先，不重编号、不复制、不要求写库。
 - 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。
 
 ## 测试范式
@@ -97,7 +97,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 加实体 NOT NULL 字段时记得在两上下文 `OnModelCreating` 给默认值（如 `Publication.Type` `HasDefaultValue(0)`），否则原始 SQL 播种会撞 NOT NULL。
 
 ## SQL 迁移
-- `docs/sql/` 放显式 SQL（如 `2026-06-exhibition-template-columns.sql` 给 Publication 加 Type/Preface/Signature）。`2026-07-25-publication-migration-readiness.sql` 只读检查 schema/保留 ID；`2026-07-09-publication-slug-migration.sql` 为事务化 fail-closed 插入。写脚本只在用户确认的本地可写副本上人工执行。
+- `docs/sql/` 放显式 SQL（如 `2026-06-exhibition-template-columns.sql` 给 Publication 加 Type/Preface/Signature）。`2026-07-25-publication-migration-readiness.sql` 只读检查 schema/保留 ID；`2026-07-09-publication-slug-migration.sql` 为未来可选的事务化 fail-closed 归一化工具。14 个退役展览的公开渲染不依赖执行该写脚本。
 
 ## 约定 / 注意
 - **最终总结用中文**（记忆 summaries-in-chinese）。设计师用户，CSS 大改写中文注释、保持干净（css-design-conventions）。

@@ -20,7 +20,7 @@
 - **前台清理 Phase 4（2026-07-11）**：新增可复跑 Legacy Content 白名单审计；修复首页唯一真实缺图；当前分支归档旧 Content、两套旧 NuGet packages 和零引用静态副本，累计修剪约 501MB。运行资源根仍有约 95.9MB 候选，未取得生产日志前不删除。详见 `docs/updates/2026-07-11-frontend-cleanup-phase4.md`。
 - **前台清理 Phase 5（2026-07-11）**：保留原 Alibaba 普惠体，将六类公共页面的有字体第三方脚本改为延迟加载，字体初始化等待 DOM 就绪，滚动监听改为 passive。详见 `docs/updates/2026-07-11-frontend-cleanup-phase5.md`。
 - **前台清理 Phase 6（2026-07-11）**：只读扫描旧发布版 `web24.05`；确认实际 Content 约 1.2GB，现代源码候选 95.9MB、旧版源码候选 87.8MB，旧版仍在线时不得删除差出的约 8.1MB。官方普惠体源已定位；旧 Web.config 明文凭据需轮换。详见 `docs/updates/2026-07-11-frontend-cleanup-phase6.md`。
-- **本地只读库状态（2026-07-11）**：Szaipa/Tongou 只读连接均可用，真实首页读取成功；`AllowLiveDatabase=false`。但当前库尚无 Publication 92001–92015 迁移行，首页硬编码展会暂不能退役。
+- **本地只读库状态（2026-07-11，后续已兼容）**：Szaipa/Tongou 只读连接均可用，真实首页读取成功；`AllowLiveDatabase=false`。当前库没有 Publication 92001–92015 行，2026-07-25 起由应用内只读兼容数据补齐这 14 个已结束展览，不再阻塞前端退役。
 - **数据库资源路径审计（2026-07-12）**：只读导出得到 19 条明确 `/Content/` 路径；加入审计后候选仍为 95.9MB，说明候选目录无数据库精确引用。物理删除仍等待 IIS 日志。
 - **生产 IIS 访问审计（2026-07-13）**：只读扫描近 90 天 92 个日志、553,963 条请求行；`_preview`/`TempFile`/`js`/`Filme` 均有成功访问，必须保留；仅 `Award`（94 文件/7,197,911 B）和 `layui`（15 文件/876,709 B）在源码、数据库、IIS 三层均为零引用。服务器未移动/删除任何发布文件。**用户已明确服务器只供只读参考、发布版以稳定为主；不得部署、隔离或改 IIS，任何必须的服务器改动须先停下说明并取得明确确认。**详见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - **静态资源缓存防回退（2026-07-13）**：新增可测试的缓存策略；带 `?v=` 的自有资源改为 1 年 `immutable`，普通自有 CSS/JS 保留 7 天，外接 `/Content` 图片/字体恢复生产基线 30 天、CSS/JS 7 天、未知类型 1 天；新增 Web 测试项目 14 项，总测试 96→110。详见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
@@ -42,8 +42,8 @@
 - **前台/Staff 字体清单拆分（2026-07-22）**：原 147 个 `@font-face` 的单一清单拆成 public 114 / Staff 88，交集只保留双方需要的 55 个 Sans 声明；125 个 WOFF2、字形、字重、哈希和 `unicode-range` 均未改。每个页面只下载自己的清单：public 原始 CSS 少 80,909B（gzip -58.88%），Staff 少 136,438B（gzip -63.42%）。11 个路由×宽度组合及 Staff 仪表盘/编辑器实页验证无几何回退，测试 219→221。详见 `docs/updates/2026-07-22-font-manifest-split.md`。
 - **NewArt 运行时/横幅审计（2026-07-23）**：移除视图中不存在的 `.mySwiper2` 初始化，并把 Swiper、Magnify loader、页面脚本改为保序 `defer`，避免 135,660B Swiper 阻塞尾部 HTML 解析。主横幅的 AVIF 原型未达无损收益门槛，故不加入派生资产、不替换原图。1440 与 390 实页均保持首屏几何、单行导航和零横向溢出；测试 221→222。详见 `docs/updates/2026-07-23-newart-runtime-and-banner-audit.md`。
 - **首页运行时延后（2026-07-23）**：`NewIndex` 的 Swiper、Magnify loader、页面脚本改为保序 `defer`，与 NewArt 一致；保持依赖顺序，避免 `135,660B` Swiper 在页面尾部阻塞 HTML 解析。新增契约测试，测试 222→223。
-- **展览旧库兼容（2026-07-23）**：`Publication.Type/Preface/Signature` 与 `ExhibitionWork` 均按增量能力读取；当前只读旧库缺少这些新列/表时，公开详情页回退为原普通画廊，不再因新功能架构返回 500。首页遗留固定 ID 92001–92015 在该库中本就没有对应行，现明确返回 404；恢复它们需要人工核对后写入 14 条 Publication 数据，不能在只读环境自动执行。测试 223→225。详见 `docs/updates/2026-07-23-publication-legacy-schema-compatibility.md`。
-- **退役展览精确图库目录（2026-07-25）**：14 个固定 Publication ID 通过小型只读目录复用旧页面的 604 张精确路径，主图/缩略图不再假设连续编号；不复制、不重命名、不重压外置 Content，并修正 zhongfa 旧页面已有的一处错误文件名。插入脚本升级为事务化 fail-closed，另附只读 readiness 脚本；数据库写入仍为 0。测试 225→244。详见 `docs/updates/2026-07-25-publication-gallery-catalog-and-migration-safety.md`。
+- **展览旧库兼容（2026-07-23，2026-07-25 完成缺行回退）**：`Publication.Type/Preface/Signature` 与 `ExhibitionWork` 均按增量能力读取；旧库缺列/表时回退为普通画廊。固定 ID 92001–92015 缺行也已由只读兼容目录补齐，数据库真实行始终优先。详见 `docs/updates/2026-07-23-publication-legacy-schema-compatibility.md`。
+- **退役展览精确图库目录（2026-07-25）**：14 个固定 Publication ID 通过小型只读目录提供页面元数据并复用旧页面的 604 张精确路径，数据库有行时始终以数据库为准；主图/缩略图不再假设连续编号，不复制、不重命名、不重压外置 Content，并修正 zhongfa 旧页面已有的一处错误文件名。迁移 SQL 保留为未来可选的事务化数据归一化工具，当前运行不再依赖数据库写入。测试 225→244。详见 `docs/updates/2026-07-25-publication-gallery-catalog-and-migration-safety.md`。
 - **特殊展览图库分层加载（2026-07-20）**：三页 201 张现场图的主/缩标记收敛为同一数组；170 张已有 q30 先显示预览，图库接近视口后只预载 active/prev/next 原图，理论首轮少传 50,506,952B。三页统一共享 JS，退役重复的 tonggou2024 脚本。详见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - **高质量首页首图（2026-07-20）**：现代仓库内置 1080×791 AVIF，首页当前 LCP 从 1,783,805B 降到 167,097B（约 -90.63%），原 `/Content` 图保留为 fallback；新增严格 allowlist 派生解析器。NewArt 空 Path 不再拼 Banner 目录/产生 404；三张现有全屏 Banner 经审计后因高 DPR 画质风险暂不强换 1600px 版本。总测试 144→181。详见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
 - **独立现代仓库契约（2026-07-20）**：现代跟踪边界约 20.4MiB，旧 Content 约 1.1–1.2GiB 继续作为外部共享卷而非删除；当前约 1.8GiB Git 历史不进入新仓库，改从脱敏后的干净 commit 导出现代白名单并建立全新 root。Data Protection 使用固定 Production ApplicationName、外部持久 KeysPath、Windows machine-scoped DPAPI 与启动自检；Staging 使用独立 key/cookie/hostname。用户已创建 Gitee 目标仓库及本地 `~/Project/GitClone/szaipa2026`，目前只有初始 README，尚未导出现代源码；本轮 UI 人工验收前不得填充，也未改服务器/IIS/hook。由于远端已有初始 root，最终需用户决定是经明确授权替换 `master` 以保持单 root，还是接受两 commit 偏差。详见 `README.md`、`docs/repository-split.md`、`docs/updates/2026-07-20-independent-modern-repository.md`。
@@ -52,7 +52,7 @@
 
 ## 剩余工作（多为既有模式复制，适合便宜模型）
 1. ~~**展览「参展作品目录」**~~ **2026-07-09 完成**：新增 `ExhibitionWork` 实体 + works-manager.js 管理器（分类/标题/艺术家/尺寸/材质/图 + 排序），集成进 `_ExhibitionImportant.cshtml`。详见 `docs/updates/2026-07-09-exhibition-works-catalog.md`。
-2. ~~**slug 页退役**~~ **代码与资源兼容已完成，等待本地可写副本落数据**：14 个简单 slug 页已改为固定 Publication ID + 301，硬编码视图已删；chunyu3/tonggou2/tonggou2024 保留，zengfeng 已退役。14 组 604 张图片已由精确路径目录兼容，无需改动外置 Content。下一步只在用户明确确认的本地可写数据库副本上先跑只读 readiness，再执行事务化 `docs/sql/2026-07-09-publication-slug-migration.sql`；不得写当前只读库或服务器数据库。
+2. ~~**slug 页退役**~~ **2026-07-25 完整完成**：14 个简单 slug 页已改为固定 Publication ID + 301，硬编码视图已删；chunyu3/tonggou2/tonggou2024 保留，zengfeng 已退役。14 组页面元数据和 604 张图片由只读兼容目录提供，数据库真实行优先，因此无需本地可写副本、无需改动外置 Content。SQL 仅保留为未来可选归一化工具。
 3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
 5. **前台图片继续优化**：静态/动态卡片图、NewArt 作品预览、三个特殊展览现场图分层加载和首页 LCP 高质量 AVIF 均已完成。NewArt 全屏图的 1600px 试验不足以安全覆盖高 DPR 桌面，继续时先验证 2400px 高质量档，不能直接换 q30；不在服务器或旧稳定发布版生成/替换图片。
@@ -66,7 +66,7 @@
 - 若要点测 Tongou 写：再配 `TongouAdminWrite:EnableWrites=true` + `ConnectionStrings:TongouAdmin`（Tongou 可写副本，与 Szaipa 是两个库）。
 - 可写 `LegacyAssets:ContentRoot`（上传图片落盘需要）。
 - 跑 `docs/sql/2026-06-exhibition-template-columns.sql`（给 Publication 加 Type/Preface/Signature；重要型渲染需要）。
-- 在明确的**本地可写副本**上先跑只读 `docs/sql/2026-07-25-publication-migration-readiness.sql`，确认 schema 与 92001–92015 无冲突后，再人工执行 `docs/sql/2026-07-09-publication-slug-migration.sql`。当前只读库不执行。
+- 可选：未来若决定把 14 个只读兼容展览纳入 Staff 后台管理，再在隔离的本地可写副本上先跑 readiness、后跑事务化 slug migration；当前页面运行不依赖这一步。
 - 旧 `szaipa2022` .NET Framework 改动需在能跑该栈的机器上重新生成确认编译。
 
 ## 模型建议

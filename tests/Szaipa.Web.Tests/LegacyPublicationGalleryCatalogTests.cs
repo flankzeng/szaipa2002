@@ -39,6 +39,14 @@ public sealed class LegacyPublicationGalleryCatalogTests
         Assert.Equal(expectedLast, images[^1]);
         Assert.Equal(images.Count, images.Distinct(StringComparer.OrdinalIgnoreCase).Count());
         Assert.All(images, image => Assert.StartsWith("/Content/images/", image, StringComparison.Ordinal));
+
+        var fallback = LegacyPublicationGalleryCatalog.GetFallbackPublication(publicationId);
+        Assert.NotNull(fallback);
+        Assert.Equal(publicationId, fallback.Publication.Id);
+        Assert.Equal(expectedCount - 1, fallback.Publication.MaxImg);
+        Assert.Equal(expectedFirst.Split('/')[3], fallback.Publication.FolderName);
+        Assert.Equal(0, fallback.Publication.Type);
+        Assert.Empty(fallback.RelatedPublications);
     }
 
     [Fact]
@@ -46,6 +54,8 @@ public sealed class LegacyPublicationGalleryCatalogTests
     {
         Assert.Empty(LegacyPublicationGalleryCatalog.GetImages(92004));
         Assert.Empty(LegacyPublicationGalleryCatalog.GetImages(1000));
+        Assert.Null(LegacyPublicationGalleryCatalog.GetFallbackPublication(92004));
+        Assert.Null(LegacyPublicationGalleryCatalog.GetFallbackPublication(1000));
     }
 
     [Fact]
@@ -65,6 +75,12 @@ public sealed class LegacyPublicationGalleryCatalogTests
         var publication = File.ReadAllText(Path.Combine(viewsRoot, "Home", "Publication.cshtml"));
         var gallery = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_ExhibitionGallery.cshtml"));
         var important = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_ExhibitionImportant.cshtml"));
+        var controller = File.ReadAllText(Path.Combine(
+            repositoryRoot,
+            "src",
+            "Szaipa.Web",
+            "Controllers",
+            "HomeController.cs"));
 
         Assert.Contains("LegacyPublicationGalleryCatalog.GetImages(publication.Id)", publication, StringComparison.Ordinal);
         Assert.Contains("Model.ImagePaths.Count > 0", gallery, StringComparison.Ordinal);
@@ -73,6 +89,15 @@ public sealed class LegacyPublicationGalleryCatalogTests
         Assert.Contains("Model.ImagePaths.Count > 0", important, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in mainImages)", important, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in thumbnailImages)", important, StringComparison.Ordinal);
+
+        var databaseLookup = controller.IndexOf(
+            "GetPublicationDetailSnapshotAsync(id, 0, cancellationToken)",
+            StringComparison.Ordinal);
+        var fallbackLookup = controller.IndexOf(
+            "LegacyPublicationGalleryCatalog.GetFallbackPublication(id)",
+            StringComparison.Ordinal);
+        Assert.True(databaseLookup >= 0);
+        Assert.True(fallbackLookup > databaseLookup);
     }
 
     [Fact]

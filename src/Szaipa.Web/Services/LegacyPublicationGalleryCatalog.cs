@@ -1,9 +1,11 @@
+using Szaipa.Data.Models.Home;
+
 namespace Szaipa.Web.Services;
 
 /// <summary>
-/// Exact image order used by the fourteen retired hand-written publication pages.
+/// Read-only compatibility data used by the fourteen retired hand-written publication pages.
 /// The external legacy Content tree remains untouched; these paths bridge its historical
-/// naming schemes until each gallery is deliberately normalized through the admin workflow.
+/// naming schemes, while database rows take precedence whenever they become available.
 /// </summary>
 public static class LegacyPublicationGalleryCatalog
 {
@@ -43,10 +45,141 @@ public static class LegacyPublicationGalleryCatalog
             [92015] = Range("tangqishan", 100000, 26)
         };
 
+    private static readonly IReadOnlyDictionary<int, PublicationDetailModel> PublicationsById =
+        new[]
+        {
+            Publication(
+                92001,
+                "同构——欧洲行 当代艺术展",
+                "Isomorphism - Contemporary Art Exhibition (European Tour)",
+                new DateTime(2023, 10, 9),
+                new DateTime(2023, 10, 23),
+                "tonggouEurope"),
+            Publication(
+                92002,
+                "2023龙游水脉艺术节",
+                "LONGYOU LIQUID THREADS ART FESTIVAL",
+                new DateTime(2023, 9, 26),
+                new DateTime(2023, 12, 26),
+                "shuimai"),
+            Publication(
+                92003,
+                "春语·当代艺术名家邀请展",
+                "Contemporary Art masters Invitational exhibition",
+                new DateTime(2022, 3, 29),
+                new DateTime(2022, 4, 29),
+                "chunyu"),
+            Publication(
+                92005,
+                "中意艺术名画展",
+                "Famous Chinese and Italian Art Paintings Exhibition",
+                new DateTime(2021, 9, 24),
+                new DateTime(2021, 10, 24),
+                "zhongyi"),
+            Publication(
+                92006,
+                "同构——当代艺术作品邀请展",
+                "\"isomorphism\" Contemporary Art Exhibition of China",
+                new DateTime(2021, 1, 26),
+                new DateTime(2021, 2, 26),
+                "tonggou"),
+            Publication(
+                92007,
+                "春语第二季——国际视觉艺术邀请展",
+                "\"SOUND OF SPRING II\" international Visual Art Invitation Exhibition",
+                null,
+                new DateTime(2023, 5, 8),
+                "chunyu2"),
+            Publication(
+                92008,
+                "三人行——鸥洋/雷双/张岚芊艺术展",
+                "\"TRIO\" —— Ou Yang / Lei Shuang / Zhang LanQian Art Exhibition",
+                new DateTime(2023, 6, 3),
+                new DateTime(2023, 7, 2),
+                "trio"),
+            Publication(
+                92009,
+                "漫MAN-艺术时尚先锋展",
+                "PIONEER ART AND FASHION EXHIBITION",
+                new DateTime(2024, 5, 22),
+                new DateTime(2024, 5, 30),
+                "man"),
+            Publication(
+                92010,
+                "艺+科技新潮流展",
+                "ART PLUS - ART FASHION & TECHNOLOGY",
+                new DateTime(2024, 5, 24),
+                new DateTime(2024, 5, 31),
+                "yijia"),
+            Publication(
+                92011,
+                "同构——中日艺术交流展",
+                "ISOMORPHISM - CHINA & JAPAN ART COMMUNICATION EXHIBITION",
+                new DateTime(2024, 6, 28),
+                null,
+                "zhongri"),
+            Publication(
+                92012,
+                "\"数\"与\"艺\"——新文艺群体创作成果展",
+                "DIGITAL AND ART - NEW ARTISTIC GROUP CREATION RESULTS EXHIBITION",
+                new DateTime(2024, 9, 20),
+                null,
+                "shuyuyi"),
+            Publication(
+                92013,
+                "春语第四季——当代艺术作品邀请展",
+                "Sound of Spring season 4 —— Contemporary Art Invitational Exhibition",
+                null,
+                new DateTime(2025, 5, 25),
+                "chunyu4"),
+            Publication(
+                92014,
+                "深圳-法国国际当代艺术展2025",
+                "Shenzhen - Exposition internationale d'art contemporain français",
+                null,
+                new DateTime(2025, 8, 30),
+                "zhongfa"),
+            Publication(
+                92015,
+                "入骨相知——唐岐山当代艺术展",
+                "Soul-Deep Resonance —— Tang Qishan: A Contemporary Art Exhibition",
+                null,
+                new DateTime(2025, 9, 30),
+                "tangqishan")
+        }.ToDictionary(publication => publication.Id);
+
     public static IReadOnlyList<string> GetImages(int publicationId) =>
         ImagesByPublicationId.TryGetValue(publicationId, out var images)
             ? images
             : Array.Empty<string>();
+
+    public static PublicationDetailSnapshotModel? GetFallbackPublication(int publicationId) =>
+        PublicationsById.TryGetValue(publicationId, out var publication)
+            ? new PublicationDetailSnapshotModel
+            {
+                Publication = publication,
+                RelatedPublications = Array.Empty<PublicationSummaryModel>()
+            }
+            : null;
+
+    private static PublicationDetailModel Publication(
+        int id,
+        string titleCn,
+        string titleEn,
+        DateTime? startDate,
+        DateTime? endDate,
+        string folderName) =>
+        new()
+        {
+            Id = id,
+            TitleCn = titleCn,
+            TitleEn = titleEn,
+            StartDate = startDate,
+            EndDate = endDate,
+            FolderName = folderName,
+            MaxImg = ImagesByPublicationId[id].Count - 1,
+            Type = 0
+        };
 
     private static IReadOnlyList<string> Range(string folder, int start, int count) =>
         Enumerable.Range(start, count)
