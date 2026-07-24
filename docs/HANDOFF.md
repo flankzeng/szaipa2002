@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 244 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 245 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -44,6 +44,7 @@
 - **首页运行时延后（2026-07-23）**：`NewIndex` 的 Swiper、Magnify loader、页面脚本改为保序 `defer`，与 NewArt 一致；保持依赖顺序，避免 `135,660B` Swiper 在页面尾部阻塞 HTML 解析。新增契约测试，测试 222→223。
 - **展览旧库兼容（2026-07-23，2026-07-25 完成缺行回退）**：`Publication.Type/Preface/Signature` 与 `ExhibitionWork` 均按增量能力读取；旧库缺列/表时回退为普通画廊。固定 ID 92001–92015 缺行也已由只读兼容目录补齐，数据库真实行始终优先。详见 `docs/updates/2026-07-23-publication-legacy-schema-compatibility.md`。
 - **退役展览精确图库目录（2026-07-25）**：14 个固定 Publication ID 通过小型只读目录提供页面元数据并复用旧页面的 604 张精确路径，数据库有行时始终以数据库为准；主图/缩略图不再假设连续编号，不复制、不重命名、不重压外置 Content，并修正 zhongfa 旧页面已有的一处错误文件名。迁移 SQL 保留为未来可选的事务化数据归一化工具，当前运行不再依赖数据库写入。测试 225→244。详见 `docs/updates/2026-07-25-publication-gallery-catalog-and-migration-safety.md`。
+- **公共 Swiper 按模块裁剪（2026-07-25）**：保持原 Swiper 9.0.3，只打包实际使用的 A11y/Autoplay/EffectCoverflow/FreeMode/Keyboard/Navigation/Pagination/Thumbs；JS 135,660→88,156B，CSS 17,863→13,029B，冷页面 gzip 合计约再少 12KB，并改为内容哈希一年缓存。首页、NewArt、普通/特殊展览桌面和手机实页通过，测试 244→245。同期 2400px NewArt Banner AVIF 试验因高质量档无体积收益、低档 SSIM 仅约 0.94 被拒绝，未加入派生图。详见 `docs/updates/2026-07-25-public-swiper-module-bundle.md`。
 - **特殊展览图库分层加载（2026-07-20）**：三页 201 张现场图的主/缩标记收敛为同一数组；170 张已有 q30 先显示预览，图库接近视口后只预载 active/prev/next 原图，理论首轮少传 50,506,952B。三页统一共享 JS，退役重复的 tonggou2024 脚本。详见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - **高质量首页首图（2026-07-20）**：现代仓库内置 1080×791 AVIF，首页当前 LCP 从 1,783,805B 降到 167,097B（约 -90.63%），原 `/Content` 图保留为 fallback；新增严格 allowlist 派生解析器。NewArt 空 Path 不再拼 Banner 目录/产生 404；三张现有全屏 Banner 经审计后因高 DPR 画质风险暂不强换 1600px 版本。总测试 144→181。详见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
 - **独立现代仓库契约（2026-07-20）**：现代跟踪边界约 20.4MiB，旧 Content 约 1.1–1.2GiB 继续作为外部共享卷而非删除；当前约 1.8GiB Git 历史不进入新仓库，改从脱敏后的干净 commit 导出现代白名单并建立全新 root。Data Protection 使用固定 Production ApplicationName、外部持久 KeysPath、Windows machine-scoped DPAPI 与启动自检；Staging 使用独立 key/cookie/hostname。用户已创建 Gitee 目标仓库及本地 `~/Project/GitClone/szaipa2026`，目前只有初始 README，尚未导出现代源码；本轮 UI 人工验收前不得填充，也未改服务器/IIS/hook。由于远端已有初始 root，最终需用户决定是经明确授权替换 `master` 以保持单 root，还是接受两 commit 偏差。详见 `README.md`、`docs/repository-split.md`、`docs/updates/2026-07-20-independent-modern-repository.md`。
@@ -55,7 +56,7 @@
 2. ~~**slug 页退役**~~ **2026-07-25 完整完成**：14 个简单 slug 页已改为固定 Publication ID + 301，硬编码视图已删；chunyu3/tonggou2/tonggou2024 保留，zengfeng 已退役。14 组页面元数据和 604 张图片由只读兼容目录提供，数据库真实行优先，因此无需本地可写副本、无需改动外置 Content。SQL 仅保留为未来可选归一化工具。
 3. ~~**Phase 6 加固**~~ **2026-07-09 完成**：审查授权/anti-forgery/操作日志覆盖，均未发现遗漏；与 legacy 比对校验规则，排查的疑似缺口均核实排除；补测试 82→94。详见 `docs/updates/2026-07-09-phase6-hardening.md`。
 4. ~~**可选增强：独立的全量操作记录页**~~ **2026-07-12 完成**：`/Staff/Operations` 按日期分页查看完整历史，仪表盘保留近 7 天 feed 并链接完整页。详见 `docs/updates/2026-07-12-operation-history-page.md`。
-5. **前台图片继续优化**：静态/动态卡片图、NewArt 作品预览、三个特殊展览现场图分层加载和首页 LCP 高质量 AVIF 均已完成。NewArt 全屏图的 1600px 试验不足以安全覆盖高 DPR 桌面，继续时先验证 2400px 高质量档，不能直接换 q30；不在服务器或旧稳定发布版生成/替换图片。
+5. ~~**前台图片继续优化**~~ **当前安全范围已完成**：静态/动态卡片图、NewArt 作品预览、三个特殊展览现场图分层加载和首页 LCP 高质量 AVIF 均已完成。NewArt 全屏图的 1600px 与 2400px 试验都未达到画质/体积门槛，候选均未提交；除非以后取得艺术家高质量源图，否则不再二次有损压缩现有 JPEG。
 6. **新需求（用户 2026-07-09 提出，尚未开工）**：微信公众号接口对接——新闻页面自动抓取公众号最新文章，格式化后新增到网站。需要先确认：走微信官方素材/草稿箱接口（需公众号是服务号+已认证、有对应 API 权限）还是第三方抓取方案；抓取节奏（定时轮询 vs webhook）；写入哪张表（News？新建 WeChatArticle？）；图片/图文消息里的媒体资源怎么落地到 `/Content`；去重与增量更新策略。
 7. **前台 Legacy 清理**：生产数据库和 IIS 日志审计均已完成；`Award` 与 `layui` 只是审计候选。服务器当前只供参考，不移动、不删除、不部署；若未来确有必要，必须先向用户说明并确认。其余候选根有真实访问，继续保留。公众号需求继续后置。
 8. ~~**992–1279 窄桌面字号**~~ **2026-07-20 完成**：用户确认采用连续缩放；根字号与两侧统一为 16px，navbar 用 `rem + vw` 从 992 的 15px 平滑接到 1280 的 24px。991/992/1024/1199/1200/1279/1280 及主要前台实页均无横向溢出或换行。
@@ -82,7 +83,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 244）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 245）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Staff)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

@@ -8,7 +8,8 @@
     "watch:css": "tailwindcss -i ./wwwroot/admin/admin.input.css -o ./wwwroot/admin/admin.css --watch",
     "build:js": "esbuild ./wwwroot/admin/src/editor.js --bundle --minify --format=iife --global-name=SzaipaEditor --outfile=./wwwroot/admin/editor.js",
     "build:dashboard": "esbuild ./wwwroot/admin/src/dashboard.js --bundle --minify --format=iife --outfile=./wwwroot/admin/dashboard.js",
-    "build": "npm run build:css && npm run build:js && npm run build:dashboard"
+    "build:public-swiper": "esbuild ./wwwroot/public/src/swiper-public.js ./wwwroot/public/src/swiper-public.css --bundle --minify --legal-comments=inline --outdir=./wwwroot/public/vendor",
+    "build": "npm run build:css && npm run build:js && npm run build:dashboard && npm run build:public-swiper"
   },
   "devDependencies": {
     "esbuild": "^0.24.2",
@@ -23,6 +24,7 @@
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
-    "echarts": "^6.1.0"
+    "echarts": "^6.1.0",
+    "swiper": "9.0.3"
   }
 }

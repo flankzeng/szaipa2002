@@ -59,7 +59,7 @@ else
 </section>
 
 @section Styles {
-    <link rel="stylesheet" href="/Content/Model/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true" />
     <link rel="stylesheet" href="/Content/css/publication.css" />
     @if (isImportant)
     {
@@ -68,6 +68,6 @@ else
 }
 
 @section Scripts {
-    <script defer src="/Content/Model/swiper-bundle.min.js"></script>
+    <script defer src="~/public/vendor/swiper-public.js" asp-append-version="true"></script>
     <script defer src="~/js/publication-gallery.js" asp-append-version="true"></script>
 }

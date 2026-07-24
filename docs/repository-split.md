@@ -65,7 +65,7 @@ The fresh-root checkout is acceptable only when:
 - no project XML references a path outside `src/` and `tests/`;
 - the root commit records the original source-baseline SHA and legacy archive branch;
 - a secret scanner has covered all refs and historical blobs, with its tool/version/result recorded; any real hit has been rotated and removed before the target remote is populated with modern source/history;
-- npm build, .NET build, and all 244 current tests pass from a fresh clone;
+- npm build, .NET build, and all 245 current tests pass from a fresh clone;
 - Release publish succeeds without access to the legacy source repository;
 - the publish output contains neither secrets nor the external `Content` tree.
 
@@ -80,7 +80,7 @@ It currently supplies more than database images. Required roots include:
 - `images`, `ArtImg`, and `newsImg`;
 - `_preview` derivatives;
 - `icon` and `123` branding assets;
-- `Model` CSS/JavaScript such as Swiper, Magnify, and jQuery;
+- `Model` CSS/JavaScript still used on demand such as Magnify and jQuery (public Swiper 9.0.3 is now a versioned modern bundle);
 - remaining shared publication CSS and dynamically addressed upload folders.
 
 Production rules:

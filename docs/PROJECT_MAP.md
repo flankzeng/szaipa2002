@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（98 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 146 项；全解决方案合计 244）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 147 项；全解决方案合计 245）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 244）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 245）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -69,6 +69,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
 - 特殊展览页共享 `wwwroot/css/publication-special.css` 和 `wwwroot/js/publication-special.js`；chunyu3/tonggou2/tonggou2024 的现场图库均由同一脚本初始化，tonggou2024 的重复脚本已退役。历史拆分见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`，当前分层加载见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - 展览页 JS 已不依赖 jQuery：普通展览用原生 `publication-gallery.js`，特殊页脚本也已原生化；Swiper 与页面脚本按顺序 `defer`。三个 `Layout=null` 特殊页必须保留 viewport meta，否则手机 390px 会退回 1440px 桌面布局。见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
+- 公共 Swiper 固定为 9.0.3，由 `wwwroot/public/src/swiper-public.{js,css}` 只打包实际使用的 8 个模块，输出 `wwwroot/public/vendor/`；所有 7 个 Razor 入口使用 `asp-append-version`，不得重新引用外置全量 `/Content/Model/swiper-bundle*`。见 `docs/updates/2026-07-25-public-swiper-module-bundle.md`。
 - Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
 - 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，`Award` 与 `layui` 仅为审计候选。服务器只供只读参考，发布版不隔离、不删除、不部署、不改 IIS；任何必须的服务器改动先停下征得用户确认。见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - 静态缓存：`Infrastructure/StaticAssetCachePolicy.cs` 统一选择响应头；自有带 `?v=` 的资源为 1 年 `immutable`，外接 `/Content` 图片/字体 30 天、CSS/JS 7 天、未知类型 1 天，Development 始终 `no-cache`。规则由 `tests/Szaipa.Web.Tests` 覆盖；见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。

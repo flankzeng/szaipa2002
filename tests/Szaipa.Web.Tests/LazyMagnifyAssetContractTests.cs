@@ -50,7 +50,7 @@ public sealed class LazyMagnifyAssetContractTests
         var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewArt.cshtml"));
         var script = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "newart.js"));
 
-        Assert.Contains("<script src=\"/Content/Model/swiper-bundle.min.js\" defer></script>", view, StringComparison.Ordinal);
+        Assert.Contains("<script src=\"~/public/vendor/swiper-public.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
         Assert.Contains("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
         Assert.Contains("<script src=\"~/js/newart.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
         Assert.Contains("new window.Swiper('.mySwiper',", script, StringComparison.Ordinal);
@@ -65,7 +65,7 @@ public sealed class LazyMagnifyAssetContractTests
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
         var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewIndex.cshtml"));
 
-        var swiperIndex = view.IndexOf("<script src=\"/Content/Model/swiper-bundle.min.js\" defer></script>", StringComparison.Ordinal);
+        var swiperIndex = view.IndexOf("<script src=\"~/public/vendor/swiper-public.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
         var magnifyIndex = view.IndexOf("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
         var pageScriptIndex = view.IndexOf("<script src=\"~/js/newindex.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
 
