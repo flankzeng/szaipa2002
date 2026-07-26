@@ -4,7 +4,7 @@
 
 ## 范围与兼容基线
 
-`_newLayout.cshtml` 与 `_Artist.cshtml` 仍默认加载外接 Bootstrap 3 CSS；只有页面显式设置 `ViewData["UseBootstrapCss"] = false` 时，才在相同位置改载带内容版本的 `public-bootstrap-baseline.css`。当前只放行六个没有 Bootstrap 组件或标准 12 栏 class 的页面：
+`_newLayout.cshtml` 与 `_Artist.cshtml` 仍默认加载外接 Bootstrap 3 CSS；只有页面显式设置 `ViewData["UseBootstrapCss"] = false` 时，才在相同位置改载带内容版本的 `public-bootstrap-baseline.css`。当前只放行七个没有 Bootstrap 组件或标准 12 栏 class 的页面：
 
 - `/Home/NewIndex`
 - `/Home/NewVip`
@@ -12,10 +12,11 @@
 - `/Home/NewNews`
 - `/Home/NewAbout`
 - `/Home/NewArt/{id}`
+- `/Home/Publication/{id}`
 
 轻量基线保留这些页面和公共 navbar/footer 实际依赖的 Bootstrap/normalize 行为：`border-box`、body 字体/行高/颜色/背景、HTML5 block 元素、链接状态、图片/figure、标题字重/行高/margin、段落和列表 margin、button/input 表单归一化、NewIndex 的 `.clearfix` 与 36px `h1`、NewArt 导航 table 归一化，以及这些页面相关的打印规则。文件保留 Bootstrap 3.3.7 与 normalize.css 的 MIT 归属说明。
 
-其他页面继续走默认 Bootstrap，不受试点影响。数据展览、特殊展览和尚未取得双模板真实样本的 Publication 详情仍保留原加载边界，不能直接全站删除 Bootstrap。
+其他页面继续走默认 Bootstrap，不受试点影响。三个 `Layout=null` 的特殊展览不经过公共布局；未经逐页验证的其他页面仍不能直接全站删除 Bootstrap。
 
 ## 体积
 
@@ -39,3 +40,11 @@
 - 新增 Web 契约测试，锁定 opt-out 页面、带版本 baseline 链接、Bootstrap 默认回退及页面 Styles 的加载顺序。
 - `~/.dotnet/dotnet build Szaipa.Modernization.slnx --no-restore --disable-build-servers -m:1`：0 warning / 0 error。
 - `~/.dotnet/dotnet test Szaipa.Modernization.slnx --no-build --no-restore --disable-build-servers -m:1`：Data 96/96、Web 123/123，合计 219/219。
+
+## Publication 扩展（2026-07-26）
+
+- 数据展览详情已加入同一 opt-out 契约。普通与重要模板都只使用站点自有 20 栏和 `exh-*` 组件，不依赖 Bootstrap 的标准 12 栏、组件或工具 class。
+- 以 131 图的 `/Home/Publication/92012` 做退出前后严格 A/B：390×844 与 1440×900 下，navbar、标题/日期、两组图库、箭头和 footer 的矩形与关键 computed style 逐字段完全一致；破图 0，`scrollWidth == clientWidth`。
+- 991/992 两侧另做断点检查：页面均无横向溢出，navbar 高度均为 64px，四项链接均为 `white-space: nowrap` 且保持单行横排。390px 首屏截图复核正常。
+- 页面样式表由外接 `143,947B` Bootstrap 改为带版本的 `3,105B` 基线，原始体积少 `140,842B`；以 `gzip -9 -n` 对照为 `20,857B → 1,230B`，冷加载少 `19,627B`，请求数不变。
+- 外接 Bootstrap、旧发布版、服务器、数据库、图片与 Content 均未修改；默认回退继续服务其余未验证页面。

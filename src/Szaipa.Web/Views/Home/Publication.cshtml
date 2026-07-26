@@ -4,6 +4,7 @@
     var publication = Model.Publication;
     ViewBag.Title = publication.TitleCn;
     Layout = "~/Views/Shared/_newLayout.cshtml";
+    ViewData["UseBootstrapCss"] = false;
     var gallery = new ExhibitionGalleryModel
     {
         TitleCn = publication.TitleCn,
