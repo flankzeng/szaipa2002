@@ -68,13 +68,20 @@ public sealed class LegacyPublicationGalleryCatalogTests
     }
 
     [Fact]
-    public void Publication_view_and_both_gallery_skins_use_the_exact_path_catalog()
+    public void Publication_view_and_both_gallery_skins_use_exact_paths_and_layered_previews()
     {
         var repositoryRoot = FindRepositoryRoot();
         var viewsRoot = Path.Combine(repositoryRoot, "src", "Szaipa.Web", "Views");
         var publication = File.ReadAllText(Path.Combine(viewsRoot, "Home", "Publication.cshtml"));
         var gallery = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_ExhibitionGallery.cshtml"));
         var important = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_ExhibitionImportant.cshtml"));
+        var galleryScript = File.ReadAllText(Path.Combine(
+            repositoryRoot,
+            "src",
+            "Szaipa.Web",
+            "wwwroot",
+            "js",
+            "publication-gallery.js"));
         var controller = File.ReadAllText(Path.Combine(
             repositoryRoot,
             "src",
@@ -86,9 +93,17 @@ public sealed class LegacyPublicationGalleryCatalogTests
         Assert.Contains("Model.ImagePaths.Count > 0", gallery, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in mainImages)", gallery, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in thumbnailImages)", gallery, StringComparison.Ordinal);
+        Assert.Contains("ImagePreviewResolver.Resolve(imagePath)", gallery, StringComparison.Ordinal);
+        Assert.Contains("data-original-src=", gallery, StringComparison.Ordinal);
         Assert.Contains("Model.ImagePaths.Count > 0", important, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in mainImages)", important, StringComparison.Ordinal);
         Assert.Contains("@foreach (var imagePath in thumbnailImages)", important, StringComparison.Ordinal);
+        Assert.Contains("ImagePreviewResolver.Resolve(imagePath)", important, StringComparison.Ordinal);
+        Assert.Contains("data-original-src=", important, StringComparison.Ordinal);
+        Assert.Contains("new window.IntersectionObserver", galleryScript, StringComparison.Ordinal);
+        Assert.Contains(".swiper-slide-active, .swiper-slide-prev, .swiper-slide-next", galleryScript, StringComparison.Ordinal);
+        Assert.Contains("originalImageRestorer.connect(this)", galleryScript, StringComparison.Ordinal);
+        Assert.Contains("originalImageRestorer.restoreAround(this)", galleryScript, StringComparison.Ordinal);
 
         var databaseLookup = controller.IndexOf(
             "GetPublicationDetailSnapshotAsync(id, 0, cancellationToken)",

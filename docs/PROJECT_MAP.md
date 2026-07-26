@@ -83,6 +83,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css`、独立新闻详情在 `newnewsread.css` 局部覆盖 legacy 的 ≤991 26px 与 992–1279 12px 根字号；不修改外置参考 Content。公共 navbar 在 `public-layout-main.css` / `newnewsread.css` 用 `rem + vw` 从 15px 连续接到 24px，并强制单行横排。320/390/768/991/992/1024/1199/1200/1279/1280 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
 - 三个特殊展览的作品详情在 ≤61.9375em 下取消桌面浮动/负边距并改为单列；NewArt 展讯、NewNewsRead 富文本和数据展览 CSS 顺序的窄屏保护见 `docs/updates/2026-07-22-responsive-font-cache-hardening.md`。
 - 特殊展览现场图主/缩使用同一 Razor 数组；主图初始 `src` 走预览解析器并保留 `data-original-src`，缩略图永久使用预览。`publication-special.js` 只在图库接近视口后预载 active/prev/next 原图，170/201 张命中预览，理论首轮少传 50,506,952B。
+- 数据展览的 `_ExhibitionGallery` / `_ExhibitionImportant` 同样走现有预览解析器；`publication-gallery.js` 在图库接近视口后只恢复 active/prev/next 原图。14 个退役展览命中 344/604，命中集合的缩略表示从 182,939,793B 降到 17,753,081B；未命中自动使用原图。见 `docs/updates/2026-07-25-publication-gallery-layered-loading.md`。
 - 静态位图的 HTML `width`/`height` 是源比例元数据，不是 CSS 像素布局；已有 vh/vw/%/rem 和 object-fit 继续控制显示。本轮另为公共 Logo、NewArt、NewAbout 和特殊展览页补 16 处，见 `docs/updates/2026-07-13-public-image-intrinsic-sizes.md`。
 - 未来 Release publish 设置 `CompressionEnabled=false`，因为当前链路是 `UseStaticFiles` + `UseResponseCompression`、没有 `MapStaticAssets`；不得误删运行时压缩中间件。Node 清单/本地示例配置/legacy `.gitkeep` 也不进发布包，本地实测省 761,732B。见 `docs/updates/2026-07-13-publish-payload-trim.md`。
 - 当前分支不再携带旧 MVC5 的两套 `packages` 及已归档静态目录；需要完整旧站环境时使用远端 `legacy/archive-before-frontend-prune-20260710`，现代解决方案不受影响。

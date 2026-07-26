@@ -97,8 +97,11 @@
             <div class="swiper-wrapper">
                 @foreach (var imagePath in mainImages)
                 {
+                    var previewPath = ImagePreviewResolver.Resolve(imagePath);
                     <div class="swiper-slide">
-                        <img loading="lazy" decoding="async" src="@imagePath" />
+                        <img loading="lazy" decoding="async"
+                             src="@previewPath"
+                             data-original-src="@(previewPath == imagePath ? null : imagePath)" />
                     </div>
                 }
             </div>
@@ -110,7 +113,7 @@
                 @foreach (var imagePath in thumbnailImages)
                 {
                     <div class="swiper-slide">
-                        <img loading="lazy" decoding="async" src="@imagePath" />
+                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve(imagePath)" />
                     </div>
                 }
             </div>
