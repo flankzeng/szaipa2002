@@ -46,6 +46,16 @@ public sealed class PublicBootstrapOptOutContractTests
         var publication = File.ReadAllText(Path.Combine(viewsRoot, "Home", "Publication.cshtml"));
         Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", publication, StringComparison.Ordinal);
 
+        foreach (var viewName in new[] { "chunyu3.cshtml", "tonggou2.cshtml", "tonggou2024.cshtml" })
+        {
+            var specialPublication = File.ReadAllText(Path.Combine(viewsRoot, "Publication", viewName));
+            Assert.Contains(
+                "<link rel=\"stylesheet\" href=\"~/css/public-bootstrap-baseline.css\" asp-append-version=\"true\">",
+                specialPublication,
+                StringComparison.Ordinal);
+            Assert.DoesNotContain("/Content/Model/css/bootstrap.css", specialPublication, StringComparison.Ordinal);
+        }
+
         var baselinePath = Path.Combine(webProject, "wwwroot", "css", "public-bootstrap-baseline.css");
         var baseline = File.ReadAllText(baselinePath);
         Assert.Contains("box-sizing: border-box;", baseline, StringComparison.Ordinal);
