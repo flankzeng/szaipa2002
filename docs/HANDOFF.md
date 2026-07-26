@@ -2,7 +2,7 @@
 
 > 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
 
-## 现状（已完成的核心，均 build 0/0 + 247 测试绿）
+## 现状（已完成的核心，均 build 0/0 + 251 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
 - **Phase 1**：TipTap 富文本编辑器 + 上传服务（唯一 GUID 命名，规避旧版图片误删 bug）。
 - **Phase 2**：News + ArtNews 全 CRUD。
@@ -42,6 +42,7 @@
 - **三个特殊展览 Bootstrap 退役（2026-07-26）**：chunyu3/tonggou2/tonggou2024 也直接改载 3,105B 轻量基线；每页冷加载少 140,842B 原始 / 19,627B gzip CSS。首轮 A/B 捕获 `.nav` 上移 10px 后把真实 `margin:0` 依赖收回页面 CSS，三页×390/1440 复测的关键几何/样式完全一致；三页×320/991/992 无溢出，导航保持横向单行，移动订阅字号保持既有 22.5–32px。服务器、旧发布版、Content 均未改。详见同一 Bootstrap 试点文档。
 - **特殊展览首屏图片优先级（2026-07-26）**：三页首屏下方 84–90px 的品牌/装饰图不再错误标记 high，六张统一 lazy/async/low，让 267–781KB hero 保持真正首屏优先级。三页×390/1440 属性与几何验证通过、无溢出；新增 1 项契约测试，总测试 245→246。详见 `docs/updates/2026-07-26-special-publication-image-priority.md`。
 - **公共滚动逻辑缓存化（2026-07-26）**：公共 navbar 收起和新闻详情返回顶部从重复内联 HTML 外提为两个带内容哈希的 defer 小脚本；跨页面/多文章访问可复用缓存。NewAbout 向下/向上 transform 与 NewNewsRead 500px 阈值、点击回顶均通过前后行为对照。新增 1 项契约测试，总测试 246→247。详见 `docs/updates/2026-07-26-public-scroll-runtime-cache.md`。
+- **公开站 canonical 切换（2026-07-26）**：现代页面已从 `NewIndex/NewNews/NewVip/NewAbout/NewArt` 改为正式 `Index/News/Vip/About/Art`，布局和 CSS/JS 同步去掉 `new` 迁移命名；`new*` 仅保留永久重定向。旧 `ArtNews/ArtNewsRead` 的完整资讯正文、馆藏与拍卖字段先迁入现代只读仓储和 `/Home/Art/{id}/Archive`、`/Home/Art/News/{id}`，再做兼容跳转，未丢后端内容。公开迁移仪表盘、骨架视图及其模型/服务已删除。Data 100 + Web 151 = 251 全绿；390px 真实页无横向溢出。详见 `docs/updates/2026-07-26-public-canonical-cutover.md`。
 - **前台/Staff 字体清单拆分（2026-07-22）**：原 147 个 `@font-face` 的单一清单拆成 public 114 / Staff 88，交集只保留双方需要的 55 个 Sans 声明；125 个 WOFF2、字形、字重、哈希和 `unicode-range` 均未改。每个页面只下载自己的清单：public 原始 CSS 少 80,909B（gzip -58.88%），Staff 少 136,438B（gzip -63.42%）。11 个路由×宽度组合及 Staff 仪表盘/编辑器实页验证无几何回退，测试 219→221。详见 `docs/updates/2026-07-22-font-manifest-split.md`。
 - **NewArt 运行时/横幅审计（2026-07-23）**：移除视图中不存在的 `.mySwiper2` 初始化，并把 Swiper、Magnify loader、页面脚本改为保序 `defer`，避免 135,660B Swiper 阻塞尾部 HTML 解析。主横幅的 AVIF 原型未达无损收益门槛，故不加入派生资产、不替换原图。1440 与 390 实页均保持首屏几何、单行导航和零横向溢出；测试 221→222。详见 `docs/updates/2026-07-23-newart-runtime-and-banner-audit.md`。
 - **首页运行时延后（2026-07-23）**：`NewIndex` 的 Swiper、Magnify loader、页面脚本改为保序 `defer`，与 NewArt 一致；保持依赖顺序，避免 `135,660B` Swiper 在页面尾部阻塞 HTML 解析。新增契约测试，测试 222→223。
@@ -87,7 +88,7 @@
 ```
 你接手「szaipa2002」ASP.NET Core 迁移项目。先读 docs/PROJECT_MAP.md、docs/HANDOFF.md 和记忆目录里的各条记忆，用中文给我汇报，再开工。
 
-约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 247）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做 代码+单测+路由冒烟(302)，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
+约束：构建/测试用 ~/.dotnet/dotnet build|test Szaipa.Modernization.slnx（须 0/0 + 全绿，当前 251）；前端 cd src/Szaipa.Web && npm run build。DB 只读、绝不用生产凭据、不写 Windows 连的库；admin 写本地副本。Windows 服务器及旧发布版只供参考，不部署、不改 IIS、不移动/删除发布文件；确需服务器变更时先停下说明并取得明确确认。没有可写库时只做代码+单测+路由冒烟，端到端留给用户本地。边做边验证、遇 legacy bug 顺手修。
 
 加 admin 模块照 News 范本：仓储(SzaipaAdminContext)+控制器(Areas/Staff)+_Form/Index/Create/Edit 视图+导航；艺术家子模块用泛型基类 ArtistScopedAdminRepository<T>；写操作走 IOperationRecorder。
 

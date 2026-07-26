@@ -124,4 +124,65 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             latestAuctions,
             relatedExhibitions);
     }
+
+    public async Task<ArtistArchiveSnapshotModel?> GetArtistArchiveAsync(
+        int artistId,
+        CancellationToken cancellationToken = default)
+    {
+        var artist = await GetArtistByIdAsync(artistId, cancellationToken);
+        if (artist is null)
+        {
+            return null;
+        }
+
+        var news = await _context.ArtNews
+            .AsNoTracking()
+            .Where(item => item.ArtistId == artistId)
+            .OrderByDescending(item => item.Date)
+            .ThenByDescending(item => item.Id)
+            .Select(SzaipaHomeProjections.ArtNewsSummary)
+            .ToListAsync(cancellationToken);
+
+        var favorites = await _context.Fav
+            .AsNoTracking()
+            .Where(item => item.ArtistId == artistId)
+            .OrderBy(item => item.Id)
+            .Select(SzaipaHomeProjections.ArtistFavorite)
+            .ToListAsync(cancellationToken);
+
+        var auctions = await _context.Auction
+            .AsNoTracking()
+            .Where(item => item.ArtistId == artistId)
+            .OrderBy(item => item.Id)
+            .Select(SzaipaHomeProjections.ArtistAuction)
+            .ToListAsync(cancellationToken);
+
+        return new ArtistArchiveSnapshotModel
+        {
+            Artist = artist,
+            News = news,
+            Favorites = favorites,
+            Auctions = auctions
+        };
+    }
+
+    public async Task<ArtistArticleSnapshotModel?> GetArtistArticleAsync(
+        int articleId,
+        CancellationToken cancellationToken = default)
+    {
+        var article = await _context.ArtNews
+            .AsNoTracking()
+            .Where(item => item.Id == articleId)
+            .Select(SzaipaHomeProjections.ArtNewsSummary)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (article is null)
+        {
+            return null;
+        }
+
+        var artist = await GetArtistByIdAsync(article.ArtistId, cancellationToken);
+        return artist is null
+            ? null
+            : new ArtistArticleSnapshotModel { Artist = artist, Article = article };
+    }
 }

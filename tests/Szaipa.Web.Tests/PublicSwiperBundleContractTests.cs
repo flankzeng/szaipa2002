@@ -49,9 +49,9 @@ public sealed class PublicSwiperBundleContractTests
 
         var razorFiles = new[]
         {
-            Path.Combine("Views", "Shared", "_Artist.cshtml"),
-            Path.Combine("Views", "Home", "NewArt.cshtml"),
-            Path.Combine("Views", "Home", "NewIndex.cshtml"),
+            Path.Combine("Views", "Shared", "_ArtistLayout.cshtml"),
+            Path.Combine("Views", "Home", "Art.cshtml"),
+            Path.Combine("Views", "Home", "Index.cshtml"),
             Path.Combine("Views", "Home", "Publication.cshtml"),
             Path.Combine("Views", "Publication", "chunyu3.cshtml"),
             Path.Combine("Views", "Publication", "tonggou2.cshtml"),

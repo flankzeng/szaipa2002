@@ -1,0 +1,73 @@
+@using Szaipa.Data.Models.Home
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model IReadOnlyList<NewsSummaryModel>
+@{
+    ViewBag.Title = "新闻动态";
+    ViewData["UseBootstrapCss"] = false;
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+
+<article class="xinwenzhanshi col-sm20 col-md20 col-lg20">
+
+    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+    <div class="col-sm16 col-md16 col-lg16 news">
+        <h1 class="JhengBold">
+            新闻动态&emsp;<i style="font-style: normal;vertical-align: top;">|</i>&emsp;<span
+                style="font-family: 'dinLightI';">NEWS</span>
+        </h1>
+
+        <!-- 第一行才有的 border-top，用分割线代替 -->
+        <div class="hr"></div>
+
+        @if (Model.Count == 0)
+        {
+            <p class="news-empty">暂时没有可展示的新闻资讯。</p>
+        }
+        @foreach (var news in Model)
+        {
+            @* Parity with legacy newnews: branch on raw Important == true, so null renders as a normal row. *@
+            if (news.Important == true)
+            {
+                <ul class="col-sm20 col-md20 col-lg20 important">
+                    <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
+                    <li class="col-sm14 col-md13 col-lg13 title importantTXT">
+                        <a href="/Home/NewsRead/@news.Id">
+                            @news.Title
+                            <p>@news.Subtitle</p>
+                            <div>
+                                <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/content/newsImg/{news.CoverPath}")" alt="">
+                            </div>
+                            <span>查看全部 VIEW MORE</span>
+
+                            <img loading="lazy" decoding="async" src="/Content/icon/enter-02.png" alt="" class="enter">
+                        </a>
+                    </li>
+                    <li class="col-xs1 col-sm1 col-md1 col-lg1">
+                        <img loading="lazy" decoding="async" src="/Content/icon/enter-02.png" class="enter">
+                    </li>
+                </ul>
+                <div class="hr col-xs20 col-sm20 col-md20 col-lg20" style="margin-top:0;"></div>
+            }
+            else
+            {
+                <ul class="col-sm20 col-md20 col-lg20 normal">
+                    <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
+                    <a href="/Home/NewsRead/@news.Id">
+                        <li class="col-sm14 col-md13 col-lg13 title">@news.Title</li>
+                        <li class="col-xs1 col-sm1 col-md1 col-lg1">
+                            <img loading="lazy" decoding="async" src="/Content/icon/enter-02.png" style="transform: translateX(20%);" alt="" class="enter">
+                        </li>
+                    </a>
+                </ul>
+                <div class="hr col-xs20 col-sm20 col-md20 col-lg20" style="margin-top:0;"></div>
+            }
+        }
+
+    </div>
+    <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+</article>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/news.css" asp-append-version="true" />
+}

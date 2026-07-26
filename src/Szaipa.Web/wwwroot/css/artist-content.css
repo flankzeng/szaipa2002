@@ -1,0 +1,191 @@
+:root {
+    --artist-ink: #181818;
+    --artist-paper: #f6f4ef;
+    --artist-muted: #686868;
+    --artist-line: rgba(24, 24, 24, .2);
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--artist-ink); background: var(--artist-paper); }
+
+.artist-content-nav {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0 4%;
+    overflow-x: auto;
+    white-space: nowrap;
+    align-items: center;
+    gap: clamp(1.1rem, 3vw, 3rem);
+    background: rgba(246, 244, 239, .95);
+    border-bottom: .0625rem solid var(--artist-line);
+    box-sizing: border-box;
+    scrollbar-width: none;
+}
+
+.artist-content-nav::-webkit-scrollbar { display: none; }
+
+.artist-content-nav a {
+    color: inherit;
+    font-size: .92rem;
+    letter-spacing: .08em;
+    text-decoration: none;
+}
+
+.artist-content { width: min(92%, 86rem); margin: 0 auto; }
+
+.artist-content-hero {
+    min-height: 40vh;
+    padding: 8vh 0 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-bottom: .0625rem solid var(--artist-line);
+}
+
+.artist-content-hero p,
+.artist-content-hero span {
+    margin: 0;
+    color: var(--artist-muted);
+    font-size: clamp(.82rem, 1.1vw, 1rem);
+    letter-spacing: .2em;
+}
+
+.artist-content-hero h1 {
+    margin: .5rem 0 1rem;
+    font-size: clamp(2.8rem, 8vw, 7rem);
+    font-weight: 400;
+    line-height: 1;
+}
+
+.artist-content-section {
+    padding: clamp(4rem, 9vh, 8rem) 0;
+    scroll-margin-top: 4rem;
+    border-bottom: .0625rem solid var(--artist-line);
+}
+
+.artist-content-heading {
+    display: flex;
+    margin-bottom: clamp(2rem, 5vh, 4rem);
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.artist-content-heading h2 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 3rem);
+    font-weight: 400;
+}
+
+.artist-content-heading span,
+.artist-content-empty {
+    color: var(--artist-muted);
+    font-size: .88rem;
+    letter-spacing: .12em;
+}
+
+.artist-news-grid,
+.artist-record-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.artist-news-grid article a { display: block; color: inherit; text-decoration: none; }
+
+.artist-news-grid img,
+.artist-record-grid img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #dedbd3;
+}
+
+.artist-news-grid time {
+    display: block;
+    margin-top: 1.1rem;
+    color: var(--artist-muted);
+    font-size: .78rem;
+}
+
+.artist-news-grid h3,
+.artist-record-grid h3 {
+    margin: .65rem 0 .4rem;
+    font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+.artist-news-grid p { margin: 0; color: var(--artist-muted); font-size: .9rem; line-height: 1.7; }
+.artist-record-grid dl { margin: 1rem 0 0; font-size: .85rem; }
+
+.artist-record-grid dl div {
+    display: grid;
+    grid-template-columns: 5em minmax(0, 1fr);
+    padding: .4rem 0;
+    border-top: .0625rem solid var(--artist-line);
+}
+
+.artist-record-grid dt { color: var(--artist-muted); font-weight: 400; }
+.artist-record-grid dd { margin: 0; overflow-wrap: anywhere; }
+.artist-article { max-width: 62rem; padding: clamp(4rem, 10vh, 9rem) 0; }
+.artist-article header { margin-bottom: clamp(2rem, 6vh, 5rem); }
+
+.artist-article header p,
+.artist-article time {
+    color: var(--artist-muted);
+    font-size: .84rem;
+    letter-spacing: .1em;
+}
+
+.artist-article header a { color: inherit; }
+
+.artist-article h1 {
+    max-width: 18em;
+    margin: 1rem 0;
+    font-size: clamp(2rem, 5vw, 4.6rem);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.artist-article h2 {
+    margin: 0 0 1.5rem;
+    color: var(--artist-muted);
+    font-size: clamp(1rem, 1.7vw, 1.4rem);
+    font-weight: 400;
+}
+
+.artist-article-cover {
+    display: block;
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    background: #dedbd3;
+}
+
+.artist-rich-content {
+    margin-top: clamp(2rem, 6vh, 5rem);
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    line-height: 1.95;
+    overflow-wrap: anywhere;
+}
+
+.artist-rich-content img,
+.artist-rich-content video,
+.artist-rich-content iframe,
+.artist-rich-content table {
+    max-width: 100% !important;
+}
+
+.artist-rich-content img { height: auto !important; }
+
+@media (max-width: 48rem) {
+    .artist-content { width: 88%; }
+    .artist-content-hero { min-height: 32vh; }
+    .artist-news-grid,
+    .artist-record-grid { grid-template-columns: 1fr; }
+    .artist-content-heading { align-items: flex-end; }
+}

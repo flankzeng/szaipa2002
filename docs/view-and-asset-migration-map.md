@@ -1,90 +1,26 @@
-# View And Asset Migration Map
+# View And Asset Map
 
-## Goal
+Updated: 2026-07-26
 
-This map defines where legacy publish assets and Razor views should land in the new ASP.NET Core app.
-It keeps the migration incremental instead of copying the old `Content` tree blindly.
+## Modern public views
 
-## Current source of truth
+| Surface | Razor view | Page assets |
+|---|---|---|
+| Home | `Views/Home/Index.cshtml` | `css/index.css`, `js/index.js` |
+| News list | `Views/Home/News.cshtml` | `css/news.css` |
+| News detail | `Views/Home/NewsRead.cshtml` | `css/newsread.css`, `js/newsread.js` |
+| Members | `Views/Home/Vip.cshtml` | `css/vip.css` |
+| About | `Views/Home/About.cshtml` | `css/about.css` |
+| Artist | `Views/Home/Art.cshtml` | `css/art.css`, `js/art.js` |
+| Artist archive/article | `ArtArchive.cshtml`, `ArtArticle.cshtml` | `css/artist-content.css` |
+| Exhibitions | `PublicationList.cshtml`, `Publication.cshtml` | publication/exhibition bundles |
 
-- Runtime parity reference:
-  - `/Users/arthur/Project/GitClone/web24.05`
-- New app root:
-  - `src/Szaipa.Web`
+Shared layouts are `_PublicLayout.cshtml` and `_ArtistLayout.cshtml`. Modern view and asset filenames do not use the migration-era `new` prefix.
 
-## View migration targets
+## Runtime asset boundary
 
-- `Views/Home/newIndex.cshtml`
-  - Target: `src/Szaipa.Web/Views/Home/Index.cshtml`
-  - Notes: This is the main public landing page target for the first migration pass.
-
-- `Views/Home/newnews.cshtml`
-  - Target: `src/Szaipa.Web/Views/Home/NewNews.cshtml`
-  - Notes: Should follow the first `INewsReadRepository` implementation.
-  - Status: dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/NewNews.cshtml`
-
-- `Views/Home/newnewsread.cshtml`
-  - Target: `src/Szaipa.Web/Views/Home/NewNewsRead.cshtml`
-  - Notes: Needs the news detail snapshot plus sidebar summaries.
-  - Status: dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/NewNewsRead.cshtml`
-
-- `Views/Home/newvip.cshtml`
-  - Target: `src/Szaipa.Web/Views/Home/NewVip.cshtml`
-  - Notes: Introduce only after artist summary queries are wired.
-  - Status: dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/NewVip.cshtml`
-
-- `Views/Home/newArt.cshtml`
-  - Target: `src/Szaipa.Web/Views/Home/NewArt.cshtml`
-  - Notes: Depends on `ArtistProfileSnapshotModel`.
-  - Status: dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/NewArt.cshtml`
-
-- `Views/Home/Publication.cshtml` and publication list pages
-  - Target:
-    - `src/Szaipa.Web/Views/Home/PublicationList.cshtml`
-    - `src/Szaipa.Web/Views/Home/Publication.cshtml`
-  - Notes: Depends on `IPublicationReadRepository`.
-  - Status:
-    - dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/PublicationList.cshtml`
-    - dedicated ASP.NET Core page skeleton exists in `src/Szaipa.Web/Views/Home/Publication.cshtml`
-
-- `Views/Project_Tongou/*`
-  - Target: `src/Szaipa.Web/Views/ProjectTongou/*`
-  - Notes: Keep the controller namespace and folder naming aligned when those routes are introduced.
-  - Status: dedicated ASP.NET Core page skeletons exist in `src/Szaipa.Web/Views/ProjectTongou/*`
-
-## Asset migration targets
-
-- `Content/newsImg`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/newsImg`
-  - Used by: news landing, news list, news detail
-
-- `Content/icon`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/icon`
-  - Used by: landing page arrows, navigation accents
-
-- `Content/fonts`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/fonts`
-  - Used by: typography parity for the modernized Razor pages
-
-- `Content/Model`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/model`
-  - Used by: old model-specific CSS and image dependencies
-
-- `Content/ArtImg`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/artimg`
-  - Used by: artist and works pages
-
-- `Content/123`
-  - Target: `src/Szaipa.Web/wwwroot/legacy/content/123`
-  - Used by: landing-page exhibition and themed section assets
-
-## Migration rules
-
-- Do not copy the whole `Content` directory at once.
-- Move only the folders needed by the next activated page batch.
-- Preserve case carefully when moving assets from the publish snapshot.
-- Prefer `wwwroot/legacy/...` during the first pass so we can refactor paths later without losing parity.
-- Keep temporary or generated folders such as `Content/TempFile` out of the first migration pass.
-- The ASP.NET Core page skeletons now expose their first asset dependencies directly in the UI, so route-by-route asset moves can be validated from the migration workspace.
-- The page skeletons also now render inside a shared migration shell, which means visual migration can proceed with one reusable structure while route-specific content is still being ported.
-- The page skeletons also carry route-specific query parameters and read-only guardrails, so repository wiring decisions can be cross-checked from the UI without enabling live data sources.
+- Modern versioned CSS, JavaScript, local font subsets and derived AVIF assets live in `src/Szaipa.Web/wwwroot`.
+- The existing release `Content` tree remains external and is mounted read-only at `/Content` for public assets.
+- `ILegacyImagePreviewResolver` may select an existing q30 preview; missing or unsafe paths fall back to the original URL.
+- `IDerivedImageResolver` serves only allowlisted modern derived assets and preserves the original `/Content` fallback.
+- Legacy resources are removed only after source, database and production-log evidence agree; the server and old release remain read-only references.

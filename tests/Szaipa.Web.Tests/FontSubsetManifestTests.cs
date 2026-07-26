@@ -93,9 +93,9 @@ public sealed partial class FontSubsetManifestTests
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
         var publicViews = new[]
         {
-            "Views/Shared/_newLayout.cshtml",
-            "Views/Shared/_Artist.cshtml",
-            "Views/Home/NewNewsRead.cshtml",
+            "Views/Shared/_PublicLayout.cshtml",
+            "Views/Shared/_ArtistLayout.cshtml",
+            "Views/Home/NewsRead.cshtml",
             "Views/Publication/chunyu3.cshtml",
             "Views/Publication/tonggou2.cshtml",
             "Views/Publication/tonggou2024.cshtml",

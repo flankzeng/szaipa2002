@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.Contracts.Home;
-using Szaipa.Data.Scaffolding;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Models;
 using Szaipa.Web.Services;
@@ -14,33 +13,21 @@ namespace Szaipa.Web.Controllers;
 [Route("Home")]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly DatabaseSafetyOptions _databaseSafety;
     private readonly ReadOnlyMigrationOptions _readOnlyMigration;
-    private readonly IWebHostEnvironment _environment;
-    private readonly ILegacyScaffoldCommandService _legacyScaffoldCommandService;
     private readonly IMigrationWorkspaceDiagnosticsService _migrationWorkspaceDiagnosticsService;
 
     public HomeController(
-        ILogger<HomeController> logger,
-        IOptions<DatabaseSafetyOptions> databaseSafety,
         IOptions<ReadOnlyMigrationOptions> readOnlyMigration,
-        IWebHostEnvironment environment,
-        ILegacyScaffoldCommandService legacyScaffoldCommandService,
         IMigrationWorkspaceDiagnosticsService migrationWorkspaceDiagnosticsService)
     {
-        _logger = logger;
-        _databaseSafety = databaseSafety.Value;
         _readOnlyMigration = readOnlyMigration.Value;
-        _environment = environment;
-        _legacyScaffoldCommandService = legacyScaffoldCommandService;
         _migrationWorkspaceDiagnosticsService = migrationWorkspaceDiagnosticsService;
     }
 
     /// <summary>
     /// A Szaipa public read route can render real data only when the read-model flag is on AND the Szaipa
-    /// source has a (read-only) connection. Otherwise the route shows its migration skeleton. This keeps the
-    /// default (DB-off) startup safe and makes activation a deliberate, config-driven step.
+    /// source has a (read-only) connection. List pages otherwise render formal empty states and content
+    /// detail pages return 503. This keeps the default (DB-off) startup safe without exposing migration UI.
     /// </summary>
     private bool SzaipaReadModelsActive()
     {
@@ -58,125 +45,27 @@ public class HomeController : Controller
     [HttpGet("/")]
     [HttpGet("")]
     [HttpGet("Index")]
-    [HttpGet("newIndex")]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         if (SzaipaReadModelsActive())
         {
-            // Legacy newIndex fed ViewBag.n (top-6 news, subtitle trimmed) and ViewBag.ExhibitionList
-            // (all publications ordered by StartDate desc); the snapshot reproduces both read-only.
             var newsRepository = HttpContext.RequestServices.GetRequiredService<INewsReadRepository>();
             var snapshot = await newsRepository.GetHomePageSnapshotAsync(cancellationToken);
-            return View("NewIndex", snapshot);
+            return View("Index", snapshot);
         }
 
-        var diagnostics = _migrationWorkspaceDiagnosticsService.GetDiagnostics();
-
-        return View(new MigrationDashboardViewModel
+        return View("Index", new Szaipa.Data.Models.Home.HomePageSnapshotModel
         {
-            LandingPreview = PublicReadRouteContractCatalog.CreateLandingPreview(),
-            HasReadWriteLegacySource = diagnostics.HasReadWriteLegacySource,
-            TargetFramework = "net10.0 LTS",
-            UseLegacyDataSources = _databaseSafety.UseLegacyDataSources,
-            AllowLiveDatabase = _databaseSafety.AllowLiveDatabase,
-            ActiveEnvironment = _environment.EnvironmentName,
-            LegacySources = diagnostics.LegacySources
-                .ToDictionary(item => item.Key, item => item.Value.AccessMode),
-            LegacyConnectionSources = diagnostics.LegacySources
-                .ToDictionary(
-                    item => item.Key,
-                    item => $"{item.Value.ConnectionStringSource} | HasConnectionString={item.Value.HasConnectionString}"),
-            ScaffoldReadiness = _legacyScaffoldCommandService.GetSuggestions()
-                .ToDictionary(item => item.Source.ToString(), item => item.IsReady),
-            ReadModelFlags = diagnostics.ReadModelFlags,
-            ScaffoldSuggestions = _legacyScaffoldCommandService.GetSuggestions()
-                .Select(item => new ScaffoldSuggestionViewModel
-                {
-                    Source = item.Source.ToString(),
-                    ContextName = item.ContextName,
-                    AccessMode = item.AccessMode,
-                    IsReady = item.IsReady,
-                    EnvironmentVariableName = item.EnvironmentVariableName,
-                    Command = item.Command,
-                    Notes = item.Notes
-                })
-                .ToArray(),
-            Guardrails = new[]
-            {
-                new MigrationStepViewModel
-                {
-                    Title = "Keep legacy sources disabled by default",
-                    Detail = "Do not enable RuntimeSafety.UseLegacyDataSources until a verified read-only connection string is available locally."
-                },
-                new MigrationStepViewModel
-                {
-                    Title = "Never allow live writes during first-pass migration",
-                    Detail = "RuntimeSafety.AllowLiveDatabase must stay false while we scaffold contexts, validate queries, and compare output against the existing publish snapshot."
-                },
-                new MigrationStepViewModel
-                {
-                    Title = "Use environment variables for connection strings",
-                    Detail = "Keep real credentials out of source control and only inject read-only strings through local environment configuration."
-                }
-            },
-            Batches = LegacyReadBatches.Batches
-                .Select(batch => new MigrationBatchViewModel
-                {
-                    Name = batch.Name,
-                    Source = batch.Source.ToString(),
-                    Goal = batch.Goal,
-                    Entities = batch.Entities,
-                    Actions = batch.Actions
-                        .Select(action => new MigrationActionViewModel
-                        {
-                            ActionName = action.ActionName,
-                            Purpose = action.Purpose,
-                            Queries = action.Queries,
-                            WriteSideBehaviorsToRemove = action.WriteSideBehaviorsToRemove
-                        })
-                        .ToArray()
-                })
-                .ToArray(),
-            RepositoryPlans = LegacyRepositoryPlans.Plans
-                .Select(plan => new RepositoryPlanViewModel
-                {
-                    RepositoryName = plan.RepositoryName,
-                    Source = plan.Source,
-                    Methods = plan.Methods
-                        .Select(method => new RepositoryMethodPlanViewModel
-                        {
-                            MethodName = method.MethodName,
-                            Purpose = method.Purpose,
-                            Entities = method.Entities,
-                            QuerySteps = method.QuerySteps,
-                            Parameters = method.Parameters
-                                .Select(parameter => new RepositoryMethodParameterViewModel
-                                {
-                                    Name = parameter.Name,
-                                    Value = parameter.Value,
-                                    Reason = parameter.Reason
-                                })
-                                .ToArray(),
-                            TargetModels = method.TargetModels,
-                            Guardrails = method.Guardrails
-                        })
-                        .ToArray()
-                })
-                .ToArray(),
-            RoutePreviewGroups = PublicReadRouteContractCatalog.CreateRoutePreviewGroups(),
-            PublicReadLinkReadiness = PublicReadRouteContractCatalog.CreatePublicReadRouteReadiness(),
-            Workstreams = new[]
-            {
-                "Replace ASP.NET MVC 5 hosting with ASP.NET Core MVC hosting",
-                "Migrate EF6 Database First models to EF Core in a separate data project",
-                "Move static assets and Razor views in small batches against the latest publish output",
-                "Keep live database access disabled until read-only verification rules are in place"
-            }
+            LatestNews = Array.Empty<Szaipa.Data.Models.Home.NewsSummaryModel>(),
+            FeaturedPublications = Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>()
         });
     }
 
-    [HttpGet("newnews")]
-    public async Task<IActionResult> NewNews(CancellationToken cancellationToken)
+    [HttpGet("newIndex")]
+    public IActionResult LegacyNewIndex() => RedirectPermanent("/");
+
+    [HttpGet("News")]
+    public async Task<IActionResult> News(CancellationToken cancellationToken)
     {
         if (SzaipaReadModelsActive())
         {
@@ -185,16 +74,18 @@ public class HomeController : Controller
             // constructor means the default (DB-off) path never touches it.
             var newsRepository = HttpContext.RequestServices.GetRequiredService<INewsReadRepository>();
 
-            // Legacy newnews lists all news ordered by Date descending (count 0 = no cap).
             var news = await newsRepository.GetLatestNewsAsync(0, cancellationToken);
-            return View("NewNews", news);
+            return View("News", news);
         }
 
-        return View("NewNewsSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeNewsListDefinition()));
+        return View("News", Array.Empty<Szaipa.Data.Models.Home.NewsSummaryModel>());
     }
 
-    [HttpGet("newnewsread/{id:int}")]
-    public async Task<IActionResult> NewNewsRead(int id, CancellationToken cancellationToken)
+    [HttpGet("newnews")]
+    public IActionResult LegacyNewNews() => RedirectPermanent("/Home/News");
+
+    [HttpGet("NewsRead/{id:int}")]
+    public async Task<IActionResult> NewsRead(int id, CancellationToken cancellationToken)
     {
         if (SzaipaReadModelsActive())
         {
@@ -209,31 +100,39 @@ public class HomeController : Controller
             var related = await newsRepository.GetRelatedNewsAsync(
                 Szaipa.Data.Composition.LegacyDisplayRules.NewsDetailSidebarCount,
                 cancellationToken);
-            return View("NewNewsRead", new NewsDetailPageViewModel { Article = article, Related = related });
+            return View("NewsRead", new NewsDetailPageViewModel { Article = article, Related = related });
         }
 
-        return View("NewNewsReadSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeNewsDetailDefinition(id)));
+        return StatusCode(StatusCodes.Status503ServiceUnavailable);
     }
 
-    [HttpGet("vip")]
-    [HttpGet("newvip")]
-    public async Task<IActionResult> NewVip(CancellationToken cancellationToken)
+    [HttpGet("newnewsread/{id:int}")]
+    public IActionResult LegacyNewNewsRead(int id) => RedirectPermanent($"/Home/NewsRead/{id}");
+
+    [HttpGet("Vip")]
+    public async Task<IActionResult> Vip(CancellationToken cancellationToken)
     {
         if (SzaipaReadModelsActive())
         {
             var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
             var artists = await artistRepository.GetArtistsAsync(newestFirst: true, cancellationToken);
-            return View("NewVip", artists);
+            return View("Vip", artists);
         }
 
-        return View("NewVipSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeArtistListDefinition()));
+        return View("Vip", Array.Empty<Szaipa.Data.Models.Home.ArtistSummaryModel>());
     }
 
-    [HttpGet("newabout")]
-    public IActionResult NewAbout() => View("NewAbout");
+    [HttpGet("newvip")]
+    public IActionResult LegacyNewVip() => RedirectPermanent("/Home/Vip");
 
-    [HttpGet("newArt/{id:int}")]
-    public async Task<IActionResult> NewArt(int id, CancellationToken cancellationToken)
+    [HttpGet("About")]
+    public IActionResult About() => View("About");
+
+    [HttpGet("newabout")]
+    public IActionResult LegacyNewAbout() => RedirectPermanent("/Home/About");
+
+    [HttpGet("Art/{id:int}")]
+    public async Task<IActionResult> Art(int id, CancellationToken cancellationToken)
     {
         if (SzaipaReadModelsActive())
         {
@@ -245,11 +144,46 @@ public class HomeController : Controller
                 return NotFound();
             }
 
-            return View("NewArt", profile);
+            return View("Art", profile);
         }
 
-        return View("NewArtSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomeArtistProfileDefinition(id)));
+        return StatusCode(StatusCodes.Status503ServiceUnavailable);
     }
+
+    [HttpGet("newArt/{id:int}")]
+    public IActionResult LegacyNewArt(int id) => RedirectPermanent($"/Home/Art/{id}");
+
+    [HttpGet("Art/{id:int}/Archive")]
+    public async Task<IActionResult> ArtArchive(int id, CancellationToken cancellationToken)
+    {
+        if (!SzaipaReadModelsActive())
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable);
+        }
+
+        var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
+        var archive = await artistRepository.GetArtistArchiveAsync(id, cancellationToken);
+        return archive is null ? NotFound() : View("ArtArchive", archive);
+    }
+
+    [HttpGet("Art/News/{id:int}")]
+    public async Task<IActionResult> ArtArticle(int id, CancellationToken cancellationToken)
+    {
+        if (!SzaipaReadModelsActive())
+        {
+            return StatusCode(StatusCodes.Status503ServiceUnavailable);
+        }
+
+        var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
+        var article = await artistRepository.GetArtistArticleAsync(id, cancellationToken);
+        return article is null ? NotFound() : View("ArtArticle", article);
+    }
+
+    [HttpGet("ArtNews/{id:int}")]
+    public IActionResult LegacyArtNews(int id) => RedirectPermanent($"/Home/Art/{id}/Archive");
+
+    [HttpGet("ArtNewsRead/{id:int}")]
+    public IActionResult LegacyArtNewsRead(int id) => RedirectPermanent($"/Home/Art/News/{id}");
 
     [HttpGet("PublicationList")]
     public async Task<IActionResult> PublicationList(CancellationToken cancellationToken)
@@ -261,7 +195,7 @@ public class HomeController : Controller
             return View("PublicationList", publications);
         }
 
-        return View("PublicationListSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationListDefinition()));
+        return View("PublicationList", Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>());
     }
 
     [HttpGet("Publication/{id:int}")]
@@ -294,7 +228,7 @@ public class HomeController : Controller
             return NotFound();
         }
 
-        return View("PublicationSkeleton", PageSkeletonFactory.Create(PublicReadRouteContractCatalog.CreateHomePublicationDetailDefinition(id)));
+        return StatusCode(StatusCodes.Status503ServiceUnavailable);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

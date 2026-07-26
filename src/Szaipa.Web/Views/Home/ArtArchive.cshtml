@@ -1,0 +1,149 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model Szaipa.Data.Models.Home.ArtistArchiveSnapshotModel
+@{
+    static string ContentUrl(string root, string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return string.Empty;
+        }
+
+        var value = path.Trim().Replace('\\', '/');
+        var candidate = value.StartsWith('/') ? value : root + value;
+        var segments = candidate.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (!candidate.StartsWith("/Content/", StringComparison.OrdinalIgnoreCase)
+            || candidate.Contains('?')
+            || candidate.Contains('#')
+            || segments.Any(segment => segment is "." or ".." || segment.Any(char.IsControl)))
+        {
+            return string.Empty;
+        }
+
+        return "/" + string.Join('/', segments.Select(Uri.EscapeDataString));
+    }
+
+    var artist = Model.Artist;
+    ViewBag.Title = artist.ArtistNameCn + " - 艺术档案";
+    ViewData["UseBootstrapCss"] = false;
+    ViewData["UseSwiperCss"] = false;
+    Layout = "_ArtistLayout";
+}
+
+<nav class="artist-content-nav" aria-label="艺术家档案导航">
+    <a href="/">首页</a>
+    <a href="/Home/Art/@artist.Id">艺术家首页</a>
+    <a href="#news">新闻资讯</a>
+    <a href="#favorites">馆藏作品</a>
+    <a href="#publications">出版著作</a>
+    <a href="#auctions">拍卖记录</a>
+</nav>
+
+<main class="artist-content">
+    <header class="artist-content-hero">
+        <p>@artist.ArtistNameEn</p>
+        <h1>@artist.ArtistNameCn</h1>
+        <span>艺术档案 / ARCHIVE</span>
+    </header>
+
+    <section id="news" class="artist-content-section">
+        <div class="artist-content-heading"><h2>新闻资讯</h2><span>NEWS</span></div>
+        @if (Model.News.Count == 0)
+        {
+            <p class="artist-content-empty">暂无新闻资讯</p>
+        }
+        else
+        {
+            <div class="artist-news-grid">
+                @foreach (var item in Model.News)
+                {
+                    var image = ContentUrl("/Content/newsImg/", item.CoverPath);
+                    <article>
+                        <a href="/Home/Art/News/@item.Id">
+                            @if (image.Length > 0)
+                            {
+                                <img src="@ImagePreviewResolver.Resolve(image)" alt="@item.Title" loading="lazy" decoding="async">
+                            }
+                            <div>
+                                <time>@item.Date?.ToString("yyyy.MM.dd")</time>
+                                <h3>@item.Title</h3>
+                                <p>@item.Subtitle</p>
+                            </div>
+                        </a>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section id="favorites" class="artist-content-section">
+        <div class="artist-content-heading"><h2>馆藏作品</h2><span>COLLECTION</span></div>
+        @if (Model.Favorites.Count == 0)
+        {
+            <p class="artist-content-empty">暂无馆藏作品资料</p>
+        }
+        else
+        {
+            <div class="artist-record-grid">
+                @foreach (var item in Model.Favorites)
+                {
+                    var image = ContentUrl("/Content/ArtImg/Artist/Fav/", item.CoverPath);
+                    <article>
+                        @if (image.Length > 0)
+                        {
+                            <img src="@ImagePreviewResolver.Resolve(image)" alt="@item.Title" loading="lazy" decoding="async">
+                        }
+                        <h3>@item.Title</h3>
+                        <dl>
+                            @if (item.Creator.Length > 0) { <div><dt>作者</dt><dd>@item.Creator</dd></div> }
+                            @if (item.Year.Length > 0) { <div><dt>年代</dt><dd>@item.Year</dd></div> }
+                            @if (item.Material.Length > 0) { <div><dt>材质</dt><dd>@item.Material</dd></div> }
+                            @if (item.Size.Length > 0) { <div><dt>尺寸</dt><dd>@item.Size</dd></div> }
+                            @if (item.Location.Length > 0) { <div><dt>收藏地</dt><dd>@item.Location</dd></div> }
+                            @if (item.CollectNumber.Length > 0) { <div><dt>收藏编号</dt><dd>@item.CollectNumber</dd></div> }
+                        </dl>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <section id="publications" class="artist-content-section">
+        <div class="artist-content-heading"><h2>出版著作</h2><span>PUBLICATIONS</span></div>
+        <p class="artist-content-empty">暂无出版著作资料</p>
+    </section>
+
+    <section id="auctions" class="artist-content-section">
+        <div class="artist-content-heading"><h2>拍卖记录</h2><span>AUCTIONS</span></div>
+        @if (Model.Auctions.Count == 0)
+        {
+            <p class="artist-content-empty">暂无拍卖记录</p>
+        }
+        else
+        {
+            <div class="artist-record-grid">
+                @foreach (var item in Model.Auctions)
+                {
+                    var image = ContentUrl("/Content/ArtImg/Artist/Auction/", item.CoverPath);
+                    <article>
+                        @if (image.Length > 0)
+                        {
+                            <img src="@ImagePreviewResolver.Resolve(image)" alt="@item.Title" loading="lazy" decoding="async">
+                        }
+                        <h3>@item.Title</h3>
+                        <dl>
+                            @if (item.Date.Length > 0) { <div><dt>拍卖日期</dt><dd>@item.Date</dd></div> }
+                            @if (item.Price.Length > 0) { <div><dt>成交价</dt><dd>@item.Price</dd></div> }
+                            @if (item.Rmb.Length > 0) { <div><dt>人民币</dt><dd>@item.Rmb</dd></div> }
+                            @if (item.Hkd.Length > 0) { <div><dt>港币</dt><dd>@item.Hkd</dd></div> }
+                            @if (item.Usd.Length > 0) { <div><dt>美元</dt><dd>@item.Usd</dd></div> }
+                        </dl>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</main>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/artist-content.css" asp-append-version="true">
+}

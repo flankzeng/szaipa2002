@@ -29,7 +29,7 @@ public sealed class StaticAssetCachePolicyTests
         var result = StaticAssetCachePolicy.Select(
             isDevelopment: false,
             StaticAssetSource.WebRoot,
-            "/css/newindex.css",
+            "/css/index.css",
             hasContentVersion: true);
 
         Assert.Equal(StaticAssetCachePolicy.OneYearImmutable, result);

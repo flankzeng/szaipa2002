@@ -1,0 +1,58 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model Szaipa.Data.Models.Home.ArtistArticleSnapshotModel
+@{
+    static string ContentUrl(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return string.Empty;
+        }
+
+        var value = path.Trim().Replace('\\', '/');
+        var candidate = value.StartsWith('/') ? value : "/Content/newsImg/" + value;
+        var segments = candidate.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        if (!candidate.StartsWith("/Content/", StringComparison.OrdinalIgnoreCase)
+            || candidate.Contains('?')
+            || candidate.Contains('#')
+            || segments.Any(segment => segment is "." or ".." || segment.Any(char.IsControl)))
+        {
+            return string.Empty;
+        }
+
+        return "/" + string.Join('/', segments.Select(Uri.EscapeDataString));
+    }
+
+    var artist = Model.Artist;
+    var article = Model.Article;
+    var cover = ContentUrl(article.CoverPath);
+    ViewBag.Title = article.Title;
+    ViewData["UseBootstrapCss"] = false;
+    ViewData["UseSwiperCss"] = false;
+    Layout = "_ArtistLayout";
+}
+
+<nav class="artist-content-nav" aria-label="艺术资讯导航">
+    <a href="/">首页</a>
+    <a href="/Home/Art/@artist.Id">艺术家首页</a>
+    <a href="/Home/Art/@artist.Id/Archive#news">新闻资讯</a>
+</nav>
+
+<main class="artist-content artist-article">
+    <header>
+        <p><a href="/Home/Art/@artist.Id">@artist.ArtistNameCn</a> / NEWS</p>
+        <h1>@article.Title</h1>
+        @if (article.Subtitle.Length > 0) { <h2>@article.Subtitle</h2> }
+        <time>@article.Date?.ToString("yyyy.MM.dd")</time>
+    </header>
+    @if (cover.Length > 0)
+    {
+        <img class="artist-article-cover" src="@ImagePreviewResolver.Resolve(cover)" alt="@article.Title" decoding="async">
+    }
+    <article class="artist-rich-content">
+        @Html.Raw(article.Content)
+    </article>
+</main>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/artist-content.css" asp-append-version="true">
+}

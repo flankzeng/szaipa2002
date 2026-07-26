@@ -92,6 +92,43 @@ public sealed class ArtistReadRepositoryTests
         Assert.Null(await repository.GetArtistProfileAsync(999));
     }
 
+    [Fact]
+    public async Task GetArtistArchiveAsync_preserves_complete_legacy_feeds()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        var repository = new ArtistReadRepository(fixture.Context);
+
+        var archive = await repository.GetArtistArchiveAsync(1);
+
+        Assert.NotNull(archive);
+        Assert.Equal(new[] { 11, 10 }, archive!.News.Select(item => item.Id).ToArray());
+        Assert.Equal("content11", archive.News[0].Content);
+        Assert.Single(archive.Favorites);
+        Assert.Equal("Loc20", archive.Favorites[0].Location);
+        Assert.Equal("Creator20", archive.Favorites[0].Creator);
+        Assert.Single(archive.Auctions);
+        Assert.Equal("Price30", archive.Auctions[0].Price);
+        Assert.Equal("RMB30", archive.Auctions[0].Rmb);
+        Assert.Null(await repository.GetArtistArchiveAsync(999));
+    }
+
+    [Fact]
+    public async Task GetArtistArticleAsync_maps_article_and_owning_artist()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        var repository = new ArtistReadRepository(fixture.Context);
+
+        var snapshot = await repository.GetArtistArticleAsync(11);
+
+        Assert.NotNull(snapshot);
+        Assert.Equal(1, snapshot!.Artist.Id);
+        Assert.Equal("AN11", snapshot.Article.Title);
+        Assert.Equal("content11", snapshot.Article.Content);
+        Assert.Null(await repository.GetArtistArticleAsync(999));
+    }
+
     private static void Seed(SzaipaLegacyReadContext context)
     {
         InsertArtist(context, 1, "CN1", "EN1");
@@ -102,8 +139,8 @@ public sealed class ArtistReadRepositoryTests
         InsertWork(context, 200, artistId: 2);
 
         // Two ArtNews for artist 1 to exercise the unordered Take(1).
-        InsertArtNews(context, 10, artistId: 1, title: "AN10", subTitle: "sub10");
-        InsertArtNews(context, 11, artistId: 1, title: "AN11", subTitle: "sub11");
+        InsertArtNews(context, 10, artistId: 1, title: "AN10", subTitle: "sub10", date: "2024-01-01", content: "content10");
+        InsertArtNews(context, 11, artistId: 1, title: "AN11", subTitle: "sub11", date: "2025-01-01", content: "content11");
 
         InsertFav(context, 20, artistId: 1, title: "Fav20", location: "Loc20");
         InsertAuction(context, 30, artistId: 1, title: "Auc30", price: "Price30");
@@ -129,20 +166,31 @@ public sealed class ArtistReadRepositoryTests
             new SqliteParameter("@artistId", artistId));
     }
 
-    private static void InsertArtNews(SzaipaLegacyReadContext context, int id, int artistId, string title, string subTitle)
+    private static void InsertArtNews(
+        SzaipaLegacyReadContext context,
+        int id,
+        int artistId,
+        string title,
+        string subTitle,
+        string date,
+        string content)
     {
         context.Database.ExecuteSqlRaw(
-            "INSERT INTO ArtNews (Id, ArtistId, Title, SubTitle, CoverPath) VALUES (@id, @artistId, @title, @subTitle, 'c.jpg')",
+            "INSERT INTO ArtNews (Id, ArtistId, Title, SubTitle, CoverPath, Date, Content) " +
+            "VALUES (@id, @artistId, @title, @subTitle, 'c.jpg', @date, @content)",
             new SqliteParameter("@id", id),
             new SqliteParameter("@artistId", artistId),
             new SqliteParameter("@title", title),
-            new SqliteParameter("@subTitle", subTitle));
+            new SqliteParameter("@subTitle", subTitle),
+            new SqliteParameter("@date", date),
+            new SqliteParameter("@content", content));
     }
 
     private static void InsertFav(SzaipaLegacyReadContext context, int id, int artistId, string title, string location)
     {
         context.Database.ExecuteSqlRaw(
-            "INSERT INTO Fav (Id, ArtistId, Title, Location, CoverPath) VALUES (@id, @artistId, @title, @location, 'c.jpg')",
+            "INSERT INTO Fav (Id, ArtistId, Title, Location, CoverPath, Creator) " +
+            "VALUES (@id, @artistId, @title, @location, 'c.jpg', 'Creator20')",
             new SqliteParameter("@id", id),
             new SqliteParameter("@artistId", artistId),
             new SqliteParameter("@title", title),
@@ -152,7 +200,8 @@ public sealed class ArtistReadRepositoryTests
     private static void InsertAuction(SzaipaLegacyReadContext context, int id, int artistId, string title, string price)
     {
         context.Database.ExecuteSqlRaw(
-            "INSERT INTO Auction (Id, ArtistId, Title, Price, CoverPath) VALUES (@id, @artistId, @title, @price, 'c.jpg')",
+            "INSERT INTO Auction (Id, ArtistId, Title, Price, CoverPath, RMB) " +
+            "VALUES (@id, @artistId, @title, @price, 'c.jpg', 'RMB30')",
             new SqliteParameter("@id", id),
             new SqliteParameter("@artistId", artistId),
             new SqliteParameter("@title", title),

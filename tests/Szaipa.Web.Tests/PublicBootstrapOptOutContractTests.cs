@@ -10,8 +10,8 @@ public sealed class PublicBootstrapOptOutContractTests
         var repositoryRoot = FindRepositoryRoot();
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
         var viewsRoot = Path.Combine(webProject, "Views");
-        var layout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_newLayout.cshtml"));
-        var artistLayout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_Artist.cshtml"));
+        var layout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_PublicLayout.cshtml"));
+        var artistLayout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_ArtistLayout.cshtml"));
 
         foreach (var publicLayout in new[] { layout, artistLayout })
         {
@@ -34,14 +34,14 @@ public sealed class PublicBootstrapOptOutContractTests
         var artistPageStyleIndex = artistLayout.IndexOf("RenderSectionAsync(\"Styles\"", StringComparison.Ordinal);
         Assert.True(artistLayoutStyleIndex >= 0 && artistPageStyleIndex > artistLayoutStyleIndex);
 
-        foreach (var viewName in new[] { "NewIndex.cshtml", "NewVip.cshtml", "PublicationList.cshtml", "NewNews.cshtml", "NewAbout.cshtml" })
+        foreach (var viewName in new[] { "Index.cshtml", "Vip.cshtml", "PublicationList.cshtml", "News.cshtml", "About.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
             Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", view, StringComparison.Ordinal);
         }
 
-        var newArt = File.ReadAllText(Path.Combine(viewsRoot, "Home", "NewArt.cshtml"));
-        Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", newArt, StringComparison.Ordinal);
+        var art = File.ReadAllText(Path.Combine(viewsRoot, "Home", "Art.cshtml"));
+        Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", art, StringComparison.Ordinal);
 
         var publication = File.ReadAllText(Path.Combine(viewsRoot, "Home", "Publication.cshtml"));
         Assert.Contains("ViewData[\"UseBootstrapCss\"] = false;", publication, StringComparison.Ordinal);

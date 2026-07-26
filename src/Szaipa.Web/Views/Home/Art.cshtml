@@ -1,0 +1,412 @@
+﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
+@model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
+@{
+    static string? GetSafeBannerFileName(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var candidate = value.Trim();
+        if (candidate.Length > 255
+            || candidate is "." or ".."
+            || candidate.Contains("..", StringComparison.Ordinal)
+            || candidate.Any(character => !char.IsLetterOrDigit(character) && character is not ('-' or '_' or '.')))
+        {
+            return null;
+        }
+
+        var extension = System.IO.Path.GetExtension(candidate);
+        return extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".png", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".webp", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".avif", StringComparison.OrdinalIgnoreCase)
+                ? candidate
+                : null;
+    }
+
+    var artist = Model.Artist;
+    const string bannerRoot = "/Content/ArtImg/Artist/Banner/";
+    var path1FileName = GetSafeBannerFileName(artist.Path1);
+    var path2FileName = GetSafeBannerFileName(artist.Path2);
+    var path1Url = path1FileName is null ? null : bannerRoot + Uri.EscapeDataString(path1FileName);
+    var path2Url = path2FileName is null ? null : bannerRoot + Uri.EscapeDataString(path2FileName);
+    var path1Derived = path1Url is null ? null : DerivedImageResolver.Resolve(path1Url);
+    var path2Derived = path2Url is null ? null : DerivedImageResolver.Resolve(path2Url);
+    var path1OriginalUrl = path1Derived?.OriginalUrl is { Length: > 0 } path1Original
+        ? path1Original
+        : path1Url;
+    var path2OriginalUrl = path2Derived?.OriginalUrl is { Length: > 0 } path2Original
+        ? path2Original
+        : path2Url;
+    var path1AvifUrl = path1Derived?.AvifUrl is { Length: > 0 } path1Avif ? path1Avif : null;
+    var path2AvifUrl = path2Derived?.AvifUrl is { Length: > 0 } path2Avif ? path2Avif : null;
+    var primaryOriginalUrl = path1OriginalUrl ?? path2OriginalUrl;
+    var primaryAvifUrl = path1OriginalUrl is not null ? path1AvifUrl : path2AvifUrl;
+    var primaryPayload = primaryOriginalUrl is null
+        ? null
+        : new { originalUrl = primaryOriginalUrl, avifUrl = primaryAvifUrl };
+    var path1Payload = path1OriginalUrl is null
+        ? null
+        : new { originalUrl = path1OriginalUrl, avifUrl = path1AvifUrl };
+    var path2Payload = path2OriginalUrl is null
+        ? null
+        : new { originalUrl = path2OriginalUrl, avifUrl = path2AvifUrl };
+    var bannerPayloadJson = System.Text.Json.JsonSerializer.Serialize(new
+    {
+        primary = primaryPayload,
+        path1 = path1Payload,
+        path2 = path2Payload
+    });
+    var primaryOriginalCssUrl = primaryOriginalUrl is null
+        ? null
+        : System.Text.Json.JsonSerializer.Serialize(primaryOriginalUrl);
+    var primaryAvifCssUrl = primaryAvifUrl is null
+        ? null
+        : System.Text.Json.JsonSerializer.Serialize(primaryAvifUrl);
+    ViewBag.Title = artist.ArtistNameCn + " - 艺术家官网";
+    ViewData["UseBootstrapCss"] = false;
+    Layout = "_ArtistLayout";
+}
+
+
+<nav id="ArtistNav">
+
+    <table>
+        <tr>
+            <td>
+                <a href="/" style="border-left: 1px solid black;">
+                    首&#12288;页
+                </a>
+            </td>
+            <td class="activeLink">
+                <a href="#section01">艺术家首页 </a>
+            </td>
+            <td>
+                <a href="#section02">简&#12288;介</a>
+            </td>
+            <td>
+                <a href="#section03">作品集</a>
+            </td>
+            <td>
+                <a style="margin-right: 1vw;" href="#section04">相关展览</a>
+            </td>
+        </tr>
+    </table>
+
+</nav>
+
+<!-- 首页 -->
+<section id="section01" class="col-xs20 col-sm20 col-md20 col-lg20">
+    <div class="bgBlack"></div>
+
+
+
+    <div id="language">
+        <span class="lang JhengRegular">
+            中&#12288;文&nbsp;
+            <button id="switcher"><img loading="lazy" decoding="async" src="/content/icon/xiala.svg" /></button>
+        </span>
+        <ul class="langSwitcher">
+            <li><a class="langopt JhengRegular" href="Javascript:;;">中&#12288;文</a></li>
+            <li><a class="langopt" class="dinLight" href="Javascript:;;">ENGLISH</a></li>
+        </ul>
+
+    </div>
+
+    <ul class="introduce">
+        <li class="name JhengLight" style="color: white;">
+            @artist.ArtistNameCn 作品 ©️
+        </li>
+        <a href="/Home/Art/@artist.Id/Archive#news">
+            <li class="hoverLine JhengBold">
+                艺术家资讯
+
+                <div class="moreInfo">
+                    @foreach (var n in Model.LatestNews)
+                    {
+                    @n.Title
+                    }
+                    <span class="arrow-right"></span>
+                </div>
+
+            </li>
+        </a>
+        <a href="/Home/Art/@artist.Id/Archive#favorites">
+            <li class="hoverLine JhengBold">
+                收藏捐赠
+                <div class="moreInfo">
+
+                    机构 / 个人收藏 &#12288;捐赠 @foreach (var f in Model.LatestFavorites)
+                    {
+                    @f.Subtitle
+                    }
+                    <span class="arrow-right"></span>
+                </div>
+            </li>
+        </a>
+        <a href="/Home/Art/@artist.Id/Archive#publications">
+            <li class="hoverLine JhengBold">
+                出版著作
+                <div class="moreInfo">
+                    《@foreach (var p in Model.LatestPublications)
+                    {
+                    @p.Title
+                    }》
+                    <span class="arrow-right"></span>
+                </div>
+
+            </li>
+        </a>
+        <a href="/Home/Art/@artist.Id/Archive#auctions">
+            <li class="hoverLine JhengBold">
+                拍卖作品
+                <div class="moreInfo">
+                    @foreach (var a in Model.LatestAuctions)
+                    {
+                    @a.Title
+                    }
+                    <span class="arrow-right"></span>
+                </div>
+
+            </li>
+        </a>
+    </ul>
+</section>
+
+<div class="bg col-xs20 col-sm20 col-md20 col-lg20">
+
+
+
+    <!-- 简介 -->
+    <section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="col-xs20 col-sm20 col-md7 col-lg7 relative">
+
+            <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
+                <div class="touxiang">
+                    <div class="line xs-hide sm-hide"> </div>
+                    <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")" style="width: var(--touxiang);border-radius: 100%;"
+                        alt="艺术家头像">
+                </div>
+
+
+                <div class="jieshao JhengLight">
+                    <div class="padding"></div>
+                    <h1 class="JhengBold">@artist.ArtistNameCn</h1>
+                    @artist.Introduction
+                    @* 加两个项目。1.Introduction; 2.Position; 分别为简介和职务 *@
+                    <h1 class="JhengBold">社会职务</h1>
+                    @artist.Position
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs1 col-sm1 md-hide lg-hide">&nbsp;</div>
+        <div class="col-xs18 col-sm18 col-md12 col-lg12 relative nianbiao">
+
+            <div class="sec02-title relative">
+                <span class="JhengRegular">艺术家年表</span>
+                <span style="font-size: 1rem;font-family:dinLight;">&ensp;/&ensp;CHRONOLOGY </span>
+                <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
+            </div>
+
+            @Html.Raw(artist.DeedsThings)
+
+        </div>
+        <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
+
+
+
+    </section>
+
+
+
+    <!-- 作品集 -->
+    <section id="section03" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+            <span class="JhengRegular">作品集</span>
+            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;PORTFOLIO </span>
+        </div>
+
+        <div class="xs-hide sm-hide col-md6 col-lg6">
+            <div class="fuzhuImg"></div>
+        </div>
+
+        <div class="col-xs20 col-sm20 col-md14 col-lg14">
+
+            <div class="swiper mySwiper swiper-h">
+                <div class="swiper-wrapper">
+
+                    @{
+                    int counter = 1; // 定义一个计数器变量，初始值为1
+                    }
+                    @foreach (var w in Model.Works)
+                    {
+                    var workOriginalUrl = $"/Content/ArtImg/Artist/works-narrow/{w.Path}";
+                    <div class="swiper-slide">
+                        <div class="material JhengLight">
+                            <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
+                        </div>
+
+                        <a href="@workOriginalUrl">
+                            <img loading="lazy" decoding="async"
+                                src="@ImagePreviewResolver.Resolve(workOriginalUrl)"
+                                data-magnify-src="@workOriginalUrl"
+                                class="zoom" alt="@w.Title">
+                        </a>
+
+
+
+                        <div class="blankspace"></div>
+
+                        <div class="workInfo">
+                            <div class="number">
+                                <p>@counter</p> <!-- 使用计数器变量 -->
+                            </div>
+                            <h2>@w.Title</h2>
+                            <p>
+                                @w.Tags
+                            </p>
+                        </div>
+                    </div>
+                    counter++; // 每次循环结束后，计数器自增
+                    }
+                </div>
+                <!-- <div class="swiper-pagination"></div> -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
+
+
+
+        </div>
+
+    </section>
+
+    <!--展讯 -->
+    <section id="section04" class="col-xs20 col-sm20 col-md20 col-lg20">
+
+        <div class="subNav col-xs20 col-sm20 col-md20 col-lg20">
+            <span class="JhengRegular">相关展览</span>
+            <span style="font-size: 1rem;letter-spacing: 0;font-family:'dinLight';">&ensp;/&ensp;EXHIBITION </span>
+        </div>
+
+        <div class="col-xs20 col-sm20 col-md20 col-lg20">
+            <div class="swiper mySwiper3">
+                <div class="swiper-wrapper exhibition">
+
+                    @foreach (var h in Model.RelatedExhibitions)
+                    {
+                    <div class="swiper-slide">
+                        <img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/Exhibition/@h.CoverPath" alt="">
+                        <a href="@h.Link">
+                            <p class="information">
+                                @h.Location<br />
+                                @h.StartDate - @h.EndDate
+                                <span>@h.Title</span>
+                            </p>
+                        </a>
+                    </div>
+                    }
+
+                    <div class="swiper-slide">
+                        <!-- 活动1 春语II -->
+                        <img loading="lazy" decoding="async" src="/Content/images/IMG_9282.jpg" width="5472" height="3648" alt="">
+                        <a href="/Home/Publication/92007">
+                            <p class="information">
+                                深圳动漫园·同构艺术空间<br />
+                                2023.04.21 - 2023.05.28
+                                <span>“春语”第二季——国际视觉艺术邀请展</span>
+                            </p>
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <!-- 活动2 同构II -->
+                        <img loading="lazy" decoding="async" src="/Content/images/_DSF7252.jpg" width="4368" height="2458" alt="">
+                        <a href="/Publication/tonggou2">
+                            <p class="information">
+                                深圳市罗湖美术馆<br />
+                                2022.12.29 - 2023.01.28
+                                <span>同构《第二季》·当代艺术展</span>
+                            </p>
+                        </a>
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- 活动3 春语I -->
+                        <img loading="lazy" decoding="async" src="/Content/images/zhongyi/10000.jpg" width="1080" height="477" alt="">
+                        <a href="/Home/Publication/92003">
+                            <p class="information">
+                                深圳市动漫园·盛世艺术空间<br />
+                                2022.03.29
+                                <span>“春语”——当代艺术名家邀请展</span>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+
+            </div>
+
+
+
+
+
+
+        </div>
+    </section>
+
+@section Styles {
+    @if (primaryAvifUrl is not null)
+    {
+        <link rel="preload" as="image" href="@primaryAvifUrl" type="image/avif" fetchpriority="high" />
+    }
+    else if (primaryOriginalUrl is not null)
+    {
+        <link rel="preload" as="image" href="@primaryOriginalUrl" fetchpriority="high" />
+    }
+    <style>
+        :root {
+            --artist-grad1: @artist.Color1;
+            --artist-grad2: @artist.Color2;
+            @if (primaryOriginalCssUrl is null)
+            {
+                <text>--artist-banner: none;</text>
+            }
+            else
+            {
+                <text>--artist-banner: url(@Html.Raw(primaryOriginalCssUrl));</text>
+            }
+        }
+        @if (primaryOriginalCssUrl is not null && primaryAvifCssUrl is not null)
+        {
+            <text>
+                @@supports (background-image: image-set(url("") type("image/avif"), url(""))) {
+                    :root {
+                        --artist-banner: image-set(
+                        url(@Html.Raw(primaryAvifCssUrl)) type("image/avif"),
+                        url(@Html.Raw(primaryOriginalCssUrl))
+                        );
+                    }
+                }
+            </text>
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/art.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script>
+        window.__artistBanners = @Html.Raw(bannerPayloadJson);
+    </script>
+    <script src="~/public/vendor/swiper-public.js" asp-append-version="true" defer></script>
+    <script src="~/js/magnify-loader.js" asp-append-version="true" defer></script>
+    <script src="~/js/art.js" asp-append-version="true" defer></script>
+}

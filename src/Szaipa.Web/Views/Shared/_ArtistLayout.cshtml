@@ -1,0 +1,150 @@
+﻿@{
+    var useBootstrapCss = ViewData["UseBootstrapCss"] is not false;
+    var useSwiperCss = ViewData["UseSwiperCss"] is not false;
+}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewBag.Title - 深圳市艺术产业促进会</title>
+    <meta name="keywords" content="艺术 文化 产业促进 产业园 画廊 展览 艺术展 当代艺术 艺术园区 文化产业园 产业发展 深圳市艺术产业促进会" />
+    <link rel="icon" href="/Content/123/favicon.ico" type="image/x-icon">
+    @if (useBootstrapCss)
+    {
+        <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/css/public-bootstrap-baseline.css" asp-append-version="true">
+    }
+    <link rel="stylesheet" href="/Content/Model/css/Site.css">
+    <link rel="stylesheet" href="/css/font-subsets-public.css" asp-append-version="true">
+    <link rel="stylesheet" href="/content/model/css/responsive/Artist.css">
+    <link rel="stylesheet" href="/Content/Model/css/responsive.css">
+    @if (useSwiperCss)
+    {
+        <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true">
+    }
+
+    <link rel="stylesheet" href="/css/public-layout-common.css" asp-append-version="true">
+    <link rel="stylesheet" href="/css/public-layout-artist.css" asp-append-version="true">
+
+    @* 页面样式最后加载，以便覆盖艺术家公共布局与依赖样式。 *@
+    @await RenderSectionAsync("Styles", required: false)
+
+    <!-- 以上共享 -->
+
+</head>
+
+<body>
+
+
+
+
+
+    @RenderBody()
+
+    @* Page-specific scripts, run right after the page body (before the layout's footer scripts). *@
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+
+
+
+    <!-- 以下为共享部分 -->
+    <!-- FOOTER - PC -->
+
+    <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
+        <div class="emailContainerM">
+            <div class="emailPosition">
+
+                <h1>深圳市艺术产业新闻邮件</h1>
+
+
+                <input class="emailM" type="email" placeholder="EMAIL">
+                <button type="submit">订&#12288;阅</button>
+
+                <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
+                    <br />
+                    一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
+                </p>
+            </div>
+            <div class="logoContainerM">
+                <a href="Javascript:;;">
+                    <img src="/Content/icon/wechat.svg" class="guanzhu" alt=""></a>
+                <a href="Javascript:;;">
+                    <img src="/Content/icon/douyin.svg" class="guanzhu" alt=""></a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="section09 xs-hide sm-hide col-md20 col-lg20">
+        <div class="footer">
+            <div class="copyright-container">
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+                <div class="col-sm7 col-md7 col-lg7 copyright">
+                    <p>
+                        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+                            粤公网安备 44030402004889号 
+                        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+                        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+                        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+                        深圳市艺术产业促进会
+                    </p>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="/Home/News"> 新闻动态</a><br />
+                        <a href="/Home/PublicationList"> 展会动态</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="/Home/About#section02">合作案例 </a><br />
+                        <a href="/Home/Vip">艺术家首页</a><br />
+                        &#12288;<br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+                <div class="col-sm3 col-md3 col-lg3 footerList">
+                    <p style="padding-left: 10%;">
+                        <a href="/Home/About">联系我们</a><br />
+                        @* 后台登录入口：旧 /Staff/Index 在新 ASP.NET Core 站已失效，改指向新后台登录页 *@
+                        <a href="/Staff/Account/Login">后台登录</a><br />
+                        &#12288;<br />
+                        &#12288;
+                    </p>
+                </div>
+
+                <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
+            </div>
+        </div>
+    </footer>
+
+    <footer class="section09m md-hide lg-hide copyrightM">
+
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004889">
+            粤公网安备 44030402004889号 
+        </a>｜ <a href="https://beian.miit.gov.cn/">粤ICP备2021095230号</a><br />
+        办公地点：广东省深圳市罗湖区IBC环球商务中心B座36层<br />合作邮箱：industry@szaipa.com <br />
+        Copyright © 2023 SZAIPA. All Rights Reserved. <br />
+        深圳市艺术产业促进会<br />
+        <br />
+        @* 后台登录入口（手机端）：旧 /Staff/Index 已失效，改指向新后台登录页 *@
+        <a href="/Staff/Account/Login">后台登录</a>
+
+    </footer>
+
+</body>
+
+</html>

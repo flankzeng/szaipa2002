@@ -21,7 +21,7 @@ public sealed class LazyMagnifyAssetContractTests
         Assert.DoesNotContain("jquery.magnify.js", publicViews, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("css/magnify.css", publicViews, StringComparison.OrdinalIgnoreCase);
 
-        foreach (var viewName in new[] { "NewIndex.cshtml", "NewArt.cshtml" })
+        foreach (var viewName in new[] { "Index.cshtml", "Art.cshtml" })
         {
             var view = File.ReadAllText(Path.Combine(viewsRoot, "Home", viewName));
             Assert.Contains(
@@ -34,7 +34,7 @@ public sealed class LazyMagnifyAssetContractTests
             File.Exists(Path.Combine(webProject, "wwwroot", "js", "magnify-loader.js")),
             "The versioned view reference must point to the shared lazy loader.");
 
-        foreach (var styleName in new[] { "newindex.css", "newart.css" })
+        foreach (var styleName in new[] { "index.css", "art.css" })
         {
             var pageStyle = File.ReadAllText(Path.Combine(webProject, "wwwroot", "css", styleName));
             Assert.Contains("body .magnify {", pageStyle, StringComparison.Ordinal);
@@ -47,12 +47,12 @@ public sealed class LazyMagnifyAssetContractTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
-        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewArt.cshtml"));
-        var script = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "newart.js"));
+        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "Art.cshtml"));
+        var script = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "art.js"));
 
         Assert.Contains("<script src=\"~/public/vendor/swiper-public.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
         Assert.Contains("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
-        Assert.Contains("<script src=\"~/js/newart.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
+        Assert.Contains("<script src=\"~/js/art.js\" asp-append-version=\"true\" defer></script>", view, StringComparison.Ordinal);
         Assert.Contains("new window.Swiper('.mySwiper',", script, StringComparison.Ordinal);
         Assert.Contains("new window.Swiper('.mySwiper3',", script, StringComparison.Ordinal);
         Assert.DoesNotContain(".mySwiper2", script, StringComparison.Ordinal);
@@ -63,11 +63,11 @@ public sealed class LazyMagnifyAssetContractTests
     {
         var repositoryRoot = FindRepositoryRoot();
         var webProject = Path.Combine(repositoryRoot, "src", "Szaipa.Web");
-        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "NewIndex.cshtml"));
+        var view = File.ReadAllText(Path.Combine(webProject, "Views", "Home", "Index.cshtml"));
 
         var swiperIndex = view.IndexOf("<script src=\"~/public/vendor/swiper-public.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
         var magnifyIndex = view.IndexOf("<script src=\"~/js/magnify-loader.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
-        var pageScriptIndex = view.IndexOf("<script src=\"~/js/newindex.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
+        var pageScriptIndex = view.IndexOf("<script src=\"~/js/index.js\" asp-append-version=\"true\" defer></script>", StringComparison.Ordinal);
 
         Assert.True(swiperIndex >= 0);
         Assert.True(magnifyIndex > swiperIndex);

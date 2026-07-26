@@ -10,16 +10,16 @@ public sealed class PublicScrollRuntimeContractTests
         var webProject = Path.Combine(FindRepositoryRoot(), "src", "Szaipa.Web");
         var viewsRoot = Path.Combine(webProject, "Views");
 
-        var layout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_newLayout.cshtml"));
+        var layout = File.ReadAllText(Path.Combine(viewsRoot, "Shared", "_PublicLayout.cshtml"));
         Assert.Contains(
             "<script src=\"~/js/public-layout-main.js\" asp-append-version=\"true\" defer></script>",
             layout,
             StringComparison.Ordinal);
         Assert.DoesNotContain("window.requestAnimationFrame", layout, StringComparison.Ordinal);
 
-        var newsDetail = File.ReadAllText(Path.Combine(viewsRoot, "Home", "NewNewsRead.cshtml"));
+        var newsDetail = File.ReadAllText(Path.Combine(viewsRoot, "Home", "NewsRead.cshtml"));
         Assert.Contains(
-            "<script src=\"~/js/newnewsread.js\" asp-append-version=\"true\" defer></script>",
+            "<script src=\"~/js/newsread.js\" asp-append-version=\"true\" defer></script>",
             newsDetail,
             StringComparison.Ordinal);
         Assert.DoesNotContain("const toTopButton", newsDetail, StringComparison.Ordinal);
@@ -28,7 +28,7 @@ public sealed class PublicScrollRuntimeContractTests
         Assert.Contains("window.requestAnimationFrame", layoutScript, StringComparison.Ordinal);
         Assert.Contains("{ passive: true }", layoutScript, StringComparison.Ordinal);
 
-        var newsScript = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "newnewsread.js"));
+        var newsScript = File.ReadAllText(Path.Combine(webProject, "wwwroot", "js", "newsread.js"));
         Assert.Contains("window.scrollY >= 500", newsScript, StringComparison.Ordinal);
         Assert.Contains("behavior: 'smooth'", newsScript, StringComparison.Ordinal);
         Assert.Contains("{ passive: true }", newsScript, StringComparison.Ordinal);

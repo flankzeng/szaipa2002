@@ -13,4 +13,6 @@ public sealed class ArtNewsSummaryModel
     public DateTime? Date { get; init; }
 
     public string CoverPath { get; init; } = string.Empty;
+
+    public string Content { get; init; } = string.Empty;
 }

@@ -11,8 +11,8 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（98 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 149 项；全解决方案合计 247）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（100 测试）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 151 项；全解决方案合计 251）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
@@ -49,7 +49,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 **已建模块**：Account(登录/改密码) / Dashboard(访问分析仪表盘) / News / ArtNews / Artist(会员) / Works(作品) / Company(会员企业) / Publication(展览) / Fav / Auction / Exhibition / Upload / TongouAtrist(同构艺术家) / TongouWorks(同构作品)。Artist/Company 是主表（非 `IArtistScopedRecord`），照 News 范本（独立仓储）。Tongou 两个模块走独立的 `TongouAdminContext`（与 Szaipa 物理隔离的另一个数据库，门控同 `AdminWrite`，详见 `docs/updates/2026-06-24-tongou-admin-module.md`）。
 **仪表盘**：`DashboardController` + `IDashboardAnalyticsRepository`（只读聚合 `SzaipaAdminContext`：每日访问/内容访问/省市旭日/操作记录/KPI）+ ECharts（npm + esbuild `wwwroot/admin/dashboard.js`，源 `wwwroot/admin/src/dashboard.js`）。仓储懒解析 + `AdminWriteOptions.IsConfigured` 守卫，未配库时降级不 500。详见 `docs/updates/2026-06-24-dashboard-analytics-phase5.md`。
 **待建（2026-07-09 全部完成）**：展览参展作品目录（`ExhibitionWork`）/ slug 页退役（14 个迁成数据驱动，3 个特大页+1 个翻页书迷你站保留）/ Phase 6 加固审查（未发现遗漏，补测试 82→94）。见 HANDOFF「剩余工作」、`docs/updates/2026-07-09-*`。
-**注（2026-06-24）**：旧后台「ArtWorks」≠ 独立实体，只是 legacy `StaffController` 里管理同一张 `Works` 表的另一套重复 action（`ArtWorksAdd/Edit`，图片目录 `works-narrow`），与 `WorkAdd/WorkEdit`（图片目录 `Works`，额外算 Width/Height/transverse/long）功能重叠、互相打架。新 Works 模块只实现公开页 `NewArt.cshtml` 实际渲染引用的字段/路径（`works-narrow` 目录 + Title/Content/Tags），未照搬已死的 Width/Height/transverse/long 计算逻辑——`HANDOFF.md` 旧待建列表里的「ArtWorks」已并入 Works，不再是独立模块。
+**注（2026-06-24）**：旧后台「ArtWorks」≠ 独立实体，只是 legacy `StaffController` 里管理同一张 `Works` 表的另一套重复 action（`ArtWorksAdd/Edit`，图片目录 `works-narrow`），与 `WorkAdd/WorkEdit`（图片目录 `Works`，额外算 Width/Height/transverse/long）功能重叠、互相打架。新 Works 模块只实现公开页 `Art.cshtml` 实际渲染引用的字段/路径（`works-narrow` 目录 + Title/Content/Tags），未照搬已死的 Width/Height/transverse/long 计算逻辑——`HANDOFF.md` 旧待建列表里的「ArtWorks」已并入 Works，不再是独立模块。
 
 ## 富文本 / 图片 / 画廊（前端组件）
 - TipTap 编辑器：源 `wwwroot/admin/src/editor.js` → esbuild 打包 `wwwroot/admin/editor.js`；复用 partial `Areas/Staff/Views/Shared/_RichTextEditor.cshtml`（`RichTextEditorModel`）。内容存 HTML。
@@ -58,31 +58,32 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - Tailwind：源 `wwwroot/admin/admin.input.css` → `admin.css`；设计令牌在 `tailwind.config.js`（brand #bf272d / canvas #f7f7f7 / muted #939393 / Noto 字体）。
 
 ## 公开站（Views/Home）
-- 布局：`Views/Shared/_newLayout.cshtml`（多数页）、`_Artist.cshtml`（NewArt）。两者都加了可选 `@RenderSectionAsync("Styles"/"Scripts")`——页面级 CSS/JS 用 `@section` 挂。
+- 布局：`Views/Shared/_PublicLayout.cshtml`（多数页）、`_ArtistLayout.cshtml`（Art）。两者都加了可选 `@RenderSectionAsync("Styles"/"Scripts")`——页面级 CSS/JS 用 `@section` 挂。
 - 两套布局的静态公共样式已外提为 `wwwroot/css/public-layout-common.css`，差异分别在 `public-layout-main.css` / `public-layout-artist.css`；加载顺序必须保持“common → 布局差异 → 页面 Styles”，三者均用 `asp-append-version`。两页面、手机/桌面视口的 computed style 已做前后等价验证；见 `docs/updates/2026-07-13-layout-css-extraction.md`。
-- `_newLayout` 的静态 navbar 滚动逻辑在 `wwwroot/js/public-layout-main.js`；NewNewsRead 的返回顶部逻辑在 `wwwroot/js/newnewsread.js`。两者均带内容版本并 defer，不能重新内联到每份 HTML；行为对照见 `docs/updates/2026-07-26-public-scroll-runtime-cache.md`。
-- `_newLayout` / `_Artist` 默认仍保留 Bootstrap 回退；NewIndex/NewVip/PublicationList/NewNews/NewAbout/NewArt/Publication 显式 `UseBootstrapCss=false`，在相同层级改载带版本的 `public-bootstrap-baseline.css`。三个 `Layout=null` 特殊展览也直接改载该基线。以上页面没有 Bootstrap 组件/标准 12 栏；轻量基线保留公共布局、标题、表单、NewIndex `.clearfix`/36px `h1` 和 NewArt 导航 table 实际需要的 reset，特殊页自己的 `.nav` 显式持有原 `margin: 0`。Publication 与三个特殊页于 2026-07-26 经手机/桌面严格 A/B 和断点复核，几何与关键 computed style 一致。其他页面不得未经逐页验证直接退出。见 `docs/updates/2026-07-22-bootstrap-optout-pilot.md`。
-- 已把巨量内联 CSS/JS **外提**到 `wwwroot/css/*.css`、`wwwroot/js/*.js`（newindex/newnews/newnewsread/newart + publication-gallery + exhibition-important）。NewArt 用「CSS 变量 + JS 桥接」保留动态值（`@artist.Color1/Path1`）。
+- `_PublicLayout` 的静态 navbar 滚动逻辑在 `wwwroot/js/public-layout-main.js`；NewsRead 的返回顶部逻辑在 `wwwroot/js/newsread.js`。两者均带内容版本并 defer，不能重新内联到每份 HTML；行为对照见 `docs/updates/2026-07-26-public-scroll-runtime-cache.md`。
+- `_PublicLayout` / `_ArtistLayout` 默认仍保留 Bootstrap 回退；Index/Vip/PublicationList/News/About/Art/Publication 显式 `UseBootstrapCss=false`，在相同层级改载带版本的 `public-bootstrap-baseline.css`。三个 `Layout=null` 特殊展览也直接改载该基线。以上页面没有 Bootstrap 组件/标准 12 栏；轻量基线保留公共布局、标题、表单、Index `.clearfix`/36px `h1` 和 Art 导航 table 实际需要的 reset，特殊页自己的 `.nav` 显式持有原 `margin: 0`。Publication 与三个特殊页于 2026-07-26 经手机/桌面严格 A/B 和断点复核，几何与关键 computed style 一致。其他页面不得未经逐页验证直接退出。见 `docs/updates/2026-07-22-bootstrap-optout-pilot.md`。
+- 已把巨量内联 CSS/JS **外提**到 `wwwroot/css/*.css`、`wwwroot/js/*.js`（index/news/newsread/art + publication-gallery + exhibition-important）。Art 用「CSS 变量 + JS 桥接」保留动态值（`@artist.Color1/Path1`）。
 - 前台清理 Phase 1：公共库改按页加载、新闻详情去 Vue/Element Plus、图片懒加载、响应压缩/缓存、同字体子集、手机 viewport/navbar 修复。字体子集通过 `scripts/build-font-subsets.py` 重建；Noto 批处理还需 `scripts/font-db-codepoints.txt`，全量源从远端 `legacy/archive-before-frontend-prune-20260710` 临时 worktree 读取。详情见 `docs/updates/2026-07-10-frontend-cleanup-phase1.md`、`2026-07-13-noto-font-localization.md`。
 - ProjectTongou 公开浏览已退役：`Controllers/ProjectTongouController.cs` 仅保留无数据库访问的 410 兼容端点，视图为 `Views/ProjectTongou/Gone.cshtml`；Tongou 后台/数据层不受影响。
 - Legacy 资源不能按目录直接删除；第一轮 A/B/C/D 分级和两套 Content 差异见 `docs/updates/2026-07-10-legacy-resource-inventory.md`。
 - zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在远端 `legacy/archive-before-frontend-prune-20260710`。
-- 正式前台列表：`Home/NewAbout.cshtml`、`Home/NewVip.cshtml`、`Home/PublicationList.cshtml`；对应缓存 CSS 为 `newabout.css`、`newvip.css`、`publication-list.css`。DB 未启用时会员/展会仍使用各自 Skeleton。
+- 正式前台页面为 `Index/News/NewsRead/Vip/About/Art`；对应缓存资源也使用相同 canonical 名称。`new*` 仅是 301 兼容入口，公开视图不得再链接它们。DB 未启用时列表显示正式空状态，内容详情返回 503，不再暴露迁移 Skeleton。
+- 艺术家完整档案：`/Home/Art/{id}/Archive`（资讯、馆藏、出版空状态、拍卖）和 `/Home/Art/News/{id}`（资讯正文）直接使用 `IArtistReadRepository` 的完整只读投影；旧 `/Home/ArtNews*` 仅永久重定向，不得删除这些读取方法后只保留摘要。
 - 特殊展览页共享 `wwwroot/css/publication-special.css` 和 `wwwroot/js/publication-special.js`；chunyu3/tonggou2/tonggou2024 的现场图库均由同一脚本初始化，tonggou2024 的重复脚本已退役。历史拆分见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`，当前分层加载见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - 展览页 JS 已不依赖 jQuery：普通展览用原生 `publication-gallery.js`，特殊页脚本也已原生化；Swiper 与页面脚本按顺序 `defer`。三个 `Layout=null` 特殊页必须保留 viewport meta，否则手机 390px 会退回 1440px 桌面布局。见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
 - 公共 Swiper 固定为 9.0.3，由 `wwwroot/public/src/swiper-public.{js,css}` 只打包实际使用的 8 个模块，输出 `wwwroot/public/vendor/`；所有 7 个 Razor 入口使用 `asp-append-version`，不得重新引用外置全量 `/Content/Model/swiper-bundle*`。见 `docs/updates/2026-07-25-public-swiper-module-bundle.md`。
 - Legacy Content 审计：`scripts/audit-legacy-content.py`；动态保护根、可选 DB 路径/HTTP 日志输入和最新结果见 `docs/updates/2026-07-11-legacy-content-audit.md`、`2026-07-11-frontend-cleanup-phase4.md`。
 - 生产 IIS 日志审计：`scripts/audit-iis-content.ps1` 支持共享读取正在写入的 W3C 日志，并把访问量与物理文件盘点合并输出。2026-07-13 的 90 天结果确认 `_preview`/`TempFile`/`js`/`Filme` 正在使用，`Award` 与 `layui` 仅为审计候选。服务器只供只读参考，发布版不隔离、不删除、不部署、不改 IIS；任何必须的服务器改动先停下征得用户确认。见 `docs/updates/2026-07-13-production-iis-content-audit.md`。
 - 静态缓存：`Infrastructure/StaticAssetCachePolicy.cs` 统一选择响应头；自有带 `?v=` 的资源为 1 年 `immutable`，外接 `/Content` 图片/字体 30 天、CSS/JS 7 天、未知类型 1 天，Development 始终 `no-cache`。规则由 `tests/Szaipa.Web.Tests` 覆盖；见 `docs/updates/2026-07-13-static-asset-cache-policy.md`。
-- 首页轮播的首张实际可见封面由 `NewIndex.cshtml` 动态选择为唯一 eager/high 图片；若数据库轮播为空则落到首张硬编码展览，其余封面继续 lazy。见 `docs/updates/2026-07-13-home-carousel-lcp-priority.md`。
-- NewArt 的 Path1 首屏背景图由页面输出唯一 preload/high；首页章程原图已从 CSS background 改为保持原几何的 lazy `<img>`。见 `docs/updates/2026-07-13-image-loading-priorities.md`。
+- 首页轮播的首张实际可见封面由 `Index.cshtml` 动态选择为唯一 eager/high 图片；若数据库轮播为空则落到首张硬编码展览，其余封面继续 lazy。见 `docs/updates/2026-07-13-home-carousel-lcp-priority.md`。
+- Art 的 Path1 首屏背景图由页面输出唯一 preload/high；首页章程原图已从 CSS background 改为保持原几何的 lazy `<img>`。见 `docs/updates/2026-07-13-image-loading-priorities.md`。
 - 首页下折静态图优先复用既有 `/Content/_preview/q30w1200/Content/...`：在售 6 图通过 `data-magnify-src` 保留原图；共享 `magnify-loader.js` 到首次 pointer/mouse/touch/focus 交互才加载 jQuery、Magnify 插件/CSS 并初始化当前图片。另有 29 张章程/成员/活动图使用预览。两批完整滚动合计减少 21,716,650B。顶部/LCP、Logo/透明装饰及同页复用的原图不得直接换 q30。见 `docs/updates/2026-07-13-selling-thumbnail-previews.md`、`2026-07-13-homepage-static-preview-expansion.md`、`2026-07-22-magnify-on-demand.md`。
 - 数据库动态小图通过单例 `Services/LegacyImagePreviewResolver` 只读索引现有预览树；仅 jpg/jpeg/png，大小写唯一匹配并返回磁盘实际 case，缺失/歧义/非法路径原图回退。首批只用于首页/新闻列表封面、会员/艺术家头像、展会列表卡片；LCP/大图/Magnify 作品不直接套 q30。见 `docs/updates/2026-07-13-dynamic-image-preview-resolver.md`。
-- 高质量大图通过独立单例 `Services/DerivedImageResolver` 读取现代仓库 `wwwroot/media/derived/manifest.json` 的严格 allowlist；仅返回仓库内真实 AVIF，合法未命中时保留原 `/Content`。首页唐岐山 LCP 已从 1,783,805B 降至 167,097B，浏览器原图 fallback、尺寸和 eager/high 规则不变。NewArt 空 Path 输出 none 且不再请求 Banner 目录；现有全屏 Banner 未因追求体积而降质替换。见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
-- NewArt 的 `works-narrow` 作品已在解析器命中时使用 q30，并通过 `data-magnify-src` 保留原图；共享 `magnify-loader.js` 只在 pointer/mouse/focus/touch 首次真实交互时加载依赖并初始化当前作品，避免页面启动即加载整套 jQuery/Magnify 或下载原图。新闻详情侧栏与重要展览作品卡片也走相同回退。见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`、`2026-07-22-magnify-on-demand.md`。
-- NewNewsRead 的手机/平板字号和行高必须在 `newnewsread.css` 内局部覆盖 legacy `responsive.css` 在 ≤991 宽度下的 26px 根字号和 `.article p { line-height: 5em !important; }`；富文本作用域为 `.article-body`，不要去修改数据库内容。320/390/768/991 验证见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
-- 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css`、独立新闻详情在 `newnewsread.css` 局部覆盖 legacy 的 ≤991 26px 与 992–1279 12px 根字号；不修改外置参考 Content。公共 navbar 在 `public-layout-main.css` / `newnewsread.css` 用 `rem + vw` 从 15px 连续接到 24px，并强制单行横排。320/390/768/991/992/1024/1199/1200/1279/1280 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
-- 三个特殊展览的作品详情在 ≤61.9375em 下取消桌面浮动/负边距并改为单列；NewArt 展讯、NewNewsRead 富文本和数据展览 CSS 顺序的窄屏保护见 `docs/updates/2026-07-22-responsive-font-cache-hardening.md`。
+- 高质量大图通过独立单例 `Services/DerivedImageResolver` 读取现代仓库 `wwwroot/media/derived/manifest.json` 的严格 allowlist；仅返回仓库内真实 AVIF，合法未命中时保留原 `/Content`。首页唐岐山 LCP 已从 1,783,805B 降至 167,097B，浏览器原图 fallback、尺寸和 eager/high 规则不变。Art 空 Path 输出 none 且不再请求 Banner 目录；现有全屏 Banner 未因追求体积而降质替换。见 `docs/updates/2026-07-20-high-quality-derived-images.md`。
+- Art 的 `works-narrow` 作品已在解析器命中时使用 q30，并通过 `data-magnify-src` 保留原图；共享 `magnify-loader.js` 只在 pointer/mouse/focus/touch 首次真实交互时加载依赖并初始化当前作品，避免页面启动即加载整套 jQuery/Magnify 或下载原图。新闻详情侧栏与重要展览作品卡片也走相同回退。见 `docs/updates/2026-07-20-dynamic-preview-expansion.md`、`2026-07-22-magnify-on-demand.md`。
+- NewsRead 的手机/平板字号和行高必须在 `newsread.css` 内局部覆盖 legacy `responsive.css` 在 ≤991 宽度下的 26px 根字号和 `.article p { line-height: 5em !important; }`；富文本作用域为 `.article-body`，不要去修改数据库内容。320/390/768/991 验证见 `docs/updates/2026-07-20-news-detail-mobile-typography.md`。
+- 现代公共布局在 `public-layout-common.css`、三个特殊展览在 `publication-special.css`、独立新闻详情在 `newsread.css` 局部覆盖 legacy 的 ≤991 26px 与 992–1279 12px 根字号；不修改外置参考 Content。公共 navbar 在 `public-layout-main.css` / `newsread.css` 用 `rem + vw` 从 15px 连续接到 24px，并强制单行横排。320/390/768/991/992/1024/1199/1200/1279/1280 验证见 `docs/updates/2026-07-20-public-mobile-font-scale.md`。
+- 三个特殊展览的作品详情在 ≤61.9375em 下取消桌面浮动/负边距并改为单列；Art 展讯、NewsRead 富文本和数据展览 CSS 顺序的窄屏保护见 `docs/updates/2026-07-22-responsive-font-cache-hardening.md`。
 - 特殊展览现场图主/缩使用同一 Razor 数组；主图初始 `src` 走预览解析器并保留 `data-original-src`，缩略图永久使用预览。`publication-special.js` 只在图库接近视口后预载 active/prev/next 原图，170/201 张命中预览，理论首轮少传 50,506,952B。
 - 特殊展览 hero 是真正首屏图；紧邻首屏后的品牌/装饰图必须保持 `loading=lazy`、`decoding=async`、`fetchpriority=low`，不能与 267–781KB hero 争抢高优先级。三页 390/1440 几何不变，见 `docs/updates/2026-07-26-special-publication-image-priority.md`。
 - 数据展览的 `_ExhibitionGallery` / `_ExhibitionImportant` 同样走现有预览解析器；`publication-gallery.js` 在图库接近视口后只恢复 active/prev/next 原图。14 个退役展览命中 344/604，命中集合的缩略表示从 182,939,793B 降到 17,753,081B；未命中自动使用原图。见 `docs/updates/2026-07-25-publication-gallery-layered-loading.md`。
@@ -93,7 +94,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 字体清单按页面边界拆成 `font-subsets-public.css`（114 faces）与 `font-subsets-staff.css`（88 faces）；两者并集仍是原 147 faces、共同 55 faces，合计仍覆盖磁盘全部 125 个 WOFF2。`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 对单个清单刷新/验证，`--split-css-manifests` 可安全拆已有完整清单；不要仅为清单维护随意运行 `--font-dir`，它会重建字体二进制。`FontSubsetManifestTests` 防止页面边界、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。14 个已退役 slug 对应固定 ID 92001–92015（跳过 92004），由 `Services/LegacyPublicationGalleryCatalog.cs` 提供缺行时的只读页面元数据并复用旧 Content 的 604 张精确路径；数据库真实行优先，不重编号、不复制、不要求写库。
-- 路由：`Controllers/HomeController.cs`（newIndex/newnews/newnewsread/newvip/newArt/Publication/PublicationList）。
+- 路由：`Controllers/HomeController.cs`（Index/News/NewsRead/Vip/About/Art/ArtArchive/ArtArticle/Publication/PublicationList；`new*` 与 `ArtNews*` 仅兼容重定向）。
 
 ## 测试范式
 - SQLite 内存库 + `EnsureCreated()`（建全 schema，含新列）。读上下文测试 `TestDb.cs` 用原始 SQL 播种（因读上下文禁 SaveChanges）。

@@ -10,5 +10,9 @@ public interface IArtistReadRepository
 
     Task<ArtistProfileSnapshotModel?> GetArtistProfileAsync(int artistId, CancellationToken cancellationToken = default);
 
+    Task<ArtistArchiveSnapshotModel?> GetArtistArchiveAsync(int artistId, CancellationToken cancellationToken = default);
+
+    Task<ArtistArticleSnapshotModel?> GetArtistArticleAsync(int articleId, CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<WorkSummaryModel>> GetArtistWorksAsync(int artistId, CancellationToken cancellationToken = default);
 }

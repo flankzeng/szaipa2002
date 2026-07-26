@@ -149,6 +149,49 @@ internal static class SzaipaHomeProjections
             CoverPath = artNews.CoverPath ?? string.Empty
         };
 
+    public static readonly Expression<Func<ArtNews, ArtNewsSummaryModel>> ArtNewsSummary =
+        artNews => new ArtNewsSummaryModel
+        {
+            Id = artNews.Id,
+            ArtistId = artNews.ArtistId,
+            Title = artNews.Title ?? string.Empty,
+            Subtitle = artNews.SubTitle ?? string.Empty,
+            Date = artNews.Date,
+            CoverPath = artNews.CoverPath ?? string.Empty,
+            Content = artNews.Content ?? string.Empty
+        };
+
+    public static readonly Expression<Func<Fav, ArtistFavoriteModel>> ArtistFavorite =
+        fav => new ArtistFavoriteModel
+        {
+            Id = fav.Id,
+            ArtistId = fav.ArtistId,
+            Title = fav.Title ?? string.Empty,
+            CoverPath = fav.CoverPath ?? string.Empty,
+            Location = fav.Location ?? string.Empty,
+            Year = fav.Year ?? string.Empty,
+            Creator = fav.Creator ?? string.Empty,
+            Size = fav.Size ?? string.Empty,
+            Material = fav.Material ?? string.Empty,
+            Type = fav.Type ?? string.Empty,
+            Province = fav.Province ?? string.Empty,
+            CollectNumber = fav.CollectNumber ?? string.Empty
+        };
+
+    public static readonly Expression<Func<Auction, ArtistAuctionModel>> ArtistAuction =
+        auction => new ArtistAuctionModel
+        {
+            Id = auction.Id,
+            ArtistId = auction.ArtistId,
+            Title = auction.Title ?? string.Empty,
+            CoverPath = auction.CoverPath ?? string.Empty,
+            Price = auction.Price ?? string.Empty,
+            Rmb = auction.RMB ?? string.Empty,
+            Hkd = auction.HKD ?? string.Empty,
+            Usd = auction.USD ?? string.Empty,
+            Date = auction.Date ?? string.Empty
+        };
+
     public static readonly Expression<Func<Fav, ArtistSidePanelItemModel>> FavSidePanel =
         fav => new ArtistSidePanelItemModel
         {
