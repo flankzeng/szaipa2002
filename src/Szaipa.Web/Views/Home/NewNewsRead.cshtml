@@ -85,30 +85,6 @@
 
     <button id="topBtn" class="xs-hide sm-hide">
         <img loading="lazy" decoding="async" src="/Content/icon/toTop.svg" style="height:5vh;width:auto;" alt="">
-        <script>
-            // toTopButton
-            const toTopButton = document.querySelector('#topBtn');
-
-            window.addEventListener('scroll', function () {
-                // 获取当前滚动位置
-                const scrollPosition = window.scrollY;
-
-                // 如果滚动位置大于等于 500px，显示按钮；否则隐藏按钮
-                if (scrollPosition >= 500) {
-                    toTopButton.style.display = 'block';
-                } else {
-                    toTopButton.style.display = 'none';
-                }
-            }, { passive: true });
-
-            toTopButton.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-
-        </script>
     </button>
 
     <div class="article-spacer col-xs1 col-sm1 md-hide lg-hide" aria-hidden="true">&nbsp;</div>
@@ -310,4 +286,5 @@
 
 
 
+    <script src="~/js/newnewsread.js" asp-append-version="true" defer></script>
 </body>
