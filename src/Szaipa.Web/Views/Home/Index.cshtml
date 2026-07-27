@@ -915,8 +915,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     @n.Title
                     <p>@n.Subtitle</p>
                     <div>
-                        <img loading="lazy" decoding="async"
-                            src="@ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}")" alt="">
+                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}")" alt="">
                     </div>
                     <span class="JhengLight">查看全部 VIEW MORE</span>
 
@@ -1007,8 +1006,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                                 <div class="exhibitionSlider">
 
                                     @for (var i = 10001; i <= 10006; i++) { <div class="exhibitionSlide">
-                                        <img loading="lazy" decoding="async"
-                                            src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" alt="" />
+                                        <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" alt="" />
                                 </div>
 
                                 }
