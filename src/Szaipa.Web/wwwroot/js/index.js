@@ -19,8 +19,10 @@
     var heroSwiperElement = document.querySelector('.mySwiper');
     if (heroSwiperElement && heroSwiperElement.offsetParent !== null) {
         var swiper = new Swiper(heroSwiperElement, {
-            slidesPerView: "auto",
-            centeredSlides: true,
+            // 首页大图始终一屏一张。auto 在 2K/4K 视口会按旧的 100vw slide
+            // 宽度参与计算，造成右侧留出未覆盖的空白。
+            slidesPerView: 1,
+            centeredSlides: false,
             spaceBetween: 0,
             loop: true,
             autoplay: {

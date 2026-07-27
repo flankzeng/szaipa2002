@@ -117,6 +117,19 @@ a {
     width: 100vw;
 }
 
+/* 首页首屏轮播必须以自身容器为准，而不是以设备的 visual viewport 计算。
+   这样 2K/4K 或高 DPR 的开发者工具预览会保持与 1080p 相同的满宽效果。 */
+#section02 .swiper,
+#section02 .swiper-wrapper,
+#section02 .swiper-slide {
+    width: 100%;
+}
+
+#section02 .swiper-slide {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
 .mySwiper .swiper-pagination-bullet {
     width: 0.5vw;
     height: 1vh;
