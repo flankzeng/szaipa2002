@@ -178,3 +178,84 @@
         padding-bottom: 2px;
         margin-bottom: 30px;
     }
+
+    /* 手机端沿用发布版的日期 / 内容 / 箭头三列结构。旧版 Bootstrap
+       在窄屏不再给 col-sm* 分配宽度，因此这里显式恢复这组比例。 */
+    @media only screen and (max-width: 47.9375em) {
+        .xinwenzhanshi {
+            width: 100%;
+            margin-top: var(--newsTop, 5rem);
+        }
+
+        .xinwenzhanshi > .news {
+            width: 84%;
+            margin-right: auto;
+            margin-left: auto;
+            --newsFontsize: 1.3rem;
+            --newsPtag: 1rem;
+            --newsSpantag: .9rem;
+            --newsEnter: 1rem;
+        }
+
+        .news ul {
+            display: grid;
+            grid-template-columns: minmax(0, 27%) minmax(0, 1fr) minmax(1rem, 6%);
+            align-items: start;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .news ul > li,
+        .news .normal .title,
+        .date {
+            float: none;
+            width: auto;
+            min-height: 0;
+            padding-right: 0;
+            padding-left: 0;
+            margin-top: 0;
+            box-sizing: border-box;
+        }
+
+        .news ul > .date {
+            grid-column: 1;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .news ul > .title {
+            grid-column: 2;
+            line-height: 1.45;
+        }
+
+        .news ul > li:last-child {
+            grid-column: 3;
+            justify-self: end;
+        }
+
+        .news ul.important {
+            padding: 1.25rem 0 1.1rem !important;
+        }
+
+        .importantTXT div {
+            width: 72%;
+            height: auto;
+            margin-top: .7rem;
+            margin-bottom: .45rem;
+        }
+
+        .importantTXT div > img {
+            width: 100%;
+            max-height: 12rem;
+        }
+
+        .importantTXT span {
+            display: inline-block;
+            margin-bottom: .25rem;
+            font-size: .7rem;
+        }
+
+        .news .normal {
+            padding: 1rem 0 !important;
+        }
+    }
