@@ -1126,4 +1126,120 @@ a {
     opacity: 1;
 }
 
+/* 手机首页沿用发布版的窄内容列：成员、新闻与展会以同一条左右留白对齐，
+   不让 sm 栅格在 xs 屏幕退化为贴边的全宽内容。 */
+@media only screen and (max-width: 47.9375em) {
+    #section05 > .col-sm2,
+    #section05guwen > .col-sm2,
+    #section06 > .col-sm2,
+    #section07 > .col-sm2 {
+        display: none;
+    }
+
+    #section05 > .col-sm16,
+    #section05guwen > .col-sm16,
+    #section06 > .col-sm16,
+    #section07 > .col-sm16 {
+        float: none;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    #section05 h1,
+    #section05guwen h1,
+    #section06 h1,
+    #section07 h1 {
+        font-size: .9rem;
+        line-height: 1.35;
+    }
+
+    #section05 .entitle,
+    #section05guwen .entitle,
+    #section06 .entitle,
+    #section07 .entitle {
+        font-size: inherit;
+        padding-right: .45em;
+    }
+
+    .member {
+        margin-top: 1.25vh;
+    }
+
+    .member p {
+        padding-top: .45em;
+        margin-bottom: 16%;
+        font-size: .55rem;
+        line-height: 1.35;
+    }
+
+    .member p > span {
+        font-size: .45rem;
+    }
+
+    .news {
+        --newsFontsize: .62rem;
+        --newsPtag: .55rem;
+        --newsSpantag: .5rem;
+        --newsPadding: 1.1vh;
+    }
+
+    .news h1 {
+        padding-top: 3.5vh !important;
+        padding-bottom: 1.2vh;
+    }
+
+    .news ul > li,
+    .news .normal .title,
+    .date {
+        margin-top: .8vh;
+    }
+
+    .important {
+        padding: 1.25vh 0 !important;
+    }
+
+    .importantTXT p {
+        margin-top: .45rem;
+        padding-right: 8%;
+    }
+
+    .importantTXT div {
+        width: 80%;
+        margin-top: .45rem;
+        margin-bottom: .35rem;
+    }
+
+    .importantTXT span {
+        margin-bottom: .35rem;
+        padding-bottom: .1rem;
+    }
+
+    .hr {
+        margin-top: 1.4vh;
+    }
+
+    #section07 .mob07 {
+        padding-top: 5vh !important;
+    }
+
+    .exhibitionBtn {
+        padding: .25rem .45rem;
+        margin-right: .35rem;
+        font-size: .52rem;
+    }
+
+    #section07 .exhibition h1 {
+        padding-top: 2.25vh;
+        margin-bottom: .8vh;
+        font-size: .82rem;
+    }
+
+    #section07 .exhibition h3,
+    .more {
+        font-size: .55rem;
+        line-height: 1.5;
+    }
+}
+
 /* Section05 核心成员(新) */
