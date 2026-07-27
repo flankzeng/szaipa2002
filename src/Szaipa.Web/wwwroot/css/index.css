@@ -1167,14 +1167,24 @@ a {
     }
 
     .member p {
+        width: var(--memberImgW);
+        margin-right: auto;
+        margin-left: auto;
         padding-top: .45em;
         margin-bottom: 16%;
         font-size: .55rem;
         line-height: 1.35;
+        text-align: left;
     }
 
     .member p > span {
         font-size: .45rem;
+    }
+
+    .member .after {
+        width: var(--memberImgW);
+        margin-right: auto;
+        margin-left: auto;
     }
 
     .news {

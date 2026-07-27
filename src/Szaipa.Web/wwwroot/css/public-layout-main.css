@@ -149,10 +149,25 @@ body {
     }
 
     .navSpacer,
-    .lineL,
-    .lineR,
     .navDesktopGap {
         display: none;
+    }
+
+    .lineL,
+    .lineR {
+        display: block;
+        flex: 0 0 auto;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .lineL {
+        border-left: 1px solid #877150;
+    }
+
+    .lineR {
+        border-right: 1px solid #877150;
     }
 
     .bannerLink {
