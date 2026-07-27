@@ -398,13 +398,19 @@
     .swiper-slide a {
         display: block;
         width: 75%;
-        height: var(--zuopinjiH);
-        object-fit: contain;
+        height: min(55vh, 32rem);
         position: absolute;
         top: var(--zuopinTop);
         left: 50%;
         transform: translateX(-50%);
         z-index: 1;
+    }
+
+    .swiper-slide a img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .workInfo {

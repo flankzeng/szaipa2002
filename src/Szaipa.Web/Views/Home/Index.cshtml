@@ -882,12 +882,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
         {
         <ul class="col-sm20 col-md20 col-lg20 normal">
             <li class="col-sm5 col-md5 col-lg5 date JhengLight">@string.Format("{0:yyyy年MM月dd日}", n.Date)</li>
-            <a href="/Home/NewsRead/@n.Id">
-                <li class="col-sm14 col-md14 col-lg14 tite">@n.Title</li>
-                <li class="col-sm1 col-md1 col-lg1"><img loading="lazy" decoding="async" src="/Content/icon/enter-02.png"
-                        style="transform: translateX(20%);" alt="" class="enter">
-                </li>
-            </a>
+            <li class="col-sm14 col-md14 col-lg14 title"><a href="/Home/NewsRead/@n.Id">@n.Title</a></li>
+            <li class="col-sm1 col-md1 col-lg1"><a href="/Home/NewsRead/@n.Id"><img loading="lazy" decoding="async" src="/Content/icon/enter-02.png"
+                    style="transform: translateX(20%);" alt="" class="enter"></a>
+            </li>
         </ul>
         <div class="hr col-xs20 col-sm20 col-md20 col-lg20" style="margin-top:0;"></div>
         }

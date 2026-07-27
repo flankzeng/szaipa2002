@@ -268,6 +268,9 @@
         position: absolute;
         bottom: 10vh;
         left: 7vw;
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .content li {
@@ -456,11 +459,16 @@
         text-decoration: none;
     }
 
-    .news ul>a>li {
+    .news .normal .title {
         /* 普通新闻的样式 */
         margin-top: 2vh;
         color: black;
         font-size: var(--newsFontsize);
+    }
+
+    .news .normal .title a {
+        color: inherit;
+        text-decoration: none;
     }
 
     .date {
