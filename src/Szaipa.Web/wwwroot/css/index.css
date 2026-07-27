@@ -14,7 +14,7 @@ body .magnify>.magnify-lens {
 #section5to6 {
     /* 新闻动态 */
     height: 100%;
-    width: 100vw;
+    width: 100%;
     background-color: #f7f7f7;
     position: relative;
 }
@@ -115,19 +115,6 @@ a {
 
 .swiper-slide:nth-child(3n) {
     width: 100vw;
-}
-
-/* 首页首屏轮播必须以自身容器为准，而不是以设备的 visual viewport 计算。
-   这样 2K/4K 或高 DPR 的开发者工具预览会保持与 1080p 相同的满宽效果。 */
-#section02 .swiper,
-#section02 .swiper-wrapper,
-#section02 .swiper-slide {
-    width: 100%;
-}
-
-#section02 .swiper-slide {
-    box-sizing: border-box;
-    min-width: 0;
 }
 
 .mySwiper .swiper-pagination-bullet {
@@ -839,15 +826,26 @@ a {
     /* 轮播 */
     position: relative;
     height: var(--sectionHeight);
-    width: 100vw;
+    width: 100%;
     background-color: white;
+}
+
+/* 高 DPI 设备可能给出极高但很“长”的 CSS 视口（例如 2156×2416）。
+   该场景按 vh 放大会让首屏标题和轮播远大于 1080p；以 16:9 为上限，
+   宽屏仍保持原比例，长屏则维持接近 1080p 的视觉尺寸。 */
+@media only screen and (min-width: 62em) {
+    #section02 {
+        --sectionHeight: min(100vh, 56.25vw);
+        --carouselH: min(65vh, 36.5625vw);
+        --logoTXT: min(19.5vh, 10.96875vw);
+    }
 }
 
 #section03 {
     /* 目录 */
     position: relative;
     height: var(--sectionHeight);
-    width: 100vw;
+    width: 100%;
     background-color: white;
 }
 
@@ -855,7 +853,7 @@ a {
     /* 章程 */
     position: relative;
     height: var(--sectionHeight);
-    width: 100vw;
+    width: 100%;
     background-color: white;
 }
 
@@ -864,7 +862,7 @@ a {
     position: relative;
     min-height: 10vh;
     height: auto;
-    width: 100vw;
+    width: 100%;
     background-color: #f7f7f7;
     padding-bottom: 3vh;
 }
@@ -874,7 +872,7 @@ a {
     position: relative;
     min-height: 5vh;
     height: auto;
-    width: 100vw;
+    width: 100%;
     background-color: #f7f7f7;
     padding-bottom: 3vh;
 }
@@ -882,7 +880,7 @@ a {
 #section06 {
     /* 新闻动态 */
     height: 100%;
-    width: 100vw;
+    width: 100%;
     background-color: #f7f7f7;
     position: relative;
 }
@@ -890,7 +888,7 @@ a {
 #section07 {
     /* 展讯 */
     height: 100%;
-    width: 100vw;
+    width: 100%;
     background-color: white;
     position: relative;
 }

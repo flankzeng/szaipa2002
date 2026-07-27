@@ -1,5 +1,15 @@
 /* Primary public navigation. */
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
 .bannerCon {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     height: var(--logo1);
     position: fixed;
     top: 0;
