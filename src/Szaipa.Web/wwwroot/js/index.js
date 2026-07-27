@@ -1,4 +1,21 @@
-    // 正式首页：第一个轮播在手机端由 xs-hide 隐藏；隐藏状态初始化 Swiper 会抛错并中断整页脚本。
+    // 成员卡在手机端按每行三列排版。最后一行不足三人时补不可见单元格，
+    // 以免顾问团队等短列表改变三列节奏；成员增减后无需再手工维护占位元素。
+    document.querySelectorAll('.member').forEach(function (member) {
+        member.querySelectorAll('.member-placeholder').forEach(function (placeholder) {
+            placeholder.remove();
+        });
+
+        var memberCount = member.querySelectorAll('.member-item').length;
+        var placeholdersNeeded = (3 - (memberCount % 3)) % 3;
+        for (var placeholderIndex = 0; placeholderIndex < placeholdersNeeded; placeholderIndex += 1) {
+            var placeholder = document.createElement('span');
+            placeholder.className = 'member-placeholder';
+            placeholder.setAttribute('aria-hidden', 'true');
+            member.appendChild(placeholder);
+        }
+    });
+
+    // Section02 现在也在手机端显示，因此始终初始化首页轮播。
     var heroSwiperElement = document.querySelector('.mySwiper');
     if (heroSwiperElement && heroSwiperElement.offsetParent !== null) {
         var swiper = new Swiper(heroSwiperElement, {

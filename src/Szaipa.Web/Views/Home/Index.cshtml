@@ -2,17 +2,17 @@
 @inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.HomePageSnapshotModel
 @{
-    ViewBag.Title = "首页";
-    ViewData["UseBootstrapCss"] = false;
-    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+ViewBag.Title = "首页";
+ViewData["UseBootstrapCss"] = false;
+Layout = "~/Views/Shared/_PublicLayout.cshtml";
 var featuredSlides = Model.FeaturedPublications
-    .Select(publication =>
-    {
-        var coverUrl = $"/Content/images/{publication.FolderName}/{publication.CoverPath}";
-        return (Publication: publication, Cover: DerivedImageResolver.Resolve(coverUrl));
-    })
-    .Where(slide => slide.Cover is not null)
-    .ToList();
+.Select(publication =>
+{
+var coverUrl = $"/Content/images/{publication.FolderName}/{publication.CoverPath}";
+return (Publication: publication, Cover: DerivedImageResolver.Resolve(coverUrl));
+})
+.Where(slide => slide.Cover is not null)
+.ToList();
 var hasFeaturedPublications = featuredSlides.Count > 0;
 var tangqishanCoverUrl = "/Content/images/tangqishan/100002.jpg";
 var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
@@ -28,7 +28,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 </button>
 
 <!-- CAROUSEL02 轮播 -->
-<section id="section02" class="xs-hide col-sm20 col-md20 col-lg20">
+<section id="section02" class="col-xs20 col-sm20 col-md20 col-lg20">
 
     <!-- 文本LOGO -->
     <div class="col-xs3 col-sm3 col-md3 col-lg3">&nbsp;</div>
@@ -45,13 +45,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             <div class="swiper-wrapper">
 
                 @* 暂时没用上，2025.11.25 *@
-                @for (var featuredIndex = 0; featuredIndex < featuredSlides.Count; featuredIndex++)
-                {
-                var ex = featuredSlides[featuredIndex].Publication;
-                var coverSource = featuredSlides[featuredIndex].Cover
-                    ?? throw new InvalidOperationException("Filtered featured slides must have a safe cover source.");
-                var isFirstSlide = featuredIndex == 0;
-                <div class="swiper-slide">
+                @for (var featuredIndex = 0; featuredIndex < featuredSlides.Count; featuredIndex++) { var
+                    ex=featuredSlides[featuredIndex].Publication; var coverSource=featuredSlides[featuredIndex].Cover ??
+                    throw new InvalidOperationException("Filtered featured slides must have a safe cover source."); var
+                    isFirstSlide=featuredIndex==0; <div class="swiper-slide">
 
                     <a href="/Home/Publication/@ex.Id" class="carouselZoom">
 
@@ -69,503 +66,523 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                         <div class="black">
 
                             <div class="logoCon">
-                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                                <img loading="@(isFirstSlide ? " eager" : "lazy" )" decoding="async"
+                                    src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
                             </div>
 
                             <picture>
                                 @if (coverSource.AvifUrl is not null)
                                 {
-                                    <source type="image/avif" srcset="@coverSource.AvifUrl">
+                                <source type="image/avif" srcset="@coverSource.AvifUrl">
                                 }
-                                <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async" fetchpriority="@(isFirstSlide ? "high" : "auto")" src="@coverSource.OriginalUrl" class="imgCon" alt="">
+                                <img loading="@(isFirstSlide ? " eager" : "lazy" )" decoding="async"
+                                    fetchpriority="@(isFirstSlide ? " high" : "auto" )" src="@coverSource.OriginalUrl"
+                                    class="imgCon" alt="">
                             </picture>
 
                         </div>
 
                     </a>
-                </div>
-
-                }
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92015" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                入骨相知——唐岐山当代艺术展&#12288;2025
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                入骨相知——唐岐山当代艺术展&#12288;2025
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" src="/Content/images/tangqishan.png" alt="">
-                            </div>
-
-                            <picture>
-                                @if (tangqishanCoverSource?.AvifUrl is not null)
-                                {
-                                    <source type="image/avif" srcset="@tangqishanCoverSource.AvifUrl">
-                                }
-                                <img loading="@(hasFeaturedPublications ? "lazy" : "eager")" decoding="async" fetchpriority="@(hasFeaturedPublications ? "auto" : "high")" src="@(tangqishanCoverSource?.OriginalUrl ?? tangqishanCoverUrl)" width="1080" height="791" class="imgCon" alt="">
-                            </picture>
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92014" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                深圳——法国国际当代艺术展&#12288;2025
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                深圳——法国国际当代艺术展&#12288;2025
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/zhongfa.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/zhongfa/100000.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92013" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                春语第四季——当代艺术作品邀请展&#12288;2025
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                春语第四季——当代艺术作品邀请展&#12288;2025
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/chunyu4.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu4/100000.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Publication/tonggou2024" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                同构——纽伦堡国际当代艺术展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                同构——纽伦堡国际当代艺术展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/TongGou2024.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggou2024/100085.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92012" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                “数”与“艺”——新文艺群体创作成果展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                “数”与“艺”——新文艺群体创作成果展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/Shuyuyi.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/shuyuyi/100101.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92011" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                同构——中日艺术交流展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                同构——中日艺术交流展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/TongGouJP.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/zhongri/10017.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92009" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                漫MAN-艺术时尚先锋展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                漫MAN-艺术时尚先锋展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/man.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/man/10006.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92010" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                艺+科技新潮流展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                艺+科技新潮流展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/yijia.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/yijia/10034.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Publication/chunyu3" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                春语第三季——致敬女性艺术展&#12288;2024
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                春语第三季——致敬女性艺术展&#12288;2024
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/chunyu-03.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu3/305×193cm--花季雨季12.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92001" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                《同构——欧洲行》当代艺术展&#12288;2023
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                《同构——欧洲行》当代艺术展&#12288;2023
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/TongGouEU.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/tonggouEurope/poster.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92002" class="carouselZoom" id="carouselMain">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                龙游水脉艺术节&#12288;2023
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                龙游水脉艺术节&#12288;2023
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/shuimai.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/shuimaiMain.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92008" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                三人行——鸥洋/雷双/张岚芊艺术展&#12288;2023
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                三人行——鸥洋/雷双/张岚芊艺术展&#12288;2023
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/trio.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/TrioMain.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92007" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                "春语"第二季——国际视觉艺术邀请展&#12288;2023
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                "春语"第二季——国际视觉艺术邀请展&#12288;2023
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/newchunyu.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu2.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-
-                    <a href="/Publication/tonggou2" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                《同构》第二季·当代艺术展&#12288;2022
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                《同构》第二季·当代艺术展&#12288;2022
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/TongGou.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/DSC05345-color.jpg" class="imgCon" alt="">
-
-                        </div>
-
-                    </a>
-                </div>
-
-
-                <div class="swiper-slide">
-
-                    <a href="/Home/Publication/92003" class="carouselZoom" id="carouselSec">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                “春语”——当代艺术名家邀请展&#12288;2022
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                “春语”——当代艺术名家邀请展&#12288;2022
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/chunyu-03.png" alt="">
-                            </div>
-
-                            <img loading="lazy" decoding="async" src="/Content/images/chunyu/header.jpg" class="imgCon" alt="">
-                        </div>
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-                    <a href="/Home/Publication/92005" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                中意艺术名画展&#12288;2021
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                中意艺术名画展&#12288;2021
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/zhongyi-logo-02.png" alt="">
-                            </div>
-                            <img loading="lazy" decoding="async" src="/Content/images/zhongyi/10000.jpg" class="imgCon" alt="">
-
-                        </div>
-                    </a>
-                </div>
-
-                <div class="swiper-slide">
-                    <a href="/Home/Publication/92006" class="carouselZoom">
-
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                同构——当代艺术作品邀请展&#12288;2021
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                同构——当代艺术作品邀请展&#12288;2021
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="lazy" decoding="async" src="/Content/images/tonggou1-20.png" alt="">
-                            </div>
-                            <img loading="lazy" decoding="async" src="/Content/images/DSC05345-color.jpg" class="imgCon" alt="">
-
-                        </div>
-                    </a>
-                </div>
-
-
             </div>
-            <div class="swiper-pagination"></div>
+
+            }
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92015" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            入骨相知——唐岐山当代艺术展&#12288;2025
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            入骨相知——唐岐山当代艺术展&#12288;2025
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="@(hasFeaturedPublications ? " lazy" : "eager" )" decoding="async"
+                                src="/Content/images/tangqishan.png" alt="">
+                        </div>
+
+                        <picture>
+                            @if (tangqishanCoverSource?.AvifUrl is not null)
+                            {
+                            <source type="image/avif" srcset="@tangqishanCoverSource.AvifUrl">
+                            }
+                            <img loading="@(hasFeaturedPublications ? " lazy" : "eager" )" decoding="async"
+                                fetchpriority="@(hasFeaturedPublications ? " auto" : "high" )"
+                                src="@(tangqishanCoverSource?.OriginalUrl ?? tangqishanCoverUrl)" width="1080"
+                                height="791" class="imgCon" alt="">
+                        </picture>
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92014" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            深圳——法国国际当代艺术展&#12288;2025
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            深圳——法国国际当代艺术展&#12288;2025
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/zhongfa.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/zhongfa/100000.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92013" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            春语第四季——当代艺术作品邀请展&#12288;2025
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            春语第四季——当代艺术作品邀请展&#12288;2025
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/chunyu4.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/chunyu4/100000.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Publication/tonggou2024" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            同构——纽伦堡国际当代艺术展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            同构——纽伦堡国际当代艺术展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/TongGou2024.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/tonggou2024/100085.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92012" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            “数”与“艺”——新文艺群体创作成果展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            “数”与“艺”——新文艺群体创作成果展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/Shuyuyi.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/shuyuyi/100101.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92011" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            同构——中日艺术交流展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            同构——中日艺术交流展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/TongGouJP.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/zhongri/10017.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92009" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            漫MAN-艺术时尚先锋展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            漫MAN-艺术时尚先锋展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/man.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/man/10006.jpg" class="imgCon" alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92010" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            艺+科技新潮流展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            艺+科技新潮流展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/yijia.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/yijia/10034.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Publication/chunyu3" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            春语第三季——致敬女性艺术展&#12288;2024
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            春语第三季——致敬女性艺术展&#12288;2024
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/chunyu-03.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/chunyu3/305×193cm--花季雨季12.jpg"
+                            class="imgCon" alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92001" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            《同构——欧洲行》当代艺术展&#12288;2023
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            《同构——欧洲行》当代艺术展&#12288;2023
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/TongGouEU.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/tonggouEurope/poster.jpg"
+                            class="imgCon" alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92002" class="carouselZoom" id="carouselMain">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            龙游水脉艺术节&#12288;2023
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            龙游水脉艺术节&#12288;2023
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/shuimai.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/shuimaiMain.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92008" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            三人行——鸥洋/雷双/张岚芊艺术展&#12288;2023
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            三人行——鸥洋/雷双/张岚芊艺术展&#12288;2023
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/trio.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/TrioMain.jpg" class="imgCon" alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92007" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            "春语"第二季——国际视觉艺术邀请展&#12288;2023
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            "春语"第二季——国际视觉艺术邀请展&#12288;2023
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/newchunyu.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/chunyu2.jpg" class="imgCon" alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+
+                <a href="/Publication/tonggou2" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            《同构》第二季·当代艺术展&#12288;2022
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            《同构》第二季·当代艺术展&#12288;2022
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/TongGou.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/DSC05345-color.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+
+                </a>
+            </div>
+
+
+            <div class="swiper-slide">
+
+                <a href="/Home/Publication/92003" class="carouselZoom" id="carouselSec">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            “春语”——当代艺术名家邀请展&#12288;2022
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            “春语”——当代艺术名家邀请展&#12288;2022
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/chunyu-03.png" alt="">
+                        </div>
+
+                        <img loading="lazy" decoding="async" src="/Content/images/chunyu/header.jpg" class="imgCon"
+                            alt="">
+                    </div>
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+                <a href="/Home/Publication/92005" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            中意艺术名画展&#12288;2021
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            中意艺术名画展&#12288;2021
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/zhongyi-logo-02.png" alt="">
+                        </div>
+                        <img loading="lazy" decoding="async" src="/Content/images/zhongyi/10000.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+                </a>
+            </div>
+
+            <div class="swiper-slide">
+                <a href="/Home/Publication/92006" class="carouselZoom">
+
+                    <div class="outterL">
+                        <p class="inner_new rotate_new">
+                            同构——当代艺术作品邀请展&#12288;2021
+                        </p>
+                    </div>
+                    <div class="outterR">
+                        <p class="inner_new rotate_new">
+                            同构——当代艺术作品邀请展&#12288;2021
+                        </p>
+                    </div>
+
+                    <div class="black">
+
+                        <div class="logoCon">
+                            <img loading="lazy" decoding="async" src="/Content/images/tonggou1-20.png" alt="">
+                        </div>
+                        <img loading="lazy" decoding="async" src="/Content/images/DSC05345-color.jpg" class="imgCon"
+                            alt="">
+
+                    </div>
+                </a>
+            </div>
+
+
         </div>
+        <div class="swiper-pagination"></div>
+    </div>
 
     </div>
 
@@ -637,8 +654,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             <!-- 章程图片 -->
             <div class="col-xs20 col-sm20 zhangcheng">
                 <img class="zhangcheng-image" loading="lazy" decoding="async"
-                     src="/Content/_preview/q30w1200/Content/images/2021.5.30f2-2.jpg" width="1500" height="811"
-                     alt="" draggable="false" />
+                    src="/Content/_preview/q30w1200/Content/images/2021.5.30f2-2.jpg" width="1500" height="811" alt=""
+                    draggable="false" />
             </div>
 
             <!-- 章程介绍 / 手机端 -->
@@ -674,43 +691,56 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
         <div class="col-sm20 col-md20 col-lg20 member">
             <a class="member-item" href="/Home/Art/1000">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-2zlq.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-2zlq.png" alt=""></div>
                 <p class="JhengBold">张岚芊<br /><span class="JhengLight">会长&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1009">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-1yjw.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-1yjw.png" alt=""></div>
                 <p class="JhengBold">姚建伟<br /><span class="JhengLight">荣誉会长&nbsp;|&nbsp;教授</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1011">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/16a38c7aa1b0fc91afc363be8fe2a8b7.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/ArtImg/Artist/16a38c7aa1b0fc91afc363be8fe2a8b7.png" alt=""></div>
                 <p class="JhengBold">徐赓良<br /><span class="JhengLight">副会长&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1049">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/629c4dd2-1960-49dc-91ba-abeaf8f7373d.jpg" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/ArtImg/Artist/629c4dd2-1960-49dc-91ba-abeaf8f7373d.jpg" alt=""></div>
                 <p class="JhengBold">陈硕子<br /><span class="JhengLight">副会长&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1012">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-5wyb.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-5wyb.png" alt=""></div>
                 <p class="JhengBold">王玉波<br /><span class="JhengLight">监事&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1015">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/to black/vip-7sjd.jpg" width="824" height="824" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/_preview/q30w1200/Content/images/to black/vip-7sjd.jpg" width="824" height="824"
+                        alt=""></div>
                 <p class="JhengBold">沈敬东<br /><span class="JhengLight">会员&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1014">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-6cxg.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-6cxg.png" alt=""></div>
                 <p class="JhengBold">程晓光<br /><span class="JhengLight">策展人&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1017">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-9dgy.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-9dgy.png" alt=""></div>
                 <p class="JhengBold">邓国源<br /><span class="JhengLight">会员&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1019">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/to black/vip-11qzl.jpg" width="800" height="800" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/_preview/q30w1200/Content/images/to black/vip-11qzl.jpg" width="800" height="800"
+                        alt=""></div>
                 <p class="JhengBold">祁志龙<br /><span class="JhengLight">会员&nbsp;|&nbsp;艺术家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1021">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/to black/vip-12yk.jpg" width="800" height="800" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/_preview/q30w1200/Content/images/to black/vip-12yk.jpg" width="800" height="800"
+                        alt=""></div>
                 <p class="JhengBold">杨宽<br /><span class="JhengLight">会员&nbsp;|&nbsp;考古学家</span></p>
             </a>
         </div>
@@ -727,11 +757,13 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
         <div class="col-sm20 col-md20 col-lg20 member">
             <a class="member-item" href="/Home/Art/1013">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/content/images/to black/vip-3hd.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/content/images/to black/vip-3hd.png" alt=""></div>
                 <p class="JhengBold">黄笃<br /><span class="JhengLight">策展人&nbsp;|&nbsp;评论家</span></p>
             </a>
             <a class="member-item" href="/Home/Art/1051">
-                <div class="relative after"><img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt=""></div>
+                <div class="relative after"><img loading="lazy" decoding="async"
+                        src="/Content/ArtImg/Artist/bac65c41-b7be-40ab-aad3-7178cc1b6062.png" alt=""></div>
                 <p class="JhengBold">盛伯骥<br /><span class="JhengLight">视觉艺术家&nbsp;|&nbsp;艺术顾问</span></p>
             </a>
         </div>
@@ -762,7 +794,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 陈硕子 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/cxz.jpg" data-magnify-src="/Content/ArtImg/selling/cxz.jpg" width="1726" height="1224" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/cxz.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/cxz.jpg" width="1726" height="1224" class="zoom"
+                            alt="">
                         <b onclick="location.href='/Home/newArt/1049#section02'">陈硕子 作品</b><br />
                         《冲气》85x58cm 纸本设色<br />
                         <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -773,7 +808,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 王玉波 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/wyb.jpg" data-magnify-src="/Content/ArtImg/selling/wyb.jpg" width="1224" height="1238" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/wyb.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/wyb.jpg" width="1224" height="1238" class="zoom"
+                            alt="">
                         <b onclick="location.href='/Home/newArt/1012#section02'">王玉波 作品</b><br />
                         《繁花系列》60x60cm 布面丙烯<br />
                         <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -784,7 +822,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 徐赓良 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/xgl.jpg" data-magnify-src="/Content/ArtImg/selling/xgl.jpg" width="1226" height="1224" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/xgl.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/xgl.jpg" width="1226" height="1224" class="zoom"
+                            alt="">
                         <b onclick="location.href='/Home/newArt/1011#section02'">徐赓良 作品</b><br />
                         《喵的网络》 45x45cm 水墨<br />
                         <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -795,7 +836,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 张岚芊 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/zlq1.jpg" data-magnify-src="/Content/ArtImg/selling/zlq1.jpg" width="1663" height="3350" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/zlq1.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/zlq1.jpg" width="1663" height="3350" class="zoom"
+                            alt="">
                         <p><b onclick="location.href='/Home/newArt/1000#section02'">张岚芊 作品</b><br />
                             《山海经-7》 88x43cm 综合材料<br />
                             <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -806,7 +850,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 张岚芊 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/zlq2.jpg" data-magnify-src="/Content/ArtImg/selling/zlq2.jpg" width="2392" height="3345" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/zlq2.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/zlq2.jpg" width="2392" height="3345" class="zoom"
+                            alt="">
                         <p><b onclick="location.href='/Home/newArt/1000#section02'">张岚芊 作品</b><br />
                             《山海经-2》 88x43cm 综合材料<br />
                             <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -817,7 +864,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <div class="swiper-slide">
                     <!-- 左锋义 -->
                     <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                        <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/artimg/selling/zfy.jpg" data-magnify-src="/Content/ArtImg/selling/zfy.jpg" width="1224" height="1246" class="zoom" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="/Content/_preview/q30w1200/Content/artimg/selling/zfy.jpg"
+                            data-magnify-src="/Content/ArtImg/selling/zfy.jpg" width="1224" height="1246" class="zoom"
+                            alt="">
                         <b onclick="location.href='/Home/newArt/1048#section02'">左锋义 作品</b><br />
                         《梵之初系列之55》 100x100cm 纸本设色（综合材料）<br />
                         <span>详情请咨询微信:13265623041(添加前请标注来意)</span>
@@ -865,7 +915,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     @n.Title
                     <p>@n.Subtitle</p>
                     <div>
-                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}")" alt="">
+                        <img loading="lazy" decoding="async"
+                            src="@ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}")" alt="">
                     </div>
                     <span class="JhengLight">查看全部 VIEW MORE</span>
 
@@ -883,8 +934,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
         <ul class="col-sm20 col-md20 col-lg20 normal">
             <li class="col-sm5 col-md5 col-lg5 date JhengLight">@string.Format("{0:yyyy年MM月dd日}", n.Date)</li>
             <li class="col-sm14 col-md14 col-lg14 title"><a href="/Home/NewsRead/@n.Id">@n.Title</a></li>
-            <li class="col-sm1 col-md1 col-lg1"><a href="/Home/NewsRead/@n.Id"><img loading="lazy" decoding="async" src="/Content/icon/enter-02.png"
-                    style="transform: translateX(20%);" alt="" class="enter"></a>
+            <li class="col-sm1 col-md1 col-lg1"><a href="/Home/NewsRead/@n.Id"><img loading="lazy" decoding="async"
+                        src="/Content/icon/enter-02.png" style="transform: translateX(20%);" alt="" class="enter"></a>
             </li>
         </ul>
         <div class="hr col-xs20 col-sm20 col-md20 col-lg20" style="margin-top:0;"></div>
@@ -956,7 +1007,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                                 <div class="exhibitionSlider">
 
                                     @for (var i = 10001; i <= 10006; i++) { <div class="exhibitionSlide">
-                                        <img loading="lazy" decoding="async" src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" alt="" />
+                                        <img loading="lazy" decoding="async"
+                                            src="@string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i)" alt="" />
                                 </div>
 
                                 }
@@ -991,25 +1043,37 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     <div class="processing-lunbo">
                         <div class="exhibitionSlider">
                             <div class="exhibitionSlide borderActive">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10015.jpg" width="2390" height="1593" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10015.jpg" width="2390"
+                                    height="1593" alt="" />
                             </div>
                             <div class="exhibitionSlide">
                                 <img loading="lazy" decoding="async" src="/content/images/zhongri/10017.jpg" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10038.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10038.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10052.jpg" width="1664" height="2496" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10052.jpg" width="1664"
+                                    height="2496" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10002.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10002.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10006.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10006.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/zhongri/10007.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/zhongri/10007.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                         </div>
                     </div>
@@ -1042,22 +1106,34 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                                 <img loading="lazy" decoding="async" src="/content/images/yijia/10034.jpg" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10035.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10035.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10037.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10037.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10004.jpg" width="1664" height="2213" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10004.jpg" width="1664"
+                                    height="2213" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10005.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10005.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10002.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10002.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/yijia/10007.jpg" width="1610" height="2415" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/yijia/10007.jpg" width="1610"
+                                    height="2415" alt="" />
                             </div>
                         </div>
                     </div>
@@ -1091,22 +1167,34 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                                 <img loading="lazy" decoding="async" src="/content/images/man/10006.jpg" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10002.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10002.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10003.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10003.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10004.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10004.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10005.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10005.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10001.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10001.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/man/10007.jpg" width="2496" height="1664" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/man/10007.jpg" width="2496"
+                                    height="1664" alt="" />
                             </div>
                         </div>
                     </div>
@@ -1137,25 +1225,39 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     <div class="processing-lunbo">
                         <div class="exhibitionSlider">
                             <div class="exhibitionSlide borderActive">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/100012.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/100012.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/100023.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/100023.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/10002.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/10002.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/100024.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/100024.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/100034.jpg" width="1965" height="1315" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/100034.jpg" width="1965"
+                                    height="1315" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/100033.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/100033.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                             <div class="exhibitionSlide">
-                                <img loading="lazy" decoding="async" src="/Content/_preview/q30w1200/Content/images/chunyu3/10003.jpg" width="2592" height="1728" alt="" />
+                                <img loading="lazy" decoding="async"
+                                    src="/Content/_preview/q30w1200/Content/images/chunyu3/10003.jpg" width="2592"
+                                    height="1728" alt="" />
                             </div>
                         </div>
                     </div>
@@ -1304,7 +1406,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
     </div>
     <div class="col-md5 col-lg5">&nbsp;</div>
     <div class="col-md7 col-lg7">
-        <img loading="lazy" decoding="async" class="fuzhu undraggable xs-hide sm-hide" src="/content/images/fuzhu-05.png" alt="" />
+        <img loading="lazy" decoding="async" class="fuzhu undraggable xs-hide sm-hide"
+            src="/content/images/fuzhu-05.png" alt="" />
     </div>
     <div class="col-md2 col-lg2">&nbsp;</div>
 </section>
@@ -1338,12 +1441,12 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 <!-- 功能实现 -->
 
 @section Styles {
-    <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
 }
 
 @section Scripts {
-    <script src="~/public/vendor/swiper-public.js" asp-append-version="true" defer></script>
-    <script src="~/js/magnify-loader.js" asp-append-version="true" defer></script>
-    <script src="~/js/index.js" asp-append-version="true" defer></script>
+<script src="~/public/vendor/swiper-public.js" asp-append-version="true" defer></script>
+<script src="~/js/magnify-loader.js" asp-append-version="true" defer></script>
+<script src="~/js/index.js" asp-append-version="true" defer></script>
 }
