@@ -45,8 +45,13 @@
 
     .news ul {
         padding-bottom: var(--newsPadding);
-        border-bottom: var(--normalNewsLine);
+        border-bottom: 0;
         margin: 0px;
+        list-style: none;
+    }
+
+    .news li {
+        list-style: none;
     }
 
     .news ul>a>li {

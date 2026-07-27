@@ -433,7 +433,12 @@
     .news ul {
         /* 每个新闻信息的上下边距 */
         padding-bottom: var(--newsPadding);
-        border-bottom: var(--normalNewsLine);
+        border-bottom: 0;
+        list-style: none;
+    }
+
+    .news li {
+        list-style: none;
     }
 
     .news {

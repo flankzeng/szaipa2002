@@ -27,10 +27,12 @@
             {
                 <a class="member-card" href="/Home/Art/@artist.Id">
                     <figure>
-                        <img src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")"
-                             alt="@artist.ArtistNameCn"
-                             loading="lazy"
-                             decoding="async" />
+                        <div class="member-card__image">
+                            <img src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")"
+                                 alt="@artist.ArtistNameCn"
+                                 loading="lazy"
+                                 decoding="async" />
+                        </div>
                         <figcaption>
                             <strong>@artist.ArtistNameCn</strong>
                             @if (!string.IsNullOrWhiteSpace(artist.ArtistNameEn))
