@@ -2,6 +2,11 @@ html {
   position: relative;
 }
 
+ul,
+ul li {
+  list-style: none;
+}
+
 main {
   padding: 1rem 0 3rem;
 }

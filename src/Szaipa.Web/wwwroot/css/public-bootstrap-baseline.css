@@ -190,6 +190,12 @@ ol {
     margin-bottom: 10px;
 }
 
+/* Public pages use list elements for layout; never render browser bullets. */
+ul,
+ul li {
+    list-style: none;
+}
+
 ul ul,
 ol ul,
 ul ol,
