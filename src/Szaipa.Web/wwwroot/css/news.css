@@ -50,6 +50,11 @@
         list-style: none;
     }
 
+    .news ul.normal {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     .news li {
         list-style: none;
     }
