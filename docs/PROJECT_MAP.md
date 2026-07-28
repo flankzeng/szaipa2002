@@ -12,13 +12,13 @@
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
 - `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（100 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 151 项；全解决方案合计 251）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 152 项；全解决方案合计 252）。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
 ```
 ~/.dotnet/dotnet build Szaipa.Modernization.slnx      # 须 0 警告 0 错误
-~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 247）
+~/.dotnet/dotnet test  Szaipa.Modernization.slnx      # 须全绿（当前 252）
 cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + esbuild(editor.js)
 ~/.dotnet/dotnet run --project src/Szaipa.Web/Szaipa.Web.csproj --urls http://127.0.0.1:5057
 # 冒烟：/healthz 200；未登录 /Staff/* → 302 跳 /Staff/Account/Login
@@ -67,7 +67,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - ProjectTongou 公开浏览已退役：`Controllers/ProjectTongouController.cs` 仅保留无数据库访问的 410 兼容端点，视图为 `Views/ProjectTongou/Gone.cshtml`；Tongou 后台/数据层不受影响。
 - Legacy 资源不能按目录直接删除；第一轮 A/B/C/D 分级和两套 Content 差异见 `docs/updates/2026-07-10-legacy-resource-inventory.md`。
 - zengfeng 已退役：现代/旧 MVC 路由返回 410，约 140MB 专属资源从当前分支移除；基线保存在远端 `legacy/archive-before-frontend-prune-20260710`。
-- 正式前台页面为 `Index/News/NewsRead/Vip/About/Art`；对应缓存资源也使用相同 canonical 名称。`new*` 仅是 301 兼容入口，公开视图不得再链接它们。DB 未启用时列表显示正式空状态，内容详情返回 503，不再暴露迁移 Skeleton。
+- 正式前台页面为 `Index/News/NewsRead/Vip/About/Constitution/Art/PublicationList/Publication`；对应缓存资源也使用相同 canonical 名称。`new*` 仅是 301 兼容入口，公开视图不得再链接它们。DB 未启用时列表显示正式空状态，内容详情返回 503，不再暴露迁移 Skeleton。公开页面迁移边界与未复制旧空壳清单见 `docs/updates/2026-07-28-public-view-migration-audit.md`。
 - 艺术家完整档案：`/Home/Art/{id}/Archive`（资讯、馆藏、出版空状态、拍卖）和 `/Home/Art/News/{id}`（资讯正文）直接使用 `IArtistReadRepository` 的完整只读投影；旧 `/Home/ArtNews*` 仅永久重定向，不得删除这些读取方法后只保留摘要。
 - 特殊展览页共享 `wwwroot/css/publication-special.css` 和 `wwwroot/js/publication-special.js`；chunyu3/tonggou2/tonggou2024 的现场图库均由同一脚本初始化，tonggou2024 的重复脚本已退役。历史拆分见 `docs/updates/2026-07-11-frontend-cleanup-phase3.md`，当前分层加载见 `docs/updates/2026-07-20-special-gallery-layered-loading.md`。
 - 展览页 JS 已不依赖 jQuery：普通展览用原生 `publication-gallery.js`，特殊页脚本也已原生化；Swiper 与页面脚本按顺序 `defer`。三个 `Layout=null` 特殊页必须保留 viewport meta，否则手机 390px 会退回 1440px 桌面布局。见 `docs/updates/2026-07-13-publication-jquery-removal.md`。
@@ -94,7 +94,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 字体清单按页面边界拆成 `font-subsets-public.css`（114 faces）与 `font-subsets-staff.css`（88 faces）；两者并集仍是原 147 faces、共同 55 faces，合计仍覆盖磁盘全部 125 个 WOFF2。`scripts/build-font-subsets.py --refresh-css-versions/--check-css-versions` 对单个清单刷新/验证，`--split-css-manifests` 可安全拆已有完整清单；不要仅为清单维护随意运行 `--font-dir`，它会重建字体二进制。`FontSubsetManifestTests` 防止页面边界、文件或哈希漂移。字体本身、字重和 `unicode-range` 不变。
 - 旧发布版只读参考位于 `~/Project/GitClone/web24.05`，其 `Content` 约 1.2GB；在生产切换到现代站且取得 IIS 日志/数据库路径前，不按现代源码候选直接删除旧发布资源。
 - 展览页：数据驱动 `Views/Home/Publication.cshtml` 按 `Publication.Type` 分支 → 共享 `Views/Shared/_ExhibitionGallery.cshtml`（普通）或 `_ExhibitionImportant.cshtml`（重要：banner+序+画廊，皮肤 `wwwroot/css/exhibition-important.css`）。14 个已退役 slug 对应固定 ID 92001–92015（跳过 92004），由 `Services/LegacyPublicationGalleryCatalog.cs` 提供缺行时的只读页面元数据并复用旧 Content 的 604 张精确路径；数据库真实行优先，不重编号、不复制、不要求写库。
-- 路由：`Controllers/HomeController.cs`（Index/News/NewsRead/Vip/About/Art/ArtArchive/ArtArticle/Publication/PublicationList；`new*` 与 `ArtNews*` 仅兼容重定向）。
+- 路由：`Controllers/HomeController.cs`（Index/News/NewsRead/Vip/About/Constitution/Art/ArtArchive/ArtArticle/Publication/PublicationList；`new*`、`link/newlink` 与 `ArtNews*` 仅兼容重定向）。
 
 ## 测试范式
 - SQLite 内存库 + `EnsureCreated()`（建全 schema，含新列）。读上下文测试 `TestDb.cs` 用原始 SQL 播种（因读上下文禁 SaveChanges）。

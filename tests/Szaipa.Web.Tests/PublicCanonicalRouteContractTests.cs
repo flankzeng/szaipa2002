@@ -18,17 +18,35 @@ public sealed class PublicCanonicalRouteContractTests
         {
             foreach (var legacyPrefix in new[]
                      {
-                         "href=\"/Home/newIndex",
-                         "href=\"/Home/newnews",
-                         "href=\"/Home/newvip",
-                         "href=\"/Home/newabout",
-                         "href=\"/Home/newArt",
-                         "href=\"/Home/ArtNews"
+                         "/Home/newIndex",
+                         "/Home/newnews",
+                         "/Home/newvip",
+                         "/Home/newabout",
+                         "/Home/newArt",
+                         "/Home/ArtNews"
                      })
             {
-                Assert.DoesNotContain(legacyPrefix, view, StringComparison.Ordinal);
+                Assert.DoesNotContain(legacyPrefix, view, StringComparison.OrdinalIgnoreCase);
             }
         }
+    }
+
+    [Fact]
+    public void Constitution_is_a_migrated_public_view_with_rooted_legacy_assets()
+    {
+        var viewPath = Path.Combine(
+            FindRepositoryRoot(),
+            "src",
+            "Szaipa.Web",
+            "Views",
+            "Home",
+            "Constitution.cshtml");
+        var view = File.ReadAllText(viewPath);
+
+        Assert.Contains("Layout = \"~/Views/Shared/_PublicLayout.cshtml\";", view, StringComparison.Ordinal);
+        Assert.Contains("深圳艺术产业促进会章程", view, StringComparison.Ordinal);
+        Assert.Contains("/Content/images/2021.5.30f2-2.jpg", view, StringComparison.Ordinal);
+        Assert.DoesNotContain("../../Content/", view, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -42,7 +60,15 @@ public sealed class PublicCanonicalRouteContractTests
             "HomeController.cs");
         var controller = File.ReadAllText(controllerPath);
 
-        foreach (var route in new[] { "News", "NewsRead/{id:int}", "Vip", "About", "Art/{id:int}" })
+        foreach (var route in new[]
+                 {
+                     "News",
+                     "NewsRead/{id:int}",
+                     "Vip",
+                     "About",
+                     "Constitution",
+                     "Art/{id:int}"
+                 })
         {
             Assert.Contains($"[HttpGet(\"{route}\")]", controller, StringComparison.Ordinal);
         }
@@ -54,12 +80,15 @@ public sealed class PublicCanonicalRouteContractTests
                      "RedirectPermanent($\"/Home/NewsRead/{id}\")",
                      "RedirectPermanent(\"/Home/Vip\")",
                      "RedirectPermanent(\"/Home/About\")",
+                     "RedirectPermanent(\"/Home/Constitution\")",
                      "RedirectPermanent($\"/Home/Art/{id}\")"
                  })
         {
             Assert.Contains(redirect, controller, StringComparison.Ordinal);
         }
 
+        Assert.Contains("[HttpGet(\"link\")]", controller, StringComparison.Ordinal);
+        Assert.Contains("[HttpGet(\"newlink\")]", controller, StringComparison.Ordinal);
         Assert.Contains("[HttpGet(\"Art/{id:int}/Archive\")]", controller, StringComparison.Ordinal);
         Assert.Contains("[HttpGet(\"Art/News/{id:int}\")]", controller, StringComparison.Ordinal);
         Assert.Contains("GetArtistArchiveAsync", controller, StringComparison.Ordinal);

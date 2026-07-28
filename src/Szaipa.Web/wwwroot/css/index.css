@@ -3,7 +3,7 @@ body .magnify {
     height: 35vh;
 }
 
-body .magnify>.magnify-lens {
+body .magnify > .magnify-lens {
     border: 1px solid white;
 }
 
@@ -764,6 +764,7 @@ a {
     filter: grayscale(0%);
 }
 
+#section04 h1,
 #section05 h1,
 #section05guwen h1,
 #section07 h1 {
@@ -1074,16 +1075,21 @@ a {
 }
 
 .member img {
-    width: var(--memberImgW);
+    width: 100%;
     height: auto;
     display: block;
 }
 
 .member p {
+    width: min(var(--memberImgW), 100%);
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
     font-size: 1.3rem;
     padding-top: 1em;
     margin-bottom: 30%;
     line-height: 1.3em;
+    text-align: center;
 }
 
 .member p>span {
@@ -1092,7 +1098,10 @@ a {
 
 .after {
     position: relative;
-    width: 12vw;
+    width: min(var(--memberImgW), 100%);
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .after::before {
@@ -1129,31 +1138,79 @@ a {
 /* 手机首页沿用发布版的窄内容列：成员、新闻与展会以同一条左右留白对齐，
    不让 sm 栅格在 xs 屏幕退化为贴边的全宽内容。 */
 @media only screen and (max-width: 47.9375em) {
-    #section05 > .col-sm2,
-    #section05guwen > .col-sm2,
-    #section06 > .col-sm2,
-    #section07 > .col-sm2 {
+
+    /* 首屏在手机端按文字标识 + 轮播的实际高度收口，避免 40vh 的固定区块在轮播后留下空白。 */
+    #section02 {
+        height: calc(var(--logoTXT) + var(--carouselH) + 4vh);
+    }
+
+    /* 章程不沿用桌面版的整屏高度和两侧占位列；内容按标题、图片、简介连续排布。 */
+    #section04 {
+        display: flow-root;
+        height: auto;
+        min-height: 0;
+    }
+
+    #section04 > .col-xs20 > .col-xs2 {
         display: none;
     }
 
-    #section05 > .col-sm16,
-    #section05guwen > .col-sm16,
-    #section06 > .col-sm16,
-    #section07 > .col-sm16 {
+    #section04 > .col-xs20 > .col-xs16 {
         float: none;
         width: 80%;
         margin-right: auto;
         margin-left: auto;
     }
 
+    #section04 h1 {
+        padding-top: 6vh;
+        padding-bottom: 4vh;
+    }
+
+    /* PC 版右侧简介在 xs 屏不参与排版；手机只显示图片下方的简介。 */
+    #section04 .chapterTXT.autoHidden {
+        display: none;
+    }
+
+    /* 轮播两侧的竖排展讯在窄屏缩小一档，给长标题保留完整显示空间。 */
+    #section02 .inner_new {
+        font-size: .7rem;
+    }
+
+    #section05>.col-sm2,
+    #section05guwen>.col-sm2,
+    #section06>.col-sm2,
+    #section07>.col-sm2 {
+        display: none;
+    }
+
+    #section05>.col-sm16,
+    #section05guwen>.col-sm16,
+    #section06>.col-sm16,
+    #section07>.col-sm16 {
+        float: none;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .news {
+        margin-top: 0;
+    }
+
+    #section04 h1,
+    #section5to6 h1,
     #section05 h1,
     #section05guwen h1,
     #section06 h1,
     #section07 h1 {
-        font-size: .9rem;
+        /* 手机端标题保持一行优先，和发布版的视觉比例一致。 */
+        font-size: 1.5rem;
         line-height: 1.35;
     }
 
+    #section04 .entitle,
+    #section5to6 .entitle,
     #section05 .entitle,
     #section05guwen .entitle,
     #section06 .entitle,
@@ -1162,33 +1219,46 @@ a {
         padding-right: .45em;
     }
 
+    /* 正文不跟随桌面端标题放大；保留发布版的紧凑阅读比例。 */
+    #section04 .chapterTXT {
+        font-size: 1rem;
+        line-height: 2em;
+    }
+
     .member {
         margin-top: 1.25vh;
     }
 
     .member p {
-        width: var(--memberImgW);
+        width: 75%;
         margin-right: auto;
         margin-left: auto;
         padding-top: .45em;
         margin-bottom: 16%;
-        font-size: .55rem;
+        font-size: .8rem;
         line-height: 1.35;
-        text-align: left;
+        text-align: center;
     }
 
-    .member p > span {
-        font-size: .45rem;
+    .member p>span {
+        font-size: .5rem;
     }
 
     .member .after {
-        width: var(--memberImgW);
+        width: 75%;
+        box-sizing: border-box;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .member img {
+        width: 100%;
         margin-right: auto;
         margin-left: auto;
     }
 
     .news {
-        --newsFontsize: 1.3rem;
+        --newsFontsize: 1rem;
         --newsPtag: 1rem;
         --newsSpantag: .9rem;
         --newsEnter: 1rem;
@@ -1196,7 +1266,7 @@ a {
     }
 
     /* 首页新闻在窄屏仍保持发布版的日期 / 内容 / 箭头三列。 */
-    #section06 > .news {
+    #section06>.news {
         width: 84%;
         margin-right: auto;
         margin-left: auto;
@@ -1210,7 +1280,7 @@ a {
         box-sizing: border-box;
     }
 
-    #section06 .news ul > li,
+    #section06 .news ul>li,
     #section06 .news .normal .title,
     #section06 .news .date {
         float: none;
@@ -1222,18 +1292,18 @@ a {
         box-sizing: border-box;
     }
 
-    #section06 .news ul > .date {
+    #section06 .news ul>.date {
         grid-column: 1;
         line-height: 1.35;
         overflow-wrap: anywhere;
     }
 
-    #section06 .news ul > .title {
+    #section06 .news ul>.title {
         grid-column: 2;
         line-height: 1.45;
     }
 
-    #section06 .news ul > li:last-child {
+    #section06 .news ul>li:last-child {
         grid-column: 3;
         justify-self: end;
     }
@@ -1249,7 +1319,7 @@ a {
         margin-bottom: .45rem;
     }
 
-    #section06 .importantTXT div > img {
+    #section06 .importantTXT div>img {
         width: 100%;
         max-height: 12rem;
     }
@@ -1269,7 +1339,7 @@ a {
         padding-bottom: 1.2vh;
     }
 
-    .news ul > li,
+    .news ul>li,
     .news .normal .title,
     .date {
         margin-top: .8vh;

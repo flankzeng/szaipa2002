@@ -33,7 +33,7 @@ dotnet test Szaipa.Modernization.slnx --no-build --disable-build-servers -m:1
 dotnet publish src/Szaipa.Web/Szaipa.Web.csproj -c Release -o ./artifacts/publish
 ```
 
-The current verified baseline is a clean .NET build, 245 passing tests, and a successful npm build. A release artifact is not production-ready merely because it builds: the external runtime contracts below must also be satisfied.
+The current verified baseline is a clean .NET build, 252 passing tests, and a successful front-end build. A release artifact is not production-ready merely because it builds: the external runtime contracts below must also be satisfied.
 
 ## External runtime contracts
 
@@ -56,4 +56,4 @@ The current operational guide is [docs/deploy-windows.md](docs/deploy-windows.md
 
 ## Current scope
 
-The repository split is documented but has not been executed. No new remote repository is created by this documentation change, and no server, IIS binding, deployment hook, database, or production asset is modified.
+A disposable 22 MiB whitelist export has been generated from the verified modern commit and passes all 252 tests without the legacy source tree. The existing `szaipa2026` clone and remote still contain only their initial README commit: choosing whether to preserve that commit or replace it with the required single fresh root remains an explicit human decision. No server, IIS binding, deployment hook, database, or production asset has been modified.

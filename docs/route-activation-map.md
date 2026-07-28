@@ -13,6 +13,7 @@ The modern public surface is fully activated against read-only repositories. Pub
 | `/Home/NewsRead/{id}` | `GetNewsByIdAsync` + `GetRelatedNewsAsync` |
 | `/Home/Vip` | `IArtistReadRepository.GetArtistsAsync` |
 | `/Home/About` | Static modern Razor content |
+| `/Home/Constitution` | Static migrated constitution content |
 | `/Home/Art/{id}` | `IArtistReadRepository.GetArtistProfileAsync` |
 | `/Home/Art/{id}/Archive` | `IArtistReadRepository.GetArtistArchiveAsync` |
 | `/Home/Art/News/{id}` | `IArtistReadRepository.GetArtistArticleAsync` |
@@ -23,7 +24,9 @@ Missing list data renders the formal empty state. A detail route that cannot saf
 
 ## Compatibility only
 
-`/Home/newIndex`, `/Home/newnews`, `/Home/newnewsread/{id}`, `/Home/newvip`, `/Home/newabout`, `/Home/newArt/{id}`, `/Home/ArtNews/{id}` and `/Home/ArtNewsRead/{id}` are permanent redirects. They must not appear in modern internal links.
+`/Home/newIndex`, `/Home/newnews`, `/Home/newnewsread/{id}`, `/Home/newvip`, `/Home/newabout`,
+`/Home/link`, `/Home/newlink`, `/Home/newConstitution`, `/Home/newArt/{id}`, `/Home/ArtNews/{id}` and
+`/Home/ArtNewsRead/{id}` are permanent redirects. They must not appear in modern internal links.
 
 ## Retired route groups
 

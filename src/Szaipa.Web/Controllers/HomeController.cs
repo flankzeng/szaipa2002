@@ -131,6 +131,16 @@ public class HomeController : Controller
     [HttpGet("newabout")]
     public IActionResult LegacyNewAbout() => RedirectPermanent("/Home/About");
 
+    [HttpGet("link")]
+    [HttpGet("newlink")]
+    public IActionResult LegacyContact() => RedirectPermanent("/Home/About");
+
+    [HttpGet("Constitution")]
+    public IActionResult Constitution() => View("Constitution");
+
+    [HttpGet("newConstitution")]
+    public IActionResult LegacyNewConstitution() => RedirectPermanent("/Home/Constitution");
+
     [HttpGet("Art/{id:int}")]
     public async Task<IActionResult> Art(int id, CancellationToken cancellationToken)
     {

@@ -4,7 +4,7 @@
 
 The modern ASP.NET Core application has reached a clean project boundary and can be moved to a dedicated repository without carrying the MVC5 source or its large tracked asset tree. This document defines the allowed paths, external runtime dependencies, migration sequence, release acceptance criteria, and the manual decision required before enabling backend writes.
 
-The user has created the dedicated target repository at `https://gitee.com/arthur953/szaipa2026.git` and a local clone at `~/Project/GitClone/szaipa2026`. At the current checkpoint it contains only its initial README commit: no modern source has been exported, no artifact has been published, and no server, IIS site, hook, database, or production `Content` directory has been changed.
+The user has created the dedicated target repository at `https://gitee.com/arthur953/szaipa2026.git` and a local clone at `~/Project/GitClone/szaipa2026`. A disposable whitelist snapshot has now been exported and independently tested, but the target clone still contains only its initial README commit. No modern source has been written to that repository, no artifact has been published, and no server, IIS site, hook, database, or production `Content` directory has been changed.
 
 The target's existing README commit creates one unresolved release decision. Keeping the strict single-fresh-root rule below requires explicit approval to replace the target `master` history; preserving that initial commit instead creates a documented two-commit deviation. Do not choose or force-push either outcome before the user's UI acceptance and explicit direction.
 
@@ -65,7 +65,7 @@ The fresh-root checkout is acceptable only when:
 - no project XML references a path outside `src/` and `tests/`;
 - the root commit records the original source-baseline SHA and legacy archive branch;
 - a secret scanner has covered all refs and historical blobs, with its tool/version/result recorded; any real hit has been rotated and removed before the target remote is populated with modern source/history;
-- npm build, .NET build, and all 245 current tests pass from a fresh clone;
+- front-end build, .NET build, and all 252 current tests pass from a fresh clone;
 - Release publish succeeds without access to the legacy source repository;
 - the publish output contains neither secrets nor the external `Content` tree.
 

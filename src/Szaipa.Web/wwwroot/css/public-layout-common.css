@@ -248,12 +248,25 @@ html {
 
 @media (max-width: 61.9375em) {
     #section08m {
-        height: max(80vh, 42rem);
+        /* 与发布版一致：邮箱区固定为一屏的 80%，下接独立页脚。 */
+        height: 80vh;
     }
 
     .emailPosition h1 {
-        font-size: clamp(1.5rem, 6.8vw, 2rem);
+        font-size: 1.5rem;
         letter-spacing: 0.03em;
         white-space: nowrap;
+    }
+
+    .emailPosition p {
+        font-size: 1rem;
+        line-height: 1.8em;
+    }
+
+    .copyrightM {
+        box-sizing: border-box;
+        padding: 5vh 8%;
+        font-size: .8rem;
+        line-height: 1.8em;
     }
 }
