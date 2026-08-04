@@ -13,6 +13,7 @@ using Szaipa.Data.Contexts.SzaipaAdmin;
 using Szaipa.Data.Services.Admin;
 using Szaipa.Web.Areas.Staff.Models;
 using Szaipa.Web.Authorization;
+using Szaipa.Web.Services.Security;
 
 namespace Szaipa.Web.Areas.Staff.Controllers;
 
@@ -25,11 +26,21 @@ namespace Szaipa.Web.Areas.Staff.Controllers;
 public sealed class AccountController : Controller
 {
     private readonly IOptions<AdminWriteOptions> _adminWrite;
+    private readonly ISecurityAuditWriter _auditWriter;
 
-    public AccountController(IOptions<AdminWriteOptions> adminWrite)
+    public AccountController(IOptions<AdminWriteOptions> adminWrite, ISecurityAuditWriter auditWriter)
     {
         _adminWrite = adminWrite;
+        _auditWriter = auditWriter;
     }
+
+    // Records every staff sign-in attempt (including invalid-model and unconfigured-DB paths) to the
+    // rolling login audit, which the security dashboard surfaces. No-op when request auditing is disabled.
+    private void WriteLoginAudit(string? username, bool success) =>
+        _auditWriter.WriteLoginAttempt(
+            username ?? string.Empty,
+            ClientIpResolver.Resolve(HttpContext),
+            success);
 
     [HttpGet]
     [AllowAnonymous]
@@ -52,6 +63,7 @@ public sealed class AccountController : Controller
         ViewData["ReturnUrl"] = returnUrl;
         if (!ModelState.IsValid)
         {
+            WriteLoginAudit(model.StaffName, success: false);
             return View(model);
         }
 
@@ -64,6 +76,7 @@ public sealed class AccountController : Controller
             && string.Equals(model.StaffName, adminWrite.DebugUserName, StringComparison.Ordinal)
             && string.Equals(model.Password, adminWrite.DebugPassword, StringComparison.Ordinal))
         {
+            WriteLoginAudit(model.StaffName, success: true);
             await SignInStaffAsync(0, "调试管理员（只读）");
             return RedirectToAdminHome(returnUrl);
         }
@@ -72,6 +85,7 @@ public sealed class AccountController : Controller
         // box) or unreachable, show a clear message on the login page instead of a 500.
         if (!adminWrite.IsConfigured)
         {
+            WriteLoginAudit(model.StaffName, success: false);
             ModelState.AddModelError(string.Empty,
                 "后台尚未配置可写数据库，无法登录。请在 appsettings.Local.json 配置 AdminWrite:EnableWrites=true 与 ConnectionStrings:SzaipaAdmin（指向本地可写副本）。");
             return View(model);
@@ -90,6 +104,7 @@ public sealed class AccountController : Controller
         }
         catch (DbException)
         {
+            WriteLoginAudit(model.StaffName, success: false);
             ModelState.AddModelError(string.Empty,
                 "无法连接后台数据库，请检查 ConnectionStrings:SzaipaAdmin。");
             return View(model);
@@ -97,10 +112,12 @@ public sealed class AccountController : Controller
 
         if (staff is null || !StaffPasswordHasher.Verify(model.Password ?? string.Empty, staff.Password))
         {
+            WriteLoginAudit(model.StaffName, success: false);
             ModelState.AddModelError(string.Empty, "账户不存在或密码错误！");
             return View(model);
         }
 
+        WriteLoginAudit(model.StaffName, success: true);
         await SignInStaffAsync(staff.Id, staff.StaffName ?? string.Empty);
         return RedirectToAdminHome(returnUrl);
     }

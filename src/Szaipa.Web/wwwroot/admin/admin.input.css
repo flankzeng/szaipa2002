@@ -6,6 +6,11 @@
     body {
         @apply bg-canvas text-ink;
     }
+
+    a:active,
+    a:focus {
+        outline: 0;
+    }
 }
 
 @layer components {

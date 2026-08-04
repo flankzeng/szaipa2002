@@ -15,8 +15,10 @@ using Szaipa.Data.DependencyInjection;
 using Szaipa.Web.Authorization;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Infrastructure;
+using Szaipa.Web.Middleware;
 using Szaipa.Web.Services;
 using Szaipa.Web.Services.Admin;
+using Szaipa.Web.Services.Security;
 
 var contentRoot = ResolveContentRoot();
 // Standard ASP.NET Core layering: appsettings.json (committed defaults) -> appsettings.{Environment}.json
@@ -63,6 +65,15 @@ var protectKeysWithMachineDpapi = DataProtectionKeyProtectionPolicy.ShouldUseMac
 var staffAuthenticationCookie = StaffAuthenticationCookiePolicy.Resolve(environmentName);
 var urls = ResolveUrls(args, configuration);
 
+var securityMonitoringConfig = configuration
+    .GetSection(SecurityMonitoringOptions.SectionName)
+    .Get<SecurityMonitoringOptions>()
+    ?? new SecurityMonitoringOptions();
+var securityMonitoringPaths = SecurityMonitoringPathResolver.Resolve(
+    contentRoot,
+    securityMonitoringConfig,
+    isDevelopment);
+
 Console.WriteLine($"Szaipa.Web boot: configured contentRoot={contentRoot}, urls={urls}");
 
 var hostBuilder = new HostBuilder()
@@ -105,6 +116,9 @@ var hostBuilder = new HostBuilder()
                 services
                     .AddOptions<LegacyAssetsOptions>()
                     .Bind(configuration.GetSection(LegacyAssetsOptions.SectionName));
+                services
+                    .AddOptions<SecurityMonitoringOptions>()
+                    .Bind(configuration.GetSection(SecurityMonitoringOptions.SectionName));
                 var dataProtectionBuilder = services
                     .AddDataProtection()
                     .SetApplicationName(dataProtectionApplicationName)
@@ -119,6 +133,15 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
+
+                // Security-monitoring (Areas/Staff SecurityMonitoring): file-root paths resolved at startup,
+                // plus the read/write services for the server-security tree, the rolling audit logs and the
+                // privileged-queue hand-off. All are I/O-free singletons.
+                services.AddSingleton(securityMonitoringPaths);
+                services.AddSingleton<ISecurityAuditWriter, SecurityAuditWriter>();
+                services.AddSingleton<ISecurityAuditReader, SecurityAuditReader>();
+                services.AddSingleton<IServerSecurityRepository, ServerSecurityRepository>();
+                services.AddSingleton<ISecurityActionQueue, SecurityActionQueue>();
 
                 // Cookie authentication for the staff/admin backend (Areas/Staff), replacing the legacy
                 // Session["Staff"] check. Tickets are protected by the DataProtection keys configured above.
@@ -191,6 +214,8 @@ var hostBuilder = new HostBuilder()
                     $"Szaipa.Web boot: scaffoldSuggestions={legacyScaffoldCommandService.GetSuggestions().Count}");
                 Console.WriteLine(
                     $"Szaipa.Web boot: readModelFlags=szaipa:{readOnlyMigration.EnableSzaipaReadModels},tongou:{readOnlyMigration.EnableTongouReadModels}");
+                Console.WriteLine(
+                    $"Szaipa.Web boot: securityMonitoringRoot={securityMonitoringPaths.ServerSecurityRoot}, auditEnabled={securityMonitoringPaths.RequestAuditEnabled}");
 
                 var configuredLegacySources = legacyConnectionPolicy.GetConfiguredSources();
                 var hasReadWriteLegacySource = workspaceDiagnostics.HasReadWriteLegacySource;
@@ -266,6 +291,13 @@ var hostBuilder = new HostBuilder()
                 }
 
                 app.UseRouting();
+                if (securityMonitoringPaths.RequestAuditEnabled)
+                {
+                    // After static-file serving so asset requests are already short-circuited; the skip
+                    // policy handles extension-based misses and the /Content legacy tree.
+                    app.UseMiddleware<RequestAuditMiddleware>();
+                }
+
                 app.UseAuthentication();
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints =>

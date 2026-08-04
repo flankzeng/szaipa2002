@@ -31,6 +31,8 @@
     <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Local.example.json" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Production.example.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <!-- Development sample data for the security dashboard; not part of the immutable production artifact. -->
+    <Content Update="SecuritySampleData/**" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <!--

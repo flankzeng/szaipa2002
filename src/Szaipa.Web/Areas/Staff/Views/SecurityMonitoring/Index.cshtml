@@ -1,0 +1,157 @@
+@model SecurityMonitoringViewModel
+@{
+    ViewData["Title"] = "安全监控";
+}
+<div class="mb-8 flex items-end justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">安全监控</h1>
+        <p class="mt-1 text-sm text-muted">服务器登录尝试、异常访问与网站流量告警。@User.Identity?.Name 你好。</p>
+    </div>
+</div>
+
+@if (!Model.DataAvailable)
+{
+    <div class="mb-8 rounded-2xl border border-brand/20 bg-brand/5 px-5 py-4 text-sm text-brand">
+        @Model.UnavailableReason
+    </div>
+}
+
+@if (!Model.RequestAuditEnabled)
+{
+    <div class="mb-8 rounded-2xl border border-amber-500/20 bg-amber-500/5 px-5 py-4 text-sm text-amber-600">
+        请求/登录审计未开启（SecurityMonitoring:RequestAuditEnabled=false），下方网站流量与后台登录数据为空。
+    </div>
+}
+
+@* KPI 指标卡 *@
+<div class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-6">
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">24h 失败登录(服务器)</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-failed-logons">—</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">24h 锁定</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-lockouts">—</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">已封禁 IP</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-blocked">—</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">白名单</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-whitelist">—</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">24h Web 请求</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-requests">—</p>
+    </div>
+    <div class="admin-card">
+        <p class="text-xs uppercase tracking-wide text-muted">后台登录失败</p>
+        <p class="mt-2 font-serif text-3xl font-bold text-ink" id="kpi-login-fails">—</p>
+    </div>
+</div>
+
+@* 图表 *@
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">攻击源 TOP（近24h 服务器失败登录）</h2>
+        <div id="chart-sources" class="h-72 w-full"></div>
+    </section>
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">网站请求量 / 错误量（近14天）</h2>
+        <div id="chart-traffic" class="h-72 w-full"></div>
+    </section>
+</div>
+
+@* 封禁与白名单 *@
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section class="admin-card">
+        <div class="mb-4 flex items-center justify-between gap-4">
+            <h2 class="admin-card__title">当前封禁 IP</h2>
+            <span class="text-xs text-muted">剩余时间由 AutoBlock 24h 窗口计算</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-black/5 text-left text-xs uppercase tracking-wide text-muted">
+                        <th class="py-2 pr-4 font-medium">IP</th>
+                        <th class="py-2 pr-4 font-medium">封禁时间</th>
+                        <th class="py-2 pr-4 font-medium">剩余</th>
+                        <th class="py-2 font-medium">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="blocked-rows">
+                    <tr><td colspan="4" class="py-6 text-center text-muted">加载中…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-card">
+        <div class="mb-4 flex items-center justify-between gap-4">
+            <h2 class="admin-card__title">白名单</h2>
+        </div>
+        <form id="whitelist-add-form" class="mb-4 flex items-center gap-2">
+            <input id="whitelist-add-input" type="text" placeholder="输入 IPv4 地址" autocomplete="off"
+                   class="flex-1 rounded-lg border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-brand/50" />
+            <button type="submit" class="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand/90">添加</button>
+        </form>
+        <div class="flex flex-wrap gap-2" id="whitelist-items">
+            <span class="text-sm text-muted">加载中…</span>
+        </div>
+    </section>
+</div>
+
+@* 后台登录与操作队列 *@
+<div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">后台登录尝试</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-black/5 text-left text-xs uppercase tracking-wide text-muted">
+                        <th class="py-2 pr-4 font-medium">时间</th>
+                        <th class="py-2 pr-4 font-medium">用户</th>
+                        <th class="py-2 pr-4 font-medium">IP</th>
+                        <th class="py-2 font-medium">结果</th>
+                    </tr>
+                </thead>
+                <tbody id="login-rows">
+                    <tr><td colspan="4" class="py-6 text-center text-muted">加载中…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="admin-card">
+        <h2 class="admin-card__title mb-3">操作队列（待服务器计划任务处理）</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-black/5 text-left text-xs uppercase tracking-wide text-muted">
+                        <th class="py-2 pr-4 font-medium">类型</th>
+                        <th class="py-2 pr-4 font-medium">目标</th>
+                        <th class="py-2 pr-4 font-medium">状态</th>
+                        <th class="py-2 font-medium">结果</th>
+                    </tr>
+                </thead>
+                <tbody id="action-rows">
+                    <tr><td colspan="4" class="py-6 text-center text-muted">加载中…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+@* 告警历史 *@
+<section class="admin-card mb-8">
+    <h2 class="admin-card__title mb-3">邮件告警日志（alert_errors.log）</h2>
+    <div class="max-h-64 overflow-y-auto rounded-lg border border-black/5 bg-canvas p-3 font-mono text-xs text-ink/70" id="alert-log">
+        <p class="text-muted">加载中…</p>
+    </div>
+</section>
+
+@Html.AntiForgeryToken()
+@section Scripts {
+    <script src="~/admin/security-monitoring.js" asp-append-version="true" defer></script>
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-08-04T05:00:00.0000000Z",
+  "windowStartUtc": "2026-08-03T05:00:00.0000000Z",
+  "failedLogons24h": 1287,
+  "lockouts24h": 3,
+  "bySourceIp": [
+    { "ip": "203.0.113.9", "failedLogons": 512, "users": [ "administrator" ], "lastSeenUtc": "2026-08-04T04:58:00.0000000Z" },
+    { "ip": "198.51.100.77", "failedLogons": 388, "users": [ "administrator", "admin" ], "lastSeenUtc": "2026-08-04T04:52:00.0000000Z" },
+    { "ip": "192.0.2.44", "failedLogons": 156, "users": [ "administrator" ], "lastSeenUtc": "2026-08-04T03:41:00.0000000Z" }
+  ],
+  "lockoutsByUser": [
+    { "user": "administrator", "count": 3 }
+  ],
+  "lastAlert": {
+    "atUtc": "2026-08-04T04:50:00.0000000Z",
+    "level": "Warning",
+    "message": "检测到暴力破解，已自动封禁 203.0.113.9"
+  }
+}
