@@ -1,3 +1,14 @@
+/* ==========================================================================
+   publication-special.css — 特殊展览页专用样式
+   加载方：Views/Publication/chunyu3.cshtml
+           Views/Publication/tonggou2.cshtml
+           Views/Publication/tonggou2024.cshtml（以上 Layout=null）
+           Views/Home/Publication.cshtml（通过 _PublicLayout 的 @section Styles）
+   关联 CSS：public-core.css（地基）/ public-layout.css（Swiper 分页器 §4）
+   消费的变量：--introCon, --type2, --pubLunbo, --pubSonHeight 等
+             （见 public-core.css §4.1, §4.5-4.6）
+   ========================================================================== */
+
 body.publication-chunyu3 {
     --special-hero-background: url('/Content/images/chunyu-color2.jpg');
     --special-heading-margin-bottom: 8vh;
@@ -28,8 +39,8 @@ html {
 
 @media (max-width: 61.9375em) {
     html {
-        /* 三个特殊展览页不继承 legacy 窄屏 26px 根字号。 */
-        font-size: clamp(93.75%, 4.1vw, 100%) !important;
+        /* 三个特殊展览页不继承 legacy 窄屏 26px 根字号（legacy 已移除，不再需要 !important）。 */
+        font-size: clamp(93.75%, 4.1vw, 100%);
     }
 }
 
@@ -902,5 +913,98 @@ html {
         width: 100%;
         max-width: 100%;
         margin-top: 6vh;
+    }
+}
+
+/* ==========================================================================
+   Publication 响应式选择器 — 从 legacy responsive.css 迁移
+   来源：szaipa2022/Content/Model/css/responsive.css 第 357–487 行
+   迁移日期：2026-08-04
+   ========================================================================== */
+
+/* 桌面层 ≥768：publication 图片容器上移 */
+/* 来源：responsive.css 第 358–360 行 */
+@media only screen and (min-width: 768px) {
+    .imgCon_Pub {
+        transform: translateY(-20%);
+    }
+}
+
+/* 手机层 ≤991：publication / 特殊页 / 春语3 / 同构2 */
+/* 来源：responsive.css 第 381–487 行 */
+@media only screen and (max-width: 991px) {
+    .elementPub {
+        height: 6vh;
+        bottom: -5%;
+    }
+
+    .imgCon_PubSon {
+        margin-top: -15%;
+    }
+
+    .imgCon_PubMobCon {
+        transform: translateX(-9%);
+        margin-bottom: 10vh;
+    }
+
+    .imgCon_PubMob {
+        transform: translateX(7%);
+    }
+
+    .mob {
+        transform: translate3d(0, 0, 0) translateY(10%);
+    }
+
+    .trading {
+        height: 2vh;
+        position: relative;
+        padding-left: 10%;
+    }
+
+    .mySwiper2 {
+        width: 85%;
+    }
+
+    .mySwiper2 .swiper-slide {
+        width: auto;
+    }
+
+    .type1 {
+        margin-top: 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    .type2 {
+        margin-top: 0;
+        width: 100%;
+        max-height: none;
+        max-width: none;
+    }
+
+    .btn1 input,
+    .btn1 button {
+        width: 80vw;
+    }
+
+    .btn2 input,
+    .btn2 button {
+        width: 80vw;
+    }
+
+    .btn1 button {
+        margin-bottom: 2vh;
+    }
+
+    .btn2 button {
+        margin-bottom: 10vh;
+    }
+
+    .introCon .msg p {
+        padding-top: 0;
+    }
+
+    .trading-copyright {
+        bottom: 0;
     }
 }

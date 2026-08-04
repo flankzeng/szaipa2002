@@ -1,4 +1,9 @@
-/* 艺术家主页样式。 */
+/* ==========================================================================
+   art.css — 艺术家详情页专用样式
+   加载方：Views/Home/Art.cshtml（通过 _ArtistLayout 的 @section Styles）
+   关联 CSS：public-core.css（变量 §4.7-4.8）/ public-layout.css §5（子导航）
+           public-pages.css §4（ArtArchive/ArtArticle 富文本内容区）
+   ========================================================================== */
     body {
         overflow-x: hidden;
     }

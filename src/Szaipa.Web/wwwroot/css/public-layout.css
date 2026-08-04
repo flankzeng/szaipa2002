@@ -1,0 +1,579 @@
+/* ==========================================================================
+   public-layout.css — 全站共享组件层
+   ==========================================================================
+
+   【导航】
+   谁加载我 ─   Views/Shared/_PublicLayout.cshtml    （公开页主布局）
+               Views/Shared/_ArtistLayout.cshtml     （艺术家页布局）
+
+   关联 CSS ─  public-core.css    地基（reset / @font-face / 栅格 / 全部 :root 变量）
+              public-pages.css   小页面合集
+              docs/css-navigation-guide.md  说明书
+
+   【内容】
+     §1 主导航栏（banner / logo / topList）
+     §2 邮件订阅区（#section08 / #section08m）
+     §3 底栏（.section09 / .footer / .copyright）
+     §4 Swiper 分页器响应式
+     §5 艺术家子导航 + 页脚皮肤
+   ========================================================================== */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §1 主导航栏（banner / logo / topList）
+   影响：全部公开页（通过 _PublicLayout / _ArtistLayout 共享）
+   消费的变量：--logo1, --navFontsize, --navTop, --navRight（见 public-core.css §4.1）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.bannerCon {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: var(--logo1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: white;
+    z-index: 999;
+    border-bottom: .7px solid #877150;
+}
+
+.logo1 {
+    position: absolute;
+    left: 2vw;
+    height: var(--logo1);
+    width: auto;
+}
+
+.bannerLink {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: inherit;
+    text-align: right;
+}
+
+.bannerLink a {
+    float: left;
+    font-family: 'smile-core', 'smile';
+    font-size: var(--navFontsize);
+    margin-right: var(--navRight);
+    margin-top: var(--navTop);
+    text-decoration: none;
+    color: black;
+    white-space: nowrap;
+    word-break: keep-all;
+    writing-mode: horizontal-tb;
+}
+
+.topList {
+    height: inherit;
+    display: flex;
+    float: right;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    flex-wrap: nowrap;
+}
+
+.topList li {
+    flex: 0 0 auto;
+}
+
+.lineL {
+    height: inherit;
+    border-left: .7px solid #877150;
+    padding-right: 4em;
+}
+
+.lineR {
+    margin-right: 3.5em;
+    height: inherit;
+    border-right: .7px solid #877150;
+}
+
+/* ---------- 导航栏 平板+响应式 ---------- */
+@media (max-width: 79.9375em) {
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    .bannerCon {
+        width: 100%;
+        height: var(--logo1);
+        padding: 0;
+        margin-bottom: 0 !important;
+    }
+
+    .brandLink {
+        position: relative;
+        float: left;
+        width: 29%;
+        height: 100%;
+        padding: 0;
+    }
+
+    .logo1 {
+        left: 2vw;
+        height: var(--logo1);
+        width: auto;
+    }
+
+    .navSpacer {
+        display: none;
+    }
+
+    .bannerLink {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 71%;
+        height: inherit;
+        padding: 0;
+    }
+
+    .topList {
+        display: flex;
+        float: none;
+        width: 100%;
+        height: inherit;
+    }
+
+    .topList li {
+        flex: 1 1 25%;
+        min-width: 0;
+        height: 100%;
+        padding-right: 0 !important;
+    }
+
+    .lineL,
+    .lineR {
+        flex: 0 0 1px;
+        height: inherit;
+        margin: 0 !important;
+        padding: 0;
+    }
+
+    .bannerLink a {
+        display: block;
+        float: none;
+        width: 100%;
+        margin-top: var(--navTop);
+        margin-right: 0;
+        padding: 0;
+        font-size: 1rem;
+        line-height: normal;
+        text-align: center;
+        white-space: nowrap;
+        word-break: keep-all;
+        writing-mode: horizontal-tb;
+    }
+}
+
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    .bannerLink a {
+        font-size: var(--navFontsize);
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §2 邮件订阅区（#section08 / #section08m）
+   影响：全部公开页（#section08 桌面端，#section08m 手机端）
+   对应 partial：Views/Shared/_NewsletterSubscribeDesktop.cshtml
+                Views/Shared/_NewsletterSubscribeMobile.cshtml
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#section08 {
+    height: 30vh;
+    width: 100%;
+    background-color: white;
+    position: relative;
+    margin-top: 5vh;
+}
+
+#section08m {
+    height: 80vh;
+    width: 100%;
+    background-color: black;
+    color: white;
+    position: relative;
+    border-top: 1px solid #ededed;
+}
+
+.fuzhu {
+    width: 100%;
+    transform: translateY(25%);
+}
+
+.dui {
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+    background-image: url('/Content/images/dui-06.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.enter02 {
+    filter: grayscale(100%);
+    box-shadow: none;
+    background-color: transparent;
+    border: none;
+    float: right;
+    transform: translateY(-140%);
+}
+
+.enter02 img {
+    width: 1.5vw;
+    height: auto;
+}
+
+.emailPosition h1 {
+    text-align: center;
+    font-family: var(--fontLight);
+}
+
+.emailPosition h1 {
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 5vh;
+}
+
+.emailPosition p {
+    text-align: justify;
+    color: #939393;
+    margin-top: 3vh;
+    font-weight: 200;
+    font-size: 1.2rem;
+    line-height: 1.8em;
+}
+
+.emailPosition {
+    height: auto;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#section08m button {
+    display: flex;
+    background-color: transparent;
+    color: white;
+    font-family: var(--fontLight);
+    font-size: 1.3rem;
+    margin: 5vh auto;
+    box-shadow: none;
+    border: 1px solid white;
+    padding: .5vh 2vw;
+}
+
+.guanzhu {
+    width: 8vw;
+    height: auto;
+    margin-right: 3vw;
+}
+
+.logoContainerM {
+    height: 100%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.email {
+    position: relative;
+    width: var(--emailLine);
+    margin-bottom: 1.3vh;
+    border-bottom: 1.5px solid black;
+}
+
+.emailInput {
+    width: var(--emailLine);
+    margin-bottom: 0.5vh;
+    padding-left: 0.1em;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: var(--email);
+    letter-spacing: 0.05em;
+}
+
+.emailInput::placeholder {
+    color: black;
+}
+
+#section08m .email input::placeholder {
+    padding-left: 2vw;
+    color: white;
+    font-size: 1rem;
+    font-family: 'dinLight';
+}
+
+#section08m .email input {
+    margin-bottom: 0px;
+}
+
+.email input::placeholder {
+    color: black;
+    font-size: var(--emailHolder);
+    font-family: 'dinLight';
+}
+
+.jieshou {
+    line-height: 20px;
+    vertical-align: middle;
+    font-size: var(--jieshou);
+    white-space: nowrap;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+    font-display: swap;
+    font-weight: 400;
+}
+
+.jieshou span {
+    display: inline-block;
+    transform: translateY(-8%);
+}
+
+.emailContainerM {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.emailM {
+    background-color: transparent;
+    width: 100%;
+    height: 2vh;
+    font-size: 1.3rem;
+    outline: none;
+    border: 1px solid white;
+    padding: 1em 1em;
+}
+
+.logoContainerM a {
+    margin-bottom: 5vh;
+}
+
+@media (max-width: 61.9375em) {
+    #section08m {
+        height: 80vh;
+    }
+
+    .emailPosition h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .emailPosition p {
+        font-size: 1rem;
+        line-height: 1.8em;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §3 底栏（.section09 / .footer / .copyright）
+   影响：全部公开页（_PublicLayout / _ArtistLayout 内嵌的 <footer>）
+   消费的变量：--footerBorder, --footerFontsize, --footerLineheight（见 public-core.css §4.1）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section09 {
+    height: 40vh;
+    width: 100%;
+    background-color: black;
+    color: #939393;
+    overflow: hidden;
+}
+
+.section09m {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    color: #939393;
+    overflow: hidden;
+}
+
+.footer {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding-top: 5vh;
+}
+
+.footerList {
+    position: relative;
+    border-left: var(--footerBorder);
+    height: 100%;
+}
+
+.copyrightM {
+    padding: 5vh 0 5vh 0;
+    line-height: var(--footerLineheight);
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    font-size: var(--footerFontsize);
+    border-top: 1.5px solid #939393;
+}
+
+.copyrightM a {
+    color: #939393;
+    text-decoration: none;
+}
+
+.copyright {
+    position: relative;
+    height: 100%;
+}
+
+.copyright p {
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+}
+
+.copyright p>br {
+    font-size: var(--footerFontsize);
+    line-height: 1.5em;
+}
+
+.copyright-container {
+    border-top: var(--footerBorder);
+    height: 35vh;
+}
+
+.copyright-container p {
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+}
+
+.copyright-container a,
+.copyright-container p {
+    text-decoration: none;
+    font-weight: 300;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+    font-size: 1rem;
+    line-height: var(--footerLineheight);
+}
+
+@media (max-width: 61.9375em) {
+    .copyrightM {
+        box-sizing: border-box;
+        padding: 5vh 8%;
+        font-size: .8rem;
+        line-height: 1.8em;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §4 Swiper 分页器响应式
+   影响：首页 Index.cshtml、展览页 Publication.cshtml（加载 Swiper 的页面）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media only screen and (max-width: 991px) {
+    .mySwiper .swiper-pagination-bullet {
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .swiper-horizontal>.swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal,
+    .swiper-pagination-custom,
+    .swiper-pagination-fraction {
+        bottom: 1vh;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §5 艺术家页共享组件（子导航 / 底栏皮肤 / ArtistNav）
+   影响：Art.cshtml / ArtArchive.cshtml / ArtArticle.cshtml（通过 _ArtistLayout 加载）
+   消费的变量：--subnavH, --subnavPad, --subnavSize 等（见 public-core.css §4.7-4.8）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.subNav {
+    height: var(--subnavH);
+    width: 100vw;
+    padding: var(--subnavPad);
+    position: relative;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    font-size: var(--subnavSize);
+    letter-spacing: .2em;
+}
+
+/* 艺术家页下的 fuzhu — 覆盖 §2 默认 fuzhu 样式 */
+.subNav .fuzhu,
+.artist-layout .fuzhu {
+    height: 12vh;
+    width: auto;
+    position: absolute;
+    top: 30%;
+    transform: translateY(-50%);
+    right: 10%;
+}
+
+/* 艺术家页下的 dui — 覆盖 §2 默认 dui 样式 */
+.artist-layout .dui,
+.subNav .dui {
+    height: 2vh;
+    width: auto;
+    vertical-align: middle;
+}
+
+/* 艺术家页底栏 — 黑色背景白色文字 */
+.artist-layout .footer {
+    background-color: black;
+}
+
+.artist-layout .copyrightM {
+    border-top: 1.5px solid white;
+}
+
+.artist-layout .copyright-container a,
+.artist-layout .copyright-container p {
+    color: white;
+}
+
+#ArtistNav {
+    position: fixed;
+    top: 3%;
+    right: 1%;
+    font-size: 1rem;
+    z-index: 999;
+}
+
+#ArtistNav a {
+    color: black;
+    background-color: white;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-decoration: none !important;
+    padding: .5vh 1vw;
+}
+
+.activeLink a {
+    color: white !important;
+    background-color: black !important;
+}

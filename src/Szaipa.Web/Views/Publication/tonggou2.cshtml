@@ -17,10 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>同构《第二季》·当代艺术展</title>
     <link rel="icon" href="/Content/123/tonggou.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/Content/Model/css/responsive.css">
-    <link rel="stylesheet" href="/Content/Model/css/Site.css">
-    <link rel="stylesheet" href="/css/font-subsets-public.css" asp-append-version="true">
-    <link rel="stylesheet" href="~/css/public-bootstrap-baseline.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/public-core.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/font-subsets-public.css" asp-append-version="true">
     <!-- 引入Swiper.js -->
     <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true">
     <script defer src="~/public/vendor/swiper-public.js" asp-append-version="true"></script>
@@ -506,30 +504,8 @@
 
 
 
-    <section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
-        <div class="emailContainerM">
-            <div class="emailPosition">
-
-                <h1>深圳市艺术产业新闻邮件</h1>
-
-
-                <input class="emailM" type="email" placeholder="EMAIL">
-                <button type="submit">订&#12288;阅</button>
-
-                <p>订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
-                    <br />
-                    一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
-                </p>
-            </div>
-            <div class="logoContainerM">
-                <a href="Javascript:;;">
-                    <img loading="lazy" decoding="async" src="/Content/icon/wechat.svg" class="guanzhu" alt=""></a>
-                <a href="Javascript:;;">
-                    <img loading="lazy" decoding="async" src="/Content/icon/douyin.svg" class="guanzhu" alt=""></a>
-            </div>
-
-        </div>
-    </section>
+    <!-- 邮件订阅块（手机版，共享 partial） -->
+    <partial name="_NewsletterSubscribeMobile" />
 
     <!-- FOOTER - PC -->
 

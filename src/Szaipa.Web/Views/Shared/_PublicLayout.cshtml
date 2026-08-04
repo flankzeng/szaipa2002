@@ -1,5 +1,4 @@
 @{
-    var useBootstrapCss = ViewData["UseBootstrapCss"] is not false;
 }
 <!DOCTYPE html>
 
@@ -13,20 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" href="/Content/123/favicon.ico" type="image/x-icon">
-    @if (useBootstrapCss)
-    {
-        <link rel="stylesheet" href="/Content/Model/css/bootstrap.css">
-    }
-    else
-    {
-        <link rel="stylesheet" href="~/css/public-bootstrap-baseline.css" asp-append-version="true">
-    }
-    <link rel="stylesheet" href="/Content/Model/css/Site.css">
-    <link rel="stylesheet" href="/css/font-subsets-public.css" asp-append-version="true">
-    <link rel="stylesheet" href="/Content/Model/css/responsive.css">
-
-    <link rel="stylesheet" href="/css/public-layout-common.css" asp-append-version="true">
-    <link rel="stylesheet" href="/css/public-layout-main.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/public-core.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/font-subsets-public.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/public-layout.css" asp-append-version="true">
 
     @* 页面样式最后加载，以便覆盖公共布局与依赖样式。 *@
     @await RenderSectionAsync("Styles", required: false)

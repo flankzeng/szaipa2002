@@ -1,4 +1,10 @@
-/* 正式首页页面样式。 */
+/* ==========================================================================
+   index.css — 首页专用样式
+   加载方：Views/Home/Index.cshtml（通过 _PublicLayout 的 @section Styles）
+   关联 CSS：public-core.css（变量）/ public-layout.css（导航/底栏/Swiper）
+   消费的变量：--carouselH, --chapterFontsize, --newsFontsize, --cardHeight 等
+             （见 public-core.css §4.1-4.4）
+   ========================================================================== */
 body .magnify {
     height: 35vh;
 }
@@ -1389,6 +1395,40 @@ a {
     .more {
         font-size: .55rem;
         line-height: 1.5;
+    }
+}
+
+/* ==========================================================================
+   Index 首页响应式选择器 — 从 legacy responsive.css 迁移
+   来源：szaipa2022/Content/Model/css/responsive.css 第 273–313 行
+   迁移日期：2026-08-04
+   ========================================================================== */
+
+@media only screen and (max-width: 991px) {
+    /* 章程 */
+    .chapterTXT {
+        margin-top: 5vh;
+    }
+
+    .chapterAll {
+        top: auto;
+        bottom: -5vh;
+    }
+
+    /* 新闻（.date 的 padding-left 重置也在 newsread.css 中处理） */
+    .allNews {
+        margin-top: 3vh;
+        margin-bottom: 4vh;
+    }
+
+    .allNews a {
+        padding: .6vh 2vw;
+    }
+
+    /* 展会活动 */
+    .processing-lunbo {
+        height: 40vh;
+        padding-bottom: 8vh;
     }
 }
 

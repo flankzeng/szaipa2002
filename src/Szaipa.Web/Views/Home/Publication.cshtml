@@ -30,41 +30,15 @@ else
     <partial name="_ExhibitionGallery" model="gallery" />
 }
 
-<!-- 以下为共享部分 -->
-<section id="section08m" class="md-hide lg-hide col-xs20 col-sm20">
-    <div class="emailContainerM">
-        <div class="emailPosition">
-
-            <h1>深圳市艺术产业新闻邮件</h1>
-
-
-            <input class="emailM" type="email" placeholder="EMAIL">
-            <button type="submit">订&#12288;阅</button>
-
-            <p>
-                订阅深圳市艺术产业新闻邮件，即时获取深圳艺术相关展讯以及艺术品背后的故事。
-                <br />
-                一旦注册深圳市艺术产业促进会新闻邮件，即表示您已充分理解并同意本政策。
-            </p>
-        </div>
-        <div class="logoContainerM">
-            <a href="Javascript:;;">
-                <img src="/Content/icon/wechat.svg" class="guanzhu" alt="">
-            </a>
-            <a href="Javascript:;;">
-                <img src="/Content/icon/douyin.svg" class="guanzhu" alt="">
-            </a>
-        </div>
-
-    </div>
-</section>
+<!-- 邮件订阅块（手机版，共享 partial） -->
+<partial name="_NewsletterSubscribeMobile" />
 
 @section Styles {
     <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true" />
     <link rel="stylesheet" href="/Content/css/publication.css" />
     @if (isImportant)
     {
-        <link rel="stylesheet" href="~/css/exhibition-important.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/public-pages.css" asp-append-version="true" />
     }
 }
 

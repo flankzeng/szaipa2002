@@ -1,4 +1,10 @@
-/* 新闻详情页面样式。 */
+/* ==========================================================================
+   newsread.css — 新闻详情页专用样式
+   加载方：Views/Home/NewsRead.cshtml（Layout=null 独立页）
+   关联 CSS：public-core.css（地基，通过 <link> 直接加载）
+   含导航栏、文章排版、响应式字号、侧栏等完整布局。
+   消费的变量：--logo1, --navFontsize, --footerBorder 等（见 public-core.css §4.1）
+   ========================================================================== */
         html {
             scroll-behavior: smooth;
         }
@@ -613,7 +619,7 @@
 @media (max-width: 61.9375em) {
     html {
         /* 旧 responsive.css 会在窄屏把 1rem 放大到约 26px；只在新闻详情页恢复可读尺度。 */
-        font-size: clamp(93.75%, 4.1vw, 100%) !important;
+        font-size: clamp(93.75%, 4.1vw, 100%);
     }
 
     .bannerCon {

@@ -1,0 +1,755 @@
+/* ==========================================================================
+   public-core.css — 全站地基层
+   ==========================================================================
+
+   【导航】
+   谁加载我 ─   Views/Shared/_PublicLayout.cshtml    （公开页主布局）
+               Views/Shared/_ArtistLayout.cshtml     （艺术家页布局）
+               Views/Home/NewsRead.cshtml            （新闻详情，Layout=null）
+               Views/Publication/chunyu3.cshtml      （春语3，Layout=null）
+               Views/Publication/tonggou2.cshtml     （同构2，Layout=null）
+               Views/Publication/tonggou2024.cshtml  （同构2024，Layout=null）
+
+   关联 CSS ─  public-layout.css  组件层（导航/邮件/底栏/Swiper/艺术家子导航）
+              public-pages.css   小页面合集
+              index.css / newsread.css / art.css / publication-special.css  独立大页面
+
+   说明书 ──  docs/css-navigation-guide.md
+
+   Legacy 来源 ─  szaipa2022/Content/Model/css/Site.css          （栅格 + @font-face）
+                  szaipa2022/Content/Model/css/responsive.css    （:root 变量）
+                  szaipa2022/Content/Model/css/responsive/Artist.css （艺术家变量）
+
+   【内容】
+     §1 浏览器基线（reset / normalize）
+     §2 @font-face 声明（19 个字体族）
+     §3 20 列响应式栅格 + xs/sm/md/lg-hide
+     §4 全站 CSS 自定义属性（:root 变量，按页面 / 断点分段，修改变量值只改这一个文件）
+     §5 根字号 / 全局规则（a:focus 重置、font-size clamp）
+
+   【断点规范（全站统一，勿改数值）】
+     手机         ≤ 767px         // 栅格 xs
+     平板         768 – 991px     // 栅格 sm
+     手机+平板    ≤ 991px         // 本文件"手机层"统一用此
+     桌面         ≥ 992px
+     大屏         ≥ 1200px        // 栅格 lg
+   ========================================================================== */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §1 浏览器基线（reset / normalize）
+   影响：全部公开页 + NewsRead / chunyu3 / tonggou2 / tonggou2024
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+    font-family: sans-serif;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-text-size-adjust: none;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: #fff;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.42857143;
+    -webkit-text-size-adjust: none;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: " ";
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block;
+}
+
+[hidden],
+template {
+    display: none;
+}
+
+a {
+    background-color: transparent;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+a:hover,
+a:focus {
+    color: #23527c;
+    text-decoration: underline;
+}
+
+a:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+b,
+strong {
+    font-weight: bold;
+}
+
+small {
+    font-size: 85%;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    margin: 0;
+    color: inherit;
+    font: inherit;
+}
+
+button {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+figure {
+    margin: 0;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+td,
+th {
+    padding: 0;
+}
+
+th {
+    text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: inherit;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+h1,
+h2,
+h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h4,
+h5,
+h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 0 0 10px;
+}
+
+ul,
+ol {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* Public pages use list elements for layout; never render browser bullets. */
+ul,
+ul li {
+    list-style: none;
+}
+
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+    margin-bottom: 0;
+}
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #000 !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §2 @font-face 声明（19 个字体族）
+   影响：全部公开页 + NewsRead / chunyu3 / tonggou2 / tonggou2024
+   字体文件：/Content/fonts/（外部 Content 目录）
+   使用位置：
+     JhengBold/JhengRegular/JhengLight → 底栏 copyright、邮件订阅区
+     dinLight/dinLightI               → 章程页标题、Publication/VIP 英文标题
+     smile                             → 导航栏链接 .bannerLink a
+     cjk*                              → 展览内文（chunyu3 / tonggou2 / tonggou2024）
+     sans*                             → 各处 fallback
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- 微软正黑家族 ---------- */
+@font-face {
+    font-family: 'JhengBold';
+    src: url("/Content/fonts/MicrosoftJhengHeiBold.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JhengRegular';
+    src: url("/Content/fonts/MicrosoftJhengHeiRegular.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JhengLight';
+    src: url("/Content/fonts/MicrosoftJhengHeiLight.woff2") format("woff2");
+    font-display: swap;
+}
+
+/* ---------- DIN ---------- */
+@font-face {
+    font-family: "dinLight";
+    src: url("/Content/fonts/DIN-Light.woff") format("woff");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "dinLightI";
+    src: url("/Content/fonts/DIN-LightItalic.woff") format("woff");
+    font-display: swap;
+}
+
+/* ---------- 得意黑 ---------- */
+@font-face {
+    font-family: "smile";
+    src: url("/Content/fonts/SmilelySans.woff") format("woff");
+    font-display: swap;
+}
+
+/* ---------- 思源宋体 ---------- */
+@font-face {
+    font-family: "cjkExtraLight";
+    src: url("/Content/fonts/NotoSerifSC-ExtraLight.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkLight";
+    src: url("/Content/fonts/NotoSerifSC-Light.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkRegular";
+    src: url("/Content/fonts/NotoSerifSC-Regular.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkMedium";
+    src: url("/Content/fonts/NotoSerifSC-Medium.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkSemiBold";
+    src: url("/Content/fonts/NotoSerifSC-SemiBold.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkBold";
+    src: url("/Content/fonts/NotoSerifSC-Bold.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "cjkBlack";
+    src: url("/Content/fonts/NotoSerifSC-Black.woff2") format("woff2");
+    font-display: swap;
+}
+
+/* ---------- 思源黑体 ---------- */
+@font-face {
+    font-family: "sansExtraLight";
+    src: url("/Content/fonts/NotoSansSC-Thin.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansLight";
+    src: url("/Content/fonts/NotoSansSC-Light.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansNormal";
+    src: url("/Content/fonts/SourceHanSansCN-Normal.woff") format("woff");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansRegular";
+    src: url("/Content/fonts/NotoSansSC-Regular.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansMedium";
+    src: url("/Content/fonts/NotoSansSC-Medium.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansBold";
+    src: url("/Content/fonts/NotoSansSC-Bold.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "sansHeavy";
+    src: url("/Content/fonts/NotoSansSC-Black.woff2") format("woff2");
+    font-display: swap;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §3 20 列响应式栅格 + xs/sm/md/lg-hide 工具类
+   影响：全部公开页（25+ 个视图使用 col-* / *-hide 类）
+   断点：xs≤767 / sm 768–991 / md 992–1199 / lg≥1200（勿改数值）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- 响应式隐藏 ---------- */
+
+@media only screen and (max-width: 767px) {
+    .xs-hide { display: none !important; }
+    .col-xs1, .col-xs2, .col-xs3, .col-xs4, .col-xs5, .col-xs6, .col-xs7,
+    .col-xs8, .col-xs9, .col-xs10, .col-xs11, .col-xs12, .col-xs13, .col-xs14,
+    .col-xs15, .col-xs16, .col-xs17, .col-xs18, .col-xs19, .col-xs20 {
+        float: left;
+    }
+    .col-xs20 { width: 100%; }  .col-xs19 { width: 95%; }  .col-xs18 { width: 90%; }
+    .col-xs17 { width: 85%; }   .col-xs16 { width: 80%; }  .col-xs15 { width: 75%; }
+    .col-xs14 { width: 70%; }   .col-xs13 { width: 65%; }  .col-xs12 { width: 60%; }
+    .col-xs11 { width: 55%; }   .col-xs10 { width: 50%; }  .col-xs9  { width: 45%; }
+    .col-xs8  { width: 40%; }   .col-xs7  { width: 35%; }  .col-xs6  { width: 30%; }
+    .col-xs5  { width: 25%; }   .col-xs4  { width: 20%; }  .col-xs3  { width: 15%; }
+    .col-xs2  { width: 10%; }   .col-xs1  { width: 5%; }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .sm-hide { display: none !important; }
+    .col-sm1, .col-sm2, .col-sm3, .col-sm4, .col-sm5, .col-sm6, .col-sm7,
+    .col-sm8, .col-sm9, .col-sm10, .col-sm11, .col-sm12, .col-sm13, .col-sm14,
+    .col-sm15, .col-sm16, .col-sm17, .col-sm18, .col-sm19, .col-sm20 {
+        float: left;
+    }
+    .col-sm20 { width: 100%; }  .col-sm19 { width: 95%; }  .col-sm18 { width: 90%; }
+    .col-sm17 { width: 85%; }   .col-sm16 { width: 80%; }  .col-sm15 { width: 75%; }
+    .col-sm14 { width: 70%; }   .col-sm13 { width: 65%; }  .col-sm12 { width: 60%; }
+    .col-sm11 { width: 55%; }   .col-sm10 { width: 50%; }  .col-sm9  { width: 45%; }
+    .col-sm8  { width: 40%; }   .col-sm7  { width: 35%; }  .col-sm6  { width: 30%; }
+    .col-sm5  { width: 25%; }   .col-sm4  { width: 20%; }  .col-sm3  { width: 15%; }
+    .col-sm2  { width: 10%; }   .col-sm1  { width: 5%; }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .md-hide { display: none !important; }
+    .col-md1, .col-md2, .col-md3, .col-md4, .col-md5, .col-md6, .col-md7,
+    .col-md8, .col-md9, .col-md10, .col-md11, .col-md12, .col-md13, .col-md14,
+    .col-md15, .col-md16, .col-md17, .col-md18, .col-md19, .col-md20 {
+        float: left;
+    }
+    .col-md20 { width: 100%; }  .col-md19 { width: 95%; }  .col-md18 { width: 90%; }
+    .col-md17 { width: 85%; }   .col-md16 { width: 80%; }  .col-md15 { width: 75%; }
+    .col-md14 { width: 70%; }   .col-md13 { width: 65%; }  .col-md12 { width: 60%; }
+    .col-md11 { width: 55%; }   .col-md10 { width: 50%; }  .col-md9  { width: 45%; }
+    .col-md8  { width: 40%; }   .col-md7  { width: 35%; }  .col-md6  { width: 30%; }
+    .col-md5  { width: 25%; }   .col-md4  { width: 20%; }  .col-md3  { width: 15%; }
+    .col-md2  { width: 10%; }   .col-md1  { width: 5%; }
+}
+
+@media only screen and (min-width: 1200px) {
+    .lg-hide { display: none !important; }
+    .col-lg1, .col-lg2, .col-lg3, .col-lg4, .col-lg5, .col-lg6, .col-lg7,
+    .col-lg8, .col-lg9, .col-lg10, .col-lg11, .col-lg12, .col-lg13, .col-lg14,
+    .col-lg15, .col-lg16, .col-lg17, .col-lg18, .col-lg19, .col-lg20 {
+        float: left;
+    }
+    .col-lg20 { width: 100%; }  .col-lg19 { width: 95%; }  .col-lg18 { width: 90%; }
+    .col-lg17 { width: 85%; }   .col-lg16 { width: 80%; }  .col-lg15 { width: 75%; }
+    .col-lg14 { width: 70%; }   .col-lg13 { width: 65%; }  .col-lg12 { width: 60%; }
+    .col-lg11 { width: 55%; }   .col-lg10 { width: 50%; }  .col-lg9  { width: 45%; }
+    .col-lg8  { width: 40%; }   .col-lg7  { width: 35%; }  .col-lg6  { width: 30%; }
+    .col-lg5  { width: 25%; }   .col-lg4  { width: 20%; }  .col-lg3  { width: 15%; }
+    .col-lg2  { width: 10%; }   .col-lg1  { width: 5%; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §4 全站 CSS 自定义属性（:root 变量，修改变量只改这一个文件）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* --- §4.1 全局默认值（所有屏宽） --- */
+/* 影响：全部公开页 */
+:root {
+    /* section01 导航栏 */
+    --logo1: 16.6vh;
+    --navFontsize: 1.5rem;
+    --navTop: 10.5vh;
+    --navRight: 0.7vw;
+
+    /* section08 留邮箱 */
+    --email: 1rem;
+    --jieshou: 1rem;
+
+    /* section09 底栏 */
+    --footerBorder: 0.7px solid #939393;
+    --footerFontsize: 1.4rem;
+    --footerLineheight: 1.8em;
+
+    /* section02 轮播 */
+    --carouselH: 65vh;
+    --carouselTXT: 1.5rem;
+    --logoTXT: 19.5vh;
+    --sectionHeight: 100vh;
+
+    /* section04 章程 */
+    --chapterTop: 15vh;
+    --zhangcheng: 57vh;
+    --chapterFontsize: 1.1rem;
+
+    /* section05 核心成员 */
+    --memberImgW: 12vw;
+
+    /* section06 新闻 */
+    --newsFontsize: 1.2rem;
+    --newsEnter: 1.4vw;
+    --newsPtag: 1rem;
+    --newsSpantag: 1rem;
+    --newsRadius: .7vw;
+    --normalNewsLine: 0.5px solid #cccccc;
+    --newsPadding: 2vh;
+    --newsHoverValue: scale(1.01);
+    --newsHoverAnime: 200ms;
+
+    /* section07 展会活动 */
+    --zhuangtai: 1rem;
+    --exhibitionH1: 1.7rem;
+    --exhibitionH3: 1rem;
+    --exhibitionMore: 1rem;
+    --cardHeight: 55vh;
+    --cardWidth: 20.8vw;
+    --cardTXT: 1.1rem;
+
+    /* 通用 */
+    --title: 2.2rem;
+    --defaultTop: 15vh;
+
+    /* 春语3页面单独 */
+    --introCon: 5% 10% 10vh 10%;
+    --type2: -20vh;
+
+    /* 后台（仅 Staff 登录页用）*/
+    --loginboxW: 70vw;
+    --loginboxH: 45vh;
+    --loginboxMG: 50% auto;
+}
+
+/* --- §4.2 桌面层 ≥768：全局通用变量 --- */
+/* 影响：全部公开页（平板 768–991 也套用，历史兼容） */
+@media only screen and (min-width: 768px) {
+    :root {
+        --carouselTXT: 1.5rem;
+        --chapterFontsize: 1.3rem;
+        --chapterBottom: 10vh;
+        --sellingH: 70vh;
+        --newsRadius: .4vw;
+        --dateLeft: 2em;
+        --buttonRadius: .5vw;
+        --zhuangtai: .9rem;
+        --indexProgressBar: 0%;
+        --emailLine: 20vw;
+        --enterButton: 1.5vw;
+        --pubSonHeight: 82vh;
+        --loginboxW: 20vw;
+        --loginboxH: 50vh;
+        --loginboxMG: 20vh auto;
+    }
+}
+
+/* --- §4.3 手机+平板 ≤991：全局通用变量 --- */
+/* 影响：全部公开页 */
+@media only screen and (max-width: 991px) {
+    :root {
+        --logo1: 10vh;
+        --navFontsize: 1.3rem;
+        --navTop: 6vh;
+        --memberImgW: 20vw;
+        --dateLeft: 0;
+        --indexProgressBar: 11.8%;
+        --email: 1rem;
+        --jieshou: 1rem;
+        --footerBorder: 0.7px solid #939393;
+        --footerFontsize: 1rem;
+        --footerLineheight: 1.8em;
+        --introCon: 17% 10% 10vh 10%;
+        --type2: -30%;
+    }
+}
+
+/* --- §4.4 手机层 ≤991：首页专用变量 --- */
+/* 影响：首页 Index.cshtml */
+@media only screen and (max-width: 991px) {
+    :root {
+        --carouselH: 25vh;
+        --carouselTXT: .8rem;
+        --sectionHeight: 40vh;
+        --logoTXT: 5.5vh;
+        --chapterTop: 0;
+        --chapterBottom: 10vh;
+        --zhangcheng: 20vh;
+        --chapterFontsize: 1.3rem;
+        --sellingH: 45vh;
+        --newsFontsize: 1.3rem;
+        --newsEnter: 3vw;
+        --newsPtag: 1.1rem;
+        --newsRadius: 1.5vw;
+        --buttonRadius: 1.5vw;
+        --cardHeight: 50vh;
+        --cardWidth: 80vw;
+        --cardTXT: 1.5rem;
+        --defaultTop: 8vh;
+    }
+}
+
+/* --- §4.5 其余页面 桌面层 ≥768 --- */
+/* 影响：Constitution.cshtml / Publication.cshtml / NewsRead.cshtml */
+@media only screen and (min-width: 768px) {
+    :root {
+        --sec04_h1: 3.3rem;
+        --sec04_fuzhuTop: -4%;
+        --sec04_fuzhuBottom: 10vh;
+        --sec04_fuzhuWidth: 45vw;
+        --newsTop: 10vh;
+        --pubHeading: 23vh;
+        --pubTitlePub: 28%;
+        --pubLunbo: inherit;
+        --pubLunboS: 80%;
+    }
+}
+
+/* --- §4.6 其余页面 手机层 ≤991 --- */
+/* 影响：同 §4.5（Constitution / Publication / NewsRead 的手机视图） */
+@media only screen and (max-width: 991px) {
+    :root {
+        --sec04_h1: 2.2rem;
+        --sec04_fuzhuTop: -19%;
+        --sec04_fuzhuBottom: 4vh;
+        --sec04_fuzhuWidth: 78vw;
+        --newsTop: 0vh;
+        --pubHeading: 7vh;
+        --pubTitlePub: 0;
+        --pubLunbo: 115%;
+        --pubLunboS: 90%;
+        --pubSonHeight: 80vh;
+    }
+}
+
+/* --- §4.7 艺术家页变量（全局默认） --- */
+/* 影响：Art.cshtml / ArtArchive.cshtml / ArtArticle.cshtml（通过 _ArtistLayout 加载） */
+:root {
+    --touxiang: 30%;
+    --xinwenH: 15vh;
+    --xinwenW: 15vw;
+    --liBottom: 3%;
+
+    /* info */
+    --swiperH: 88vh;
+    --touxiangW: 90%;
+    --zuopinjiH: 33%;
+    --zuopinTop: 25%;
+    --blankspaceH: 70%;
+    --materialT: 15%;
+    --informationHeader: 2.8rem;
+
+    /* news */
+    --subnavH: 25vh;
+    --subnavPad: 8vh 5%;
+    --subnavSize: 5rem;
+    --infoH: 65vh;
+    --xijieH: 100%;
+    --xijieBor: .7em solid white;
+    --xijieBottom: 1%;
+    --xijiePt: -3%;
+
+    /* NewsRead */
+    --artistNewsHeader: 40vh;
+    --artistNewsTitle: 3rem;
+}
+
+/* --- §4.8 艺术家页 平板 768–991 --- */
+/* 影响：同 §4.7（艺术家三页的平板视图）
+   ⚠️ 历史遗留：窄带 768–991，<768 手机沿用桌面值。改 ≤991 会改变手机端展示。 */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    :root {
+        --touxiang: 25%;
+        --xinwenH: 13vh;
+        --xinwenW: 30vw;
+        --liBottom: 10%;
+        --swiperH: 70vh;
+        --touxiangW: 100%;
+        --zuopinjiH: 30%;
+        --zuopinTop: 34%;
+        --blankspaceH: 75%;
+        --materialT: 18%;
+        --informationHeader: 2.4rem;
+        --subnavH: 15vh;
+        --subnavPad: 4vh 5%;
+        --subnavSize: 4rem;
+        --infoH: 30vh;
+        --xijieH: 20vh;
+        --xijieBottom: 7%;
+        --xijiePt: -15%;
+        --artistNewsHeader: 20vh;
+        --artistNewsTitle: 2rem;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §5 根字号 / 全局规则
+   影响：全部公开页 + NewsRead / chunyu3 / tonggou2 / tonggou2024
+   内容：html scroll-behavior、a:focus outline:0（去掉浏览器默认紫色边框）、
+         font-size clamp（替代 legacy 的 26px/12px 固定字号阶梯）
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* 全局取消链接点击/聚焦时的浏览器默认边框线 */
+a:active,
+a:focus {
+    outline: 0;
+}
+
+@media (max-width: 61.9375em) {
+    html {
+        font-size: clamp(93.75%, 4.1vw, 100%);
+    }
+}
+
+@media (min-width: 62em) and (max-width: 79.9375em) {
+    html {
+        font-size: 100%;
+    }
+}
