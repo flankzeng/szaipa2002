@@ -3,7 +3,6 @@
 @model Szaipa.Data.Models.Home.HomePageSnapshotModel
 @{
 ViewBag.Title = "首页";
-ViewData["UseBootstrapCss"] = false;
 Layout = "~/Views/Shared/_PublicLayout.cshtml";
 var featuredSlides = Model.FeaturedPublications
 .Select(publication =>

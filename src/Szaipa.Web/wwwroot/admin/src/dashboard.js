@@ -3,13 +3,13 @@
 // daily-visit line, content-access doughnut, and month/year province→city sunbursts. Modular ECharts
 // imports keep the bundle small (only the chart types/components we use are included).
 import * as echarts from 'echarts/core';
-import { LineChart, PieChart, SunburstChart } from 'echarts/charts';
+import { LineChart, PieChart, BarChart } from 'echarts/charts';
 import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
 echarts.use([
-  LineChart, PieChart, SunburstChart,
+  LineChart, PieChart, BarChart,
   TooltipComponent, GridComponent, LegendComponent,
   LabelLayout, CanvasRenderer,
 ]);
@@ -73,24 +73,80 @@ function contentAccess(chart, el) {
   }).catch(function () { showEmpty(el); });
 }
 
-function geo(chart, el, range) {
+// 访客分布：横向柱状图（分类多时标签会挤压，旭日图看不全）。折前 GEO_TOP 名，其余并进「其他」；
+// 点击省份钻取到城市分布，返回按钮回到全国视图。
+var GEO_TOP = 10;
+
+function foldTop(items) {
+  var sorted = items.slice().sort(function (a, b) { return b.value - a.value; });
+  var top = sorted.slice(0, GEO_TOP);
+  var rest = sorted.slice(GEO_TOP).reduce(function (s, x) { return s + x.value; }, 0);
+  if (rest > 0) top.push({ name: '其他', value: rest });
+  return top;
+}
+
+function geoBarOption(items, title) {
+  var opt = {
+    color: PALETTE,
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      formatter: function (ps) {
+        if (!ps || !ps.length) return '';
+        return ps[0].name + '：' + ps[0].value;
+      }
+    },
+    grid: { left: 8, right: 52, bottom: 8, top: title ? 24 : 8, containLabel: true },
+    xAxis: {
+      type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } }, axisLabel: { color: MUTED }
+    },
+    yAxis: {
+      type: 'category', inverse: true,
+      data: items.map(function (i) { return i.name; }),
+      axisLine: { lineStyle: { color: '#e5e5e5' } },
+      axisLabel: { color: INK, fontSize: 11 }
+    },
+    series: [{
+      type: 'bar', barMaxWidth: 20,
+      data: items.map(function (i) { return i.value; }),
+      itemStyle: { color: PALETTE[0], borderRadius: [0, 3, 3, 0] },
+      label: { show: true, position: 'right', color: MUTED, fontSize: 11 }
+    }]
+  };
+  if (title) {
+    opt.title = { text: title, left: 0, top: 0, textStyle: { fontSize: 12, color: INK } };
+  }
+  return opt;
+}
+
+function geo(chart, el, range, backBtn) {
   getJson('/Staff/Dashboard/Geo?range=' + range).then(function (d) {
     var data = d.data || [];
     if (data.length === 0) { showEmpty(el); return; }
-    chart.setOption({
-      color: PALETTE,
-      tooltip: { trigger: 'item', formatter: '{b}: {c}' },
-      series: [{
-        type: 'sunburst', radius: ['16%', '92%'], data: data,
-        label: { color: '#fff', minAngle: 8 },
-        levels: [
-          {},
-          { r0: '16%', r: '58%', label: { rotate: 'tangential' }, itemStyle: { borderWidth: 2, borderColor: '#fff' } },
-          { r0: '58%', r: '92%', label: { align: 'right' }, itemStyle: { borderWidth: 1, borderColor: '#fff' } },
-        ],
-      }],
-    });
+    showGeoProvinces(chart, data, backBtn);
   }).catch(function () { showEmpty(el); });
+}
+
+function showGeoProvinces(chart, provinces, backBtn) {
+  if (backBtn) { backBtn.classList.add('hidden'); backBtn.onclick = null; }
+  chart.setOption(geoBarOption(foldTop(provinces)), true);
+  chart.off('click');
+  chart.on('click', function (params) {
+    if (!params || !params.name || params.name === '其他') return;
+    var p = provinces.find(function (x) { return x.name === params.name; });
+    if (p && p.children && p.children.length) {
+      showGeoCities(chart, p, provinces, backBtn);
+    }
+  });
+}
+
+function showGeoCities(chart, province, provinces, backBtn) {
+  chart.setOption(geoBarOption(foldTop(province.children), province.name), true);
+  chart.off('click');
+  if (backBtn) {
+    backBtn.classList.remove('hidden');
+    backBtn.onclick = function () { showGeoProvinces(chart, provinces, backBtn); };
+  }
 }
 
 function init() {
@@ -99,9 +155,9 @@ function init() {
   var content = mount('chart-content');
   if (content) contentAccess(content, document.getElementById('chart-content'));
   var month = mount('chart-geo-month');
-  if (month) geo(month, document.getElementById('chart-geo-month'), 'month');
+  if (month) geo(month, document.getElementById('chart-geo-month'), 'month', document.getElementById('geo-month-back'));
   var year = mount('chart-geo-year');
-  if (year) geo(year, document.getElementById('chart-geo-year'), 'year');
+  if (year) geo(year, document.getElementById('chart-geo-year'), 'year', document.getElementById('geo-year-back'));
 }
 
 if (document.readyState === 'loading') {

@@ -40,4 +40,6 @@ src/Szaipa.Web/appsettings.Local.json
 src/Szaipa.Web/appsettings.Production.json
 src/Szaipa.Web/App_Data/
 szaipa2022/App_Data/
+szaipa2022/connectionStrings.config
 /artifacts/
+src/Szaipa.Web/SecuritySampleData/audit/

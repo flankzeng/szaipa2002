@@ -17,11 +17,18 @@ public interface IDashboardAnalyticsRepository
     /// <summary>Content-access totals: summed Works/Artist/Company VisitCount + News ReadCount.</summary>
     Task<IReadOnlyList<ContentAccessSlice>> GetContentAccessAsync(CancellationToken cancellationToken);
 
-    /// <summary>Province→city visit distribution from AccessData since <paramref name="since"/>, desc by count.</summary>
+    /// <summary>
+    /// Province→city visit distribution from AccessData since <paramref name="since"/>, desc by count.
+    /// Regions are resolved live from the visit IP via qqwry (legacy Ctiy/Porvince columns hold empty/foreign
+    /// garbage since the Baidu lookup died); unresolvable IPs fall back to the stored values, else "未知".
+    /// </summary>
     Task<IReadOnlyList<GeoProvince>> GetGeoDistributionAsync(DateTime since, CancellationToken cancellationToken);
 
-    /// <summary>Operation-record feed for the last <paramref name="days"/> days, newest day first.</summary>
-    Task<IReadOnlyList<OperationRecordDay>> GetRecentOperationsAsync(int days, CancellationToken cancellationToken);
+    /// <summary>
+    /// Most recent <paramref name="maxEntries"/> operation entries (not days — one busy day holds dozens),
+    /// grouped by day newest-first, records chronological within a day.
+    /// </summary>
+    Task<IReadOnlyList<OperationRecordDay>> GetRecentOperationsAsync(int maxEntries, CancellationToken cancellationToken);
 
     /// <summary>Full operation-record history, paged by diary day and ordered newest first.</summary>
     Task<OperationRecordPage> GetOperationHistoryAsync(int page, int pageSize, CancellationToken cancellationToken);

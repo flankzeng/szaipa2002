@@ -50,7 +50,9 @@ public sealed class DashboardController : Controller
         {
             var repository = Repository();
             var kpi = await repository.GetKpiAsync(RecentDays, cancellationToken);
-            var operations = await repository.GetRecentOperationsAsync(RecentDays, cancellationToken);
+            // 近期操作记录：取最近 10 条操作条目（不限日期窗口）。生产库 OperationRecord 最近一条在 2026-07-08，
+            // 按 7 天窗口取会一直空白；改成 top-10 条条目后能正常显示，且某天几十条也不会撑爆列表。
+            var operations = await repository.GetRecentOperationsAsync(10, cancellationToken);
             return View(new DashboardViewModel { DataAvailable = true, Kpi = kpi, Operations = operations });
         }
         catch (DbException)

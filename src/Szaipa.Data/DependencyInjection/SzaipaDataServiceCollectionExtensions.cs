@@ -11,6 +11,7 @@ using Szaipa.Data.Contexts.TongouAdmin;
 using Szaipa.Data.Contracts.Home;
 using Szaipa.Data.Contracts.Tongou;
 using Szaipa.Data.Services;
+using Szaipa.Data.Services.IpGeolocation;
 using Szaipa.Data.Services.Admin;
 using Szaipa.Data.Services.Home;
 using Szaipa.Data.Services.Tongou;
@@ -165,6 +166,10 @@ public static class SzaipaDataServiceCollectionExtensions
 
             options.UseSqlServer(tongouAdminOptions.ConnectionString);
         });
+
+        // qqwry 离线 IP 定位（懒加载），供 Dashboard 访客分布按 IP 现场解析省/市。路径解析见 QqwryIpLocator；
+        // 宿主（Szaipa.Web Program.cs）用 contentRoot 覆盖注册更稳。文件缺失时 Lookup 返回 null，图表降级不报错。
+        services.AddSingleton<IQqwryIpLocator>(new QqwryIpLocator(configuration["IpGeolocation:QqwryPath"]));
 
         services.AddScoped<INewsReadRepository, NewsReadRepository>();
         services.AddScoped<IArtistReadRepository, ArtistReadRepository>();

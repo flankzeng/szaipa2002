@@ -48,14 +48,22 @@
     </section>
 </div>
 
-@* 省市旭日图 *@
+@* 省市分布（横向柱状图，前 10 + 其他，点击钻取城市） *@
 <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
     <section class="admin-card">
-        <h2 class="admin-card__title mb-3">本月访客分布（省 / 市）</h2>
+        <div class="mb-3 flex items-center justify-between gap-4">
+            <h2 class="admin-card__title mb-0">本月访客分布（省 / 市）</h2>
+            <button id="geo-month-back" type="button"
+                    class="geo-back hidden shrink-0 text-sm font-medium text-brand hover:underline">← 返回全国</button>
+        </div>
         <div id="chart-geo-month" class="h-80 w-full"></div>
     </section>
     <section class="admin-card">
-        <h2 class="admin-card__title mb-3">本年访客分布（省 / 市）</h2>
+        <div class="mb-3 flex items-center justify-between gap-4">
+            <h2 class="admin-card__title mb-0">本年访客分布（省 / 市）</h2>
+            <button id="geo-year-back" type="button"
+                    class="geo-back hidden shrink-0 text-sm font-medium text-brand hover:underline">← 返回全国</button>
+        </div>
         <div id="chart-geo-year" class="h-80 w-full"></div>
     </section>
 </div>

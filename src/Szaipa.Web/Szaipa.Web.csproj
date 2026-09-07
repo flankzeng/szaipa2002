@@ -13,6 +13,8 @@
       existing static-file cache policy still keep repeat-request CPU/network cost low.
     -->
     <CompressionEnabled>false</CompressionEnabled>
+    <!-- dotnet user-secrets 需要；开发凭据存用户目录，不进仓库任何明文文件。 -->
+    <UserSecretsId>szaipa-web-2026</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

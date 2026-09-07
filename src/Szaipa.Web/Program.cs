@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.DependencyInjection;
+using Szaipa.Data.Services.IpGeolocation;
 using Szaipa.Web.Authorization;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Infrastructure;
@@ -34,11 +35,18 @@ var isDevelopment = string.Equals(
     Environments.Development,
     StringComparison.OrdinalIgnoreCase);
 Console.WriteLine($"Szaipa.Web boot: loading configuration from {contentRoot} (environment={environmentName})");
-var configuration = new ConfigurationBuilder()
+var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(contentRoot)
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
     .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
-    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false)
+    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: false);
+if (isDevelopment)
+{
+    // 本地开发凭据放 dotnet user-secrets（用户目录），仓库与部署目录都不落明文。
+    // 优先级：appsettings < user-secrets < 环境变量 < 命令行。
+    configurationBuilder.AddUserSecrets<Program>();
+}
+var configuration = configurationBuilder
     .AddEnvironmentVariables()
     .AddCommandLine(args)
     // Keep the generic host, web host, selected appsettings file, and security policy on one canonical value.
@@ -128,6 +136,12 @@ var hostBuilder = new HostBuilder()
                     dataProtectionBuilder.ProtectKeysWithDpapi(protectToLocalMachine: true);
                 }
                 services.AddSzaipaData(configuration);
+                // contentRoot 已知，用它覆盖 AddSzaipaData 里的 qqwry 定位注册（cwd 不可靠）。
+                // 本地：<contentRoot>/App_Data/security/qqwry.dat（gitignored）；生产：部署根下同路径，或用
+                // IpGeolocation:QqwryPath 显式指定。文件缺失时 Lookup 返回 null，Dashboard 图表降级不报错。
+                services.AddSingleton<IQqwryIpLocator>(new QqwryIpLocator(
+                    configuration["IpGeolocation:QqwryPath"]
+                    ?? Path.Combine(contentRoot, "App_Data", "security", "qqwry.dat")));
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
