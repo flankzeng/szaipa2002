@@ -158,12 +158,16 @@ public sealed class ArtistReadRepository : IArtistReadRepository
     {
         try
         {
-            var rows = await (
-                from link in _context.ArtistPublication.AsNoTracking()
-                where link.ArtistId == artistId
-                join publication in _context.Publication.AsNoTracking() on link.PublicationId equals publication.Id
-                orderby link.Sort, link.Id
-                select new
+            var links = await _context.ArtistPublication.AsNoTracking()
+                .Where(link => link.ArtistId == artistId)
+                .OrderBy(link => link.Sort)
+                .ThenBy(link => link.Id)
+                .Select(link => new { link.Id, link.PublicationId })
+                .ToListAsync(cancellationToken);
+            var publicationIds = links.Select(link => link.PublicationId).ToArray();
+            var rows = await _context.Publication.AsNoTracking()
+                .Where(publication => publicationIds.Contains(publication.Id))
+                .Select(publication => new
                 {
                     publication.Id,
                     publication.TitleCN,
@@ -172,23 +176,48 @@ public sealed class ArtistReadRepository : IArtistReadRepository
                     publication.Location,
                     publication.StartDate,
                     publication.EndDate
-                }).ToListAsync(cancellationToken);
-
-            return rows
-                .Select(row => new ArtistExhibitionItemModel
-                {
-                    Id = row.Id,
-                    ArtistId = artistId,
-                    Title = row.TitleCN ?? string.Empty,
-                    CoverUrl = string.IsNullOrWhiteSpace(row.CoverPath)
-                        ? string.Empty
-                        : $"/Content/images/{row.FolderName}/{row.CoverPath}",
-                    Location = row.Location ?? string.Empty,
-                    Link = $"/Home/Publication/{row.Id}",
-                    StartDate = row.StartDate?.ToString("yyyy.MM.dd") ?? string.Empty,
-                    EndDate = row.EndDate?.ToString("yyyy.MM.dd") ?? string.Empty
                 })
-                .ToList();
+                .ToListAsync(cancellationToken);
+            var databaseById = rows.ToDictionary(row => row.Id);
+            var resolved = new List<ArtistExhibitionItemModel>(links.Count);
+            foreach (var link in links)
+            {
+                if (databaseById.TryGetValue(link.PublicationId, out var row))
+                {
+                    resolved.Add(new ArtistExhibitionItemModel
+                    {
+                        Id = row.Id,
+                        ArtistId = artistId,
+                        Title = row.TitleCN ?? string.Empty,
+                        CoverUrl = string.IsNullOrWhiteSpace(row.CoverPath)
+                            ? string.Empty
+                            : $"/Content/images/{row.FolderName}/{row.CoverPath}",
+                        Location = row.Location ?? string.Empty,
+                        Link = $"/Home/Publication/{row.Id}",
+                        StartDate = row.StartDate?.ToString("yyyy.MM.dd") ?? string.Empty,
+                        EndDate = row.EndDate?.ToString("yyyy.MM.dd") ?? string.Empty
+                    });
+                    continue;
+                }
+
+                var fallback = ArtistExhibitionCompatibilityCatalog.Find(link.PublicationId);
+                if (fallback is not null)
+                {
+                    resolved.Add(new ArtistExhibitionItemModel
+                    {
+                        Id = fallback.Id,
+                        ArtistId = artistId,
+                        Title = fallback.Title,
+                        CoverUrl = fallback.CoverUrl,
+                        Location = fallback.Location,
+                        Link = fallback.Link,
+                        StartDate = fallback.StartDate,
+                        EndDate = fallback.EndDate
+                    });
+                }
+            }
+
+            return resolved;
         }
         catch (DbException exception) when (MissingSchema.IsMissingTable(exception, "ArtistPublication"))
         {

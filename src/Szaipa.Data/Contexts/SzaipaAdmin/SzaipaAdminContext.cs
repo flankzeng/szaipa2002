@@ -67,8 +67,8 @@ public sealed class SzaipaAdminContext : DbContext
     {
         modelBuilder.Entity<News>(e => { e.ToTable("News"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<ArtNews>(e => { e.ToTable("ArtNews"); e.HasKey(x => x.Id); });
-        modelBuilder.Entity<Artist>(e => { e.ToTable("Artist"); e.HasKey(x => x.Id); });
-        modelBuilder.Entity<Works>(e => { e.ToTable("Works"); e.HasKey(x => x.Id); });
+        modelBuilder.Entity<Artist>(e => { e.ToTable("Artist"); e.HasKey(x => x.Id); e.Property(x => x.HideDefaultExhibitions).HasDefaultValue(false); });
+        modelBuilder.Entity<Works>(e => { e.ToTable("Works"); e.HasKey(x => x.Id); e.Property(x => x.Sort).HasDefaultValue(0); });
         modelBuilder.Entity<Fav>(e => { e.ToTable("Fav"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Auction>(e => { e.ToTable("Auction"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Exhibition>(e => { e.ToTable("Exhibition"); e.HasKey(x => x.Id); });

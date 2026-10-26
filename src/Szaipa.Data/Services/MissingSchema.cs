@@ -1,4 +1,6 @@
 using System.Data.Common;
+using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 
 namespace Szaipa.Data.Services;
 
@@ -9,11 +11,14 @@ namespace Szaipa.Data.Services;
 internal static class MissingSchema
 {
     public static bool IsMissingTable(DbException exception, string table) =>
-        exception.Message.Contains(table, StringComparison.OrdinalIgnoreCase)
-        && (exception.Message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)
-            || exception.Message.Contains("no such table", StringComparison.OrdinalIgnoreCase));
+        (exception is SqlException { Number: 208 }
+         || exception is SqliteException { SqliteErrorCode: 1 }
+            && exception.Message.Contains("no such table", StringComparison.OrdinalIgnoreCase)
+         || exception.Message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase))
+        && exception.Message.Contains(table, StringComparison.OrdinalIgnoreCase);
 
     public static bool IsMissingColumn(DbException exception) =>
-        exception.Message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
+        exception is SqlException { Number: 207 }
+        || exception.Message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
         || exception.Message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
 }

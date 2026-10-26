@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.Contracts.Home;
+using Szaipa.Data.Models.Home;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Models;
 using Szaipa.Web.Services;
@@ -154,10 +155,55 @@ public class HomeController : Controller
                 return NotFound();
             }
 
+            profile = ResolveCompatibilityArtistExhibitions(profile);
+
             return View("Art", profile);
         }
 
         return StatusCode(StatusCodes.Status503ServiceUnavailable);
+    }
+
+    private static ArtistProfileSnapshotModel ResolveCompatibilityArtistExhibitions(ArtistProfileSnapshotModel profile)
+    {
+        var exhibitions = profile.RelatedExhibitions.Select(item =>
+        {
+            if (!item.Title.StartsWith("兼容展览 #", StringComparison.Ordinal))
+            {
+                return item;
+            }
+
+            var publication = LegacyPublicationGalleryCatalog.GetFallbackPublication(item.Id)?.Publication;
+            if (publication is null)
+            {
+                return item;
+            }
+
+            return new ArtistExhibitionItemModel
+            {
+                Id = item.Id,
+                ArtistId = item.ArtistId,
+                Title = publication.TitleCn,
+                CoverUrl = string.IsNullOrWhiteSpace(publication.CoverPath)
+                    ? string.Empty
+                    : $"/Content/images/{publication.FolderName}/{publication.CoverPath}",
+                Location = publication.Location,
+                Link = $"/Home/Publication/{item.Id}",
+                StartDate = publication.StartDate?.ToString("yyyy.MM.dd") ?? string.Empty,
+                EndDate = publication.EndDate?.ToString("yyyy.MM.dd") ?? string.Empty
+            };
+        }).ToArray();
+
+        return new ArtistProfileSnapshotModel
+        {
+            Artist = profile.Artist,
+            Works = profile.Works,
+            LatestNews = profile.LatestNews,
+            LatestPublications = profile.LatestPublications,
+            LatestFavorites = profile.LatestFavorites,
+            LatestAuctions = profile.LatestAuctions,
+            RelatedExhibitions = exhibitions,
+            ShowDefaultExhibitions = profile.ShowDefaultExhibitions
+        };
     }
 
     [HttpGet("newArt/{id:int}")]

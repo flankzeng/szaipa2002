@@ -25,16 +25,17 @@ public sealed class FavController : Controller
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> Index(int page = 1, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(int page = 1, int? artistId = null, CancellationToken cancellationToken = default)
     {
-        return View(await _repository.GetPagedAsync(page, PageSize, cancellationToken));
+        ViewBag.ArtistId = artistId;
+        return View(await _repository.GetPagedAsync(page, PageSize, cancellationToken, artistId));
     }
 
     [HttpGet("Create")]
-    public async Task<IActionResult> Create(CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(int? artistId, CancellationToken cancellationToken)
     {
         await PopulateArtistsAsync(null, cancellationToken);
-        return View(new FavFormViewModel());
+        return View(new FavFormViewModel { ArtistId = artistId ?? 0 });
     }
 
     [HttpPost("Create")]
@@ -49,7 +50,7 @@ public sealed class FavController : Controller
 
         await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
         TempData["Success"] = "收藏已新增。";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { artistId = model.ArtistId == 0 ? (int?)null : model.ArtistId });
     }
 
     [HttpGet("Edit/{id:int}")]

@@ -83,6 +83,42 @@ public sealed class ArtistReadRepositoryTests
     }
 
     [Fact]
+    public async Task GetArtistProfileAsync_uses_sort_and_compatibility_exhibitions_and_hides_defaults()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Works SET Sort = CASE Id WHEN 100 THEN 2 ELSE 1 END");
+        fixture.Context.Database.ExecuteSqlRaw("INSERT INTO Publication (Id, TitleCN, FolderName, CoverPath, Location, StartDate, EndDate, MaxImg, ReadCount) VALUES (92007, '春语二期', 'chunyu2', '10001.jpg', '展厅', '2023-04-21', NULL, 0, 0)");
+        fixture.Context.Database.ExecuteSqlRaw("INSERT INTO ArtistPublication (ArtistId, PublicationId, Sort) VALUES (1, 99999, 0)");
+        fixture.Context.Database.ExecuteSqlRaw("INSERT INTO ArtistPublication (ArtistId, PublicationId, Sort) VALUES (1, 92007, 1)");
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Artist SET HideDefaultExhibitions = 1 WHERE Id = 1");
+
+        var profile = await new ArtistReadRepository(fixture.Context).GetArtistProfileAsync(1);
+
+        Assert.NotNull(profile);
+        Assert.Equal(new[] { 101, 100 }, profile!.Works.Select(work => work.Id).ToArray());
+        Assert.False(profile.ShowDefaultExhibitions);
+        Assert.Equal(new[] { 99999, 92007 }, profile.RelatedExhibitions.Skip(1).Select(item => item.Id).ToArray());
+        Assert.Contains(profile.RelatedExhibitions, item => item.Id == 99999 && item.Link == "/Publication/tonggou2");
+        Assert.Contains(profile.RelatedExhibitions, item => item.Id == 92007 && item.CoverUrl == "/Content/images/chunyu2/10001.jpg");
+    }
+
+    [Fact]
+    public async Task GetArtistProfileAsync_falls_back_when_sort_and_hide_columns_are_missing()
+    {
+        await using var fixture = TestDb.Szaipa();
+        Seed(fixture.Context);
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Works DROP COLUMN Sort");
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Artist DROP COLUMN HideDefaultExhibitions");
+
+        var profile = await new ArtistReadRepository(fixture.Context).GetArtistProfileAsync(1);
+
+        Assert.NotNull(profile);
+        Assert.Equal(new[] { 100, 101 }, profile!.Works.Select(work => work.Id).ToArray());
+        Assert.True(profile.ShowDefaultExhibitions);
+    }
+
+    [Fact]
     public async Task GetArtistProfileAsync_returns_null_when_artist_missing()
     {
         await using var fixture = TestDb.Szaipa();

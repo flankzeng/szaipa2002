@@ -17,9 +17,38 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
         _operationRecorder = operationRecorder;
     }
 
+    public async Task<bool> SupportsWorksSortAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _db.Works.AsNoTracking().Select(work => work.Sort).Take(1).ToListAsync(cancellationToken);
+            return true;
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingColumn(exception))
+        {
+            return false;
+        }
+    }
+
     public async Task<ArtistSiteOverview?> GetOverviewAsync(int artistId, CancellationToken cancellationToken)
     {
-        var artist = await _db.Artist.AsNoTracking().FirstOrDefaultAsync(a => a.Id == artistId, cancellationToken);
+        var artist = await _db.Artist.AsNoTracking()
+            .Where(a => a.Id == artistId)
+            .Select(a => new Artist
+            {
+                Id = a.Id,
+                ArtistNameCN = a.ArtistNameCN,
+                ArtistNameEN = a.ArtistNameEN,
+                Color1 = a.Color1,
+                Color2 = a.Color2,
+                Path = a.Path,
+                Path1 = a.Path1,
+                Path2 = a.Path2,
+                Introduction = a.Introduction,
+                Honor = a.Honor,
+                Position = a.Position
+            })
+            .FirstOrDefaultAsync(cancellationToken);
         if (artist is null)
         {
             return null;
@@ -47,6 +76,19 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
             sortSupported = false;
         }
 
+        var defaultExhibitionFlagSupported = true;
+        try
+        {
+            await _db.Artist.AsNoTracking()
+                .Where(a => a.Id == artistId)
+                .Select(a => a.HideDefaultExhibitions)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingColumn(exception))
+        {
+            defaultExhibitionFlagSupported = false;
+        }
+
         return new ArtistSiteOverview
         {
             Artist = artist,
@@ -57,7 +99,8 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
             ExhibitionRowCount = await _db.Exhibition.CountAsync(e => e.ArtistId == artistId, cancellationToken),
             LinkedPublicationCount = linkedCount,
             WorksSortSupported = sortSupported,
-            ExhibitionLinksSupported = linksSupported
+            ExhibitionLinksSupported = linksSupported,
+            DefaultExhibitionFlagSupported = defaultExhibitionFlagSupported
         };
     }
 
@@ -203,23 +246,31 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
         await _db.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<PublicationOption>> GetPublicationOptionsAsync(CancellationToken cancellationToken) =>
-        await _db.Publication.AsNoTracking()
+    public async Task<IReadOnlyList<PublicationOption>> GetPublicationOptionsAsync(CancellationToken cancellationToken)
+    {
+        var rows = await _db.Publication.AsNoTracking()
             .OrderByDescending(p => p.Id)
             .Select(p => new PublicationOption(p.Id, p.TitleCN ?? $"#{p.Id}", p.StartDate, p.Location))
             .ToListAsync(cancellationToken);
+        return rows.Concat(Szaipa.Data.Services.Home.ArtistExhibitionCompatibilityCatalog.GetOptions())
+            .GroupBy(option => option.Id)
+            .Select(group => group.First())
+            .ToArray();
+    }
 
     public async Task<ArtistExhibitionLinks> GetExhibitionLinksAsync(int artistId, CancellationToken cancellationToken)
     {
         try
         {
-            var linked = await (
-                from link in _db.ArtistPublication.AsNoTracking()
-                where link.ArtistId == artistId
-                join p in _db.Publication.AsNoTracking() on link.PublicationId equals p.Id
-                orderby link.Sort, link.Id
-                select new PublicationOption(p.Id, p.TitleCN ?? "#" + p.Id, p.StartDate, p.Location))
+            var links = await _db.ArtistPublication.AsNoTracking()
+                .Where(link => link.ArtistId == artistId)
+                .OrderBy(link => link.Sort)
+                .ThenBy(link => link.Id)
+                .Select(link => link.PublicationId)
                 .ToListAsync(cancellationToken);
+            var options = await GetPublicationOptionsAsync(cancellationToken);
+            var optionsById = options.ToDictionary(option => option.Id);
+            var linked = links.Where(optionsById.ContainsKey).Select(id => optionsById[id]).ToArray();
 
             var hide = await _db.Artist.AsNoTracking()
                 .Where(a => a.Id == artistId)
@@ -252,7 +303,8 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
             .Where(p => requested.Contains(p.Id))
             .Select(p => p.Id)
             .ToListAsync(cancellationToken);
-        var valid = requested.Where(existingIds.Contains).ToList();
+        var compatibleIds = Szaipa.Data.Services.Home.ArtistExhibitionCompatibilityCatalog.CompatibilityIds;
+        var valid = requested.Where(id => existingIds.Contains(id) || compatibleIds.Contains(id)).ToList();
 
         _db.ArtistPublication.RemoveRange(
             await _db.ArtistPublication.Where(l => l.ArtistId == artistId).ToListAsync(cancellationToken));

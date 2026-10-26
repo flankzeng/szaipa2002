@@ -21,7 +21,7 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 200);
 
-        var query = _db.Artist.AsNoTracking().OrderByDescending(a => a.Id);
+        var query = LegacyArtistProjection(_db.Artist.AsNoTracking()).OrderByDescending(a => a.Id);
         var total = await query.CountAsync(cancellationToken);
         var items = await query
             .Skip((page - 1) * pageSize)
@@ -38,7 +38,38 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
     }
 
     public Task<Artist?> GetByIdAsync(int id, CancellationToken cancellationToken) =>
-        _db.Artist.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        LegacyArtistProjection(_db.Artist.AsNoTracking()).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+
+    // The artist list/edit form does not need the T4 flag; omitting it keeps old admin databases readable.
+    private static IQueryable<Artist> LegacyArtistProjection(IQueryable<Artist> query) => query.Select(a => new Artist
+    {
+        Id = a.Id,
+        ArtistNameCN = a.ArtistNameCN,
+        ArtistNameEN = a.ArtistNameEN,
+        Sex = a.Sex,
+        Path = a.Path,
+        UserContent = a.UserContent,
+        Nation = a.Nation,
+        City = a.City,
+        Title = a.Title,
+        WorkCount = a.WorkCount,
+        EditRecord = a.EditRecord,
+        Deeds = a.Deeds,
+        Honor = a.Honor,
+        AddDate = a.AddDate,
+        EndDate = a.EndDate,
+        FlieInf = a.FlieInf,
+        VisitCount = a.VisitCount,
+        Activity = a.Activity,
+        Color1 = a.Color1,
+        Color2 = a.Color2,
+        Introduction = a.Introduction,
+        Position = a.Position,
+        Path1 = a.Path1,
+        Path2 = a.Path2,
+        DeedsThings = a.DeedsThings,
+        DeedsYears = a.DeedsYears
+    });
 
     public async Task<int> CreateAsync(Artist input, AdminActor actor, CancellationToken cancellationToken)
     {
@@ -77,10 +108,17 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
 
     public async Task<bool> UpdateAsync(Artist input, AdminActor actor, CancellationToken cancellationToken)
     {
-        var artist = await _db.Artist.FirstOrDefaultAsync(a => a.Id == input.Id, cancellationToken);
+        var artist = _db.Artist.Local.FirstOrDefault(a => a.Id == input.Id)
+            ?? await LegacyArtistProjection(_db.Artist.AsNoTracking())
+                .FirstOrDefaultAsync(a => a.Id == input.Id, cancellationToken);
         if (artist is null)
         {
             return false;
+        }
+
+        if (_db.Entry(artist).State == EntityState.Detached)
+        {
+            _db.Artist.Attach(artist);
         }
 
         // Only the editable fields are copied; WorkCount/VisitCount/AddDate stay as originally stored.
@@ -122,12 +160,18 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
 
     public async Task<bool> DeleteAsync(int id, AdminActor actor, CancellationToken cancellationToken)
     {
-        var artist = await _db.Artist.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+        var artist = _db.Artist.Local.FirstOrDefault(a => a.Id == id)
+            ?? await LegacyArtistProjection(_db.Artist.AsNoTracking())
+                .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         if (artist is null)
         {
             return false;
         }
 
+        if (_db.Entry(artist).State == EntityState.Detached)
+        {
+            _db.Artist.Attach(artist);
+        }
         _db.Artist.Remove(artist);
         await _operationRecorder.RecordAsync(_db, actor, $"删除了 {artist.ArtistNameCN}的会员条目。", cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);

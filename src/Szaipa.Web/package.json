@@ -10,7 +10,8 @@
     "build:dashboard": "esbuild ./wwwroot/admin/src/dashboard.js --bundle --minify --format=iife --outfile=./wwwroot/admin/dashboard.js",
     "build:security-monitoring": "esbuild ./wwwroot/admin/src/security-monitoring.js --bundle --minify --format=iife --outfile=./wwwroot/admin/security-monitoring.js",
     "build:public-swiper": "esbuild ./wwwroot/public/src/swiper-public.js ./wwwroot/public/src/swiper-public.css --bundle --minify --legal-comments=inline --outdir=./wwwroot/public/vendor",
-    "build": "npm run build:css && npm run build:js && npm run build:dashboard && npm run build:security-monitoring && npm run build:public-swiper"
+    "build": "npm run build:css && npm run build:js && npm run build:cropper && npm run build:dashboard && npm run build:security-monitoring && npm run build:public-swiper",
+    "build:cropper": "esbuild ./wwwroot/admin/src/image-cropper.js --bundle --minify --format=iife --outfile=./wwwroot/admin/image-cropper.js"
   },
   "devDependencies": {
     "esbuild": "^0.24.2",

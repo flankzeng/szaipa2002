@@ -28,17 +28,17 @@ public sealed class ArtNewsController : Controller
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> Index(int page = 1, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(int page = 1, int? artistId = null, CancellationToken cancellationToken = default)
     {
         var result = await _repository.GetPagedAsync(page, PageSize, cancellationToken);
         return View(result);
     }
 
     [HttpGet("Create")]
-    public async Task<IActionResult> Create(CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(int? artistId, CancellationToken cancellationToken)
     {
         await PopulateArtistsAsync(null, cancellationToken);
-        return View(new ArtNewsFormViewModel { Date = DateTime.Today });
+        return View(new ArtNewsFormViewModel { Date = DateTime.Today, ArtistId = artistId ?? 0 });
     }
 
     [HttpPost("Create")]
@@ -53,7 +53,7 @@ public sealed class ArtNewsController : Controller
 
         await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
         TempData["Success"] = "艺术家动态已发布。";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { artistId = model.ArtistId == 0 ? (int?)null : model.ArtistId });
     }
 
     [HttpGet("Edit/{id:int}")]

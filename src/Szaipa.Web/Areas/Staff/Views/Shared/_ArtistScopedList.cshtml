@@ -3,13 +3,23 @@
     var titleColumn = ViewData["TitleColumn"] as string ?? "名称";
     var pageTitle = ViewData["Title"] as string ?? "列表";
     var createLabel = ViewData["CreateLabel"] as string ?? "添加";
+    var disableMutations = ViewBag.WorksSortSupported is bool supported && !supported;
+}
+@if (disableMutations)
+{
+    <div class="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        后台数据库缺少 Works.Sort，当前只读展示作品；新增、编辑、删除已停用。请先执行 <code>docs/sql/2026-10-26-artist-site.sql</code>。
+    </div>
 }
 <div class="mb-6 flex items-center justify-between">
     <div>
         <h1 class="font-serif text-2xl font-bold text-ink">@pageTitle</h1>
         <p class="mt-1 text-sm text-muted">共 @Model.TotalCount 条</p>
     </div>
-    <a asp-action="Create" class="admin-btn-primary">＋ @createLabel</a>
+    @if (!disableMutations)
+    {
+        <a asp-action="Create" asp-route-artistId="@ViewBag.ArtistId" class="admin-btn-primary">＋ @createLabel</a>
+    }
 </div>
 
 <div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
@@ -28,13 +38,16 @@
                     <td class="px-5 py-3 font-medium text-ink">@item.Title</td>
                     <td class="px-5 py-3 text-muted">@(string.IsNullOrEmpty(item.ArtistName) ? $"#{item.ArtistId}" : item.ArtistName)</td>
                     <td class="px-5 py-3">
-                        <div class="flex items-center justify-end gap-3">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="text-brand hover:underline">编辑</a>
-                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
-                                  onsubmit="return confirm('确定删除这一条？此操作不可撤销。');">
-                                <button type="submit" class="text-muted hover:text-brand">删除</button>
-                            </form>
-                        </div>
+                        @if (!disableMutations)
+                        {
+                            <div class="flex items-center justify-end gap-3">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="text-brand hover:underline">编辑</a>
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="inline"
+                                      onsubmit="return confirm('确定删除这一条？此操作不可撤销。');">
+                                    <button type="submit" class="text-muted hover:text-brand">删除</button>
+                                </form>
+                            </div>
+                        }
                     </td>
                 </tr>
             }

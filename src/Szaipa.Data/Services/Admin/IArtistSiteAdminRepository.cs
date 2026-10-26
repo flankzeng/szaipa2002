@@ -26,6 +26,8 @@ public sealed class ArtistSiteOverview
 
     /// <summary><c>ArtistPublication</c> 表是否存在（不存在则无法关联展览）。</summary>
     public bool ExhibitionLinksSupported { get; init; } = true;
+
+    public bool DefaultExhibitionFlagSupported { get; init; } = true;
 }
 
 public sealed class ArtistWorkItem
@@ -70,6 +72,8 @@ public sealed class ArtistExhibitionLinks
 /// </summary>
 public interface IArtistSiteAdminRepository
 {
+    Task<bool> SupportsWorksSortAsync(CancellationToken cancellationToken);
+
     Task<ArtistSiteOverview?> GetOverviewAsync(int artistId, CancellationToken cancellationToken);
 
     /// <summary>该艺术家的作品，按 Sort 再 Id；缺 Sort 列时按 Id 并标记 <c>SortSupported=false</c>。</summary>

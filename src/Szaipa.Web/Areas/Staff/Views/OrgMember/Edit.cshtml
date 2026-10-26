@@ -15,7 +15,12 @@
     </div>
 </form>
 
+@section Head {
+    <link rel="stylesheet" href="~/admin/image-cropper.css" asp-append-version="true" />
+}
+
 @section Scripts {
+    <script src="~/admin/image-cropper.js" defer></script>
     <script src="~/admin/upload-field.js" defer></script>
     <script src="~/admin/home-block-form.js" defer></script>
 }

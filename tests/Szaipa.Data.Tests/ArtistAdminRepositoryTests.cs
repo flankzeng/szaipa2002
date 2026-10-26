@@ -156,6 +156,45 @@ public sealed class ArtistAdminRepositoryTests
         Assert.Equal(new[] { 1 }, page3.Items.Select(a => a.Id).ToArray());
     }
 
+    [Fact]
+    public async Task GetPagedAsync_remains_available_when_new_hide_default_column_is_missing()
+    {
+        await using var fixture = CreateContext();
+        fixture.Context.Artist.Add(new Artist { ArtistNameCN = "旧库艺术家" });
+        await fixture.Context.SaveChangesAsync();
+        await fixture.Context.Database.ExecuteSqlRawAsync("ALTER TABLE Artist DROP COLUMN HideDefaultExhibitions");
+
+        var page = await new ArtistAdminRepository(fixture.Context, new OperationRecorder())
+            .GetPagedAsync(1, 20, CancellationToken.None);
+
+        Assert.Single(page.Items);
+        Assert.Equal("旧库艺术家", page.Items[0].ArtistNameCN);
+    }
+
+    [Fact]
+    public async Task Artist_site_reports_legacy_schema_without_sort_or_hide_flag()
+    {
+        await using var fixture = CreateContext();
+        fixture.Context.Artist.Add(new Artist { ArtistNameCN = "旧库艺术家" });
+        await fixture.Context.SaveChangesAsync();
+        var artistId = await fixture.Context.Artist.Select(a => a.Id).SingleAsync();
+        fixture.Context.Works.Add(new Works { ArtistId = artistId, Title = "旧作品" });
+        await fixture.Context.SaveChangesAsync();
+        await fixture.Context.Database.ExecuteSqlRawAsync("ALTER TABLE Works DROP COLUMN Sort");
+        await fixture.Context.Database.ExecuteSqlRawAsync("ALTER TABLE Artist DROP COLUMN HideDefaultExhibitions");
+
+        var repository = new ArtistSiteAdminRepository(fixture.Context, new OperationRecorder());
+        var overview = await repository.GetOverviewAsync(artistId, CancellationToken.None);
+        var works = await repository.GetWorksAsync(artistId, CancellationToken.None);
+
+        Assert.NotNull(overview);
+        Assert.False(overview!.WorksSortSupported);
+        Assert.False(overview.DefaultExhibitionFlagSupported);
+        Assert.Single(works.Items);
+        Assert.False(works.SortSupported);
+        Assert.False(await repository.SupportsWorksSortAsync(CancellationToken.None));
+    }
+
     private static AdminContextFixture CreateContext()
     {
         var connection = new SqliteConnection("DataSource=:memory:");

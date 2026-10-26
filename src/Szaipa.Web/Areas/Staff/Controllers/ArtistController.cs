@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Szaipa.Data.Contexts.Szaipa;
@@ -45,9 +46,18 @@ public sealed class ArtistController : Controller
             return View(model);
         }
 
-        await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        int newId;
+        try
+        {
+            newId = await _repository.CreateAsync(ToEntity(model, isNew: true), CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            ModelState.AddModelError(string.Empty, "后台数据库缺少 Artist.HideDefaultExhibitions。请先执行 docs/sql/2026-10-26-artist-site.sql，再新建艺术家。");
+            return View(model);
+        }
         TempData["Success"] = "会员已添加。";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", "ArtistSite", new { artistId = newId });
     }
 
     [HttpGet("Edit/{id:int}")]
@@ -72,7 +82,16 @@ public sealed class ArtistController : Controller
             return View(model);
         }
 
-        var updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        bool updated;
+        try
+        {
+            updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            ModelState.AddModelError(string.Empty, "后台数据库结构尚未升级，艺术家信息暂不能保存。请先执行 docs/sql/2026-10-26-artist-site.sql。");
+            return View(model);
+        }
         if (!updated)
         {
             return NotFound();
@@ -86,7 +105,16 @@ public sealed class ArtistController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var deleted = await _repository.DeleteAsync(id, CurrentActor(), cancellationToken);
+        bool deleted;
+        try
+        {
+            deleted = await _repository.DeleteAsync(id, CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            TempData["Error"] = "后台数据库结构尚未升级，未删除艺术家。";
+            return RedirectToAction(nameof(Index));
+        }
         TempData[deleted ? "Success" : "Error"] = deleted ? "会员已删除。" : "未找到该会员。";
         return RedirectToAction(nameof(Index));
     }
@@ -97,7 +125,7 @@ public sealed class ArtistController : Controller
         return new AdminActor(id, User.Identity?.Name ?? string.Empty);
     }
 
-    private static Artist ToEntity(ArtistFormViewModel model) => new()
+    private static Artist ToEntity(ArtistFormViewModel model, bool isNew = false) => new()
     {
         Id = model.Id,
         ArtistNameCN = model.ArtistNameCN,
@@ -112,6 +140,7 @@ public sealed class ArtistController : Controller
         Introduction = model.Introduction,
         Honor = model.Honor,
         DeedsThings = model.DeedsThings,
+        HideDefaultExhibitions = isNew,
         Path = model.Path,
         Path1 = model.Path1,
         Path2 = model.Path2
