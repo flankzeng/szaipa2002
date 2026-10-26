@@ -110,7 +110,8 @@
         <!-- 正文 -->
 
         <div class="article-body"@LiveEdit.Attr("News", Model.Article.Id, "Content")>
-            @Html.Raw(Model.Article.Content)
+            @* T8：正文里的本站图片补 WebP 多尺寸（编辑态保持原样，避免把 srcset 存回数据库）。 *@
+            @Html.Raw(LiveEdit.Active ? Model.Article.Content : ImageVariants.AddSrcSetToHtml(Model.Article.Content, "(max-width: 991px) 100vw, 900px"))
         </div>
 
 

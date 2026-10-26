@@ -66,6 +66,12 @@ SQL Server 脚本不能直接交给 SQLite。开发镜像通过当前模型重�
 
 Staging 使用独立 cookie 名、hostname、ApplicationName 和 key 目录，不能共享 Production 登录会话。`/healthz` 成功仅说明应用启动，不代表数据库、资源或表单写入已通过。
 
+## 4.5 图片 WebP 变体（T8，上线前必做）
+1. 在发布目录**之外**建缓存目录（如 `D:\SzaipaData\image-cache`），给 IIS 应用池账户**读写**权限；在 `appsettings.Production.json` 设 `ImageVariants:CacheRoot` 为该绝对路径（未配置时功能自动关闭、全部回退原图，页面不受影响）。
+2. **预热存量图片**（只读原图、只写缓存目录，可重复执行、可中断后续跑）：在发布目录执行 `set ASPNETCORE_ENVIRONMENT=Production` 后运行 `dotnet Szaipa.Web.dll image-variants-warm`。默认生成 480/960/1600 三档（2400 档放大镜用，按需生成）。可先 `--only images/man` 试一个目录。
+3. 验证：打开首页，浏览器开发者工具「网络」里图片请求应为 `/_img/{宽}/Content/...`、类型 `image/webp`、`Cache-Control: max-age=31536000, immutable`。
+4. 回退：把 `ImageVariants:Enabled` 设为 false 并回收应用池即可恢复原图输出；缓存目录可随时整体删除（会按需重新生成）。
+
 ## 5. 微信启用顺序
 
 给管理员的操作说明（找 AppID/AppSecret、IP 白名单、粘贴链接导入、能力探测）见 [wechat-setup-guide.md](wechat-setup-guide.md)。

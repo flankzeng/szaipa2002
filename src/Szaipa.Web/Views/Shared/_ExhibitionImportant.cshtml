@@ -101,7 +101,7 @@
                     <div class="swiper-slide">
                         <img loading="lazy" decoding="async"
                              src="@previewPath"
-                             data-original-src="@(previewPath == imagePath ? null : imagePath)" />
+                             data-original-src="@(previewPath == imagePath ? null : ImageVariants.Url(imagePath, 1600))" />
                     </div>
                 }
             </div>
@@ -113,7 +113,7 @@
                 @foreach (var imagePath in thumbnailImages)
                 {
                     <div class="swiper-slide">
-                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve(imagePath)" />
+                        <img loading="lazy" decoding="async" src="@(ImageVariants.Enabled ? ImageVariants.Url(imagePath, 480) : ImagePreviewResolver.Resolve(imagePath))" />
                     </div>
                 }
             </div>

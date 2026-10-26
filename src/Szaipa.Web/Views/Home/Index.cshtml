@@ -845,7 +845,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                         {
                         <img loading="lazy" decoding="async"
                             src="@ImagePreviewResolver.Resolve(workImageUrl)"
-                            data-magnify-src="@workImageUrl" width="@work.ImageWidth" height="@work.ImageHeight" class="zoom"
+                            data-magnify-src="@ImageVariants.Url(workImageUrl, 2400)" width="@work.ImageWidth" height="@work.ImageHeight" class="zoom"
                             alt="">
                         }
                         <p>@if (!string.IsNullOrWhiteSpace(work.ArtistName))

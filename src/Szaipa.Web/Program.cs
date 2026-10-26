@@ -63,6 +63,12 @@ if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
     Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(configuration));
 }
 
+// T8 存量图片预热：dotnet Szaipa.Web.dll image-variants-warm [--widths 480,960,1600] [--only images/man]（生成后退出）。
+if (args.Length > 0 && string.Equals(args[0], "image-variants-warm", StringComparison.OrdinalIgnoreCase))
+{
+    Environment.Exit(await Szaipa.Web.Infrastructure.ImageVariantsWarmCommand.RunAsync(configuration, environmentName, contentRoot, args));
+}
+
 // 命令行工具：`dotnet run --project src/Szaipa.Web -- mirror-sync [--days N] [--only szaipa|tongou]`。
 // 用现有只读连接对生产库只读 SELECT，重建本地 SQLite 镜像库（LocalMirror），然后直接退出、不启动站点。
 // 配置分层与站点启动完全一致（appsettings.Local.json / user-secrets / 环境变量），见 docs/updates/2026-10-26-local-mirror-db.md。
@@ -159,7 +165,11 @@ var hostBuilder = new HostBuilder()
                     configuration["IpGeolocation:QqwryPath"]
                     ?? Path.Combine(contentRoot, "App_Data", "security", "qqwry.dat")));
                 services.AddSingleton<IMigrationWorkspaceDiagnosticsService, MigrationWorkspaceDiagnosticsService>();
-                services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
+                // T8 图片流量优化：预览解析统一走 960 宽 WebP 变体，变体不可用时回退原 q30 预览解析。
+                services.AddOptions<ImageVariantOptions>().Bind(configuration.GetSection(ImageVariantOptions.SectionName));
+                services.AddSingleton<IImageVariants, ImageVariants>();
+                services.AddSingleton<LegacyImagePreviewResolver>();
+                services.AddSingleton<ILegacyImagePreviewResolver, VariantPreviewResolver>();
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
                 services.AddHttpContextAccessor();
@@ -340,6 +350,8 @@ var hostBuilder = new HostBuilder()
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints =>
                 {
+                    // T8：/_img/{宽}/Content/... 按需生成并缓存 WebP 变体（失败 302 回原图）。
+                    endpoints.MapGet("/_img/{width:int}/{**path}", ImageVariantEndpoint.HandleAsync);
                     endpoints.MapGet("/healthz", async context =>
                     {
                         context.Response.ContentType = "application/json";

@@ -118,7 +118,7 @@
                         @foreach (var image in onsiteImages)
                         {
                             <div class="swiper-slide">
-                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" data-original-src="@image.OriginalUrl" />
+                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" data-original-src="@ImageVariants.Url(image.OriginalUrl, 1600)" />
                             </div>
                         }
                     </div>
@@ -131,7 +131,7 @@
                         @foreach (var image in onsiteImages)
                         {
                             <div class="swiper-slide">
-                                <img loading="lazy" decoding="async" src="@image.PreviewUrl" />
+                                <img loading="lazy" decoding="async" src="@(ImageVariants.Enabled ? ImageVariants.Url(image.OriginalUrl, 480) : image.PreviewUrl)" />
                             </div>
                         }
                     </div>

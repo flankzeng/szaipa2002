@@ -51,5 +51,8 @@
     <Content Update="appsettings.Local*.json" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Production*.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="4.153.1" />
+  </ItemGroup>
 
 </Project>
