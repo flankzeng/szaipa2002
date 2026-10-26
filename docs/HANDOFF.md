@@ -5,14 +5,15 @@
 ## 最新交接（2026-10-26 第四轮：图片流量优化 T8）
 
 ### 当前基线
-- 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `f884a55`**（之后仅文档）。测试 **672 全绿**（Data 389 + Web 283）。
-- 交付包：`artifacts/szaipa-automation-f884a55-win-x64.zip`，**32,716,536 B**，SHA-256 `87dbb7344c4016cfca438ef738ffa36bf196f992d4f53098deaf2ee0803da0cd`；清单 `artifacts/publish-win-x64-f884a55.manifest.json`（222 文件，审计通过）。旧包 83e9dee 作废。
+- 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `efb56aa`**（之后仅文档）。测试 **672 全绿**（Data 389 + Web 283）。
+- 交付包：`artifacts/szaipa-automation-efb56aa-win-x64.zip`，**32,716,533 B**，SHA-256 `1ab532e54eb8ab928ed60cff93c09b032cb91eca258d1b1dbc856b06c11a03d6`；清单 `artifacts/publish-win-x64-efb56aa.manifest.json`（222 文件，审计通过）。旧包 83e9dee / f884a55 作废。
 - 本轮记录：`docs/updates/2026-10-26-image-variants.md`；部署步骤 `docs/automation-rollout.md` §4.5。
 
 ### 本轮完成（T8）
 - `/_img/{480|960|1600|2400}/Content/...` 按需生成 WebP + 磁盘缓存（SkiaSharp），原图不动、失败回退；预览解析 28 处统一 960 WebP；全局 TagHelper 给 /Content 图片补 srcset；画廊大图 1600、缩略图 480、放大镜 2400；新闻正文补 srcset；`image-variants-warm` 存量预热命令。
 - 实测：全站存量 1047.6MB → 960 宽 156.8MB（-85%）；13 个页面完整浏览手机 -57%、电脑 -56%；画质抽检无可见差异；预热 0 失败。
 - 发布时排除 SkiaSharp 96MB 调试符号。
+- 死图检查：13 页 × 2 宽度 2386 个图片 URL，排除本地样本/本地快照缺失文件后全部可用；修复会员风采头像路径前导空格导致优化未生效（`efb56aa`）。
 
 ### 上线前剩余（按顺序）
 1. **服务器准备**（用户）：缓存目录 + 应用池读写权限 + `ImageVariants:CacheRoot`；部署后跑一次 `image-variants-warm`（服务器上预计 15–25 分钟）。
@@ -25,7 +26,7 @@
 
 ### 可粘贴给下一位 agent（Claude Code / Codex 通用）
 ```text
-接手 szaipa2002 上线收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接。T0–T5、T7、T8 已完成，T6 现场编辑核心完成（其余页面待加标记）。当前发布包 f884a55。下一步优先：协助用户在服务器副本库 Szaipa_staging 上做真实 SQL Server 写入验收（agent 只给步骤和脚本，不碰服务器），然后按 automation-rollout.md 上线；有余力再给剩余页面接入现场编辑。生产只读，写只在本地 SQLite 镜像。中文 commit 与 docs/updates。5 小时额度剩 5% 时停下更新交接。
+接手 szaipa2002 上线收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接。T0–T5、T7、T8 已完成，T6 现场编辑核心完成（其余页面待加标记）。当前发布包 efb56aa。下一步优先：协助用户在服务器副本库 Szaipa_staging 上做真实 SQL Server 写入验收（agent 只给步骤和脚本，不碰服务器），然后按 automation-rollout.md 上线；有余力再给剩余页面接入现场编辑。生产只读，写只在本地 SQLite 镜像。中文 commit 与 docs/updates。5 小时额度剩 5% 时停下更新交接。
 ```
 
 ---
