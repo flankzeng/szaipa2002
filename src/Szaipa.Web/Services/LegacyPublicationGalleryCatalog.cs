@@ -102,7 +102,7 @@ public static class LegacyPublicationGalleryCatalog
                 "漫MAN-艺术时尚先锋展",
                 "PIONEER ART AND FASHION EXHIBITION",
                 new DateTime(2024, 5, 22),
-                new DateTime(2024, 5, 30),
+                new DateTime(2024, 5, 28),
                 "man"),
             Publication(
                 92010,

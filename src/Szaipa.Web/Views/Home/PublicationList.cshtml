@@ -56,6 +56,7 @@
                 {
                     var ended = lifecycle == PublicationLifecycle.Ended;
                     var dateText = exhibition.StartDate?.ToString("yyyy.M.d") ?? string.Empty;
+                    var coverPath = string.IsNullOrWhiteSpace(exhibition.CoverPath) ? "10000.jpg" : exhibition.CoverPath;
                     if (exhibition.EndDate is { } end)
                     {
                         dateText += $" – {end:yyyy.M.d}";
@@ -64,7 +65,7 @@
                     <a class="publication-card @(ended ? "publication-card--ended" : string.Empty)"
                        href="/Home/Publication/@exhibition.Id">
                         <div class="publication-card__image">
-                            <img src="@ImagePreviewResolver.Resolve($"/Content/images/{exhibition.FolderName}/{exhibition.CoverPath}")"
+                            <img src="@ImagePreviewResolver.Resolve($"/Content/images/{exhibition.FolderName}/{coverPath}")"
                                  alt="@exhibition.TitleCn"
                                  loading="lazy"
                                  decoding="async" />

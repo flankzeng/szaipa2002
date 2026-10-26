@@ -1,9 +1,14 @@
+using System.Data.Common;
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Szaipa.Data.Contexts.Szaipa;
+using Szaipa.Data.Contexts.SzaipaAdmin;
+using Szaipa.Data.Composition;
 using Szaipa.Data.Services.Admin;
+using Szaipa.Data.Services;
 using Szaipa.Web.Areas.Staff.Models;
 using Szaipa.Web.Authorization;
 using Szaipa.Web.Services.Admin;
@@ -27,21 +32,34 @@ public sealed class PublicationController : Controller
     private readonly IPublicationAdminRepository _repository;
     private readonly IExhibitionGalleryStorage _gallery;
     private readonly IExhibitionWorkAdminRepository _works;
+    private readonly IPublicationBlockAdminRepository _blocks;
+    private readonly SzaipaAdminContext _db;
 
     public PublicationController(
         IPublicationAdminRepository repository,
         IExhibitionGalleryStorage gallery,
-        IExhibitionWorkAdminRepository works)
+        IExhibitionWorkAdminRepository works,
+        IPublicationBlockAdminRepository blocks,
+        SzaipaAdminContext db)
     {
         _repository = repository;
         _gallery = gallery;
         _works = works;
+        _blocks = blocks;
+        _db = db;
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> Index(int page = 1, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(int page = 1, PublicationLifecycle? status = null, CancellationToken cancellationToken = default)
     {
-        return View(await _repository.GetPagedAsync(page, PageSize, cancellationToken));
+        var today = DateTime.Today;
+        return View(new PublicationIndexViewModel
+        {
+            Paged = await _repository.GetPagedAsync(page, PageSize, status, today, cancellationToken),
+            Counts = await _repository.GetLifecycleCountsAsync(today, cancellationToken),
+            Filter = status,
+            Today = today
+        });
     }
 
     [HttpGet("Create")]
@@ -51,16 +69,34 @@ public sealed class PublicationController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PublicationFormViewModel model, CancellationToken cancellationToken)
     {
-        if (!ModelState.IsValid)
+        if (!TryParseBlocks(model, out var blockItems) || !ModelState.IsValid)
         {
             return View(model);
         }
 
-        var id = await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
-        await SyncGalleryAsync(id, model, cancellationToken);
-        await SyncWorksAsync(id, model, cancellationToken);
-        TempData["Success"] = "展览已创建，公开页 /Home/Publication/" + id + " 即可访问。";
-        return RedirectToAction(nameof(Index));
+        await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+        try
+        {
+            var id = await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+            await SyncGalleryAsync(id, model, cancellationToken);
+            await SyncWorksAsync(id, model, cancellationToken);
+            await SyncBlocksAsync(id, model, blockItems, cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            TempData["Success"] = "展览已创建，公开页 /Home/Publication/" + id + " 即可访问。";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbException exception) when (IsMissingBlockSchema(exception) && model.Type == PublicationTypes.Topic)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "专题积木数据表或字段尚未创建，请先执行展览自动化 SQL。");
+            return View(model);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "展览表结构尚未升级，请先执行展览自动化 SQL 后再创建或保存。");
+            return View(model);
+        }
     }
 
     [HttpGet("Edit/{id:int}")]
@@ -72,7 +108,17 @@ public sealed class PublicationController : Controller
             return NotFound();
         }
 
-        return View(ToViewModel(publication));
+        var model = ToViewModel(publication);
+        try
+        {
+            model.BlocksJson = JsonSerializer.Serialize((await _blocks.GetByPublicationAsync(id, cancellationToken))
+                .Select(b => new { type = b.BlockType, content = ParseJsonElement(b.Content) }));
+        }
+        catch (DbException exception) when (IsMissingBlockSchema(exception))
+        {
+            model.BlocksJson = "[]";
+        }
+        return View(model);
     }
 
     [HttpPost("Edit/{id:int}")]
@@ -80,21 +126,96 @@ public sealed class PublicationController : Controller
     public async Task<IActionResult> Edit(int id, PublicationFormViewModel model, CancellationToken cancellationToken)
     {
         model.Id = id;
-        if (!ModelState.IsValid)
+        if (!TryParseBlocks(model, out var blockItems) || !ModelState.IsValid)
         {
             return View(model);
         }
 
-        var updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
-        if (!updated)
+        await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);
+        try
         {
-            return NotFound();
-        }
+            var updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+            if (!updated)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return NotFound();
+            }
 
-        await SyncGalleryAsync(id, model, cancellationToken);
-        await SyncWorksAsync(id, model, cancellationToken);
-        TempData["Success"] = "展览已更新。";
-        return RedirectToAction(nameof(Index));
+            await SyncGalleryAsync(id, model, cancellationToken);
+            await SyncWorksAsync(id, model, cancellationToken);
+            await SyncBlocksAsync(id, model, blockItems, cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            TempData["Success"] = "展览已更新。";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbException exception) when (IsMissingBlockSchema(exception) && model.Type == PublicationTypes.Topic)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "专题积木数据表或字段尚未创建，请先执行展览自动化 SQL。");
+            return View(model);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "展览表结构尚未升级，请先执行展览自动化 SQL 后再创建或保存。");
+            return View(model);
+        }
+    }
+
+    private bool TryParseBlocks(PublicationFormViewModel model, out IReadOnlyList<PublicationBlockInput> inputs)
+    {
+        inputs = Array.Empty<PublicationBlockInput>();
+        if (model.Type != PublicationTypes.Topic || string.IsNullOrWhiteSpace(model.BlocksJson)) return true;
+        try
+        {
+            var values = JsonSerializer.Deserialize<List<JsonElement>>(model.BlocksJson);
+            if (values is null || values.Count > PublicationBlockAdminRepository.MaxBlocksPerPublication)
+            {
+                ModelState.AddModelError(nameof(model.BlocksJson), "专题积木数量超出上限或格式不正确。");
+                return false;
+            }
+
+            var parsed = new List<PublicationBlockInput>(values.Count);
+            foreach (var value in values)
+            {
+                if (value.ValueKind != JsonValueKind.Object
+                    || !value.TryGetProperty("type", out var type)
+                    || type.ValueKind != JsonValueKind.String
+                    || !PublicationBlockTypes.IsKnown(type.GetString())
+                    || !value.TryGetProperty("content", out var content)
+                    || content.ValueKind != JsonValueKind.Object)
+                {
+                    ModelState.AddModelError(nameof(model.BlocksJson), "专题积木包含无效类型或内容。");
+                    return false;
+                }
+
+                parsed.Add(new PublicationBlockInput(type.GetString(), content.GetRawText()));
+            }
+
+            inputs = parsed;
+            return true;
+        }
+        catch (JsonException)
+        {
+            ModelState.AddModelError(nameof(model.BlocksJson), "专题积木内容不是有效的 JSON。");
+            return false;
+        }
+    }
+
+    private async Task SyncBlocksAsync(int id, PublicationFormViewModel model, IReadOnlyList<PublicationBlockInput> inputs, CancellationToken cancellationToken)
+    {
+        if (model.Type == PublicationTypes.Topic)
+            await _blocks.ReplaceAsync(id, inputs, CurrentActor(), cancellationToken);
+    }
+
+    private static bool IsMissingBlockSchema(DbException exception) =>
+        SchemaCompatibility.IsMissingTable(exception, "PublicationBlock")
+        || SchemaCompatibility.IsMissingColumn(exception);
+
+    private static JsonElement ParseJsonElement(string value)
+    {
+        using var document = JsonDocument.Parse(value);
+        return document.RootElement.Clone();
     }
 
     [HttpPost("Delete/{id:int}")]
@@ -215,7 +336,9 @@ public sealed class PublicationController : Controller
         Type = model.Type,
         Preface = model.Preface,
         Signature = model.Signature,
-        CoverPath = model.CoverPath
+        CoverPath = model.CoverPath,
+        ThemeColor = model.ThemeColor,
+        BannerPath = model.BannerPath
     };
 
     private static PublicationFormViewModel ToViewModel(Publication publication) => new()
@@ -234,6 +357,8 @@ public sealed class PublicationController : Controller
         Type = publication.Type,
         Preface = publication.Preface,
         Signature = publication.Signature,
-        CoverPath = publication.CoverPath
+        CoverPath = publication.CoverPath,
+        ThemeColor = publication.ThemeColor,
+        BannerPath = publication.BannerPath
     };
 }

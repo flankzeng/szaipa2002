@@ -107,12 +107,22 @@ public sealed class FeaturedExhibitionAdminRepository : IFeaturedExhibitionAdmin
         if (target >= 0 && target < rows.Count)
         {
             (rows[index], rows[target]) = (rows[target], rows[index]);
+            await _operationRecorder.RecordAsync(
+                _db,
+                actor,
+                $"调整了首页推荐展览「{rows[target].Title}」的显示顺序。",
+                cancellationToken);
         }
 
         // Renumber the whole list so ties / gaps in hand-edited values can never make a move a no-op.
         for (var i = 0; i < rows.Count; i++)
         {
             rows[i].SortOrder = (i + 1) * SortStep;
+        }
+
+        if (target < 0 || target >= rows.Count)
+        {
+            return true;
         }
 
         await _db.SaveChangesAsync(cancellationToken);
@@ -129,6 +139,9 @@ public sealed class FeaturedExhibitionAdminRepository : IFeaturedExhibitionAdmin
         target.ImageUrls = FeaturedExhibitionContent.JoinPaths(input.ImageUrls);
         target.LogoUrl = NullIfEmpty(FeaturedExhibitionContent.SafePathOrEmpty(input.LogoUrl));
         target.CoverUrl = NullIfEmpty(FeaturedExhibitionContent.SafePathOrEmpty(input.CoverUrl));
+        target.StartDate = input.StartDate?.Date;
+        target.EndDate = input.EndDate?.Date;
+        target.Status = input.Status;
         target.SortOrder = input.SortOrder;
         target.IsVisible = input.IsVisible;
         target.ShowInCarousel = input.ShowInCarousel;

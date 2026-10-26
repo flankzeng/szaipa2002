@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Szaipa.Data.Services;
+
 namespace Szaipa.Data.Contexts.Szaipa;
 
 /// <summary>
@@ -10,7 +13,7 @@ namespace Szaipa.Data.Contexts.Szaipa;
 /// 指向目标页面（<c>/Home/Publication/92011</c>、<c>/Publication/chunyu3</c> 或任何站内地址），
 /// 不依赖 Publication 行是否存在——slug 迁移 SQL 执行前后首页都一样。</para>
 /// </summary>
-public sealed class FeaturedExhibition
+public sealed class FeaturedExhibition : IValidatableObject
 {
     public int Id { get; set; }
 
@@ -24,12 +27,17 @@ public sealed class FeaturedExhibition
     public bool ShowInCarousel { get; set; }
 
     /// <summary>展览名（卡片 h1 / 轮播竖排标题）。</summary>
+    [Required(ErrorMessage = "请输入推荐标题")]
+    [StringLength(300, ErrorMessage = "标题不能超过300个字符")]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>轮播竖排标题后的年份，如 <c>2024</c>。</summary>
+    [StringLength(40, ErrorMessage = "年份不能超过40个字符")]
     public string? YearText { get; set; }
 
     /// <summary>站内目标地址，必须以 <c>/</c> 开头。</summary>
+    [Required(ErrorMessage = "请输入目标链接")]
+    [StringLength(1000, ErrorMessage = "链接不能超过1000个字符")]
     public string LinkUrl { get; set; } = string.Empty;
 
     /// <summary>卡片信息行，每行一条原样输出，如「展览时间：2024.05.24-2024.05.31」。</summary>
@@ -39,8 +47,26 @@ public sealed class FeaturedExhibition
     public string? ImageUrls { get; set; }
 
     /// <summary>轮播 Logo 图地址。</summary>
+    [StringLength(1000)]
     public string? LogoUrl { get; set; }
 
     /// <summary>轮播大图地址。</summary>
+    [StringLength(1000)]
     public string? CoverUrl { get; set; }
+
+    /// <summary>Standalone and slug-card dates; internal Publication links resolve their own row/catalog dates first.</summary>
+    public DateTime? StartDate { get; set; }
+
+    public DateTime? EndDate { get; set; }
+
+    /// <summary>true = automatic date lifecycle; false = force ended; null = offline.</summary>
+    public bool? Status { get; set; } = true;
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (!FeaturedExhibitionContent.IsSafeLink(LinkUrl))
+        {
+            yield return new ValidationResult("链接必须是安全的本站路径。", new[] { nameof(LinkUrl) });
+        }
+    }
 }

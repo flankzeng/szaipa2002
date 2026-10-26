@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using Szaipa.Data.Contexts.Szaipa;
 using Szaipa.Data.Contexts.SzaipaAdmin;
 using Szaipa.Data.Services.Admin;
@@ -11,6 +12,20 @@ namespace Szaipa.Data.Tests;
 public sealed class FeaturedExhibitionAdminRepositoryTests
 {
     private static readonly AdminActor Actor = new(1, "tester");
+
+    [Fact]
+    public void Featured_row_validation_requires_a_bounded_title_and_safe_local_link()
+    {
+        var invalidLink = new FeaturedExhibition { Title = "推荐", LinkUrl = "https://evil.example/" };
+        var linkResults = new List<ValidationResult>();
+        Assert.False(Validator.TryValidateObject(invalidLink, new ValidationContext(invalidLink), linkResults, validateAllProperties: true));
+        Assert.Contains(linkResults, result => result.MemberNames.Contains(nameof(FeaturedExhibition.LinkUrl)));
+
+        var invalidTitle = new FeaturedExhibition { Title = string.Empty, LinkUrl = "/Home/Publication/92011" };
+        var titleResults = new List<ValidationResult>();
+        Assert.False(Validator.TryValidateObject(invalidTitle, new ValidationContext(invalidTitle), titleResults, validateAllProperties: true));
+        Assert.Contains(titleResults, result => result.MemberNames.Contains(nameof(FeaturedExhibition.Title)));
+    }
 
     [Fact]
     public async Task CreateAsync_appends_at_the_end_when_sort_order_is_zero()
@@ -42,6 +57,7 @@ public sealed class FeaturedExhibitionAdminRepositoryTests
         var all = await repository.GetAllAsync(CancellationToken.None);
         Assert.Equal(new[] { c, a, b }, all.Select(x => x.Id).ToArray());
         Assert.Equal(new[] { 10, 20, 30 }, all.Select(x => x.SortOrder).ToArray());
+        Assert.Contains("调整了首页推荐展览", await fixture.Context.Diary.Select(d => d.OperationRecord).SingleAsync());
     }
 
     [Fact]

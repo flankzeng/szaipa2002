@@ -187,12 +187,16 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
                     InfoLines = FeaturedExhibitionContent.SplitLines(row.InfoLines),
                     ImageUrls = FeaturedExhibitionContent.SplitPaths(row.ImageUrls),
                     LogoUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.LogoUrl),
-                    CoverUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.CoverUrl)
+                    CoverUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.CoverUrl),
+                    StartDate = row.StartDate,
+                    EndDate = row.EndDate,
+                    Status = row.Status
                 })
                 .Where(model => FeaturedExhibitionContent.IsSafeLink(model.LinkUrl))
                 .ToList();
         }
-        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "FeaturedExhibition"))
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "FeaturedExhibition")
+            || SchemaCompatibility.IsMissingColumn(exception))
         {
             return Array.Empty<FeaturedExhibitionModel>();
         }
@@ -237,7 +241,8 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
                 })
                 .ToListAsync(cancellationToken);
         }
-        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "PublicationBlock"))
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "PublicationBlock")
+            || SchemaCompatibility.IsMissingColumn(exception))
         {
             // PublicationBlock is additive. Without it a 专题 simply has no blocks yet (page shows its header only).
             return Array.Empty<PublicationBlockModel>();

@@ -12,7 +12,7 @@ namespace Szaipa.Data.Services;
 /// recognised by error NUMBER (207 invalid column name / 208 invalid object name); the English message check
 /// remains for SQLite (tests / local mirror) and English servers.
 /// </summary>
-internal static class SchemaCompatibility
+public static class SchemaCompatibility
 {
     private const int SqlInvalidColumnName = 207;
     private const int SqlInvalidObjectName = 208;

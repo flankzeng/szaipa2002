@@ -78,7 +78,7 @@ public sealed class SzaipaAdminContext : DbContext
         modelBuilder.Entity<Publication>(e => { e.ToTable("Publication"); e.HasKey(x => x.Id); e.Property(x => x.Type).HasDefaultValue(0); });
         modelBuilder.Entity<ExhibitionWork>(e => { e.ToTable("ExhibitionWork"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); });
         modelBuilder.Entity<PublicationBlock>(e => { e.ToTable("PublicationBlock"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); e.Property(x => x.BlockType).HasMaxLength(30); });
-        modelBuilder.Entity<FeaturedExhibition>(e => { e.ToTable("FeaturedExhibition"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); e.Property(x => x.IsVisible).HasDefaultValue(true); e.Property(x => x.ShowInCarousel).HasDefaultValue(false); });
+        modelBuilder.Entity<FeaturedExhibition>(e => { e.ToTable("FeaturedExhibition"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); e.Property(x => x.IsVisible).HasDefaultValue(true); e.Property(x => x.ShowInCarousel).HasDefaultValue(false); e.Property(x => x.Status).HasDefaultValue(true); });
 
         modelBuilder.Entity<Staff>(e => { e.ToTable("Staff"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Diary>(e => { e.ToTable("Diary"); e.HasKey(x => x.Id); });

@@ -9,17 +9,42 @@ Layout = "~/Views/Shared/_PublicLayout.cshtml";
 // ---- 首页推荐展览（T2：后台「首页推荐」FeaturedExhibition，自包含卡片数据）----
 // featuredAll 含隐藏项：它们的链接仍算「已接管」，对应的旧硬编码块/轮播会随之隐藏，而不是复活。
 var featuredAll = Model.FeaturedExhibitions;
-var featuredCards = featuredAll.Where(item => item.IsVisible).ToList();
+var today = DateTime.Today;
 var coveredLinks = new HashSet<string>(featuredAll.Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
-var carouselCoveredLinks = new HashSet<string>(
-featuredAll.Where(item => item.ShowInCarousel).Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
-var featuredSlides = featuredCards
+var legacyFallbackCandidates = new[]
+{
+    new Szaipa.Data.Models.Home.FeaturedExhibitionModel { Title = "同构——中日艺术交流展", YearText = "2024", LinkUrl = "/Home/Publication/92011", StartDate = new DateTime(2024, 6, 28), Status = false, InfoLines = new[] { "开始时间：2024.06.28", "展览地点：東京都千代田区 ART SPACE 89", "主办单位：深圳市艺术产业促进会", "协办单位：东京印社 深圳市仓颉通文化传播有限公司" }, ImageUrls = new[] { "/Content/images/zhongri/10015.jpg", "/Content/images/zhongri/10017.jpg", "/Content/images/zhongri/10038.jpg", "/Content/images/zhongri/10052.jpg", "/Content/images/zhongri/10002.jpg", "/Content/images/zhongri/10006.jpg", "/Content/images/zhongri/10007.jpg" } },
+    new Szaipa.Data.Models.Home.FeaturedExhibitionModel { Title = "艺+科技新潮流展", YearText = "2024", LinkUrl = "/Home/Publication/92010", StartDate = new DateTime(2024, 5, 24), EndDate = new DateTime(2024, 5, 31), Status = true, InfoLines = new[] { "展览时间：2024.05.24-2024.05.31", "展览地点：龙华锦绣科学园三期D栋1层展厅", "主办单位：润杨集团·锦绣科学园 深圳市艺术产业促进会", "协办单位：深圳市锦绣大地投资有限公司 深圳市仓颉通文化传播有限公司" }, ImageUrls = new[] { "/Content/images/yijia/10034.jpg", "/Content/images/yijia/10035.jpg", "/Content/images/yijia/10037.jpg", "/Content/images/yijia/10004.jpg", "/Content/images/yijia/10005.jpg", "/Content/images/yijia/10002.jpg", "/Content/images/yijia/10007.jpg" } },
+    new Szaipa.Data.Models.Home.FeaturedExhibitionModel { Title = "漫MAN-艺术时尚先锋展", YearText = "2024", LinkUrl = "/Home/Publication/92009", StartDate = new DateTime(2024, 5, 22), EndDate = new DateTime(2024, 5, 28), Status = true, InfoLines = new[] { "展览时间：2024.05.22-2024.05.28", "展览地点：南山·漫谷 同构艺术空间", "主办单位：润杨集团·南山漫谷 深圳市艺术产业促进会", "承办单位：同构艺术空间" }, ImageUrls = new[] { "/Content/images/man/10006.jpg", "/Content/images/man/10002.jpg", "/Content/images/man/10003.jpg", "/Content/images/man/10004.jpg", "/Content/images/man/10005.jpg", "/Content/images/man/10001.jpg", "/Content/images/man/10007.jpg" } },
+    new Szaipa.Data.Models.Home.FeaturedExhibitionModel { Title = "春语第三季——致敬女性艺术展", YearText = "2024", LinkUrl = "/Publication/chunyu3", StartDate = new DateTime(2024, 3, 8), EndDate = new DateTime(2024, 4, 8), Status = true, InfoLines = new[] { "展览时间：2024.03.08-2024.04.08", "展览地点：南山·漫谷 同构艺术空间", "主办单位：深圳市艺术产业促进会", "承办单位：南山·漫谷 同构艺术空间" }, ImageUrls = new[] { "/Content/images/chunyu3/100012.jpg", "/Content/images/chunyu3/100023.jpg", "/Content/images/chunyu3/10002.jpg", "/Content/images/chunyu3/100024.jpg", "/Content/images/chunyu3/100034.jpg", "/Content/images/chunyu3/100033.jpg", "/Content/images/chunyu3/10003.jpg" } }
+}.Select(item =>
+{
+    item.Lifecycle = PublicationLifecycleCalculator.Compute(item.Status, item.StartDate, item.EndDate, today);
+    return item;
+}).ToArray();
+// 无推荐行时，把旧四块也按日期归入近期/过往；数据行（含隐藏行）接管同一链接后绝不复活旧块。
+var legacyFallbackCards = legacyFallbackCandidates.Where(item => !coveredLinks.Contains(item.LinkUrl)).ToList();
+var visibleFeaturedCards = featuredAll.Where(item => item.IsVisible && item.Lifecycle != PublicationLifecycle.Offline).ToList();
+var featuredCards = visibleFeaturedCards
+    .Concat(legacyFallbackCards)
+    .OrderBy(item => item.Lifecycle)
+    .ThenBy(item => item.SortOrder)
+    .ToList();
+var recentFeaturedCards = featuredCards.Where(item => item.Lifecycle is PublicationLifecycle.Upcoming or PublicationLifecycle.Ongoing).ToList();
+var endedFeaturedCards = featuredCards.Where(item => item.Lifecycle == PublicationLifecycle.Ended).ToList();
+var carouselCoveredLinks = new HashSet<string>(featuredAll.Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
+var featuredSlides = visibleFeaturedCards
 .Where(item => item.ShowInCarousel && item.CoverUrl.Length > 0)
 .Select(item => (Item: item, Cover: DerivedImageResolver.Resolve(item.CoverUrl)))
 .Where(slide => slide.Cover is not null)
 .ToList();
 var hasFeaturedPublications = featuredSlides.Count > 0;
-var today = DateTime.Today;
+var hasRecentDatabasePublications = Model.FeaturedPublications.Any(ex =>
+    ex.GetLifecycle(today) is PublicationLifecycle.Upcoming or PublicationLifecycle.Ongoing
+    && LegacyPublicationGalleryCatalog.GetImages(ex.Id).Count == 0
+    && !coveredLinks.Contains("/Home/Publication/" + ex.Id));
+var hasRecentExhibitions = hasRecentDatabasePublications || recentFeaturedCards.Count > 0;
+var defaultPastTab = !hasRecentExhibitions;
 var tangqishanCoverUrl = "/Content/images/tangqishan/100002.jpg";
 var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 }
@@ -884,7 +909,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                     <p>@n.Subtitle</p>
 
-                    <div>
+<div>
                         @{ var newsCoverUrl = ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}"); }
                         <img loading="lazy" decoding="async" src="@newsCoverUrl" alt="@n.Title">
                     </div>
@@ -953,23 +978,23 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
     <div class="col-sm16 col-md16 col-lg16">
 
         <!-- 活动分类 -->
-        <div>
+        <div data-default-tab="@(defaultPastTab ? "past" : "recent")">
             <h1 class="JhengBold mob07">
                 展会活动&ensp;<i class="entitle">|</i><span style="font-family: 'dinLightI';">EXHIBITION</span>
             </h1>
 
-            <button class="exhibitionBtn undraggable" id="btn01">
+            <button class="exhibitionBtn undraggable @(defaultPastTab ? string.Empty : "active")" id="btn01">
                 <a href="Javascript:;;">近期活动&emsp;<span class="JhengLight">RECENT
                         ACTIVITIES</span></a>
             </button>
 
-            <button class="exhibitionBtn undraggable" id="btn02">
+            <button class="exhibitionBtn undraggable @(defaultPastTab ? "active" : string.Empty)" id="btn02">
                 <a href="Javascript:;;">过往活动&emsp;<span class="JhengLight">PAST
                         ACTIVITIES</span></a>
             </button>
         </div>
 
-        <div class="card-container swiper mySwiper10" id="processing">
+        <div class="card-container swiper mySwiper10" id="processing" style="@(defaultPastTab ? "display:none" : string.Empty)">
             <div class="swiper-wrapper">
 
                 @* 1) 按日期自动流转：状态为「自动」且当前处于展览中 / 即将开幕的数据库展览。
@@ -1019,13 +1044,14 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 @* 2) 后台「首页推荐」（FeaturedExhibition，已按排序）。下面保留的硬编码展览块是缺表 / 无推荐数据时的回退，
                       推荐里登记了同一链接的块会被跳过（seed 已登记全部四个：同构中日 / 艺+科技 / 漫MAN / 春语III）。 *@
-                @foreach (var card in featuredCards)
+                @foreach (var card in recentFeaturedCards)
                 {
                     <div class="swiper-slide">
                         <div class="exhibition">
                             <h1>
                                 @card.Title
                             </h1>
+                            <p class="text-xs text-gray-500">@PublicationLifecycleCalculator.Label(card.Lifecycle)</p>
                             <a href="@card.LinkUrl" style="color:black;text-decoration:none;">
                                 <h3>
                                     @foreach (var line in card.InfoLines)
@@ -1056,7 +1082,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 }
 
             <!-- 同构——中日艺术交流展 -->
-            @if (!coveredLinks.Contains("/Home/Publication/92011"))
+            @if (!coveredLinks.Contains("/Home/Publication/92011") && legacyFallbackCards.Count == 0)
             {
             <div class="swiper-slide">
                 <div class="exhibition">
@@ -1119,7 +1145,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             }
 
             <!-- 艺+科技新潮流展 -->
-            @if (!coveredLinks.Contains("/Home/Publication/92010"))
+            @if (!coveredLinks.Contains("/Home/Publication/92010") && legacyFallbackCards.Count == 0)
             {
             <div class="swiper-slide">
                 <div class="exhibition">
@@ -1183,7 +1209,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
 
             <!-- 漫MAN-艺术时尚先锋展 -->
-            @if (!coveredLinks.Contains("/Home/Publication/92009"))
+            @if (!coveredLinks.Contains("/Home/Publication/92009") && legacyFallbackCards.Count == 0)
             {
             <div class="swiper-slide">
                 <div class="exhibition">
@@ -1247,7 +1273,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
 
             <!-- 春语III -->
-            @if (!coveredLinks.Contains("/Publication/chunyu3"))
+            @if (!coveredLinks.Contains("/Publication/chunyu3") && legacyFallbackCards.Count == 0)
             {
             <div class="swiper-slide">
                 <div class="exhibition">
@@ -1311,10 +1337,30 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             </div>
             }
         </div>
+            @if (!hasRecentExhibitions)
+            {
+                <p class="px-6 py-10 text-center text-muted">近期暂无展览活动。</p>
+            }
         <div class="swiper-pagination"></div>
     </div>
 
-    <div id="ended">
+    <div id="ended" style="@(defaultPastTab ? "display:flex;flex-wrap:wrap" : string.Empty)">
+
+        @foreach (var card in endedFeaturedCards)
+        {
+            var cover = card.ImageUrls.FirstOrDefault() ?? card.CoverUrl;
+            <a href="@card.LinkUrl">
+                <div class="card ended">
+                    <p class="JhengRegular">
+                        @card.Title<br />
+                        @foreach (var line in card.InfoLines) { @line<br /> }
+                    </p>
+                    <span>查看更多</span>
+                    @if (!string.IsNullOrEmpty(cover)) { <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve(cover)" alt="" /> }
+                    <div class="filter-end"></div>
+                </div>
+            </a>
+        }
 
         @* 已结束：按日期自动流转 + 手动「已结束」的数据库展览。兼容目录的 14 个历史展览（92001–92015）不在此列
               （一部分在下方硬编码卡片里，行为与 slug 迁移 SQL 是否执行无关）。封面优先用 CoverPath，缺省回退旧约定 card.jpg。 *@

@@ -7,10 +7,11 @@
     "build:css": "tailwindcss -i ./wwwroot/admin/admin.input.css -o ./wwwroot/admin/admin.css --minify",
     "watch:css": "tailwindcss -i ./wwwroot/admin/admin.input.css -o ./wwwroot/admin/admin.css --watch",
     "build:js": "esbuild ./wwwroot/admin/src/editor.js --bundle --minify --format=iife --global-name=SzaipaEditor --outfile=./wwwroot/admin/editor.js",
+    "build:block-manager": "esbuild ./wwwroot/admin/src/block-manager.js --bundle --minify --format=iife --outfile=./wwwroot/admin/block-manager.js",
     "build:dashboard": "esbuild ./wwwroot/admin/src/dashboard.js --bundle --minify --format=iife --outfile=./wwwroot/admin/dashboard.js",
     "build:security-monitoring": "esbuild ./wwwroot/admin/src/security-monitoring.js --bundle --minify --format=iife --outfile=./wwwroot/admin/security-monitoring.js",
     "build:public-swiper": "esbuild ./wwwroot/public/src/swiper-public.js ./wwwroot/public/src/swiper-public.css --bundle --minify --legal-comments=inline --outdir=./wwwroot/public/vendor",
-    "build": "npm run build:css && npm run build:js && npm run build:dashboard && npm run build:security-monitoring && npm run build:public-swiper"
+    "build": "npm run build:css && npm run build:js && npm run build:block-manager && npm run build:dashboard && npm run build:security-monitoring && npm run build:public-swiper"
   },
   "devDependencies": {
     "esbuild": "^0.24.2",

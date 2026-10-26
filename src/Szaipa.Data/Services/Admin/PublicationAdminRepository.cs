@@ -101,8 +101,41 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         return counts;
     }
 
-    public Task<Publication?> GetByIdAsync(int id, CancellationToken cancellationToken) =>
-        _db.Publication.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    public async Task<Publication?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _db.Publication.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // The form remains readable before the T2 theme columns (and older Type/Preface fields) are migrated.
+            return await _db.Publication.AsNoTracking().Where(p => p.Id == id).Select(p => new Publication
+            {
+                Id = p.Id,
+                TitleCN = p.TitleCN,
+                TitleEN = p.TitleEN,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                FolderName = p.FolderName,
+                MaxImg = p.MaxImg,
+                LogoPath = p.LogoPath,
+                CoverPath = p.CoverPath,
+                ReadCount = p.ReadCount,
+                EditRecord = p.EditRecord,
+                Status = p.Status,
+                Location = p.Location,
+                zhuban = p.zhuban,
+                chengban = p.chengban,
+                xieban = p.xieban,
+                Type = 0,
+                Preface = string.Empty,
+                Signature = string.Empty,
+                ThemeColor = null,
+                BannerPath = null
+            }).FirstOrDefaultAsync(cancellationToken);
+        }
+    }
 
     public async Task<int> CreateAsync(Publication input, AdminActor actor, CancellationToken cancellationToken)
     {

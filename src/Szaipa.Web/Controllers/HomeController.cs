@@ -54,7 +54,32 @@ public class HomeController : Controller
 
             // 首页推荐展览（后台勾选）。仓储内部已对旧库缺列降级为空列表，此时 Index 视图回退到原硬编码展览块。
             var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
-            snapshot.FeaturedExhibitions = await publicationRepository.GetHomeFeaturedAsync(cancellationToken);
+            var recommendations = (await publicationRepository.GetHomeFeaturedAsync(cancellationToken)).ToList();
+            var legacySummaries = LegacyPublicationGalleryCatalog.GetAllSummaries().ToDictionary(item => item.Id);
+            foreach (var recommendation in recommendations)
+            {
+                if (TryGetPublicationId(recommendation.LinkUrl, out var publicationId))
+                {
+                    // DB rows take precedence, then the retired-slug compatibility catalog.
+                    var linked = await publicationRepository.GetPublicationByIdAsync(publicationId, cancellationToken);
+                    if (linked is not null)
+                    {
+                        recommendation.Lifecycle = linked.GetLifecycle(DateTime.Today);
+                        continue;
+                    }
+
+                    if (legacySummaries.TryGetValue(publicationId, out var legacy))
+                    {
+                        recommendation.Lifecycle = legacy.GetLifecycle(DateTime.Today);
+                        continue;
+                    }
+                }
+
+                recommendation.Lifecycle = Szaipa.Data.Composition.PublicationLifecycleCalculator.Compute(
+                    recommendation.Status, recommendation.StartDate, recommendation.EndDate, DateTime.Today);
+            }
+
+            snapshot.FeaturedExhibitions = recommendations;
             return View("Index", snapshot);
         }
 
@@ -63,6 +88,15 @@ public class HomeController : Controller
             LatestNews = Array.Empty<Szaipa.Data.Models.Home.NewsSummaryModel>(),
             FeaturedPublications = Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>()
         });
+    }
+
+    private static bool TryGetPublicationId(string link, out int id)
+    {
+        const string prefix = "/Home/Publication/";
+        var path = link.Split('?', '#')[0];
+        id = 0;
+        return path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+            && int.TryParse(path[prefix.Length..], out id);
     }
 
     [HttpGet("newIndex")]

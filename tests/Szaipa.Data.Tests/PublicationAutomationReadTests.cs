@@ -79,6 +79,30 @@ public sealed class PublicationAutomationReadTests
     }
 
     [Fact]
+    public async Task GetHomeFeaturedAsync_returns_empty_when_optional_lifecycle_columns_are_not_migrated()
+    {
+        await using var fixture = TestDb.Szaipa();
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE FeaturedExhibition DROP COLUMN Status");
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        Assert.Empty(await repository.GetHomeFeaturedAsync());
+    }
+
+    [Fact]
+    public async Task GetPublicationDetailAsync_returns_empty_topic_blocks_when_optional_block_columns_are_missing()
+    {
+        await using var fixture = TestDb.Szaipa();
+        InsertPublication(fixture.Context, 7, "专题", type: 2);
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE PublicationBlock DROP COLUMN Content");
+        var repository = new PublicationReadRepository(fixture.Context);
+
+        var detail = await repository.GetPublicationDetailSnapshotAsync(7, relatedCount: 0);
+
+        Assert.NotNull(detail);
+        Assert.Empty(detail.Publication.Blocks);
+    }
+
+    [Fact]
     public async Task Legacy_summary_queries_keep_working_without_any_new_columns()
     {
         await using var fixture = TestDb.Szaipa();

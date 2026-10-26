@@ -14,6 +14,23 @@ namespace Szaipa.Data.Tests;
 public sealed class PublicationBlockAdminRepositoryTests
 {
     private static readonly AdminActor Actor = new(1, "tester");
+
+    [Fact]
+    public async Task GetByIdAsync_falls_back_to_legacy_columns_when_topic_columns_are_not_migrated()
+    {
+        await using var fixture = CreateContext();
+        var repository = new PublicationAdminRepository(fixture.Context, new OperationRecorder());
+        var id = await Create(repository, "旧库展览", true, "2026-10-01", "2026-12-01");
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN ThemeColor");
+        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN BannerPath");
+
+        var item = await repository.GetByIdAsync(id, CancellationToken.None);
+
+        Assert.NotNull(item);
+        Assert.Equal("旧库展览", item.TitleCN);
+        Assert.Null(item.ThemeColor);
+        Assert.Null(item.BannerPath);
+    }
     private static readonly DateTime Today = new(2026, 10, 26);
 
     // ---------- 积木仓储 ----------

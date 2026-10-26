@@ -85,6 +85,7 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.Property(e => e.SortOrder).HasDefaultValue(0);
             entity.Property(e => e.IsVisible).HasDefaultValue(true);
             entity.Property(e => e.ShowInCarousel).HasDefaultValue(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<Artist>(entity =>
