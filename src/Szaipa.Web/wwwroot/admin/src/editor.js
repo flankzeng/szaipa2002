@@ -138,7 +138,11 @@ export function mount(root) {
   const surface = root.querySelector('[data-editor-surface]');
   const toolbar = root.querySelector('[data-editor-toolbar]');
   const fieldId = root.getAttribute('data-field');
-  const hidden = fieldId ? document.getElementById(fieldId) : null;
+  // 先在编辑器容器内找隐藏字段：动态创建、尚未插入页面的编辑器（如专题积木）用 getElementById 找不到，
+  // 会以空内容初始化，保存时把已有正文覆盖成空。
+  const hidden = fieldId
+    ? root.querySelector(`#${CSS.escape(fieldId)}`) || document.getElementById(fieldId)
+    : null;
   const placeholder = root.getAttribute('data-placeholder') || '在此撰写正文…';
 
   const editor = new Editor({
