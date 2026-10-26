@@ -121,3 +121,8 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 数据层 `src/Szaipa.Data/Services/LiveEdit/`：白名单 `LiveEditRegistry`（新增可编辑字段只改这里）、`LiveEditService`（写入+清洗+审计）、`SiteTextProvider`（SiteText 单例缓存）。表 `SiteText`（`docs/sql/2026-10-26-site-text.sql`）。
 - 给新页面接入：写死文字用 `@LiveEdit.Text("页面.区块.名", "原文")`；数据库字段用 `@LiveEdit.Field("实体", id, "字段", 值)` 或在容器上 `@LiveEdit.Attr(...)`（富文本）。实体/字段须先在 `LiveEditRegistry` 白名单里。
 
+## 图片变体（T8，2026-10-26）
+- `src/Szaipa.Web/Services/ImageVariants.cs`（生成/缓存/URL/srcset，SkiaSharp）、`VariantPreviewResolver.cs`（预览解析统一走 960 WebP + `/_img` 端点）、`TagHelpers/ImageVariantTagHelper.cs`（/Content 图片自动 srcset）、`Infrastructure/ImageVariantsWarmCommand.cs`（`image-variants-warm`）。
+- 配置 `ImageVariants:{Enabled,CacheRoot,Quality,PreviewQuality}`；改编码规则时递增 `ImageVariants.EncoderVersion`（旧缓存与浏览器缓存自动失效）。
+- 不想被自动加 srcset 的 `<img>` 加 `data-no-variants`。
+
