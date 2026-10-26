@@ -38,6 +38,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<Exhibition> Exhibition => Set<Exhibition>();
 
+    public DbSet<ArtistPublication> ArtistPublication => Set<ArtistPublication>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<News>(entity =>
@@ -94,6 +96,14 @@ public sealed class SzaipaLegacyReadContext : DbContext
         {
             entity.ToTable("Exhibition");
             entity.HasKey(e => e.Id);
+        });
+
+        // T4：艺术家 ↔ 展览关联（老库无此表，读侧缺表时降级）。
+        modelBuilder.Entity<ArtistPublication>(entity =>
+        {
+            entity.ToTable("ArtistPublication");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Sort).HasDefaultValue(0);
         });
     }
 

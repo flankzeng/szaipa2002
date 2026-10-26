@@ -44,7 +44,8 @@ public static class LegacyReadModelComposer
         IReadOnlyList<ArtistSidePanelItemModel> latestPublications,
         IReadOnlyList<ArtistSidePanelItemModel> latestFavorites,
         IReadOnlyList<ArtistSidePanelItemModel> latestAuctions,
-        IReadOnlyList<ArtistExhibitionItemModel> relatedExhibitions)
+        IReadOnlyList<ArtistExhibitionItemModel> relatedExhibitions,
+        bool showDefaultExhibitions = true)
     {
         return new ArtistProfileSnapshotModel
         {
@@ -54,7 +55,8 @@ public static class LegacyReadModelComposer
             LatestPublications = latestPublications,
             LatestFavorites = latestFavorites,
             LatestAuctions = latestAuctions,
-            RelatedExhibitions = relatedExhibitions
+            RelatedExhibitions = relatedExhibitions,
+            ShowDefaultExhibitions = showDefaultExhibitions
         };
     }
 

@@ -39,6 +39,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<ExhibitionWork> ExhibitionWork => Set<ExhibitionWork>();
 
+    public DbSet<ArtistPublication> ArtistPublication => Set<ArtistPublication>();
+
     // Admin-only entities (not part of the public read surface).
     public DbSet<Staff> Staff => Set<Staff>();
 
@@ -67,6 +69,8 @@ public sealed class SzaipaAdminContext : DbContext
         modelBuilder.Entity<Exhibition>(e => { e.ToTable("Exhibition"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Publication>(e => { e.ToTable("Publication"); e.HasKey(x => x.Id); e.Property(x => x.Type).HasDefaultValue(0); });
         modelBuilder.Entity<ExhibitionWork>(e => { e.ToTable("ExhibitionWork"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); });
+
+        modelBuilder.Entity<ArtistPublication>(e => { e.ToTable("ArtistPublication"); e.HasKey(x => x.Id); e.Property(x => x.Sort).HasDefaultValue(0); });
 
         modelBuilder.Entity<Staff>(e => { e.ToTable("Staff"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Diary>(e => { e.ToTable("Diary"); e.HasKey(x => x.Id); });

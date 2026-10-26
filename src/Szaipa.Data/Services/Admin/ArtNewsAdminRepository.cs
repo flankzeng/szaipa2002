@@ -16,13 +16,21 @@ public sealed class ArtNewsAdminRepository : IArtNewsAdminRepository
         _operationRecorder = operationRecorder;
     }
 
-    public async Task<PagedResult<ArtNewsListItem>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<PagedResult<ArtNewsListItem>> GetPagedAsync(
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken,
+        int? artistId = null)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 200);
 
+        var scoped = artistId is int filterArtistId
+            ? _db.ArtNews.AsNoTracking().Where(a => a.ArtistId == filterArtistId)
+            : _db.ArtNews.AsNoTracking();
+
         var query =
-            from a in _db.ArtNews.AsNoTracking()
+            from a in scoped
             join artist in _db.Artist.AsNoTracking() on a.ArtistId equals artist.Id into joined
             from artist in joined.DefaultIfEmpty()
             orderby a.Id descending

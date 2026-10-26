@@ -60,6 +60,8 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
             Introduction = input.Introduction,
             Honor = input.Honor,
             DeedsThings = input.DeedsThings,
+            // 新建艺术家的官网展讯完全由数据驱动：不追加旧版写死的 3 张默认活动图。
+            HideDefaultExhibitions = input.HideDefaultExhibitions,
             WorkCount = 0,
             VisitCount = 0,
             AddDate = now,

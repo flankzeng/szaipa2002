@@ -36,4 +36,12 @@ public sealed class Works : IArtistScopedRecord
     public string? Deeds { get; set; }
 
     public string? EditRecord { get; set; }
+
+    // --- 艺术家官网一站式编辑（T4，2026-10）新增列 ---
+
+    /// <summary>
+    /// 作品在艺术家官网「作品集」里的显示顺序（升序；同值按 Id）。老库没有这一列（脚本
+    /// docs/sql/2026-10-26-artist-site.sql 补），前台读侧缺列时回退到旧的按 Id 顺序。
+    /// </summary>
+    public int Sort { get; set; }
 }

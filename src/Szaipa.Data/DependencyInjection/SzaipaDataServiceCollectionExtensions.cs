@@ -196,6 +196,7 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<INewsAdminRepository, NewsAdminRepository>();
         services.AddScoped<IArtNewsAdminRepository, ArtNewsAdminRepository>();
         services.AddScoped<IArtistAdminRepository, ArtistAdminRepository>();
+        services.AddScoped<IArtistSiteAdminRepository, ArtistSiteAdminRepository>();
         services.AddScoped<ICompanyAdminRepository, CompanyAdminRepository>();
         services.AddScoped<FavAdminRepository>();
         services.AddScoped<AuctionAdminRepository>();

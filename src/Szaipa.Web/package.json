@@ -25,6 +25,7 @@
     "@tiptap/extension-underline": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
+    "cropperjs": "^1.6.2",
     "echarts": "^6.1.0",
     "swiper": "9.0.3"
   }

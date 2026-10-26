@@ -77,6 +77,138 @@ public sealed class AdminAssetStorage : IAdminAssetStorage
         return AdminAssetSaveResult.Ok(url, fileName);
     }
 
+    /// <summary>原图子目录名；与裁切图同主干文件名，扩展名取原图自己的。</summary>
+    private const string OriginalFolderName = "original";
+
+    public async Task<string?> SaveOriginalAsync(
+        IFormFile original,
+        string subfolder,
+        string croppedFileName,
+        CancellationToken cancellationToken)
+    {
+        if (original is null || original.Length == 0 || original.Length > MaxBytes)
+        {
+            return null;
+        }
+
+        var extension = Path.GetExtension(original.FileName);
+        if (string.IsNullOrEmpty(extension) || !AllowedExtensions.Contains(extension))
+        {
+            return null;
+        }
+
+        var stem = SafeStem(croppedFileName);
+        if (stem is null || !TryResolveOriginalDirectory(subfolder, out var directory, out var safeSubfolder))
+        {
+            return null;
+        }
+
+        Directory.CreateDirectory(directory);
+        var fileName = stem + extension.ToLowerInvariant();
+        await using (var stream = new FileStream(
+            Path.Combine(directory, fileName), FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            await original.CopyToAsync(stream, cancellationToken);
+        }
+
+        return $"/Content/{safeSubfolder}/{OriginalFolderName}/{fileName}";
+    }
+
+    public async Task<string?> CloneOriginalAsync(
+        string subfolder,
+        string previousFileName,
+        string croppedFileName,
+        CancellationToken cancellationToken)
+    {
+        var newStem = SafeStem(croppedFileName);
+        if (newStem is null || !TryResolveOriginalDirectory(subfolder, out var directory, out var safeSubfolder))
+        {
+            return null;
+        }
+
+        var existing = FindOriginalFile(directory, previousFileName);
+        if (existing is null)
+        {
+            return null;
+        }
+
+        var fileName = newStem + Path.GetExtension(existing).ToLowerInvariant();
+        await using (var source = new FileStream(existing, FileMode.Open, FileAccess.Read, FileShare.Read))
+        await using (var target = new FileStream(
+            Path.Combine(directory, fileName), FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            await source.CopyToAsync(target, cancellationToken);
+        }
+
+        return $"/Content/{safeSubfolder}/{OriginalFolderName}/{fileName}";
+    }
+
+    public string? FindOriginalUrl(string subfolder, string fileName)
+    {
+        if (!TryResolveOriginalDirectory(subfolder, out var directory, out var safeSubfolder))
+        {
+            return null;
+        }
+
+        var existing = FindOriginalFile(directory, fileName);
+        return existing is null
+            ? null
+            : $"/Content/{safeSubfolder}/{OriginalFolderName}/{Path.GetFileName(existing)}";
+    }
+
+    private static string? FindOriginalFile(string directory, string fileName)
+    {
+        var stem = SafeStem(fileName);
+        if (stem is null || !Directory.Exists(directory))
+        {
+            return null;
+        }
+
+        return Directory.EnumerateFiles(directory, stem + ".*")
+            .FirstOrDefault(path => AllowedExtensions.Contains(Path.GetExtension(path)));
+    }
+
+    /// <summary>取文件名主干；含路径分隔符/越级/空的一律拒绝，防止借文件名逃出目录。</summary>
+    private static string? SafeStem(string? fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            return null;
+        }
+
+        var name = fileName.Trim();
+        if (name != Path.GetFileName(name) || name.Contains("..", StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        var stem = Path.GetFileNameWithoutExtension(name);
+        return string.IsNullOrWhiteSpace(stem) || stem.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0
+            ? null
+            : stem;
+    }
+
+    private bool TryResolveOriginalDirectory(string subfolder, out string directory, out string safeSubfolder)
+    {
+        directory = string.Empty;
+        safeSubfolder = SanitizeSubfolder(subfolder);
+        var contentRoot = _legacyAssets.Value.ContentRoot;
+        if (string.IsNullOrWhiteSpace(contentRoot) || !Directory.Exists(contentRoot))
+        {
+            return false;
+        }
+
+        var candidate = Path.GetFullPath(Path.Combine(
+            contentRoot, safeSubfolder.Replace('/', Path.DirectorySeparatorChar), OriginalFolderName));
+        if (!candidate.StartsWith(Path.GetFullPath(contentRoot), StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        directory = candidate;
+        return true;
+    }
+
     private static string SanitizeSubfolder(string subfolder)
     {
         if (string.IsNullOrWhiteSpace(subfolder))
