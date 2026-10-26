@@ -57,6 +57,11 @@
 - 两条导入通道共用一个导入器：
   1. **按文章链接导入**（首要，当前公众号未认证）：后台粘贴一条或**多行批量**链接 `https://mp.weixin.qq.com/s/...`，抓取页面解析标题/作者/发布时间（页面脚本里的 ct 时间戳）/封面(og:image)/`#js_content` 正文。
   2. **官方接口**（接口资质到位后开启）：`POST https://api.weixin.qq.com/cgi-bin/stable_token` 取 token 并缓存，`POST /cgi-bin/freepublish/batchget` 分页（count≤20）拉全部已发布图文，支持**全量回填历史**；配置 `WeChat:{Enabled,AppId,AppSecret,SyncIntervalMinutes}`，凭据只走 Local.json/环境变量；BackgroundService 定时增量同步，仅在 Enabled 且凭据齐全时运行，失败记日志不崩。
+- **公众号实际情况（用户 2026-10-26 核实）**：「深圳市艺术产业促进会」(SZAIPA)，主体「其他组织」，**未认证**；已有 AppID/AppSecret、IP 白名单，access_token 正常（2000 次/天）。要同步的是**已群发**文章。freepublish 只含「发布」记录，与群发历史不完全相通；未认证号的 freepublish/material 接口可能无权限。→ 方案：**多来源 + 统一导入器 + 规范化去重键（biz+mid+idx，从文章页解析，兼容 `/s/短码` 与长链接两种 URL）**：
+  1. 链接导入（主通道，群发历史全量补齐靠它，支持多行批量）；
+  2. 官方接口：freepublish/batchget + material/batchget_material(news)，各自独立开关/失败，错误码转可读提示；stable_token 进程内缓存，控制调用次数；
+  3. 群发完成事件回调 `/wechat/callback`（MASSSENDJOBFINISH 的 ArticleUrlResult），**默认关闭**——启用「服务器配置」会让公众平台编辑模式的自动回复/自定义菜单失效，需用户权衡；
+  4. `wechat-probe` 能力探测命令：用用户配置的凭据逐个探测接口可用性（不打印密钥），决定实际启用哪些来源。
 - **正文清洗（重点：不照搬）**：图片 `data-src` → 下载到 `{ContentRoot}/WeChat/{yyyy}/{MM}/{hash}.{ext}` 并改写为本地 URL（禁止热链 mmbiz）；去掉公众号专有内容（关注引导、二维码、"往期推荐/往期回顾"、"阅读原文"、点赞在看、底部名片、空白占位段落等，规则可配置+有单测）；剥离内联 `style` 中的字号/字体/颜色/固定宽度，让正文吃前台 `.article-body` 的排版；白名单过滤 script/iframe/事件属性。
 - 前台：
   - 列表 `/Home/News` 与首页 `#section06`：同步上线后**只显示来自公众号的新闻 + 上线后在后台新建的新闻**；旧手录新闻从列表隐藏（判定建议：无同步记录且 `Id <= WeChat:LegacyNewsMaxId`，该值在上线时配置），**旧详情 URL 继续可访问**，数据不删。IsHidden 的同步文章不在列表出现。
