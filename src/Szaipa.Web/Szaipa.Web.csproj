@@ -28,6 +28,9 @@
   <ItemGroup>
     <Content Update="wwwroot/admin/admin.input.css" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot/admin/src/**" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot/public/src/**" CopyToPublishDirectory="Never" />
+    <!-- 运行时数据是外部契约：密钥、IP 库与本地样本不得随发布目录流转。 -->
+    <Content Update="App_Data/**" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot/legacy/**/.gitkeep" CopyToPublishDirectory="Never" />
     <Content Update="package.json" CopyToPublishDirectory="Never" />
     <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
@@ -45,6 +48,8 @@
   <ItemGroup>
     <Content Update="appsettings.Local.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Production.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Local*.json" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Production*.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
 </Project>

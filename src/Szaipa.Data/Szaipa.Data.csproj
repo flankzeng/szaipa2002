@@ -14,6 +14,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
     <!-- LocalMirror（本地镜像库）：开发机没有 SQL Server，镜像模式下四个上下文改用 SQLite 文件。 -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
+    <!-- 显式固定已修复的间接依赖；镜像库也随应用发布，不能只在测试项目压制漏洞告警。 -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.14" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
 </Project>
