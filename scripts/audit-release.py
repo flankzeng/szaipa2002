@@ -59,10 +59,10 @@ def audit(root):
                     full = f"{prefix}:{key}" if prefix else key
                     if isinstance(value, dict):
                         check(value, full)
-                    elif value and (key.lower() in {"connectionstring", "appsecret", "password", "callbacktoken"}
+                    elif value and (key.lower() in {"connectionstring", "appsecret", "password", "token", "accesstoken", "apikey"}
                                     or prefix == "ConnectionStrings"):
                         errors.append(f"配置含非空凭据: {path.name} {full}")
-                    elif value is True and (full in {"LocalMirror:Enabled", "WeChat:Enabled"}
+                    elif value is True and (full in {"LocalMirror:Enabled", "WeChat:Enabled", "WeChat:Callback:Enabled", "RuntimeSafety:AllowLiveDatabase"}
                                             or key in {"EnableWrites", "UseReadOnlyConnectionForDebug"}):
                         errors.append(f"发布默认配置不应启用: {path.name} {full}")
             check(settings)

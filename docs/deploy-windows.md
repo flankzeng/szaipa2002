@@ -127,8 +127,9 @@ machine-scoped DPAPI 适合当前单台 Windows 服务器；DPAPI 解密不绑�
 ## 5. 必做冒烟
 
 - `/healthz`：200，`liveDatabase=false`、无 ReadWrite legacy source；
-- `/Home/newIndex`、`/Home/NewNews`、`/Home/NewNewsRead/1124`；
-- `/Home/NewVip`、`/Home/NewArt/1000`、`/Home/NewAbout`；
+- `/Home/Index`、`/Home/News`、`/Home/NewsRead/1124`；
+- `/Home/Vip`、`/Home/Art/1000`、`/Home/About`、`/Home/Constitution`；
+- `/Home/Art/1000/Archive`、`/Home/Art/News/1000`；旧 `new*` 入口应永久重定向到正式 URL；
 - `/Home/PublicationList`、一个普通展览、一个重要展览和三个特殊展览；
 - `/Content/123/favicon.ico`、代表性新闻/艺术家/展览图片与现代 AVIF；
 - 全程通过测试 hostname 的 HTTPS 登录 `/Staff`，确认 cookie 名为 `Szaipa.Admin.Staging`，并在
@@ -166,6 +167,10 @@ hook 不是“收到 push 后执行任意 shell”的入口。它应：
 
 创建新 remote、配置 workflow/hook 和测试 IIS 站之前，必须先确认仓库名称/可见性、Windows
 releases 路径与测试绑定。
+
+后台自动化 Epic 的增量 SQL、公众号启用、可写后台与配置切换见
+[后台自动化上线与回退手册](automation-rollout.md)。发布文件边界可用
+`python3 scripts/audit-release.py <publish目录>` 在本机只读验证。
 
 ## 8. 后台唯一写入者（人工确认）
 

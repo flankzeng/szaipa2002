@@ -25,11 +25,11 @@
 | ID | 任务 | 状态 | 负责人 / 分支 | 依赖 |
 |---|---|---|---|---|
 | T0 | 本地镜像库（生产只读 → 本地 SQLite 可写副本） | 完成（已合并，375 测试绿） | Sonnet 子 agent / f1b854c | 无 |
-| T1 | 微信公众号文章同步 → 填入现有新闻结构 | 进行中（Codex 已续接） | Luna 子 agent / `worktree-agent-a27f15c31f63d6375` | 无（端到端验证需 T0） |
-| T2 | 展览自动化：状态自动流转 + 首页展览数据化 + 专题页模板 | 进行中（Codex 已续接） | Luna 子 agent / `worktree-agent-a47abf2973a8fa0ec` | 无 |
+| T1 | 微信公众号文章同步 → 填入现有新闻结构 | 已合并，最终真实来源验收受限（见 HANDOFF） | Codex / 883535f、224132f | 无（端到端验证需 T0） |
+| T2 | 展览自动化：状态自动流转 + 首页展览数据化 + 专题页模板 | 已合并，HTTP 闭环通过，积木 GUI 待复验 | Codex / da166c4、4312776 | 无 |
 | T3 | 组织架构与首页静态块数据化（成员/顾问/在售作品/合作伙伴） | 完成（已合并，422 测试绿） | Sonnet 子 agent / e79f4b6 | 无 |
-| T4 | 艺术家官网一站式编辑 + 展讯数据化 + 头像裁切/黑白 | 进行中（Codex 已续接） | Luna 子 agent / `worktree-agent-a2b2e509401a8294c` | 无 |
-| T5 | 集成与上线就绪（合并、端到端、发布包、SQL 汇总、上线/回滚手册） | 进行中（发布契约与依赖审计先行，集成待 T1/T2/T4） | Codex 主 agent / `codex-refactor-dotnet-modernization` | T0–T4 |
+| T4 | 艺术家官网一站式编辑 + 展讯数据化 + 头像裁切/黑白 | 已合并，艺术家 UI 闭环通过；成员裁切待复验 | Codex / c2748aa、c5a0363、5c63175 | 无 |
+| T5 | 集成与上线就绪（合并、端到端、发布包、SQL 汇总、上线/回滚手册） | 进行中（639 测试绿，SQL/手册/候选包；剩余验收见 HANDOFF） | Codex 主 agent / `codex-refactor-dotnet-modernization` | T0–T4 |
 
 ### 文件归属（防冲突）
 `Views/Home/Index.cshtml` 多任务共用，**只改自己负责的 section**：

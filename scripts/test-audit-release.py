@@ -60,6 +60,12 @@ class ReleaseBoundaryTests(unittest.TestCase):
         self.assertTrue(any("LocalMirror:Enabled" in error for error in errors))
         self.assertTrue(any("IIS" in error for error in errors))
 
+    def test_rejects_callback_token_without_echoing_it(self):
+        (self.root / "appsettings.json").write_text('{"WeChat":{"Callback":{"Token":"secret-callback-token"}}}')
+        errors, _ = release.audit(self.root)
+        self.assertTrue(any("WeChat:Callback:Token" in error for error in errors))
+        self.assertNotIn("secret-callback-token", "\n".join(errors))
+
     def test_rejects_symlink_to_external_file(self):
         (self.root / "external.txt").symlink_to(self.root / "Szaipa.Web.dll")
         errors, _ = release.audit(self.root)

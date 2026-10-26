@@ -11,8 +11,10 @@
 ## 解决方案结构
 - `src/Szaipa.Data` —— 数据层：EF Core 上下文、实体、读模型、仓储、admin 写服务。
 - `src/Szaipa.Web` —— ASP.NET Core MVC：公开站（Views/Home）+ 后台（Areas/Staff）。
-- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（100 测试）。
-- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（当前 152 项；全解决方案合计 252）。
+- `tests/Szaipa.Data.Tests` —— xUnit + SQLite 内存库（367 测试）。
+- `tests/Szaipa.Web.Tests` —— Web 层策略/路径安全测试（272 项；全解决方案合计 639）。
+
+2026-10-26 自动化已集成：微信 `Services/WeChat/` + `/Staff/WeChat`；展览 `PublicationLifecycle`、`PublicationBlock`、`FeaturedExhibition` 与后台积木编辑器；艺术家 `/Staff/Artist/{id}/Site`、`ArtistSiteAdminRepository`、`ArtistPublication`、`image-cropper.js`。发布/回退见 `automation-rollout.md`；实际验证与剩余项见 `updates/2026-10-26-automation-integration.md`、最新 HANDOFF。
 - `Szaipa.Modernization.slnx` —— 解决方案文件。
 
 ## 命令（重要：用 ~/.dotnet/dotnet，SDK 10.0.301；PATH 的 dotnet 是旧版 6/7）
