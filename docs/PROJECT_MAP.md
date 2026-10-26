@@ -114,3 +114,10 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - **最终总结用中文**（记忆 summaries-in-chinese）。设计师用户，CSS 大改写中文注释、保持干净（css-design-conventions）。
 - **边做边验证**：每个功能真的跑一下；遇到 legacy bug **顺手修**而不是照搬（已修：旧 NewsAdd 丢正文 + str2t1 误删 newsImg；旧 ArtNewsEdit 字段赋值给自己的 no-op；NewIndex 王玉波头像错链）。见记忆 verify-and-fix-legacy-bugs。
 - 记忆目录有：parity-baseline / db-safety-constraints / migration-state / update-docs-workflow / css-design-conventions / summaries-in-chinese / staff-backend-migration / verify-and-fix-legacy-bugs / exhibition-pages-design / project-map。
+
+## 现场编辑（T6，2026-10-26）
+- 后台 `/Staff/LiveEdit`（`Areas/Staff/Controllers/LiveEditController.cs` + `Views/LiveEdit/Index.cshtml`）：iframe 微缩官网 + 保存接口 `POST /Staff/LiveEdit/Save`。
+- 开关中间件与视图助手 `src/Szaipa.Web/LiveEdit/LiveEditHtml.cs`（`LiveEditState.UseLiveEdit`、`@LiveEdit.Text/Lines/Field/Attr`，在 `Views/_ViewImports.cshtml` 注入）；资源 partial `Views/Shared/_LiveEditAssets.cshtml`，脚本 `wwwroot/js/live-edit.js`、样式 `wwwroot/css/live-edit.css`。
+- 数据层 `src/Szaipa.Data/Services/LiveEdit/`：白名单 `LiveEditRegistry`（新增可编辑字段只改这里）、`LiveEditService`（写入+清洗+审计）、`SiteTextProvider`（SiteText 单例缓存）。表 `SiteText`（`docs/sql/2026-10-26-site-text.sql`）。
+- 给新页面接入：写死文字用 `@LiveEdit.Text("页面.区块.名", "原文")`；数据库字段用 `@LiveEdit.Field("实体", id, "字段", 值)` 或在容器上 `@LiveEdit.Attr(...)`（富文本）。实体/字段须先在 `LiveEditRegistry` 白名单里。
+
