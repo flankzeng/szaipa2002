@@ -39,6 +39,11 @@ public sealed class SzaipaLegacyReadContext : DbContext
     public DbSet<Exhibition> Exhibition => Set<Exhibition>();
 
     public DbSet<ArtistPublication> ArtistPublication => Set<ArtistPublication>();
+    public DbSet<OrgMember> OrgMember => Set<OrgMember>();
+
+    public DbSet<SaleWork> SaleWork => Set<SaleWork>();
+
+    public DbSet<Partner> Partner => Set<Partner>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -105,6 +110,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Sort).HasDefaultValue(0);
         });
+        // Additive homepage-block tables (OrgMember / SaleWork / Partner); may not exist in the live DB yet.
+        HomeBlocksModelConfiguration.Configure(modelBuilder);
     }
 
     public override int SaveChanges() => throw ReadOnlyViolation();
