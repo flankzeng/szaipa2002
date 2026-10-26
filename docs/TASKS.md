@@ -24,7 +24,7 @@
 | ID | 任务 | 状态 | 负责人 / 分支 | 依赖 |
 |---|---|---|---|---|
 | T0 | 本地镜像库（生产只读 → 本地 SQLite 可写副本） | 待办 | | 无 |
-| T1 | 微信公众号文章自动同步 → 新闻 | 待办 | | 无（端到端验证需 T0） |
+| T1 | 微信公众号文章同步 → 填入现有新闻结构 | 待办 | | 无（端到端验证需 T0） |
 | T2 | 展览自动化：状态自动流转 + 首页展览数据化 + 专题页模板 | 待办 | | 无 |
 | T3 | 组织架构与首页静态块数据化（成员/顾问/在售作品/合作伙伴） | 待办 | | 无 |
 | T4 | 艺术家官网一站式编辑 + 展讯数据化 | 待办 | | 无 |
@@ -49,15 +49,20 @@
 - 验收：mirror-sync 跑通两库；镜像模式下前台首页/新闻/艺术家/展览与生产只读模式渲染一致；后台新建一条新闻后前台可见；单测覆盖 provider 切换与 Production 拒绝。
 
 ## T1 微信公众号同步
-**目标**：公众号新发布的文章自动出现在网站新闻栏目，替代手录。
-- 新实体 `WeChatArticle`（建议字段：Id、ArticleId+ItemIndex 唯一、Title、Author、Digest、ContentHtml（已清洗+图片本地化）、CoverPath、SourceUrl、PublishedAt、SyncedAt、ContentHash、IsHidden、IsPinned）+ `docs/sql` 建表脚本。
-- 两条导入通道，共用一个导入器：
-  1. **官方接口**：`POST https://api.weixin.qq.com/cgi-bin/stable_token` 取 token（缓存到过期前），`POST /cgi-bin/freepublish/batchget`（offset/count≤20 分页）拉已发布图文；需要 AppID/AppSecret + 服务器出口 IP 白名单，配置段 `WeChat:{Enabled,AppId,AppSecret,SyncIntervalMinutes}`，凭据只走 Local.json/环境变量。
-  2. **按文章链接导入**（无接口资质也能用）：后台粘贴 `https://mp.weixin.qq.com/s/...`，抓取页面解析标题/作者/发布时间/封面(og:image)/`#js_content` 正文。
-- 正文处理：图片 `data-src` → 下载到 `{ContentRoot}/WeChat/{yyyy}/{MM}/{hash}.{ext}` 并改写为本地 URL（不热链 mmbiz）；HTML 白名单清洗（去 script/style 事件属性/iframe 外链，保留排版）；去重按 ArticleId+ItemIndex 或 SourceUrl，内容哈希变化才更新。
-- 后台 `/Staff/WeChat`：同步记录列表、立即同步、按链接导入、隐藏/置顶、预览；BackgroundService 定时同步（仅 Enabled 且凭据齐全时运行，失败记日志不崩）。
-- 前台：`/Home/News` 列表与首页 `#section06` 改为展示同步文章（置顶优先、按发布时间倒序）；详情页沿用 NewsRead 的版式；**旧新闻详情 URL 继续可访问**（SEO），只是不再出现在列表。表不存在或为空时回退旧 News 数据。
-- 验收：导入器/清洗/去重/图片改写有单测（用本地 HTML fixture，不打外网）；真实链接导入一篇文章在本地前台正确显示（390/1440）。
+**目标**：公众号新发布的文章自动**按现有新闻结构**进入网站新闻栏目，替代手录。
+> 用户补充（2026-10-26）：**不是照搬公众号整页**，而是像现在一样把内容「填入」现有新闻结构；前台新闻版式不重构——详情页仍是「左边正文、右边近 3 期推荐」，列表页也保持现状。
+
+- **落库到现有 `News` 表**（字段映射：Title、Subtitle←摘要 digest、Autor、Date←发布时间、CoverPath←封面本地化后的文件名（与后台上传封面同目录/同存法）、Content←清洗后的正文、`link`←公众号原文 URL、`original`←按 legacy 语义设置（先核对现有数据里 original/link 的用法））。这样前台、后台 News 模块、首页 `#section06` 全部零改结构即可显示。
+- 新增**同步记录表** `WeChatSyncRecord`（ArticleId+ItemIndex 或 SourceUrl 唯一、NewsId、ContentHash、SyncedAt、IsHidden）用于去重/增量更新/标记来源；`docs/sql` 建表脚本。表不存在时同步功能禁用、前台照旧。
+- 两条导入通道共用一个导入器：
+  1. **按文章链接导入**（首要，当前公众号未认证）：后台粘贴一条或**多行批量**链接 `https://mp.weixin.qq.com/s/...`，抓取页面解析标题/作者/发布时间（页面脚本里的 ct 时间戳）/封面(og:image)/`#js_content` 正文。
+  2. **官方接口**（接口资质到位后开启）：`POST https://api.weixin.qq.com/cgi-bin/stable_token` 取 token 并缓存，`POST /cgi-bin/freepublish/batchget` 分页（count≤20）拉全部已发布图文，支持**全量回填历史**；配置 `WeChat:{Enabled,AppId,AppSecret,SyncIntervalMinutes}`，凭据只走 Local.json/环境变量；BackgroundService 定时增量同步，仅在 Enabled 且凭据齐全时运行，失败记日志不崩。
+- **正文清洗（重点：不照搬）**：图片 `data-src` → 下载到 `{ContentRoot}/WeChat/{yyyy}/{MM}/{hash}.{ext}` 并改写为本地 URL（禁止热链 mmbiz）；去掉公众号专有内容（关注引导、二维码、"往期推荐/往期回顾"、"阅读原文"、点赞在看、底部名片、空白占位段落等，规则可配置+有单测）；剥离内联 `style` 中的字号/字体/颜色/固定宽度，让正文吃前台 `.article-body` 的排版；白名单过滤 script/iframe/事件属性。
+- 前台：
+  - 列表 `/Home/News` 与首页 `#section06`：同步上线后**只显示来自公众号的新闻 + 上线后在后台新建的新闻**；旧手录新闻从列表隐藏（判定建议：无同步记录且 `Id <= WeChat:LegacyNewsMaxId`，该值在上线时配置），**旧详情 URL 继续可访问**，数据不删。IsHidden 的同步文章不在列表出现。
+  - 详情 `NewsRead`：结构不变（左正文、右近 3 期推荐），推荐同样排除隐藏/旧新闻。
+- 后台 `/Staff/WeChat`：同步记录列表（来源链接、对应新闻、同步时间、状态）、批量链接导入、立即同步、隐藏/取消隐藏、重新抓取；导入后可在现有 News 模块里继续编辑。
+- 验收：导入器/清洗规则/去重/图片改写/旧新闻隐藏判定均有单测（本地 HTML fixture，测试不打外网）；本地镜像库上用真实链接导入一篇文章，前台列表和详情（390/1440）与现有新闻版式一致。
 
 ## T2 展览自动化 + 专题页
 **目标**：展览录入后自动按日期显示为「即将开幕 / 展览中 / 已结束」，首页展览区与轮播不再手打，新专题页在后台拼装而非手写 1000+ 行模板。
