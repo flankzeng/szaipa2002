@@ -10,7 +10,7 @@ namespace Szaipa.Data.Services.WeChat;
 /// <summary>
 /// 定时增量同步公众号新发布的文章。仅当 <c>WeChat:Enabled</c> 且 AppId/AppSecret 齐全、并且后台写库
 /// （<c>AdminWrite</c>）已配置时才工作；否则启动即静默退出，不影响站点。每轮失败只记日志，下一轮重试，永不崩溃。
-/// 首轮若同步记录表为空则做一次全量回填（补齐历史）；之后每轮只看最新两页。
+/// 每次进程启动后的 API 首轮都完整发现历史；失败时下一轮继续全量，成功后才切换为增量。全量依靠来源键去重，不覆盖既有文章。
 /// </summary>
 public sealed class WeChatSyncBackgroundService : BackgroundService
 {
@@ -53,12 +53,12 @@ public sealed class WeChatSyncBackgroundService : BackgroundService
             // 启动后稍等，让站点先完成预热。
             await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
 
-            var firstRun = true;
+            var backfillState = new WeChatApiBackfillState();
             using var timer = new PeriodicTimer(options.SyncInterval);
             do
             {
-                await RunOnceAsync(firstRun, stoppingToken);
-                firstRun = false;
+                var succeeded = await RunOnceAsync(backfillState.NeedsBackfill, stoppingToken);
+                backfillState.RecordResult(succeeded);
             }
             while (await timer.WaitForNextTickAsync(stoppingToken));
         }
@@ -68,7 +68,7 @@ public sealed class WeChatSyncBackgroundService : BackgroundService
         }
     }
 
-    internal async Task RunOnceAsync(bool allowBackfill, CancellationToken cancellationToken)
+    internal async Task<bool> RunOnceAsync(bool full, CancellationToken cancellationToken)
     {
         try
         {
@@ -79,27 +79,30 @@ public sealed class WeChatSyncBackgroundService : BackgroundService
             if (!await service.IsTableAvailableAsync(cancellationToken))
             {
                 _logger.LogWarning("公众号定时同步：{Message}", WeChatSchema.MissingTableMessage);
-                return;
+                return false;
             }
 
-            var backfill = false;
-            if (allowBackfill)
+            var summary = await service.SyncFromApiAsync(full, SystemActor, cancellationToken);
+            var succeeded = summary.Error is null
+                            && summary.Failed == 0
+                            && summary.Sources.Count > 0
+                            && summary.Sources.All(source => source.Error is null);
+            if (!succeeded)
             {
-                var repository = scope.ServiceProvider.GetRequiredService<IWeChatSyncAdminRepository>();
-                backfill = (await repository.GetPagedAsync(1, 1, cancellationToken)).Page.TotalCount == 0;
-            }
-
-            var summary = await service.SyncFromApiAsync(backfill, SystemActor, cancellationToken);
-            if (summary.Error is not null)
-            {
-                _logger.LogWarning("公众号定时同步未完成：{Error}", summary.Error);
+                _logger.LogWarning(
+                    "公众号定时同步未完成（{Mode}）：{Error}，失败 {Failed}。",
+                    full ? "全量回填" : "增量",
+                    summary.Error ?? string.Join("；", summary.Sources.Where(source => source.Error is not null).Select(source => source.Error)),
+                    summary.Failed);
             }
             else
             {
                 _logger.LogInformation(
                     "公众号定时同步完成（{Mode}）：拉取 {Fetched}，新增 {Created}，更新 {Updated}，无变化 {Unchanged}，失败 {Failed}。",
-                    backfill ? "全量回填" : "增量", summary.Fetched, summary.Created, summary.Updated, summary.Unchanged, summary.Failed);
+                    full ? "全量回填" : "增量", summary.Fetched, summary.Created, summary.Updated, summary.Unchanged, summary.Failed);
             }
+
+            return succeeded;
         }
         catch (OperationCanceledException)
         {
@@ -108,6 +111,21 @@ public sealed class WeChatSyncBackgroundService : BackgroundService
         catch (Exception exception)
         {
             _logger.LogError(exception, "公众号定时同步本轮出错，下一轮重试。");
+            return false;
+        }
+    }
+}
+
+/// <summary>每次进程启动都从全量发现开始；不持久化断点，已有来源键由同步器跳过。</summary>
+internal sealed class WeChatApiBackfillState
+{
+    public bool NeedsBackfill { get; private set; } = true;
+
+    public void RecordResult(bool succeeded)
+    {
+        if (NeedsBackfill && succeeded)
+        {
+            NeedsBackfill = false;
         }
     }
 }
