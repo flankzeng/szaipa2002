@@ -76,8 +76,17 @@
     {
         <p class="mt-3 text-sm text-amber-800">缺少 Works.Sort，作品仍按旧顺序显示，排序已停用。</p>
     }
+    else
+    {
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+            <button type="button" data-save-work-order class="admin-btn-ghost">保存作品顺序</button>
+            <p data-work-order-status role="status" aria-live="polite" class="text-sm text-muted">
+                拖动作品后会自动保存，也可使用按钮保存顺序。
+            </p>
+        </div>
+    }
     <ol id="artist-work-list"
-        data-reorder-url="@reorderUrl"
+        data-reorder-url="@(Model.Works.SortSupported ? reorderUrl : string.Empty)"
         class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         @foreach (var work in Model.Works.Items)
         {
