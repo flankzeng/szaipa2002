@@ -28,6 +28,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<PublicationBlock> PublicationBlock => Set<PublicationBlock>();
 
+    public DbSet<FeaturedExhibition> FeaturedExhibition => Set<FeaturedExhibition>();
+
     public DbSet<Artist> Artist => Set<Artist>();
 
     public DbSet<Works> Works => Set<Works>();
@@ -53,8 +55,6 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.ToTable("Publication");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Type).HasDefaultValue(0);
-            entity.Property(e => e.IsFeatured).HasDefaultValue(false);
-            entity.Property(e => e.FeaturedSort).HasDefaultValue(0);
         });
 
         modelBuilder.Entity<ExhibitionWork>(entity =>
@@ -70,6 +70,15 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.SortOrder).HasDefaultValue(0);
             entity.Property(e => e.BlockType).HasMaxLength(30);
+        });
+
+        modelBuilder.Entity<FeaturedExhibition>(entity =>
+        {
+            entity.ToTable("FeaturedExhibition");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SortOrder).HasDefaultValue(0);
+            entity.Property(e => e.IsVisible).HasDefaultValue(true);
+            entity.Property(e => e.ShowInCarousel).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<Artist>(entity =>

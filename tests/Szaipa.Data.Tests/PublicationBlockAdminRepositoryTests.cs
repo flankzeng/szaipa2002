@@ -154,10 +154,10 @@ public sealed class PublicationBlockAdminRepositoryTests
         Assert.Contains("专题（Id=5）", diary.OperationRecord);
     }
 
-    // ---------- 展览仓储：推荐 / 主题 ----------
+    // ---------- 展览仓储：主题 ----------
 
     [Fact]
-    public async Task Create_and_update_persist_featured_and_theme_fields()
+    public async Task Create_and_update_persist_theme_fields()
     {
         await using var fixture = CreateContext();
         var repository = new PublicationAdminRepository(fixture.Context, new OperationRecorder());
@@ -167,9 +167,6 @@ public sealed class PublicationBlockAdminRepositoryTests
             {
                 TitleCN = "专题展",
                 Type = PublicationTypes.Topic,
-                IsFeatured = true,
-                FeaturedSort = 3,
-                FeaturedImages = "a.jpg， b.jpg\n../c.jpg",
                 ThemeColor = "#1A6B5A",
                 BannerPath = "/Content/images/x/banner.jpg"
             },
@@ -177,20 +174,15 @@ public sealed class PublicationBlockAdminRepositoryTests
             CancellationToken.None);
 
         var saved = await fixture.Context.Publication.AsNoTracking().SingleAsync(p => p.Id == id);
-        Assert.True(saved.IsFeatured);
-        Assert.Equal(3, saved.FeaturedSort);
-        Assert.Equal("a.jpg,b.jpg", saved.FeaturedImages); // 规范化：逗号分隔、去掉路径穿越项
         Assert.Equal("#1a6b5a", saved.ThemeColor);
         Assert.Equal("/Content/images/x/banner.jpg", saved.BannerPath);
 
         await repository.UpdateAsync(
-            new Publication { Id = id, TitleCN = "专题展", Type = PublicationTypes.Topic, IsFeatured = false, FeaturedSort = 0, ThemeColor = "not-a-colour", BannerPath = "https://evil.example/x.jpg" },
+            new Publication { Id = id, TitleCN = "专题展", Type = PublicationTypes.Topic, ThemeColor = "not-a-colour", BannerPath = "https://evil.example/x.jpg" },
             Actor,
             CancellationToken.None);
 
         var updated = await fixture.Context.Publication.AsNoTracking().SingleAsync(p => p.Id == id);
-        Assert.False(updated.IsFeatured);
-        Assert.Null(updated.FeaturedImages);
         Assert.Null(updated.ThemeColor);   // 非法颜色被丢弃，回退默认主题色
         Assert.Null(updated.BannerPath);   // 非站内路径被丢弃
     }
@@ -273,9 +265,6 @@ public sealed class PublicationBlockAdminRepositoryTests
         await using var fixture = CreateContext();
         var repository = new PublicationAdminRepository(fixture.Context, new OperationRecorder());
         await Create(repository, "旧库展览", true, "2026-10-01", "2026-12-01");
-        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN IsFeatured");
-        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN FeaturedSort");
-        fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN FeaturedImages");
         fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN ThemeColor");
         fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN BannerPath");
         fixture.Context.Database.ExecuteSqlRaw("ALTER TABLE Publication DROP COLUMN Type");
@@ -286,7 +275,6 @@ public sealed class PublicationBlockAdminRepositoryTests
 
         var item = Assert.Single(page.Items);
         Assert.Equal("旧库展览", item.TitleCN);
-        Assert.False(item.IsFeatured);
         Assert.Equal(0, item.Type);
     }
 

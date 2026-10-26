@@ -160,71 +160,42 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         return LegacyReadModelComposer.CreatePublicationDetailSnapshot(detail, related);
     }
 
-    public async Task<IReadOnlyList<PublicationFeaturedModel>> GetHomeFeaturedAsync(
+    public async Task<IReadOnlyList<FeaturedExhibitionModel>> GetHomeFeaturedAsync(
         CancellationToken cancellationToken = default)
     {
         try
         {
-            // IsFeatured/FeaturedSort/FeaturedImages are additive columns (2026-10-26 script). They are read in
-            // their own query so an un-migrated database only loses this feature, never the home page.
-            // Offline (Status == null) exhibitions are never shown, even if still ticked as featured.
-            var rows = await _context.Publication
+            // FeaturedExhibition is an additive table (2026-10-26 script). Without it the home page simply keeps
+            // its original hard-coded exhibition blocks. Hidden rows are returned too: the view needs their links
+            // to know which hard-coded blocks have been taken over (and must stay hidden).
+            var rows = await _context.FeaturedExhibition
                 .AsNoTracking()
-                .Where(publication => publication.IsFeatured && publication.Status != null)
-                .OrderBy(publication => publication.FeaturedSort)
-                .ThenByDescending(publication => publication.StartDate)
-                .ThenByDescending(publication => publication.Id)
-                .Select(publication => new
-                {
-                    Summary = new PublicationSummaryModel
-                    {
-                        Id = publication.Id,
-                        TitleCn = publication.TitleCN ?? string.Empty,
-                        TitleEn = publication.TitleEN ?? string.Empty,
-                        StartDate = publication.StartDate,
-                        EndDate = publication.EndDate,
-                        CoverPath = publication.CoverPath ?? string.Empty,
-                        LogoPath = publication.LogoPath ?? string.Empty,
-                        Location = publication.Location ?? string.Empty,
-                        FolderName = publication.FolderName ?? string.Empty,
-                        Organizer = publication.zhuban ?? string.Empty,
-                        Host = publication.chengban ?? string.Empty,
-                        CoHost = publication.xieban ?? string.Empty,
-                        Status = publication.Status
-                    },
-                    publication.FeaturedSort,
-                    publication.FeaturedImages
-                })
+                .OrderBy(row => row.SortOrder)
+                .ThenBy(row => row.Id)
                 .ToListAsync(cancellationToken);
 
             return rows
-                .Select(row => new PublicationFeaturedModel
+                .Select(row => new FeaturedExhibitionModel
                 {
-                    Publication = row.Summary,
-                    FeaturedSort = row.FeaturedSort,
-                    ImageNames = SplitImageNames(row.FeaturedImages)
+                    Id = row.Id,
+                    SortOrder = row.SortOrder,
+                    IsVisible = row.IsVisible,
+                    ShowInCarousel = row.ShowInCarousel,
+                    Title = row.Title ?? string.Empty,
+                    YearText = row.YearText ?? string.Empty,
+                    LinkUrl = row.LinkUrl ?? string.Empty,
+                    InfoLines = FeaturedExhibitionContent.SplitLines(row.InfoLines),
+                    ImageUrls = FeaturedExhibitionContent.SplitPaths(row.ImageUrls),
+                    LogoUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.LogoUrl),
+                    CoverUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.CoverUrl)
                 })
+                .Where(model => FeaturedExhibitionContent.IsSafeLink(model.LinkUrl))
                 .ToList();
         }
-        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "FeaturedExhibition"))
         {
-            return Array.Empty<PublicationFeaturedModel>();
+            return Array.Empty<FeaturedExhibitionModel>();
         }
-    }
-
-    /// <summary>Splits the comma/newline separated <c>FeaturedImages</c> value into bare, safe file names.</summary>
-    internal static IReadOnlyList<string> SplitImageNames(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return Array.Empty<string>();
-        }
-
-        return value
-            .Split(new[] { ',', '，', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            // The names are appended to /Content/images/{FolderName}/ — refuse anything that could climb out.
-            .Where(name => name.Length > 0 && !name.Contains('/') && !name.Contains('\\') && !name.Contains(".."))
-            .ToArray();
     }
 
     private async Task<(string ThemeColor, string BannerPath)> LoadTopicThemeAsync(
@@ -276,10 +247,6 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
     private static bool IsMissingExhibitionWorkTable(DbException exception) =>
         SchemaCompatibility.IsMissingTable(exception, "ExhibitionWork");
 
-    private static bool IsMissingOptionalTemplateColumn(DbException exception)
-    {
-        var message = exception.Message;
-        return message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
-            || message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
-    }
+    private static bool IsMissingOptionalTemplateColumn(DbException exception) =>
+        SchemaCompatibility.IsMissingColumn(exception);
 }

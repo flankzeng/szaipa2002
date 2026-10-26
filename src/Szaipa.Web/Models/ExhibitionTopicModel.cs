@@ -77,7 +77,7 @@ public sealed class ExhibitionTopicModel
             });
         }
 
-        var accent = HexColor.IsMatch(publication.ThemeColor ?? string.Empty) ? publication.ThemeColor : DefaultAccentColor;
+        var accent = HexColor.IsMatch(publication.ThemeColor ?? string.Empty) ? publication.ThemeColor! : DefaultAccentColor;
         var banner = PublicationBlockContent.IsSafeLocalPath(publication.BannerPath)
             ? publication.BannerPath
             : $"/Content/images/{publication.FolderName}/10000.jpg";

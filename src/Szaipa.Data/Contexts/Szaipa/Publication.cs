@@ -51,19 +51,9 @@ public sealed class Publication
     /// <summary>序 signature line (e.g. author + date) shown under the preface.</summary>
     public string? Signature { get; set; }
 
-    // --- Exhibition automation fields (2026-10-26, docs/sql/2026-10-26-exhibition-automation.sql) ---
+    // --- Topic page theme (2026-10-26, docs/sql/2026-10-26-exhibition-automation.sql) ---
     // All additive: an un-migrated database lacks these columns, so every read of them goes through a
     // guarded, separate query (PublicationReadRepository) and falls back to the previous behaviour.
-
-    /// <summary>首页推荐：勾选后展览出现在首页「展会活动」卡片与轮播。</summary>
-    public bool IsFeatured { get; set; }
-
-    /// <summary>首页推荐排序，数值越小越靠前（仅 <see cref="IsFeatured"/> 为真时有意义）。</summary>
-    public int FeaturedSort { get; set; }
-
-    /// <summary>首页展览卡片的轮播图文件名（逗号分隔，位于 <c>/Content/images/{FolderName}/</c>）；
-    /// 留空则取画廊前 7 张。</summary>
-    public string? FeaturedImages { get; set; }
 
     /// <summary>专题页主题色（#RRGGBB），用于标题、分隔线、引言等强调色；空则用站点红。</summary>
     public string? ThemeColor { get; set; }

@@ -1,18 +1,25 @@
 ﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.HomePageSnapshotModel
+@using Szaipa.Data.Composition
+@using Szaipa.Web.Services
 @{
 ViewBag.Title = "首页";
 Layout = "~/Views/Shared/_PublicLayout.cshtml";
-var featuredSlides = Model.FeaturedPublications
-.Select(publication =>
-{
-var coverUrl = $"/Content/images/{publication.FolderName}/{publication.CoverPath}";
-return (Publication: publication, Cover: DerivedImageResolver.Resolve(coverUrl));
-})
+// ---- 首页推荐展览（T2：后台「首页推荐」FeaturedExhibition，自包含卡片数据）----
+// featuredAll 含隐藏项：它们的链接仍算「已接管」，对应的旧硬编码块/轮播会随之隐藏，而不是复活。
+var featuredAll = Model.FeaturedExhibitions;
+var featuredCards = featuredAll.Where(item => item.IsVisible).ToList();
+var coveredLinks = new HashSet<string>(featuredAll.Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
+var carouselCoveredLinks = new HashSet<string>(
+featuredAll.Where(item => item.ShowInCarousel).Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
+var featuredSlides = featuredCards
+.Where(item => item.ShowInCarousel && item.CoverUrl.Length > 0)
+.Select(item => (Item: item, Cover: DerivedImageResolver.Resolve(item.CoverUrl)))
 .Where(slide => slide.Cover is not null)
 .ToList();
 var hasFeaturedPublications = featuredSlides.Count > 0;
+var today = DateTime.Today;
 var tangqishanCoverUrl = "/Content/images/tangqishan/100002.jpg";
 var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 }
@@ -43,49 +50,56 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
         <div class="swiper mySwiper" style="border:1px solid black">
             <div class="swiper-wrapper">
 
-                @* 暂时没用上，2025.11.25 *@
-                @for (var featuredIndex = 0; featuredIndex < featuredSlides.Count; featuredIndex++) { var
-                    ex=featuredSlides[featuredIndex].Publication; var coverSource=featuredSlides[featuredIndex].Cover ??
-                    throw new InvalidOperationException("Filtered featured slides must have a safe cover source."); var
-                    isFirstSlide=featuredIndex==0; <div class="swiper-slide">
+                @* 后台「首页推荐」勾选了「同时进轮播」的展览，排在硬编码轮播之前；首张实际可见封面是唯一 eager/high（LCP）。 *@
+                @for (var featuredIndex = 0; featuredIndex < featuredSlides.Count; featuredIndex++)
+                {
+                    var ex = featuredSlides[featuredIndex].Item;
+                    var coverSource = featuredSlides[featuredIndex].Cover
+                        ?? throw new InvalidOperationException("Filtered featured slides must have a safe cover source.");
+                    var isFirstSlide = featuredIndex == 0;
+                    <div class="swiper-slide">
 
-                    <a href="/Home/Publication/@ex.Id" class="carouselZoom">
+                        <a href="@ex.LinkUrl" class="carouselZoom">
 
-                        <div class="outterL">
-                            <p class="inner_new rotate_new">
-                                @ex.TitleCn&#12288; @ex.StartDate?.Year.ToString()
-                            </p>
-                        </div>
-                        <div class="outterR">
-                            <p class="inner_new rotate_new">
-                                @ex.TitleCn&#12288; @ex.StartDate?.Year.ToString()
-                            </p>
-                        </div>
-
-                        <div class="black">
-
-                            <div class="logoCon">
-                                <img loading="@(isFirstSlide ? " eager" : "lazy" )" decoding="async"
-                                    src="/Content/images/@ex.FolderName/@ex.LogoPath" alt="">
+                            <div class="outterL">
+                                <p class="inner_new rotate_new">
+                                    @ex.Title&#12288; @ex.YearText
+                                </p>
+                            </div>
+                            <div class="outterR">
+                                <p class="inner_new rotate_new">
+                                    @ex.Title&#12288; @ex.YearText
+                                </p>
                             </div>
 
-                            <picture>
-                                @if (coverSource.AvifUrl is not null)
+                            <div class="black">
+
+                                @if (ex.LogoUrl.Length > 0)
                                 {
-                                <source type="image/avif" srcset="@coverSource.AvifUrl">
+                                    <div class="logoCon">
+                                        <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async"
+                                             src="@ex.LogoUrl" alt="">
+                                    </div>
                                 }
-                                <img loading="@(isFirstSlide ? " eager" : "lazy" )" decoding="async"
-                                    fetchpriority="@(isFirstSlide ? " high" : "auto" )" src="@coverSource.OriginalUrl"
-                                    class="imgCon" alt="">
-                            </picture>
 
-                        </div>
+                                <picture>
+                                    @if (coverSource.AvifUrl is not null)
+                                    {
+                                        <source type="image/avif" srcset="@coverSource.AvifUrl">
+                                    }
+                                    <img loading="@(isFirstSlide ? "eager" : "lazy")" decoding="async"
+                                         fetchpriority="@(isFirstSlide ? "high" : "auto")" src="@coverSource.OriginalUrl"
+                                         class="imgCon" alt="">
+                                </picture>
 
-                    </a>
-            </div>
+                            </div>
 
-            }
+                        </a>
+                    </div>
+                }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92015"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92015" class="carouselZoom">
@@ -123,7 +137,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92014"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92014" class="carouselZoom">
@@ -152,7 +169,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92013"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92013" class="carouselZoom">
@@ -181,7 +201,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Publication/tonggou2024"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Publication/tonggou2024" class="carouselZoom">
@@ -210,7 +233,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92012"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92012" class="carouselZoom">
@@ -239,7 +265,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92011"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92011" class="carouselZoom">
@@ -268,7 +297,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92009"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92009" class="carouselZoom">
@@ -296,7 +328,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92010"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92010" class="carouselZoom">
@@ -325,7 +360,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Publication/chunyu3"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Publication/chunyu3" class="carouselZoom">
@@ -354,7 +392,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92001"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92001" class="carouselZoom">
@@ -383,7 +424,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92002"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92002" class="carouselZoom" id="carouselMain">
@@ -412,7 +456,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92008"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92008" class="carouselZoom">
@@ -440,7 +487,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92007"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92007" class="carouselZoom">
@@ -468,7 +518,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Publication/tonggou2"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Publication/tonggou2" class="carouselZoom">
@@ -497,8 +550,11 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 
                 </a>
             </div>
+            }
 
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92003"))
+            {
             <div class="swiper-slide">
 
                 <a href="/Home/Publication/92003" class="carouselZoom" id="carouselSec">
@@ -525,7 +581,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92005"))
+            {
             <div class="swiper-slide">
                 <a href="/Home/Publication/92005" class="carouselZoom">
 
@@ -551,7 +610,10 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
+            @if (!carouselCoveredLinks.Contains("/Home/Publication/92006"))
+            {
             <div class="swiper-slide">
                 <a href="/Home/Publication/92006" class="carouselZoom">
 
@@ -577,6 +639,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
 
         </div>
@@ -1005,18 +1068,25 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
         <div class="card-container swiper mySwiper10" id="processing">
             <div class="swiper-wrapper">
 
+                @* 1) 按日期自动流转：状态为「自动」且当前处于展览中 / 即将开幕的数据库展览。
+                      退役 slug 兼容目录里的 14 个历史展览（固定 id 92001–92015）不在此列——无论 slug 迁移 SQL 是否已执行结果一致；
+                      已被「首页推荐」接管的链接也不重复输出。 *@
                 @foreach (var ex in Model.FeaturedPublications)
                 {
-                if (ex.Status == true)
-                {
-                <text>
+                    var lifecycle = ex.GetLifecycle(today);
+                    if (lifecycle is not (PublicationLifecycle.Ongoing or PublicationLifecycle.Upcoming)
+                        || LegacyPublicationGalleryCatalog.GetImages(ex.Id).Count > 0
+                        || coveredLinks.Contains("/Home/Publication/" + ex.Id))
+                    {
+                        continue;
+                    }
+
                     <div class="swiper-slide">
                         <div class="exhibition">
                             <h1>@ex.TitleCn</h1>
                             <a href="/Home/Publication/@ex.Id" style="color:black;text-decoration:none;">
                                 <h3>
-                                    展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}",
-                                    ex.EndDate)<br />
+                                    展览时间：@string.Format("{0:yyyy.MM.dd}", ex.StartDate)-@string.Format("{0:yyyy.MM.dd}", ex.EndDate)<br />
                                     展览地点：@ex.Location<br />
                                     主办单位：@ex.Organizer <br />
                                     协办单位：@ex.CoHost <br />
@@ -1030,23 +1100,60 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                         <a href="/Home/Publication/@ex.Id">
                             <div class="processing-lunbo">
                                 <div class="exhibitionSlider">
-
-                                    @for (var i = 10001; i <= 10006; i++) { var
-                                        exhibitionImageUrl=string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName,
-                                        i); <div class="exhibitionSlide">
-                                        <img loading="lazy" decoding="async" src="@exhibitionImageUrl" alt="" />
+                                    @for (var i = 10001; i <= 10006; i++)
+                                    {
+                                        var exhibitionImageUrl = string.Format("/Content/images/{0}/{1}.jpg", ex.FolderName, i);
+                                        <div class="exhibitionSlide">
+                                            <img loading="lazy" decoding="async" src="@exhibitionImageUrl" alt="" />
+                                        </div>
+                                    }
                                 </div>
-                                }
                             </div>
+                        </a>
                     </div>
-                    </a>
-            </div>
-            </text>
-            }
-            }
+                }
 
+                @* 2) 后台「首页推荐」（FeaturedExhibition，已按排序）。下面保留的硬编码展览块是缺表 / 无推荐数据时的回退，
+                      推荐里登记了同一链接的块会被跳过（seed 已登记全部四个：同构中日 / 艺+科技 / 漫MAN / 春语III）。 *@
+                @foreach (var card in featuredCards)
+                {
+                    <div class="swiper-slide">
+                        <div class="exhibition">
+                            <h1>
+                                @card.Title
+                            </h1>
+                            <a href="@card.LinkUrl" style="color:black;text-decoration:none;">
+                                <h3>
+                                    @foreach (var line in card.InfoLines)
+                                    {
+                                        @line<br />
+                                    }
+                                </h3>
+                                <div class="more">
+                                    查看更多
+                                </div>
+                            </a>
+                        </div>
+
+                        <a href="@card.LinkUrl">
+                            <div class="processing-lunbo">
+                                <div class="exhibitionSlider">
+                                    @for (var imageIndex = 0; imageIndex < card.ImageUrls.Count && imageIndex < 7; imageIndex++)
+                                    {
+                                        <div class="exhibitionSlide@(imageIndex == 0 ? " borderActive" : string.Empty)">
+                                            <img loading="lazy" decoding="async"
+                                                 src="@ImagePreviewResolver.Resolve(card.ImageUrls[imageIndex])" alt="" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
 
             <!-- 同构——中日艺术交流展 -->
+            @if (!coveredLinks.Contains("/Home/Publication/92011"))
+            {
             <div class="swiper-slide">
                 <div class="exhibition">
                     <h1>
@@ -1105,8 +1212,11 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
             <!-- 艺+科技新潮流展 -->
+            @if (!coveredLinks.Contains("/Home/Publication/92010"))
+            {
             <div class="swiper-slide">
                 <div class="exhibition">
                     <h1>
@@ -1165,9 +1275,12 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
 
             <!-- 漫MAN-艺术时尚先锋展 -->
+            @if (!coveredLinks.Contains("/Home/Publication/92009"))
+            {
             <div class="swiper-slide">
                 <div class="exhibition">
                     <h1>
@@ -1226,9 +1339,12 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
 
 
             <!-- 春语III -->
+            @if (!coveredLinks.Contains("/Publication/chunyu3"))
+            {
             <div class="swiper-slide">
                 <div class="exhibition">
                     <h1>
@@ -1289,31 +1405,40 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                     </div>
                 </a>
             </div>
+            }
         </div>
         <div class="swiper-pagination"></div>
     </div>
 
     <div id="ended">
 
+        @* 已结束：按日期自动流转 + 手动「已结束」的数据库展览。兼容目录的 14 个历史展览（92001–92015）不在此列
+              （一部分在下方硬编码卡片里，行为与 slug 迁移 SQL 是否执行无关）。封面优先用 CoverPath，缺省回退旧约定 card.jpg。 *@
         @foreach (var ex in Model.FeaturedPublications)
         {
-        if (ex.Status == false)
-        {
-        <a href="/Home/Publication/@ex.Id">
-            <div class="card ended">
-                <p class="JhengRegular">
-                    @ex.TitleCn <br />
-                    开始时间:@string.Format("{0:yyyy年MM月dd日}", ex.StartDate) <br />
-                    结束时间:@string.Format("{0:yyyy年MM月dd日}", ex.EndDate) <br />
-                    展览地点:@ex.Location
-                </p>
-                <span>
-                    查看更多</span>
-                <img loading="lazy" decoding="async" src="/Content/images/@ex.FolderName/card.jpg" />
-                <div class="filter-end"></div>
-            </div>
-        </a>
-        }
+            if (ex.GetLifecycle(today) != PublicationLifecycle.Ended
+                || LegacyPublicationGalleryCatalog.GetImages(ex.Id).Count > 0)
+            {
+                continue;
+            }
+
+            var endedCardImage = string.IsNullOrEmpty(ex.CoverPath)
+                ? $"/Content/images/{ex.FolderName}/card.jpg"
+                : $"/Content/images/{ex.FolderName}/{ex.CoverPath}";
+            <a href="/Home/Publication/@ex.Id">
+                <div class="card ended">
+                    <p class="JhengRegular">
+                        @ex.TitleCn <br />
+                        开始时间:@string.Format("{0:yyyy年MM月dd日}", ex.StartDate) <br />
+                        结束时间:@string.Format("{0:yyyy年MM月dd日}", ex.EndDate) <br />
+                        展览地点:@ex.Location
+                    </p>
+                    <span>
+                        查看更多</span>
+                    <img loading="lazy" decoding="async" src="@endedCardImage" />
+                    <div class="filter-end"></div>
+                </div>
+            </a>
         }
 
         <a href="/Home/Publication/92008">

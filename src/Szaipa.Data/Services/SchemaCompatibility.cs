@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Microsoft.Data.SqlClient;
 
 namespace Szaipa.Data.Services;
 
@@ -6,11 +7,23 @@ namespace Szaipa.Data.Services;
 /// Recognises the "column/table not there yet" failures raised by SQL Server (production) and SQLite (tests /
 /// local mirror) so additive schema features degrade to the previous behaviour instead of returning 500.
 /// Anything else (connection, permission, data errors) is deliberately NOT matched and keeps propagating.
+///
+/// SQL Server error text is localised (the production server is zh-CN: "对象名 'X' 无效。"), so SQL Server is
+/// recognised by error NUMBER (207 invalid column name / 208 invalid object name); the English message check
+/// remains for SQLite (tests / local mirror) and English servers.
 /// </summary>
 internal static class SchemaCompatibility
 {
+    private const int SqlInvalidColumnName = 207;
+    private const int SqlInvalidObjectName = 208;
+
     public static bool IsMissingColumn(DbException exception)
     {
+        if (exception is SqlException { Number: SqlInvalidColumnName })
+        {
+            return true;
+        }
+
         var message = exception.Message;
         return message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
             || message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
@@ -18,6 +31,13 @@ internal static class SchemaCompatibility
 
     public static bool IsMissingTable(DbException exception, string tableName)
     {
+        if (exception is SqlException sql
+            && sql.Number == SqlInvalidObjectName
+            && sql.Message.Contains(tableName, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
         var message = exception.Message;
         return message.Contains(tableName, StringComparison.OrdinalIgnoreCase)
             && (message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)

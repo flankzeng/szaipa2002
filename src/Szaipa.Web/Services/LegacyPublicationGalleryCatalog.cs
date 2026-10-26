@@ -153,6 +153,28 @@ public static class LegacyPublicationGalleryCatalog
             ? images
             : Array.Empty<string>();
 
+    /// <summary>
+    /// List-card summaries of every catalog exhibition, newest id first. They are all historic, so
+    /// <c>Status = false</c> (手动已结束) — the same value the slug-migration SQL writes — which keeps the
+    /// lifecycle result identical whether the rows come from here or from the database. The cover is the first
+    /// gallery image of the exhibition.
+    /// </summary>
+    public static IReadOnlyList<PublicationSummaryModel> GetAllSummaries() =>
+        PublicationsById.Values
+            .OrderByDescending(publication => publication.Id)
+            .Select(publication => new PublicationSummaryModel
+            {
+                Id = publication.Id,
+                TitleCn = publication.TitleCn,
+                TitleEn = publication.TitleEn,
+                StartDate = publication.StartDate,
+                EndDate = publication.EndDate,
+                CoverPath = publication.CoverPath,
+                FolderName = publication.FolderName,
+                Status = publication.Status
+            })
+            .ToArray();
+
     public static PublicationDetailSnapshotModel? GetFallbackPublication(int publicationId) =>
         PublicationsById.TryGetValue(publicationId, out var publication)
             ? new PublicationDetailSnapshotModel
@@ -178,6 +200,8 @@ public static class LegacyPublicationGalleryCatalog
             EndDate = endDate,
             FolderName = folderName,
             MaxImg = ImagesByPublicationId[id].Count - 1,
+            CoverPath = ImagesByPublicationId[id][0][ImagesByPublicationId[id][0].LastIndexOf('/')..].TrimStart('/'),
+            Status = false, // 全部是历史展览：手动已结束（与 slug 迁移 SQL 写入的 Status = 0 一致）
             Type = 0
         };
 

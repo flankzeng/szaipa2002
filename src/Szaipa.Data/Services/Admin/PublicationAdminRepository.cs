@@ -125,9 +125,6 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
             Type = input.Type,
             Preface = input.Preface,
             Signature = input.Signature,
-            IsFeatured = input.IsFeatured,
-            FeaturedSort = input.FeaturedSort,
-            FeaturedImages = CleanImageNames(input.FeaturedImages),
             ThemeColor = CleanThemeColor(input.ThemeColor),
             BannerPath = CleanBannerPath(input.BannerPath),
             ReadCount = 0,
@@ -161,9 +158,6 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         publication.Type = input.Type;
         publication.Preface = input.Preface;
         publication.Signature = input.Signature;
-        publication.IsFeatured = input.IsFeatured;
-        publication.FeaturedSort = input.FeaturedSort;
-        publication.FeaturedImages = CleanImageNames(input.FeaturedImages);
         publication.ThemeColor = CleanThemeColor(input.ThemeColor);
         publication.BannerPath = CleanBannerPath(input.BannerPath);
         if (!string.IsNullOrEmpty(input.CoverPath))
@@ -221,11 +215,4 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
     /// <summary>Banner must be a site-local path (<c>/Content/...</c>); otherwise it is ignored.</summary>
     private static string? CleanBannerPath(string? value) =>
         PublicationBlockContent.IsSafeLocalPath(value) ? value!.Trim() : null;
-
-    /// <summary>Normalises the comma/newline separated card image list to <c>a.jpg,b.jpg</c> (bare file names only).</summary>
-    private static string? CleanImageNames(string? value)
-    {
-        var names = Home.PublicationReadRepository.SplitImageNames(value);
-        return names.Count == 0 ? null : string.Join(",", names);
-    }
 }

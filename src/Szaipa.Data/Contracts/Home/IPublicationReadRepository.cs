@@ -11,8 +11,8 @@ public interface IPublicationReadRepository
     Task<PublicationDetailSnapshotModel?> GetPublicationDetailSnapshotAsync(int id, int relatedCount, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 首页推荐展览（<c>IsFeatured</c>，按 <c>FeaturedSort</c> 升序）。旧库缺推荐列时返回空列表而不是抛错，
-    /// 调用方据此回退到原有硬编码展览块。
+    /// 首页推荐展览（<c>FeaturedExhibition</c> 表，按 SortOrder 升序，含隐藏项）。旧库没有该表时返回空列表而不是抛错，
+    /// 调用方据此保留原有硬编码展览块。
     /// </summary>
-    Task<IReadOnlyList<PublicationFeaturedModel>> GetHomeFeaturedAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<FeaturedExhibitionModel>> GetHomeFeaturedAsync(CancellationToken cancellationToken = default);
 }

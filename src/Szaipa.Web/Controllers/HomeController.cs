@@ -206,7 +206,15 @@ public class HomeController : Controller
         {
             var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
             var publications = await publicationRepository.GetLatestPublicationsAsync(0, cancellationToken);
-            return View("PublicationList", publications);
+
+            // 退役 slug 页的 14 个展览（固定 id 92001–92015）在生产库里还没有 Publication 行时，由兼容目录补上，
+            // 数据库真实行优先；执行 slug 迁移 SQL 前后列表内容一致。目录里的展览都是历史展览（已结束）。
+            var databaseIds = publications.Select(publication => publication.Id).ToHashSet();
+            var merged = publications
+                .Concat(LegacyPublicationGalleryCatalog.GetAllSummaries().Where(summary => !databaseIds.Contains(summary.Id)))
+                .OrderByDescending(publication => publication.Id)
+                .ToList();
+            return View("PublicationList", merged);
         }
 
         return View("PublicationList", Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>());

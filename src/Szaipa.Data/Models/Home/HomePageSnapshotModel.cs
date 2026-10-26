@@ -20,7 +20,7 @@ public sealed class HomePageSnapshotModel
     /// <c>IPublicationReadRepository.GetHomeFeaturedAsync</c> 单独填充；旧库缺列 / 没有推荐数据时为空，
     /// 首页回退到原有硬编码展览块。
     /// </summary>
-    public IReadOnlyList<PublicationFeaturedModel> FeaturedExhibitions { get; set; } = Array.Empty<PublicationFeaturedModel>();
+    public IReadOnlyList<FeaturedExhibitionModel> FeaturedExhibitions { get; set; } = Array.Empty<FeaturedExhibitionModel>();
 
     /// <summary>
     /// Legacy newIndex section06 renders rows flagged <c>Important</c> as featured blocks
