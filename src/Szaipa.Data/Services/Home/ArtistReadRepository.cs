@@ -37,6 +37,24 @@ public sealed class ArtistReadRepository : IArtistReadRepository
         return await query.Select(SzaipaHomeProjections.ArtistSummary).ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<ArtistSummaryModel>> GetVipArtistsAsync(CancellationToken cancellationToken = default)
+    {
+        var artists = await GetArtistsAsync(newestFirst: true, cancellationToken);
+
+        List<ArtistDisplay> displays;
+        try
+        {
+            displays = await _context.ArtistDisplay.AsNoTracking().ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "ArtistDisplay"))
+        {
+            // 老库还没执行 docs/sql/2026-10-26-vip-order.sql：完全回退原顺序（Id 倒序、无隐藏）。
+            return artists;
+        }
+
+        return VipDisplayOrder.Arrange(artists, artist => artist.Id, displays, includeHidden: false);
+    }
+
     public async Task<ArtistDetailModel?> GetArtistByIdAsync(
         int id,
         CancellationToken cancellationToken = default)

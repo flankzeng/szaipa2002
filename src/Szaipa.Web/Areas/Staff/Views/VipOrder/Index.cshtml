@@ -1,0 +1,75 @@
+@model IReadOnlyList<VipOrderItem>
+@{
+    ViewData["Title"] = "会员风采排序";
+    var shown = Model.Count(item => !item.IsHidden);
+}
+<div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">会员风采排序</h1>
+        <p class="mt-1 text-sm text-muted">
+            共 @Model.Count 位，前台显示 @shown 位。拖动行（或点 ▲▼）调整 <a href="/Home/Vip" target="_blank" rel="noopener" class="text-brand hover:underline">会员风采</a> 页的顺序，拖完自动保存；
+            「隐藏」只影响这一页，艺术家官网页仍可访问。新增的会员默认排在最后。
+        </p>
+    </div>
+    <div class="flex items-center gap-3">
+        <span class="text-sm text-muted" data-vip-order-status role="status" aria-live="polite"></span>
+        <button type="button" class="admin-btn-primary" data-save-vip-order>保存顺序</button>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    @if (Model.Count == 0)
+    {
+        <p class="px-5 py-10 text-center text-muted">还没有会员资料。</p>
+    }
+    else
+    {
+        <ol id="vip-order-list" data-save-url="@Url.Action("Save", "VipOrder", new { area = "Staff" })" class="divide-y divide-black/5">
+            @foreach (var item in Model)
+            {
+                <li draggable="true" data-artist-id="@item.ArtistId" data-hidden="@(item.IsHidden ? "true" : "false")"
+                    class="flex cursor-grab items-center gap-2 px-3 py-3 sm:gap-4 sm:px-5 hover:bg-canvas/40 data-[hidden=true]:opacity-60 data-[dragging=true]:bg-brand/5 data-[dragging=true]:opacity-60">
+                    <span class="shrink-0 select-none text-lg text-muted" aria-hidden="true" title="拖动排序">⠿</span>
+                    <span class="hidden w-8 shrink-0 text-right text-sm tabular-nums text-muted sm:block" data-vip-position></span>
+                    @if (!string.IsNullOrEmpty(item.AvatarPath))
+                    {
+                        <img src="/Content/ArtImg/Artist/@item.AvatarPath" alt="" draggable="false" class="h-12 w-12 shrink-0 rounded-full object-cover" loading="lazy" />
+                    }
+                    else
+                    {
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-canvas text-xs text-muted">无头像</span>
+                    }
+                    <div class="min-w-0 flex-1">
+                        <div class="truncate font-medium text-ink">@(string.IsNullOrWhiteSpace(item.NameCn) ? $"#{item.ArtistId}" : item.NameCn)</div>
+                        @if (!string.IsNullOrWhiteSpace(item.NameEn))
+                        {
+                            <div class="truncate text-xs text-muted">@item.NameEn</div>
+                        }
+                    </div>
+                    @if (item.IsHidden)
+                    {
+                        <span class="hidden shrink-0 whitespace-nowrap rounded-full bg-black/5 px-2 py-0.5 text-xs text-muted sm:inline">已隐藏</span>
+                    }
+                    else
+                    {
+                        <span class="hidden shrink-0 whitespace-nowrap rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand sm:inline">显示中</span>
+                    }
+                    <div class="flex shrink-0 items-center gap-3 whitespace-nowrap text-sm">
+                        <button type="button" title="上移" class="text-muted hover:text-brand" data-vip-move="up">▲</button>
+                        <button type="button" title="下移" class="text-muted hover:text-brand" data-vip-move="down">▼</button>
+                        <form asp-action="Visible" asp-route-artistId="@item.ArtistId" method="post" class="inline">
+                            <input type="hidden" name="hidden" value="@(item.IsHidden ? "false" : "true")" />
+                            <button type="submit" class="text-muted hover:text-brand">@(item.IsHidden ? "显示" : "隐藏")</button>
+                        </form>
+                    </div>
+                </li>
+            }
+        </ol>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/admin/vip-order.js" asp-append-version="true" defer></script>
+}

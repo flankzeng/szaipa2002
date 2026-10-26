@@ -208,6 +208,7 @@ public static class SzaipaDataServiceCollectionExtensions
         // 现场编辑（T6）：文案读取为单例缓存（缺表即用模板原文），写入走后台可写上下文。
         services.AddSingleton<Szaipa.Data.Services.LiveEdit.ISiteTextProvider, Szaipa.Data.Services.LiveEdit.SiteTextProvider>();
         services.AddScoped<Szaipa.Data.Services.LiveEdit.LiveEditService>();
+        services.AddScoped<IVipOrderAdminRepository, VipOrderAdminRepository>();
         services.AddScoped<WorksAdminRepository>();
         services.AddScoped<IPublicationAdminRepository, PublicationAdminRepository>();
         services.AddScoped<IExhibitionWorkAdminRepository, ExhibitionWorkAdminRepository>();

@@ -54,6 +54,7 @@ public sealed class SzaipaLegacyReadContext : DbContext
     public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
 
     public DbSet<SiteText> SiteText => Set<SiteText>();
+    public DbSet<ArtistDisplay> ArtistDisplay => Set<ArtistDisplay>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -150,6 +151,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
         // 现场编辑：站点文案（老库无此表，读侧缺表时一律用模板原文）。
         SiteTextModelConfiguration.Configure(modelBuilder);
+        // 会员风采（Vip）排序与显隐旁表（老库无此表，读侧缺表时回退原顺序）。
+        ArtistDisplayModelConfiguration.Configure(modelBuilder);
     }
 
     public override int SaveChanges() => throw ReadOnlyViolation();

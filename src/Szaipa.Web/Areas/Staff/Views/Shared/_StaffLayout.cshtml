@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "WeChat", "OrgMember", "SaleWork", "Partner", "FeaturedExhibition", "ArtistSite", "ArtistBook" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "WeChat", "OrgMember", "SaleWork", "Partner", "FeaturedExhibition", "ArtistSite", "ArtistBook", "VipOrder" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -67,6 +67,7 @@
                                 <div>
                                     <p class="px-3 pb-1 pt-1 text-xs font-medium text-muted">首页 / 关于我们</p>
                                     <a asp-area="Staff" asp-controller="OrgMember" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">组织架构</a>
+                                    <a asp-area="Staff" asp-controller="VipOrder" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">会员风采排序</a>
                                     <a asp-area="Staff" asp-controller="SaleWork" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">在售作品</a>
                                     <a asp-area="Staff" asp-controller="Partner" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">合作伙伴</a>
                                     <a asp-area="Staff" asp-controller="Company" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">会员企业</a>
