@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "OrgMember", "SaleWork", "Partner" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -54,6 +54,9 @@
                                 <a asp-area="Staff" asp-controller="Exhibition" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">展览</a>
                                 <a asp-area="Staff" asp-controller="TongouAtrist" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">同构艺术家</a>
                                 <a asp-area="Staff" asp-controller="TongouWorks" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">同构作品</a>
+                                <a asp-area="Staff" asp-controller="OrgMember" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">组织架构</a>
+                                <a asp-area="Staff" asp-controller="SaleWork" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">在售作品</a>
+                                <a asp-area="Staff" asp-controller="Partner" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">合作伙伴</a>
                             </div>
                         </div>
                     </nav>

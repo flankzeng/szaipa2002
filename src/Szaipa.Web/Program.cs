@@ -157,6 +157,9 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<IServerSecurityRepository, ServerSecurityRepository>();
                 services.AddSingleton<ISecurityActionQueue, SecurityActionQueue>();
 
+                // Data-driven homepage static blocks (核心成员/顾问团队/在售作品) + About 合作伙伴, with built-in fallback.
+                services.AddScoped<IHomeBlocksProvider, HomeBlocksProvider>();
+
                 // Cookie authentication for the staff/admin backend (Areas/Staff), replacing the legacy
                 // Session["Staff"] check. Tickets are protected by the DataProtection keys configured above.
                 services
