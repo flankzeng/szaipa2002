@@ -39,6 +39,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<ExhibitionWork> ExhibitionWork => Set<ExhibitionWork>();
 
+    public DbSet<WeChatSyncRecord> WeChatSyncRecord => Set<WeChatSyncRecord>();
+
     public DbSet<OrgMember> OrgMember => Set<OrgMember>();
 
     public DbSet<SaleWork> SaleWork => Set<SaleWork>();
@@ -73,6 +75,7 @@ public sealed class SzaipaAdminContext : DbContext
         modelBuilder.Entity<Exhibition>(e => { e.ToTable("Exhibition"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Publication>(e => { e.ToTable("Publication"); e.HasKey(x => x.Id); e.Property(x => x.Type).HasDefaultValue(0); });
         modelBuilder.Entity<ExhibitionWork>(e => { e.ToTable("ExhibitionWork"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); });
+        modelBuilder.Entity<WeChatSyncRecord>(e => WeChatSyncRecordModel.Configure(e));
 
         modelBuilder.Entity<Staff>(e => { e.ToTable("Staff"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Diary>(e => { e.ToTable("Diary"); e.HasKey(x => x.Id); });

@@ -56,6 +56,12 @@ var configuration = configurationBuilder
     })
     .Build();
 
+// 公众号接口能力探测命令：dotnet run --project src/Szaipa.Web -- wechat-probe（探测后直接退出，不启动站点）。
+if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
+{
+    Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(configuration));
+}
+
 // 命令行工具：`dotnet run --project src/Szaipa.Web -- mirror-sync [--days N] [--only szaipa|tongou]`。
 // 用现有只读连接对生产库只读 SELECT，重建本地 SQLite 镜像库（LocalMirror），然后直接退出、不启动站点。
 // 配置分层与站点启动完全一致（appsettings.Local.json / user-secrets / 环境变量），见 docs/updates/2026-10-26-local-mirror-db.md。
@@ -155,6 +161,7 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
+                services.AddSingleton<Szaipa.Data.Services.WeChat.IWeChatImageStore, WeChatImageStore>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 
                 // Security-monitoring (Areas/Staff SecurityMonitoring): file-root paths resolved at startup,
