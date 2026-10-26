@@ -91,6 +91,12 @@ public sealed class PublicationController : Controller
             ModelState.AddModelError(string.Empty, "专题积木数据表或字段尚未创建，请先执行展览自动化 SQL。");
             return View(model);
         }
+        catch (DbUpdateException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "展览表结构尚未升级，请先执行展览自动化 SQL 后再创建或保存。");
+            return View(model);
+        }
         catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
         {
             await transaction.RollbackAsync(cancellationToken);
@@ -152,6 +158,12 @@ public sealed class PublicationController : Controller
         {
             await transaction.RollbackAsync(cancellationToken);
             ModelState.AddModelError(string.Empty, "专题积木数据表或字段尚未创建，请先执行展览自动化 SQL。");
+            return View(model);
+        }
+        catch (DbUpdateException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            ModelState.AddModelError(string.Empty, "展览表结构尚未升级，请先执行展览自动化 SQL 后再创建或保存。");
             return View(model);
         }
         catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))

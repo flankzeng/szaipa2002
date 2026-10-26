@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
+using Microsoft.Data.Sqlite;
 
 namespace Szaipa.Data.Services;
 
@@ -17,16 +18,37 @@ public static class SchemaCompatibility
     private const int SqlInvalidColumnName = 207;
     private const int SqlInvalidObjectName = 208;
 
-    public static bool IsMissingColumn(DbException exception)
+    public static bool IsMissingColumn(Exception exception)
     {
-        if (exception is SqlException { Number: SqlInvalidColumnName })
+        for (Exception? current = exception; current is not null; current = current.InnerException)
         {
-            return true;
+            if (current is SqlException { Number: SqlInvalidColumnName })
+            {
+                return true;
+            }
+
+            var message = current.Message;
+            if (current is SqliteException sqlite)
+            {
+                if (sqlite.SqliteErrorCode == 1
+                    && (message.Contains("no such column", StringComparison.OrdinalIgnoreCase)
+                        || message.Contains("has no column named", StringComparison.OrdinalIgnoreCase)))
+                {
+                    return true;
+                }
+
+                continue;
+            }
+
+            if (message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("no such column", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("has no column named", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
         }
 
-        var message = exception.Message;
-        return message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
-            || message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
+        return false;
     }
 
     public static bool IsMissingTable(DbException exception, string tableName)
