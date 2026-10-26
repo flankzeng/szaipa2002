@@ -10,6 +10,17 @@ public sealed class WeChatContentCleanerTests
     private static WeChatCleanedContent Clean(string html, string? title = null, Func<string, string?>? mapper = null, WeChatOptions? options = null) =>
         new WeChatContentCleaner(options).Clean(html, title, mapper);
 
+    [Theory]
+    [InlineData("https://user@mmbiz.qpic.cn/image/640")]
+    [InlineData("https://user:pass@mmbiz.qpic.cn/image/640")]
+    [InlineData("https://mmbiz.qpic.cn:8443/image/640")]
+    public void Image_cleaning_rejects_userinfo_and_nondefault_ports(string url) =>
+        Assert.Null(new WeChatContentCleaner().ResolveImageUrl(url));
+
+    [Fact]
+    public void Image_cleaning_upgrades_http_default_port_without_carrying_port_80_into_https() =>
+        Assert.Equal("https://mmbiz.qpic.cn/image/640", new WeChatContentCleaner().ResolveImageUrl("http://mmbiz.qpic.cn:80/image/640"));
+
     [Fact]
     public void Strips_font_size_family_color_width_but_keeps_alignment_and_bold()
     {

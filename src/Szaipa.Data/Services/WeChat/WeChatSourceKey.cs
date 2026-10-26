@@ -50,7 +50,8 @@ public static class WeChatSourceKey
         if (!Uri.TryCreate(text, UriKind.Absolute, out var uri) ||
             (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) ||
             !string.Equals(uri.Host, ArticleHost, StringComparison.OrdinalIgnoreCase) ||
-            !uri.IsDefaultPort)
+            !uri.IsDefaultPort ||
+            !string.IsNullOrEmpty(uri.UserInfo))
         {
             return null;
         }

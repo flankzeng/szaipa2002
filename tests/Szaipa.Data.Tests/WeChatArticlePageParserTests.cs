@@ -112,6 +112,9 @@ public sealed class WeChatSourceKeyTests
     [InlineData("https://evil.example.com/s/abc")]
     [InlineData("https://mp.weixin.qq.com.evil.com/s/abc")]
     [InlineData("https://mp.weixin.qq.com:8443/s/abc")]
+    [InlineData("https://user@mp.weixin.qq.com/s/abc")]
+    [InlineData("https://user:password@mp.weixin.qq.com/s/abc")]
+    [InlineData("http://mp.weixin.qq.com:8080/s/abc")]
     [InlineData("https://mp.weixin.qq.com/other/abc")]
     [InlineData("ftp://mp.weixin.qq.com/s/abc")]
     [InlineData("https://mp.weixin.qq.com/s?__biz=x&mid=1")]
@@ -119,4 +122,10 @@ public sealed class WeChatSourceKeyTests
     [InlineData("")]
     public void Non_article_links_are_rejected(string input) =>
         Assert.Null(WeChatSourceKey.NormalizeArticleUrl(input));
+
+    [Fact]
+    public void Explicit_scheme_default_port_is_normalized_away()
+    {
+        Assert.Equal("https://mp.weixin.qq.com/s/abc", WeChatSourceKey.NormalizeArticleUrl("https://mp.weixin.qq.com:443/s/abc"));
+    }
 }

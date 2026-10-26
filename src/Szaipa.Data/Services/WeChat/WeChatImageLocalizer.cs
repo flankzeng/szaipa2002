@@ -74,7 +74,7 @@ public sealed class WeChatImageLocalizer
 
     private async Task<WeChatLocalImage?> LocalizeAsync(string remoteUrl, string subfolder, string prefix, CancellationToken cancellationToken)
     {
-        if (!_store.IsAvailable || !Uri.TryCreate(remoteUrl, UriKind.Absolute, out var uri))
+        if (!_store.IsAvailable || !TryGetAllowedImageUri(remoteUrl, out var uri))
         {
             return null;
         }
@@ -109,6 +109,30 @@ public sealed class WeChatImageLocalizer
         return url is null ? null : new WeChatLocalImage(url, fileName);
     }
 
+    private bool TryGetAllowedImageUri(string remoteUrl, out Uri uri)
+    {
+        uri = null!;
+        if (!Uri.TryCreate(remoteUrl, UriKind.Absolute, out var parsed) ||
+            (parsed.Scheme != Uri.UriSchemeHttp && parsed.Scheme != Uri.UriSchemeHttps) ||
+            !parsed.IsDefaultPort ||
+            !string.IsNullOrEmpty(parsed.UserInfo))
+        {
+            return false;
+        }
+
+        var host = parsed.Host;
+        if (!_options.Value.AllowedImageHosts.Any(suffix =>
+                !string.IsNullOrWhiteSpace(suffix) &&
+                (host.Equals(suffix, StringComparison.OrdinalIgnoreCase) ||
+                 host.EndsWith("." + suffix, StringComparison.OrdinalIgnoreCase))))
+        {
+            return false;
+        }
+
+        uri = parsed;
+        return true;
+    }
+
     private static readonly string[] KnownExtensions = { ".jpg", ".png", ".gif", ".webp", ".bmp" };
 
     private async Task<byte[]?> DownloadAsync(Uri uri, CancellationToken cancellationToken)
@@ -123,6 +147,11 @@ public sealed class WeChatImageLocalizer
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("公众号图片下载失败 HTTP {Status}：{Host}", (int)response.StatusCode, uri.Host);
+                    if ((int)response.StatusCode is >= 300 and < 400)
+                    {
+                        return null; // 禁止重定向；也不对 3xx 重试，避免请求 Location。
+                    }
+
                     continue;
                 }
 

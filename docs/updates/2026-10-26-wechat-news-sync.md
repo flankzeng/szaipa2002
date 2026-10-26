@@ -7,6 +7,7 @@
 - 新增 `/Staff/WeChat` 导入记录页，支持批量导入、重新抓取、隐藏/取消隐藏、置顶/取消置顶。隐藏只影响列表/首页/推荐，详情链接仍按 ID 可访问；旧手录新闻在配置分界 ID 后退出列表，数据和详情不删。
 - 修复清洗后图片清单仍含已删除二维码/推荐图的问题；修复链接批量输入把自然语言按空格拆成多个错误项的问题，并保留同一行多个有效 URL 的导入能力。
 - 图片存储在文件移动失败时不再误报成功；失败或取消时清理临时文件。
+- 文章页和图片下载命名客户端关闭自动 HTTP 重定向；图片本地化入口再次校验 scheme、白名单 host、userinfo 和默认端口，收到 3xx 不会跟随或重试。文章 URL 拒绝 userinfo 和非默认端口，清洗器将 `http:80` 升级为标准 HTTPS 端口。
 - T1 worktree 合并 T0/T3 与依赖修复后，统一解决 DbContext、DI、Staff 导航冲突。
 
 ## 原因与旧问题
@@ -19,7 +20,7 @@
 
 - `~/.dotnet/dotnet restore Szaipa.Modernization.slnx` 成功。
 - `~/.dotnet/dotnet build Szaipa.Modernization.slnx --no-restore --disable-build-servers -m:1`：0 warning、0 error。
-- `~/.dotnet/dotnet test Szaipa.Modernization.slnx --no-restore --disable-build-servers -m:1`：Data 249 + Web 269，共 518 项全绿。
+- `~/.dotnet/dotnet test Szaipa.Modernization.slnx --no-restore --disable-build-servers -m:1`：最近全量验证 Data 261 + Web 269，共 530 项全绿。
 - SQLite 内存库测试覆盖字段映射、图片落盘映射、链接批量校验、重复/更新/再导入、隐藏、置顶、详情可访问与前台列表可见性；Web 测试覆盖临时 ContentRoot、路径穿越拒绝、图片存储 I/O 失败与取消清理、回调关闭状态和签名。
 - 现有 API 探测测试覆盖 token、freepublish/material 权限错误分流与敏感字段遮蔽；未使用真实 AppSecret 或 access_token。
 - 仓库已有真实公众号文章 fixture，对应原文链接 `https://mp.weixin.qq.com/s/2omPr817EGqhsHa8HR3txw`。对此链接的只读 GET 返回 HTTP 200，但响应是微信“环境异常”验证页，不是文章正文；无法在当前网络下完成真实文章抓取。使用本地 HTML fixture 验证解析与导入，不将测试绑定到外网。

@@ -185,6 +185,11 @@ public sealed class WeChatContentCleaner
             return null;
         }
 
+        if (!uri.IsDefaultPort || !string.IsNullOrEmpty(uri.UserInfo))
+        {
+            return null;
+        }
+
         var host = uri.Host.ToLowerInvariant();
         var allowed = _options.AllowedImageHosts.Any(suffix =>
             !string.IsNullOrWhiteSpace(suffix) &&
@@ -195,7 +200,13 @@ public sealed class WeChatContentCleaner
         }
 
         // 图床统一走 https，避免混合内容。
-        return uri.Scheme == Uri.UriSchemeHttp ? "https://" + uri.Authority + uri.PathAndQuery : uri.ToString();
+        if (uri.Scheme == Uri.UriSchemeHttp)
+        {
+            var secure = new UriBuilder(uri) { Scheme = Uri.UriSchemeHttps, Port = -1 };
+            return secure.Uri.ToString();
+        }
+
+        return uri.ToString();
     }
 
     // ---------------------------------------------------------------- 1. 白名单 + 属性/样式/图片

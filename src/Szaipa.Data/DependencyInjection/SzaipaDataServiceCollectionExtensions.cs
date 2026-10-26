@@ -216,8 +216,10 @@ public static class SzaipaDataServiceCollectionExtensions
             .AddOptions<WeChatOptions>()
             .Bind(configuration.GetSection(WeChatOptions.SectionName));
         services.AddHttpClient(WeChatApiClient.ClientName, client => client.Timeout = TimeSpan.FromSeconds(30));
-        services.AddHttpClient(WeChatSyncService.PageClientName, client => client.Timeout = TimeSpan.FromSeconds(30));
-        services.AddHttpClient(WeChatImageLocalizer.ClientName, client => client.Timeout = TimeSpan.FromSeconds(60));
+        services.AddHttpClient(WeChatSyncService.PageClientName, client => client.Timeout = TimeSpan.FromSeconds(30))
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
+        services.AddHttpClient(WeChatImageLocalizer.ClientName, client => client.Timeout = TimeSpan.FromSeconds(60))
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });
         services.AddSingleton<IWeChatApiClient, WeChatApiClient>();
         services.AddScoped<WeChatImageLocalizer>();
         services.AddScoped<IWeChatSyncService, WeChatSyncService>();

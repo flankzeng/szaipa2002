@@ -105,6 +105,30 @@ public sealed class WeChatSyncServiceTests
     }
 
     [Fact]
+    public async Task Image_localizer_rejects_userinfo_nondefault_ports_and_unlisted_hosts_before_request()
+    {
+        await using var env = new Env();
+
+        Assert.Null(await env.ImageLocalizer.LocalizeBodyImageAsync("https://user@mmbiz.qpic.cn/a/640", DateTime.UtcNow, CancellationToken.None));
+        Assert.Null(await env.ImageLocalizer.LocalizeBodyImageAsync("https://mmbiz.qpic.cn:8443/a/640", DateTime.UtcNow, CancellationToken.None));
+        Assert.Null(await env.ImageLocalizer.LocalizeBodyImageAsync("https://evil.example.com/a/640", DateTime.UtcNow, CancellationToken.None));
+        Assert.Empty(env.Handler.Requests);
+    }
+
+    [Fact]
+    public async Task Image_redirect_is_not_followed_or_retried()
+    {
+        await using var env = new Env { ImageRedirectTo = "https://evil.example.com/stolen.png" };
+
+        var image = await env.ImageLocalizer.LocalizeBodyImageAsync("https://mmbiz.qpic.cn/a/redirect/640", DateTime.UtcNow, CancellationToken.None);
+
+        Assert.Null(image);
+        Assert.Single(env.Handler.Requests);
+        Assert.Contains("mmbiz.qpic.cn", env.Handler.Requests[0]);
+        Assert.DoesNotContain("evil.example.com", env.Handler.Requests[0]);
+    }
+
+    [Fact]
     public async Task Import_fails_with_a_clear_message_when_no_writable_content_root()
     {
         await using var env = new Env();
@@ -516,12 +540,13 @@ public sealed class WeChatSyncServiceTests
             var factory = new FakeHttpClientFactory(Handler);
             var wrapped = WeChatTestSupport.Opts(options);
             Status = new WeChatSourceStatusStore();
+            ImageLocalizer = new WeChatImageLocalizer(factory, Store, wrapped, NullLogger<WeChatImageLocalizer>.Instance);
             Service = new WeChatSyncService(
                 Db,
                 new OperationRecorder(),
                 factory,
                 Api,
-                new WeChatImageLocalizer(factory, Store, wrapped, NullLogger<WeChatImageLocalizer>.Instance),
+                ImageLocalizer,
                 wrapped,
                 NullLogger<WeChatSyncService>.Instance,
                 Status);
@@ -534,9 +559,11 @@ public sealed class WeChatSyncServiceTests
         public FakeApi Api { get; } = new();
         public WeChatSourceStatusStore Status { get; }
         public WeChatSyncService Service { get; }
+        public WeChatImageLocalizer ImageLocalizer { get; }
         public Dictionary<string, string> Pages { get; } = new(StringComparer.Ordinal);
         public System.Net.HttpStatusCode ImageStatus { get; set; } = System.Net.HttpStatusCode.OK;
         public byte[] ImageBytes { get; set; } = WeChatTestSupport.PngBytes;
+        public string? ImageRedirectTo { get; set; }
 
         private HttpResponseMessage Respond(HttpRequestMessage request)
         {
@@ -551,6 +578,14 @@ public sealed class WeChatSyncServiceTests
 
             if (uri.Host.EndsWith("qpic.cn", StringComparison.Ordinal))
             {
+                if (ImageRedirectTo is not null)
+                {
+                    return new HttpResponseMessage(System.Net.HttpStatusCode.Redirect)
+                    {
+                        Headers = { Location = new Uri(ImageRedirectTo) }
+                    };
+                }
+
                 return ImageStatus == System.Net.HttpStatusCode.OK
                     ? FakeHandler.Bytes(ImageBytes)
                     : new HttpResponseMessage(ImageStatus);
