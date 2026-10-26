@@ -1,0 +1,10 @@
+@model Szaipa.Web.Areas.Staff.Controllers.SchemaMissingViewModel
+@{
+    ViewData["Title"] = Model.Noun + "管理";
+}
+
+<h1 class="mb-4 text-xl font-semibold text-ink">@ViewData["Title"]</h1>
+<div class="rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm leading-relaxed text-brand">
+    需先执行 SQL：数据库里还没有 <code>@Model.Table</code> 表（或缺少新列）。请在数据库执行
+    <code>@Model.SqlFile</code> 后刷新本页。在此之前前台照常显示原有内容，本模块暂不可用。
+</div>

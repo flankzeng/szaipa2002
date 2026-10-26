@@ -1,7 +1,10 @@
+using System.Data.Common;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Szaipa.Data.Contexts.Szaipa;
+using Szaipa.Data.Services;
 using Szaipa.Data.Services.Admin;
 using Szaipa.Web.Authorization;
 
@@ -64,9 +67,41 @@ public abstract class SortableBlockControllerBase<T> : Controller
         return RedirectToAction("Index");
     }
 
+    /// <summary>
+    /// 三张表（OrgMember / SaleWork / Partner）是加性新表：在用户执行 <c>docs/sql/2026-10-26-org-and-home-blocks.sql</c>
+    /// 之前访问后台模块，不 500，而是显示「需先执行 SQL」的提示页（前台此时自动回退原硬编码内容）。
+    /// </summary>
+    public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
+        var executed = await next();
+        if (executed.Exception is not null && !executed.ExceptionHandled && IsMissingSchema(executed.Exception))
+        {
+            executed.Result = View("_SchemaMissing", new SchemaMissingViewModel(
+                Noun, typeof(T).Name, "docs/sql/2026-10-26-org-and-home-blocks.sql"));
+            executed.ExceptionHandled = true;
+        }
+    }
+
+    private static bool IsMissingSchema(Exception exception)
+    {
+        for (var current = exception; current is not null; current = current.InnerException)
+        {
+            if (current is DbException db
+                && (SchemaCompatibility.IsMissingTable(db, typeof(T).Name) || SchemaCompatibility.IsMissingColumn(db)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected AdminActor CurrentActor()
     {
         var id = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var parsed) ? parsed : 0;
         return new AdminActor(id, User.Identity?.Name ?? string.Empty);
     }
 }
+
+/// <summary>「需先执行 SQL」提示页的模型。</summary>
+public sealed record SchemaMissingViewModel(string Noun, string Table, string SqlFile);

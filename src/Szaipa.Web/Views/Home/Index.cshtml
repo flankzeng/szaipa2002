@@ -32,7 +32,9 @@ var featuredCards = visibleFeaturedCards
     .ToList();
 var recentFeaturedCards = featuredCards.Where(item => item.Lifecycle is PublicationLifecycle.Upcoming or PublicationLifecycle.Ongoing).ToList();
 var endedFeaturedCards = featuredCards.Where(item => item.Lifecycle == PublicationLifecycle.Ended).ToList();
-var carouselCoveredLinks = new HashSet<string>(featuredAll.Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
+@* 只有勾选「同时加入轮播」的推荐才接管轮播里同链接的原有幻灯片：显示时换成数据版，隐藏/下架时从轮播移除；
+   未勾选则轮播保持原样（否则执行种子 SQL 后 4 个推荐展览会从轮播里消失）。 *@
+var carouselCoveredLinks = new HashSet<string>(featuredAll.Where(item => item.ShowInCarousel).Select(item => item.LinkUrl), StringComparer.OrdinalIgnoreCase);
 var featuredSlides = visibleFeaturedCards
 .Where(item => item.ShowInCarousel && item.CoverUrl.Length > 0)
 .Select(item => (Item: item, Cover: DerivedImageResolver.Resolve(item.CoverUrl)))

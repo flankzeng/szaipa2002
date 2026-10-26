@@ -14,17 +14,13 @@ public static class WeChatSchema
 
     public static bool IsMissingSyncTable(Exception exception)
     {
+        // 生产 SQL Server 是中文环境，报错为「对象名 'WeChatSyncRecord' 无效。」，只按英文消息匹配会漏判、首页直接 500；
+        // 统一交给 SchemaCompatibility：SQL Server 按错误号 208，SQLite/英文环境按消息。
         for (var current = exception; current is not null; current = current.InnerException)
         {
-            if (current is DbException)
+            if (current is DbException db && SchemaCompatibility.IsMissingTable(db, "WeChatSyncRecord"))
             {
-                var message = current.Message;
-                if (message.Contains("WeChatSyncRecord", StringComparison.OrdinalIgnoreCase)
-                    && (message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)
-                        || message.Contains("no such table", StringComparison.OrdinalIgnoreCase)))
-                {
-                    return true;
-                }
+                return true;
             }
         }
 
