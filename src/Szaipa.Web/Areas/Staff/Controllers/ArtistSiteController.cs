@@ -34,6 +34,8 @@ public sealed class ArtistSiteController : Controller
             return NotFound();
         }
 
+        var exhibitions = await _repository.GetExhibitionLinksAsync(artistId, cancellationToken);
+
         // 始终合并数据库行与旧站兼容目录；数据库标题优先，避免只新增一条 Publication 就隐藏其余历史展览。
         var publications = (await _repository.GetPublicationOptionsAsync(cancellationToken))
             .Concat(LegacyPublicationOptions())
@@ -44,14 +46,15 @@ public sealed class ArtistSiteController : Controller
                 "深圳市罗湖美术馆"))
             .GroupBy(option => option.Id)
             .Select(group => group.FirstOrDefault(option => !option.Title.StartsWith("兼容展览 #", StringComparison.Ordinal)) ?? group.First())
-            .OrderByDescending(option => option.Id)
+            .OrderBy(option => ExhibitionOrder(exhibitions, option.Id))
+            .ThenByDescending(option => option.Id)
             .ToArray();
 
         return View(new Models.ArtistSiteViewModel
         {
             Overview = overview,
             Works = await _repository.GetWorksAsync(artistId, cancellationToken),
-            Exhibitions = await _repository.GetExhibitionLinksAsync(artistId, cancellationToken),
+            Exhibitions = exhibitions,
             Publications = publications
         });
     }
@@ -163,6 +166,19 @@ public sealed class ArtistSiteController : Controller
         }
 
         return options;
+    }
+
+    private static int ExhibitionOrder(ArtistExhibitionLinks exhibitions, int publicationId)
+    {
+        for (var index = 0; index < exhibitions.Linked.Count; index++)
+        {
+            if (exhibitions.Linked[index].Id == publicationId)
+            {
+                return index;
+            }
+        }
+
+        return int.MaxValue;
     }
 
     private AdminActor CurrentActor()
