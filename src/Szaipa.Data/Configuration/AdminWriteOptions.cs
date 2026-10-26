@@ -34,8 +34,23 @@ public sealed class AdminWriteOptions
     /// <summary>Password for the local-debug fixed account (see <see cref="DebugUserName"/>); defaults to <c>debug</c>.</summary>
     public string DebugPassword { get; set; } = "debug";
 
-    /// <summary>True when the local-debug fixed-account login is active (the read-only-debug flag is on).</summary>
-    public bool DebugLoginEnabled => UseReadOnlyConnectionForDebug;
+    /// <summary>
+    /// True when the LocalMirror (local SQLite copy) mode is active. Set by the DI wiring, never from config:
+    /// the admin context then writes to the mirror file instead of a SQL Server database.
+    /// </summary>
+    public bool LocalMirrorActive { get; set; }
+
+    /// <summary>
+    /// LocalMirror debug sign-in switch, resolved by <c>LocalMirrorOptions.DebugLoginAllowed</c> (mirror enabled,
+    /// Development environment, <c>LocalMirror:DebugLogin</c> not turned off). Set by the DI wiring, not config.
+    /// </summary>
+    public bool MirrorDebugLoginEnabled { get; set; }
+
+    /// <summary>
+    /// True when the local-debug fixed-account login is active: the read-only-debug flag is on, or the
+    /// LocalMirror debug login is allowed (Development only).
+    /// </summary>
+    public bool DebugLoginEnabled => UseReadOnlyConnectionForDebug || MirrorDebugLoginEnabled;
 
     /// <summary>Connection string to the local writable copy. Resolved from config/env at startup.</summary>
     public string ConnectionString { get; set; } = string.Empty;

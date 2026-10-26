@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
+    <!-- LocalMirror（本地镜像库）：开发机没有 SQL Server，镜像模式下四个上下文改用 SQLite 文件。 -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.9" />
   </ItemGroup>
 
 </Project>

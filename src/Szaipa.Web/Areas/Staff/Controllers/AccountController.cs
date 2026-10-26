@@ -77,7 +77,7 @@ public sealed class AccountController : Controller
             && string.Equals(model.Password, adminWrite.DebugPassword, StringComparison.Ordinal))
         {
             WriteLoginAudit(model.StaffName, success: true);
-            await SignInStaffAsync(0, "调试管理员（只读）");
+            await SignInStaffAsync(0, adminWrite.LocalMirrorActive ? "调试管理员（本地镜像）" : "调试管理员（只读）");
             return RedirectToAdminHome(returnUrl);
         }
 
