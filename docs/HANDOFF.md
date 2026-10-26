@@ -2,7 +2,50 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-26，后台自动化 Epic，因 5 小时额度将尽而暂停）
+## 最新交接（2026-10-26，Codex 已集成，按剩余约 5% 额度停止）
+
+### 当前基线
+- 集成分支 `codex-refactor-dotnet-modernization`；**T0–T4 全部已合入**。不要再按下方旧交接重复合并 WIP 分支。
+- 主要合并：T1 `883535f`，首轮全量重试 `224132f`；T4 `c2748aa`；T2 `da166c4`。补修：旧列 INSERT 降级 `4312776`、展讯顺序回显 `c5a0363`、拖拽持久化 `5c63175`。
+- 本轮功能/发布准备基线 **`128a58528ba462b897834a38be5a661694a80c4a`**。之后的提交仅补交接、文档和产物审计必需文件清单，不改变应用行为。
+- 前端 build 成功；.NET build **0 warning / 0 error**；**639 测试绿（Data 367 + Web 272）**；发布审计 Python **6 测试绿**；SQL 汇总 `--check` 一致。
+- 完整记录：`docs/updates/2026-10-26-automation-integration.md`；上线手册：`docs/automation-rollout.md`。T5 仍是进行中，不能标全 Epic 验收完成。
+
+### 已实际验证
+- 主镜像 14 模块真实 HTTP CRUD，测试记录已清理；隔离镜像专题五种积木、清洗、错误 JSON 事务回滚、首页推荐排序/显隐/近期过往通过。
+- 旧 schema 副本公开路由与旧后台 GET 均不 500；缺列的展览 POST 曾失败，已修复且 HTTP 复验返回升级提示、没有新增行。
+- 浏览器：Artist 头像裁切/黑白/原图重裁、两件作品批量上传、拖拽刷新后排序保留、显式保存、配色实时预览、兼容展讯选择及顺序回显通过。OrgMember 默认黑白裁切也补验通过，灰度 432×432，原图保留。
+- 正式公开路由 14 个 ×390/1440 共28组无溢出；四块专题两宽度通过。修复专题 header 零宽导致首屏空白。
+- 微信：SQLite 导入闭环、隐藏/置顶/旧详情保留等测试通过；真实样本链接返回微信“环境异常”验证页，**未完成真实来源导入**，不能绕过验证。
+
+### 候选发布包（只在本机，未部署、未推送）
+- `artifacts/szaipa-automation-128a585-win-x64.zip`：**27,078,994 B**。
+- SHA-256：`77c5663611dc52f74faccb326e53d004a29059c873b81a43c5308d169cfd73b2`，旁有 `.sha256`。
+- 目录 `artifacts/automation-win-x64/`；清单 `artifacts/automation-win-x64.manifest.json`：216文件、42,878,186 B，完整源码SHA已记录；ZIP CRC及逐文件SHA均核对通过。
+- `dotnet publish -c Release -r win-x64 --self-contained false -p:UseAppHost=false` 成功，IIS web.config 正确，禁止文件检查通过。保留SQLite相关2,590,912 B；Production硬禁镜像，不手删依赖。
+- SQL：`docs/sql/2026-10-26-automation-deploy.sql`（六来源汇总，必须SQLCMD模式，核对目标库）与 `...-automation-rollback.sql`（默认只读盘点，有新增数据拒绝拆除）。**未在真实SQL Server执行**；用户自行执行生产SQL。
+
+### Claude 下一步（按优先级）
+1. 浏览器实操专题后台：富文本编辑后新增/上下移/删除，再保存，确认内容不丢；目前有代码修复、事务/HTTP验证，尚缺这一GUI闭环。
+2. 将 T3 种子与 T2 推荐种子同时灌入隔离镜像，对比首页/About数据路径截图；补齐剩余后台CRUD边界与正式路由、重要展览/新专题交互检查。不要把已有28组的无溢出等同完整视觉验收。
+3. 用户填好公众号凭据/IP白名单后，跑 wechat-probe，按可用来源真实导入与回填。每次进程启动先全量发现，失败保持全量重试，成功后增量；去重跳过人工编辑，重新抓取会覆盖。
+4. 完成验收后重新生成以最终源码SHA命名的包/清单；现包是候选。Windows/IIS与SQL Server验收由用户执行，agent不碰服务器。
+
+### 本机续测与边界
+- 主 `.local-db/` 已按最新模型重建（日志只取近7天）。保留演示样本：Artist **1053**，Works **1143/1144**，Publication **2**（四块、folder `epic-ui-topic`），仅本地镜像。重跑 mirror-sync 会丢失样本。
+- 上传安全副本：`/var/folders/jr/yvdkbjjd7czcsljyhxtvf96r0000gn/T/szaipa-epic-assets-w0anexd9/Content`（APFS独立克隆），不要写 `web24.05/Content`。
+- 本轮主测试服务5070与浏览器已关闭；子agent测试服务也已关闭。续测用 `LocalMirror__Enabled=true LegacyAssets__ContentRoot=<上述临时路径> ~/.dotnet/dotnet run --project src/Szaipa.Web --urls http://127.0.0.1:5070`。若临时目录被清理，请重新独立克隆资源。
+- 本地证据 `artifacts/verification/`：route matrix、CRUD JSON、裁切/专题截图。`/tmp/szaipa-epic-http-crud.py` 是可复跑临时HTTP脚本，仅允许本机镜像写入。
+- 用户的 `szaipa2022/`、`.vs/`、`packages/` 与未跟踪 newsletter 文档均未 add/还原；不 `git add -A`，不改旧站。
+
+### 可粘贴给 Claude
+```text
+接手 szaipa2002 后台自动化集成收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接。T0–T4已合并，639测试绿，别再合旧WIP。先实测专题积木GUI编辑/重排保存，再灌T3/T2种子做数据路径视觉验收，补剩余T5。候选包/校验信息见HANDOFF；验收后再以最终SHA重建包。生产只读，写只在SQLite镜像；上传用交接中的独立临时Content。真实微信页被环境验证拦截，须用户配置凭据/IP白名单后按可用接口复验，不绕过验证。不部署、不执行生产SQL、不推送、不碰旧站和用户改动。中文commit、更新交接与看板。
+```
+
+---
+
+## 上轮交接（2026-10-26，Claude 后台自动化 WIP，现已由下述 Codex 集成覆盖）
 
 ### 已完成并合并到集成分支 `codex-refactor-dotnet-modernization`
 - 规范与看板：`docs/AGENT_SPEC.md`、`docs/TASKS.md`（用户决策表在看板顶部，**不要再问一遍**）。

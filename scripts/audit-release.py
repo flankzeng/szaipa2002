@@ -13,6 +13,9 @@ REQUIRED = (
     "Szaipa.Web.dll", "Szaipa.Data.dll", "Szaipa.Web.deps.json",
     "Szaipa.Web.runtimeconfig.json", "web.config", "appsettings.json",
     "wwwroot/admin/admin.css", "wwwroot/admin/editor.js",
+    "wwwroot/admin/image-cropper.js", "wwwroot/admin/image-cropper.css",
+    "wwwroot/admin/block-manager.js", "wwwroot/admin/artist-site.js",
+    "wwwroot/css/exhibition-topic.css",
     "wwwroot/css/public-core.css", "wwwroot/css/font-subsets-public.css",
     "wwwroot/css/font-subsets-staff.css",
 )

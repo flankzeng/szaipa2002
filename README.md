@@ -33,7 +33,7 @@ dotnet test Szaipa.Modernization.slnx --no-build --disable-build-servers -m:1
 dotnet publish src/Szaipa.Web/Szaipa.Web.csproj -c Release -o ./artifacts/publish
 ```
 
-The current verified baseline is a clean .NET build, 252 passing tests, and a successful front-end build. A release artifact is not production-ready merely because it builds: the external runtime contracts below must also be satisfied.
+The current integrated baseline is a clean .NET build, 639 passing tests, and a successful front-end build. See docs/HANDOFF.md for candidate release artifacts and remaining acceptance work. A release artifact is not production-ready merely because it builds: the external runtime contracts below must also be satisfied.
 
 ## External runtime contracts
 
