@@ -101,9 +101,13 @@ public sealed class WeChatSourceKeyTests
         Assert.Equal("https://mp.weixin.qq.com/s/AbC-123_x", WeChatSourceKey.NormalizeArticleUrl("http://mp.weixin.qq.com/s/AbC-123_x#wechat_redirect"));
 
         var longUrl = "http://mp.weixin.qq.com/s?__biz=MzU5MDg4NzY4Mg%3D%3D&amp;mid=2247493729&amp;idx=1&amp;sn=abcdef&amp;chksm=zz&amp;scene=21#rd";
+        // chksm 必须保留（缺了微信会跳人机验证），scene/fragment 去掉。
+        Assert.Equal(
+            "https://mp.weixin.qq.com/s?__biz=MzU5MDg4NzY4Mg%3D%3D&mid=2247493729&idx=1&sn=abcdef&chksm=zz",
+            WeChatSourceKey.NormalizeArticleUrl(longUrl));
         Assert.Equal(
             "https://mp.weixin.qq.com/s?__biz=MzU5MDg4NzY4Mg%3D%3D&mid=2247493729&idx=1&sn=abcdef",
-            WeChatSourceKey.NormalizeArticleUrl(longUrl));
+            WeChatSourceKey.NormalizeArticleUrl("https://mp.weixin.qq.com/s?__biz=MzU5MDg4NzY4Mg==&mid=2247493729&idx=1&sn=abcdef&token=1006457716&lang=zh_CN#rd"));
         Assert.Equal("mp:MzU5MDg4NzY4Mg==:2247493729:1", WeChatSourceKey.TryFromLongUrl(longUrl));
         Assert.Equal(WeChatSourceKey.FromIds("MzU5MDg4NzY4Mg==", "2247493729", "1"), WeChatSourceKey.TryFromLongUrl(longUrl));
     }

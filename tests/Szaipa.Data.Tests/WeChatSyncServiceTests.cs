@@ -178,6 +178,27 @@ public sealed class WeChatSyncServiceTests
     }
 
     [Fact]
+    public async Task Long_links_are_fetched_with_chksm_and_deduped_by_key_without_refetching()
+    {
+        // 真实微信对去掉 chksm 的长链接会 302 到人机验证页，所以抓取必须带原样 chksm；token/lang/#rd 这类会话参数去掉。
+        await using var env = new Env();
+        env.Pages[LongUrl] = env.Pages[ShortUrl];
+
+        var first = Assert.Single(await env.Service.ImportLinksAsync(
+            LongUrl + "&chksm=c0ffee&token=1006457716&lang=zh_CN#rd", Actor, false, CancellationToken.None));
+        Assert.Equal(WeChatImportStatus.Created, first.Status);
+        var pageRequest = Assert.Single(env.Handler.Requests, r => r.Contains("mp.weixin.qq.com"));
+        Assert.Contains("chksm=c0ffee", pageRequest);
+        Assert.DoesNotContain("token=", pageRequest);
+
+        // 同一篇再贴一次（这次不带 chksm）：按 biz+mid+idx 键直接判重，不再请求页面。
+        var again = Assert.Single(await env.Service.ImportLinksAsync(LongUrl, Actor, false, CancellationToken.None));
+        Assert.Equal(WeChatImportStatus.Unchanged, again.Status);
+        Assert.Single(env.Handler.Requests, r => r.Contains("mp.weixin.qq.com"));
+        Assert.Equal(1, await env.Db.News.CountAsync());
+    }
+
+    [Fact]
     public async Task Changed_source_article_updates_the_same_news_and_keeps_its_date_and_flags()
     {
         await using var env = new Env();

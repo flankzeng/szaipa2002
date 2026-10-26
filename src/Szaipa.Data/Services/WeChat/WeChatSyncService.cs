@@ -134,8 +134,10 @@ public sealed class WeChatSyncService : IWeChatSyncService
 
             if (!force)
             {
+                // 长链接能直接算出 biz+mid+idx 键时按键判重（同一篇带/不带 chksm 都能命中）；短链只能比 URL。
+                var key = WeChatSourceKey.TryFromLongUrl(input);
                 var known = await _db.WeChatSyncRecord.AsNoTracking()
-                    .Where(r => r.SourceUrl == url)
+                    .Where(r => key != null ? r.SourceKey == key : r.SourceUrl == url)
                     .Select(r => new { r.NewsId })
                     .FirstOrDefaultAsync(cancellationToken);
                 if (known is not null)
