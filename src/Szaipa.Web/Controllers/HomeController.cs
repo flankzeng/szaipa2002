@@ -154,7 +154,7 @@ public class HomeController : Controller
         if (SzaipaReadModelsActive())
         {
             var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
-            var artists = await artistRepository.GetArtistsAsync(newestFirst: true, cancellationToken);
+            var artists = await artistRepository.GetVipArtistsAsync(cancellationToken);
             return View("Vip", artists);
         }
 

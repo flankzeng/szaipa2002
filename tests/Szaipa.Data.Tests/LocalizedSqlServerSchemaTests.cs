@@ -25,6 +25,8 @@ public sealed class LocalizedSqlServerSchemaTests
         Assert.True(SchemaCompatibility.IsMissingTable(missingSync, "WeChatSyncRecord"));
         Assert.True(MissingSchema.IsMissingTable(missingSync, "WeChatSyncRecord"));
         Assert.True(HomeBlocksReadRepository.IsMissingSchemaObject(CreateSqlException(208, "对象名 'OrgMember' 无效。")));
+        // 会员风采排序旁表：Vip 页缺表回退原顺序、后台缺表出提示，都靠中文 208 被识别。
+        Assert.True(SchemaCompatibility.IsMissingTable(CreateSqlException(208, "对象名 'ArtistDisplay' 无效。"), "ArtistDisplay"));
     }
 
     [Fact]

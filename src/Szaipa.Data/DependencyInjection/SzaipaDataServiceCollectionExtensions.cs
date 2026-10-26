@@ -205,6 +205,7 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<AuctionAdminRepository>();
         services.AddScoped<ExhibitionAdminRepository>();
         services.AddScoped<ArtistBookAdminRepository>();
+        services.AddScoped<IVipOrderAdminRepository, VipOrderAdminRepository>();
         services.AddScoped<WorksAdminRepository>();
         services.AddScoped<IPublicationAdminRepository, PublicationAdminRepository>();
         services.AddScoped<IExhibitionWorkAdminRepository, ExhibitionWorkAdminRepository>();

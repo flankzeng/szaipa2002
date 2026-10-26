@@ -55,6 +55,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
 
+    public DbSet<ArtistDisplay> ArtistDisplay => Set<ArtistDisplay>();
+
     // Admin-only entities (not part of the public read surface).
     public DbSet<Staff> Staff => Set<Staff>();
 
@@ -104,5 +106,8 @@ public sealed class SzaipaAdminContext : DbContext
 
         // 艺术家出版著作，与读上下文共用同一份映射。
         ArtistBookModelConfiguration.Configure(modelBuilder);
+
+        // 会员风采（Vip）排序与显隐旁表，与读上下文共用同一份映射。
+        ArtistDisplayModelConfiguration.Configure(modelBuilder);
     }
 }

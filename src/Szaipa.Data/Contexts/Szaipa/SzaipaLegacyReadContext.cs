@@ -53,6 +53,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
 
+    public DbSet<ArtistDisplay> ArtistDisplay => Set<ArtistDisplay>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<News>(entity =>
@@ -145,6 +147,9 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
         // 艺术家出版著作（老库无此表，读侧缺表时降级为空）。
         ArtistBookModelConfiguration.Configure(modelBuilder);
+
+        // 会员风采（Vip）排序与显隐旁表（老库无此表，读侧缺表时回退原顺序）。
+        ArtistDisplayModelConfiguration.Configure(modelBuilder);
     }
 
     public override int SaveChanges() => throw ReadOnlyViolation();
