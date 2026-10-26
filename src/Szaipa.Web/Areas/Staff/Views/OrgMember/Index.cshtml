@@ -1,0 +1,83 @@
+@model OrgMemberIndexViewModel
+@{
+    ViewData["Title"] = "组织架构";
+}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">组织架构</h1>
+        <p class="mt-1 text-sm text-muted">共 @Model.Members.Count 人。首页「核心成员」「顾问团队」按这里的分组与顺序展示；隐藏的人不显示、但不会被删除。</p>
+    </div>
+    <a asp-action="Create" class="admin-btn-primary">＋ 添加成员</a>
+</div>
+
+@foreach (var groupName in OrgGroups.All.Concat(Model.Members.Select(m => m.GroupName).Where(g => !OrgGroups.All.Contains(g)).Distinct()))
+{
+    var members = Model.Members.Where(m => m.GroupName == groupName).ToList();
+    <div class="mb-8">
+        <div class="mb-3 flex items-center justify-between">
+            <h2 class="font-serif text-lg font-bold text-ink">@groupName <span class="ml-1 text-sm font-normal text-muted">@members.Count 人</span></h2>
+            <a asp-action="Create" asp-route-group="@groupName" class="text-sm text-brand hover:underline">＋ 添加到「@groupName」</a>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+            <table class="w-full text-sm">
+                <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+                    <tr>
+                        <th class="px-5 py-3 font-medium">头像</th>
+                        <th class="px-5 py-3 font-medium">姓名</th>
+                        <th class="px-5 py-3 font-medium">职务 | 头衔</th>
+                        <th class="px-5 py-3 font-medium">关联艺术家</th>
+                        <th class="px-5 py-3 font-medium">状态</th>
+                        <th class="px-5 py-3 text-right font-medium">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-black/5">
+                    @for (var i = 0; i < members.Count; i++)
+                    {
+                        var m = members[i];
+                        <tr class="hover:bg-canvas/40">
+                            <td class="px-5 py-3">
+                                @if (!string.IsNullOrEmpty(m.AvatarPath))
+                                {
+                                    <img src="@m.AvatarPath" alt="" class="h-10 w-10 rounded-full object-cover" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <span class="text-xs text-muted">—</span>
+                                }
+                            </td>
+                            <td class="px-5 py-3 font-medium text-ink">@m.Name</td>
+                            <td class="px-5 py-3 text-muted">@(string.Join(" | ", new[] { m.Role, m.Title }.Where(s => !string.IsNullOrWhiteSpace(s))))</td>
+                            <td class="px-5 py-3 text-muted">
+                                @if (m.ArtistId is { } artistId)
+                                {
+                                    <a href="/Home/Art/@artistId" target="_blank" rel="noopener" class="text-brand hover:underline">@(Model.ArtistNames.TryGetValue(artistId, out var artistName) ? artistName : $"#{artistId}")</a>
+                                }
+                                else
+                                {
+                                    <span class="text-xs text-muted">未关联</span>
+                                }
+                            </td>
+                            <td class="px-5 py-3">
+                                @if (m.IsVisible)
+                                {
+                                    <span class="rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">显示中</span>
+                                }
+                                else
+                                {
+                                    <span class="text-xs text-muted">已隐藏</span>
+                                }
+                            </td>
+                            <td class="px-5 py-3">
+                                @await Html.PartialAsync("_SortableRowActions", new SortableRowActionsModel(m.Id, m.IsVisible, i > 0, i < members.Count - 1, $"确定删除「{m.Name}」？此操作不可撤销（只想暂时不展示请用「隐藏」）。"))
+                            </td>
+                        </tr>
+                    }
+                    @if (members.Count == 0)
+                    {
+                        <tr><td colspan="6" class="px-5 py-10 text-center text-muted">这个分组还没有人。</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

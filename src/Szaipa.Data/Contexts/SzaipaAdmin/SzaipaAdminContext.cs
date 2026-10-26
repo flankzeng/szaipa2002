@@ -43,6 +43,12 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<FeaturedExhibition> FeaturedExhibition => Set<FeaturedExhibition>();
 
+    public DbSet<OrgMember> OrgMember => Set<OrgMember>();
+
+    public DbSet<SaleWork> SaleWork => Set<SaleWork>();
+
+    public DbSet<Partner> Partner => Set<Partner>();
+
     // Admin-only entities (not part of the public read surface).
     public DbSet<Staff> Staff => Set<Staff>();
 
@@ -82,5 +88,8 @@ public sealed class SzaipaAdminContext : DbContext
         modelBuilder.Entity<Activity>(e => { e.ToTable("Activity"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Tag>(e => { e.ToTable("Tag"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<WorksTag>(e => { e.ToTable("WorksTag"); e.HasKey(x => x.Id); });
+
+        // Additive homepage-block tables (OrgMember / SaleWork / Partner), shared mapping with the read context.
+        HomeBlocksModelConfiguration.Configure(modelBuilder);
     }
 }

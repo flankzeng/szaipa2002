@@ -1,6 +1,20 @@
+@inject Szaipa.Web.Services.IHomeBlocksProvider HomeBlocks
 @{
     ViewData["Title"] = "关于我们";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    var partners = await HomeBlocks.GetPartnersAsync(Context.RequestAborted);
+
+    // 只允许 http(s) 外链，其余（含 javascript:）一律不渲染成链接。
+    static string? SafeLink(string? link) =>
+        !string.IsNullOrWhiteSpace(link)
+        && (link.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+            || link.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            ? link.Trim()
+            : null;
+
+    // 名称里的换行输出为 <br />，其余内容照常 HTML 转义。
+    Microsoft.AspNetCore.Html.IHtmlContent NameLines(string name) =>
+        Html.Raw(string.Join("<br />", name.Split('\n').Select(line => Html.Encode(line.Trim()))));
 }
 
 @section Styles {
@@ -57,68 +71,59 @@
 
 
         <ul class="partner">
+            @* 2026-10-26 T3：合作伙伴改为数据渲染（后台「合作伙伴」）；缺表/无数据回退 HomeBlocksDefaults。
+               前两家在手机端也带出，其余只在桌面端第一行出现，并在手机端第二行只显示 Logo + 名称（同改造前）。 *@
             <div class="col-xs20 col-sm20 col-md20 col-lg20">
-                <li class="col-xs10 col-sm10 col-md5 col-lg5">
-                    <img loading="lazy" decoding="async" src="/Content/images/white cube.png" width="800" height="800" alt="">
-                    <h1>荷兰白立方基金会</h1>
-                    <p class="xs-hide sm-hide">白立方基金会以举办每两年一次的地球村艺术项目而闻名，“会面”是其长久以来的主题，即来自世界各地的艺术家与公众会面。
-
-                        项目于荷兰、法国、德国、丹麦、阿塞拜疆和北马其顿等地举办。
-
-                        除了这个项目，白立方还组织了其他主要在欧盟范围内的展览和项目。促进艺术家与公众之间的文化交流。
-
-                        荷兰白立方拥有全世界1500名专业的艺术家，同时拥有可以接触到24000名艺术家的地球村艺术家网络，以发挥其巨大的艺术影响力。
-
-                </li>
-                <li class="col-xs10 col-sm10 col-md5 col-lg5">
-                    <img loading="lazy" decoding="async" src="/Content/images/play room.png" width="800" height="800" alt="">
-                    <h1>游戏室画廊</h1>
-                    <p class="xs-hide sm-hide">PLAY ROOM 的发起人是荷兰知名策展人Jeroen van Paassen，他在 PLAY room 汇集了20多年在艺术和文化领域的经验。
-
-                        从开发新概念和策划展览到收藏分析和管理。PLAY room 是临近荷兰首都阿姆斯特丹的小城市赞丹市中心的艺术热点。
-
-                        画廊的空间极具特色，展厅风格充满激情，具有幽默感而又平易近人，反差感时常令人感到诧异。
-
-                        画廊每月都有从当代艺术到街头艺术的各种风格迥异的展览。
-                    </p>
-                </li>
-
-                <li class="xs-hide sm-hide col-md5 col-lg5">
-                    <img loading="lazy" decoding="async" src="/Content/images/huahui.png" width="800" height="800" alt="">
-                    <h1>华汇中艺国际拍卖有限公司</h1>
-                    <p class="xs-hide sm-hide">北京华汇中艺国际拍卖有限公司成立于2017年，是以经营文物艺术品为主的综合性拍卖公司。
-
-                        公司成立以来，已与多家国内顶尖拍卖公司、国内知名艺术品投资机构、大型银行私人银行部建立起良好的合作关系，
-
-                        为其提供艺术品拍卖专场合作、媒体宣传推广、艺术品藏家接洽、艺术品投资讲座等全方位服务。公司主营业务艺术品拍卖、艺术空间运营以及艺术品私人洽购。
-                    </p>
-                </li>
-
-                <li class="xs-hide sm-hide col-md5 col-lg5">
-                    <img loading="lazy" decoding="async" src="/Content/images/fanzhuan.png" width="800" height="800" alt="">
-                    <h1>深圳反转舞台<br />文化传播有限公司</h1>
-                    <p class="xs-hide sm-hide">深圳反转舞台文化传播有限公司
-                        是一家立足于深圳的舞台剧、影视剧、艺术展览策划企业，倡导多元文化、青年创意、轻文艺生活，努力为公众奉上多样化、高品格的文化娱乐作品。
-
-                        反转舞台亦常年致力于艺术教育，曾与福田文化馆、南山文化馆、深圳滨海艺术中心等单位合作。目前正在运营的课程有即兴喜剧工作坊、多维喜剧创新坊、集体编作戏剧工作坊等。
-                    </p>
-                </li>
+                @for (var index = 0; index < partners.Count; index++)
+                {
+                    var partner = partners[index];
+                    var link = SafeLink(partner.Link);
+                    <li class="@(index < 2 ? "col-xs10 col-sm10 col-md5 col-lg5" : "xs-hide sm-hide col-md5 col-lg5")">
+                        @if (!string.IsNullOrWhiteSpace(partner.LogoPath))
+                        {
+                            if (link is not null)
+                            {
+                                <a href="@link" target="_blank" rel="noopener noreferrer" style="color: inherit;"><img loading="lazy" decoding="async" src="@partner.LogoPath" width="@partner.ImageWidth" height="@partner.ImageHeight" alt=""></a>
+                            }
+                            else
+                            {
+                                <img loading="lazy" decoding="async" src="@partner.LogoPath" width="@partner.ImageWidth" height="@partner.ImageHeight" alt="">
+                            }
+                        }
+                        <h1>@if (link is not null) {<a href="@link" target="_blank" rel="noopener noreferrer" style="color: inherit;">@NameLines(partner.Name)</a>} else {@NameLines(partner.Name)}</h1>
+                        @if (!string.IsNullOrWhiteSpace(partner.Description))
+                        {
+                            <p class="xs-hide sm-hide">@partner.Description</p>
+                        }
+                    </li>
+                }
             </div>
 
 
 
+            @if (partners.Count > 2)
+            {
             <div class="col-xs20 col-sm20 col-md20 col-lg20">
-
+                @foreach (var partner in partners.Skip(2))
+                {
+                    var link = SafeLink(partner.Link);
                 <li class="col-sm10 col-xs10 md-hide lg-hide">
-                    <img loading="lazy" decoding="async" src="/Content/images/huahui.png" width="800" height="800" alt="">
-                    <h1>华汇中艺国际拍卖有限公司</h1>
+                    @if (!string.IsNullOrWhiteSpace(partner.LogoPath))
+                    {
+                        if (link is not null)
+                        {
+                            <a href="@link" target="_blank" rel="noopener noreferrer" style="color: inherit;"><img loading="lazy" decoding="async" src="@partner.LogoPath" width="@partner.ImageWidth" height="@partner.ImageHeight" alt=""></a>
+                        }
+                        else
+                        {
+                            <img loading="lazy" decoding="async" src="@partner.LogoPath" width="@partner.ImageWidth" height="@partner.ImageHeight" alt="">
+                        }
+                    }
+                    <h1>@if (link is not null) {<a href="@link" target="_blank" rel="noopener noreferrer" style="color: inherit;">@NameLines(partner.Name)</a>} else {@NameLines(partner.Name)}</h1>
                 </li>
-
-                <li class="col-sm10 col-xs10 md-hide lg-hide">
-                    <img loading="lazy" decoding="async" src="/Content/images/fanzhuan.png" width="800" height="800" alt="">
-                    <h1>深圳反转舞台<br />文化传播有限公司</h1>
-                </li>
+                }
             </div>
+            }
 
         </ul>
 

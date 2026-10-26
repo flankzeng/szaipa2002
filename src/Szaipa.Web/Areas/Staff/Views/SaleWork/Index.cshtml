@@ -1,0 +1,61 @@
+@model IReadOnlyList<SaleWork>
+@{
+    ViewData["Title"] = "在售作品";
+}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">在售作品</h1>
+        <p class="mt-1 text-sm text-muted">共 @Model.Count 件。首页「在售艺术品」轮播按这里的顺序展示；隐藏的作品不显示、但不会被删除。</p>
+    </div>
+    <a asp-action="Create" class="admin-btn-primary">＋ 添加作品</a>
+</div>
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">图片</th>
+                <th class="px-5 py-3 font-medium">艺术家</th>
+                <th class="px-5 py-3 font-medium">作品</th>
+                <th class="px-5 py-3 font-medium">状态</th>
+                <th class="px-5 py-3 text-right font-medium">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var w = Model[i];
+                <tr class="hover:bg-canvas/40">
+                    <td class="px-5 py-3">
+                        @if (!string.IsNullOrEmpty(w.ImagePath))
+                        {
+                            <img src="@w.ImagePath" alt="" class="h-12 w-12 rounded object-cover" loading="lazy" />
+                        }
+                    </td>
+                    <td class="px-5 py-3 font-medium text-ink">@(string.IsNullOrEmpty(w.ArtistName) ? "—" : w.ArtistName)</td>
+                    <td class="px-5 py-3">
+                        <div class="text-ink">《@w.Title》</div>
+                        <div class="mt-0.5 text-xs text-muted">@string.Join(" ", new[] { w.Size, w.Medium }.Where(s => !string.IsNullOrWhiteSpace(s)))</div>
+                    </td>
+                    <td class="px-5 py-3">
+                        @if (w.IsVisible)
+                        {
+                            <span class="rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">显示中</span>
+                        }
+                        else
+                        {
+                            <span class="text-xs text-muted">已隐藏</span>
+                        }
+                    </td>
+                    <td class="px-5 py-3">
+                        @await Html.PartialAsync("_SortableRowActions", new SortableRowActionsModel(w.Id, w.IsVisible, i > 0, i < Model.Count - 1, $"确定删除《{w.Title}》？此操作不可撤销（只想暂时不展示请用「隐藏」）。"))
+                    </td>
+                </tr>
+            }
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无在售作品，点击右上角添加。</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
