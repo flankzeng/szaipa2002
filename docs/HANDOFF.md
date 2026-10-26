@@ -2,7 +2,35 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-26 第三轮：现场编辑 + 会员风采排序，按 5% 额度规则停止）
+## 最新交接（2026-10-26 第四轮：图片流量优化 T8）
+
+### 当前基线
+- 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `f884a55`**（之后仅文档）。测试 **672 全绿**（Data 389 + Web 283）。
+- 交付包：`artifacts/szaipa-automation-f884a55-win-x64.zip`，**32,716,536 B**，SHA-256 `87dbb7344c4016cfca438ef738ffa36bf196f992d4f53098deaf2ee0803da0cd`；清单 `artifacts/publish-win-x64-f884a55.manifest.json`（222 文件，审计通过）。旧包 83e9dee 作废。
+- 本轮记录：`docs/updates/2026-10-26-image-variants.md`；部署步骤 `docs/automation-rollout.md` §4.5。
+
+### 本轮完成（T8）
+- `/_img/{480|960|1600|2400}/Content/...` 按需生成 WebP + 磁盘缓存（SkiaSharp），原图不动、失败回退；预览解析 28 处统一 960 WebP；全局 TagHelper 给 /Content 图片补 srcset；画廊大图 1600、缩略图 480、放大镜 2400；新闻正文补 srcset；`image-variants-warm` 存量预热命令。
+- 实测：全站存量 1047.6MB → 960 宽 156.8MB（-85%）；13 个页面完整浏览手机 -57%、电脑 -56%；画质抽检无可见差异；预热 0 失败。
+- 发布时排除 SkiaSharp 96MB 调试符号。
+
+### 上线前剩余（按顺序）
+1. **服务器准备**（用户）：缓存目录 + 应用池读写权限 + `ImageVariants:CacheRoot`；部署后跑一次 `image-variants-warm`（服务器上预计 15–25 分钟）。
+2. **真实 SQL Server 写入验收**（用户提供环境，agent 协助）：建 `Szaipa_staging` 副本 → 执行 `docs/sql/2026-10-26-automation-deploy.sql` → 旁路端口跑新站 → 后台各模块增删改走一遍（脚本 `artifacts/verification/` 下 HTTP CRUD 可参考）。至今写路径只在 SQLite 镜像验证过。
+3. **正式切换**：按 `docs/automation-rollout.md`（执行 SQL、旧后台停写、切 IIS 绑定、验证、回退预案）。
+4. 上线后可补：T6 现场编辑其余页面加标记（清单见下一节「第三轮」）；公众号凭据与 `wechat-probe`；后台上传即时生成变体、艺术家横幅 CSS 背景图多尺寸。
+
+### 本机续测
+- 本地缓存目录 `src/Szaipa.Web/App_Data/image-cache/e3/`（已全量预热，gitignore）。对照实例：变体开 5070 / 关 `ImageVariants__Enabled=false`；测量脚本在 scratchpad 外未保留，方法写在更新文档里。
+
+### 可粘贴给下一位 agent（Claude Code / Codex 通用）
+```text
+接手 szaipa2002 上线收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接。T0–T5、T7、T8 已完成，T6 现场编辑核心完成（其余页面待加标记）。当前发布包 f884a55。下一步优先：协助用户在服务器副本库 Szaipa_staging 上做真实 SQL Server 写入验收（agent 只给步骤和脚本，不碰服务器），然后按 automation-rollout.md 上线；有余力再给剩余页面接入现场编辑。生产只读，写只在本地 SQLite 镜像。中文 commit 与 docs/updates。5 小时额度剩 5% 时停下更新交接。
+```
+
+---
+
+## 第三轮交接（2026-10-26：现场编辑 + 会员风采排序）
 
 ### 当前基线
 - 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `83e9dee`**（之后仅文档提交）。测试 **661 全绿**（Data 389 + Web 272）；SQL 汇总 **9 份来源**一致（新增 `site-text.sql`、`vip-order.sql`）。
