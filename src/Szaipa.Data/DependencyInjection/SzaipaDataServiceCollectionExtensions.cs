@@ -190,6 +190,8 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<IArtistReadRepository, ArtistReadRepository>();
         services.AddScoped<IPublicationReadRepository, PublicationReadRepository>();
         services.AddScoped<ITongouReadRepository, TongouReadRepository>();
+        services.AddSingleton<HomeBlocksSchemaState>();
+        services.AddScoped<IHomeBlocksReadRepository, HomeBlocksReadRepository>();
 
         // Admin (write) services. Scoped alongside SzaipaAdminContext; only resolved on admin routes.
         services.AddScoped<IOperationRecorder, OperationRecorder>();
@@ -206,6 +208,9 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<ITongouAtristAdminRepository, TongouAtristAdminRepository>();
         services.AddScoped<ITongouWorksAdminRepository, TongouWorksAdminRepository>();
         services.AddScoped<IDashboardAnalyticsRepository, DashboardAnalyticsRepository>();
+        services.AddScoped<IOrgMemberAdminRepository, OrgMemberAdminRepository>();
+        services.AddScoped<ISaleWorkAdminRepository, SaleWorkAdminRepository>();
+        services.AddScoped<IPartnerAdminRepository, PartnerAdminRepository>();
         return services;
     }
 

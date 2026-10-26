@@ -1,0 +1,58 @@
+@model IReadOnlyList<Partner>
+@{
+    ViewData["Title"] = "合作伙伴";
+}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="font-serif text-2xl font-bold text-ink">合作伙伴</h1>
+        <p class="mt-1 text-sm text-muted">共 @Model.Count 家。「关于我们」页按这里的顺序展示（桌面端每行 4 家；手机端前 2 家带名称，其余在第二行只显示 Logo 与名称）。</p>
+    </div>
+    <a asp-action="Create" class="admin-btn-primary">＋ 添加合作伙伴</a>
+</div>
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">Logo</th>
+                <th class="px-5 py-3 font-medium">名称</th>
+                <th class="px-5 py-3 font-medium">链接</th>
+                <th class="px-5 py-3 font-medium">状态</th>
+                <th class="px-5 py-3 text-right font-medium">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var p = Model[i];
+                <tr class="hover:bg-canvas/40">
+                    <td class="px-5 py-3">
+                        @if (!string.IsNullOrEmpty(p.LogoPath))
+                        {
+                            <img src="@p.LogoPath" alt="" class="h-12 w-12 rounded object-contain" loading="lazy" />
+                        }
+                    </td>
+                    <td class="px-5 py-3 font-medium text-ink">@p.Name.Replace("\n", "")</td>
+                    <td class="px-5 py-3 text-muted">@(string.IsNullOrEmpty(p.Link) ? "—" : p.Link)</td>
+                    <td class="px-5 py-3">
+                        @if (p.IsVisible)
+                        {
+                            <span class="rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">显示中</span>
+                        }
+                        else
+                        {
+                            <span class="text-xs text-muted">已隐藏</span>
+                        }
+                    </td>
+                    <td class="px-5 py-3">
+                        @await Html.PartialAsync("_SortableRowActions", new SortableRowActionsModel(p.Id, p.IsVisible, i > 0, i < Model.Count - 1, $"确定删除「{p.Name.Replace("\n", "")}」？此操作不可撤销（只想暂时不展示请用「隐藏」）。"))
+                    </td>
+                </tr>
+            }
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无合作伙伴，点击右上角添加。</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
