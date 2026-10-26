@@ -62,6 +62,15 @@ if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
     Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(configuration));
 }
 
+// 命令行工具：`dotnet run --project src/Szaipa.Web -- mirror-sync [--days N] [--only szaipa|tongou]`。
+// 用现有只读连接对生产库只读 SELECT，重建本地 SQLite 镜像库（LocalMirror），然后直接退出、不启动站点。
+// 配置分层与站点启动完全一致（appsettings.Local.json / user-secrets / 环境变量），见 docs/updates/2026-10-26-local-mirror-db.md。
+if (args.Length > 0 && string.Equals(args[0], "mirror-sync", StringComparison.OrdinalIgnoreCase))
+{
+    Environment.Exit(await Szaipa.Data.LocalMirror.LocalMirrorSyncRunner.RunAsync(
+        configuration, args.Skip(1).ToArray(), Console.Out));
+}
+
 var persistentDataProtection = configuration
     .GetSection(PersistentDataProtectionOptions.SectionName)
     .Get<PersistentDataProtectionOptions>()
