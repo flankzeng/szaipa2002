@@ -16,6 +16,12 @@ public sealed class ArtistExhibitionItemModel
 
     public string CoverPath { get; init; } = string.Empty;
 
+    /// <summary>
+    /// 非空时直接作为封面地址（由关联展览 <c>Publication</c> 解析出的 <c>/Content/images/{Folder}/{Cover}</c>）；
+    /// 为空时视图仍按旧规则拼 <c>/Content/ArtImg/Artist/Exhibition/{CoverPath}</c>。
+    /// </summary>
+    public string CoverUrl { get; init; } = string.Empty;
+
     public string Location { get; init; } = string.Empty;
 
     public string Link { get; init; } = string.Empty;

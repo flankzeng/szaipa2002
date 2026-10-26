@@ -26,4 +26,11 @@ public sealed class ArtistProfileSnapshotModel
     /// list, which comes from <c>Publication</c>.
     /// </summary>
     public required IReadOnlyList<ArtistExhibitionItemModel> RelatedExhibitions { get; init; }
+
+    /// <summary>
+    /// 是否在 <see cref="RelatedExhibitions"/> 之后追加旧版写死的 3 张默认活动图（春语II/同构II/春语I）。
+    /// 老艺术家、以及缺 <c>Artist.HideDefaultExhibitions</c> 列的老库一律 true（保持旧页面不变）；
+    /// 后台新建的艺术家为 false，展讯完全由数据驱动。
+    /// </summary>
+    public bool ShowDefaultExhibitions { get; init; } = true;
 }

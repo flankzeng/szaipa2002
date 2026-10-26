@@ -41,6 +41,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<WeChatSyncRecord> WeChatSyncRecord => Set<WeChatSyncRecord>();
 
+    public DbSet<ArtistPublication> ArtistPublication => Set<ArtistPublication>();
+
     public DbSet<OrgMember> OrgMember => Set<OrgMember>();
 
     public DbSet<SaleWork> SaleWork => Set<SaleWork>();
@@ -68,14 +70,16 @@ public sealed class SzaipaAdminContext : DbContext
     {
         modelBuilder.Entity<News>(e => { e.ToTable("News"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<ArtNews>(e => { e.ToTable("ArtNews"); e.HasKey(x => x.Id); });
-        modelBuilder.Entity<Artist>(e => { e.ToTable("Artist"); e.HasKey(x => x.Id); });
-        modelBuilder.Entity<Works>(e => { e.ToTable("Works"); e.HasKey(x => x.Id); });
+        modelBuilder.Entity<Artist>(e => { e.ToTable("Artist"); e.HasKey(x => x.Id); e.Property(x => x.HideDefaultExhibitions).HasDefaultValue(false); });
+        modelBuilder.Entity<Works>(e => { e.ToTable("Works"); e.HasKey(x => x.Id); e.Property(x => x.Sort).HasDefaultValue(0); });
         modelBuilder.Entity<Fav>(e => { e.ToTable("Fav"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Auction>(e => { e.ToTable("Auction"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Exhibition>(e => { e.ToTable("Exhibition"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Publication>(e => { e.ToTable("Publication"); e.HasKey(x => x.Id); e.Property(x => x.Type).HasDefaultValue(0); });
         modelBuilder.Entity<ExhibitionWork>(e => { e.ToTable("ExhibitionWork"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); });
         modelBuilder.Entity<WeChatSyncRecord>(e => WeChatSyncRecordModel.Configure(e));
+
+        modelBuilder.Entity<ArtistPublication>(e => { e.ToTable("ArtistPublication"); e.HasKey(x => x.Id); e.Property(x => x.Sort).HasDefaultValue(0); });
 
         modelBuilder.Entity<Staff>(e => { e.ToTable("Staff"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Diary>(e => { e.ToTable("Diary"); e.HasKey(x => x.Id); });

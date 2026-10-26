@@ -5,36 +5,33 @@ using Szaipa.Web.Services.Admin;
 
 namespace Szaipa.Web.Areas.Staff.Controllers;
 
-/// <summary>
-/// Image upload endpoint for the admin backend: the TipTap editor's inline images and the cover/file
-/// dropzones POST here. Replaces the legacy <c>TempImgSave</c>/<c>TempImgIntervalSave</c> family. Each upload
-/// is written once under a unique name into its final folder (see <see cref="IAdminAssetStorage"/>), so there
-/// is no temp-then-move dance, no Session/TempData carryover, and no substring-match deletion.
-/// </summary>
 [Area("Staff")]
 [Authorize(Policy = AdminAuthorization.StaffPolicy)]
 [Route("Staff/Upload")]
 public sealed class UploadController : Controller
 {
     private readonly IAdminAssetStorage _assetStorage;
-
-    public UploadController(IAdminAssetStorage assetStorage)
-    {
-        _assetStorage = assetStorage;
-    }
+    public UploadController(IAdminAssetStorage assetStorage) => _assetStorage = assetStorage;
 
     [HttpPost("Image")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Image(IFormFile? file, string? folder, CancellationToken cancellationToken)
+    public async Task<IActionResult> Image(IFormFile? file, IFormFile? original, string? reuseOriginalOf, string? folder, CancellationToken cancellationToken)
     {
-        if (file is null)
-        {
-            return Json(new { success = false, error = "未接收到文件。" });
-        }
+        if (file is null) return Json(new { success = false, error = "未接收到文件。" });
+        var targetFolder = folder ?? "newsImg";
+        var result = await _assetStorage.SaveImageAsync(file, targetFolder, cancellationToken);
+        if (!result.Success) return Json(new { success = false, error = result.Error });
+        string? originalUrl = null;
+        if (original is { Length: > 0 }) originalUrl = await _assetStorage.SaveOriginalAsync(original, targetFolder, result.FileName!, cancellationToken);
+        else if (!string.IsNullOrWhiteSpace(reuseOriginalOf)) originalUrl = await _assetStorage.CloneOriginalAsync(targetFolder, reuseOriginalOf, result.FileName!, cancellationToken);
+        return Json(new { success = true, url = result.Url, fileName = result.FileName, originalUrl });
+    }
 
-        var result = await _assetStorage.SaveImageAsync(file, folder ?? "newsImg", cancellationToken);
-        return result.Success
-            ? Json(new { success = true, url = result.Url, fileName = result.FileName })
-            : Json(new { success = false, error = result.Error });
+    [HttpGet("Original")]
+    public IActionResult Original(string? folder, string? name)
+    {
+        if (string.IsNullOrWhiteSpace(folder) || string.IsNullOrWhiteSpace(name) || name.Contains('/') || name.Contains('\\')) return BadRequest();
+        var url = _assetStorage.FindOriginalUrl(folder, name);
+        return url is null ? NotFound() : Json(new { success = true, url });
     }
 }

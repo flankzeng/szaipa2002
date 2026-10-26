@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using Szaipa.Data.Composition;
 using Szaipa.Data.Contexts.Szaipa;
@@ -51,11 +52,7 @@ public sealed class ArtistReadRepository : IArtistReadRepository
         int artistId,
         CancellationToken cancellationToken = default)
     {
-        return await _context.Works
-            .AsNoTracking()
-            .Where(work => work.ArtistId == artistId)
-            .Select(SzaipaHomeProjections.WorkSummary)
-            .ToListAsync(cancellationToken);
+        return await LoadWorksAsync(artistId, cancellationToken);
     }
 
     public async Task<ArtistProfileSnapshotModel?> GetArtistProfileAsync(
@@ -73,11 +70,7 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             return null;
         }
 
-        var works = await _context.Works
-            .AsNoTracking()
-            .Where(work => work.ArtistId == artistId)
-            .Select(SzaipaHomeProjections.WorkSummary)
-            .ToListAsync(cancellationToken);
+        var works = await LoadWorksAsync(artistId, cancellationToken);
 
         // Legacy newArt uses an UNORDERED Take(1) per feed (no OrderBy) — reproduce that, do not sort by Date.
         var latestNews = await _context.ArtNews
@@ -115,6 +108,9 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             .Select(SzaipaHomeProjections.ArtistExhibition)
             .ToListAsync(cancellationToken);
 
+        // 后台勾选并排序的关联展览紧跟在手工 Exhibition 行之后。
+        relatedExhibitions.AddRange(await LoadLinkedExhibitionsAsync(artistId, cancellationToken));
+
         return LegacyReadModelComposer.CreateArtistProfileSnapshot(
             artist,
             works,
@@ -122,7 +118,129 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             latestPublications,
             latestFavorites,
             latestAuctions,
-            relatedExhibitions);
+            relatedExhibitions,
+            await ShowDefaultExhibitionsAsync(artistId, cancellationToken));
+    }
+
+    /// <summary>
+    /// 作品集顺序：先按后台维护的 <c>Sort</c>、再按 Id。未执行 T4 脚本的老库没有 Sort 列，此时回退到旧行为
+    /// （不排序 = 主键顺序），前台绝不因缺列 500。
+    /// </summary>
+    private async Task<List<WorkSummaryModel>> LoadWorksAsync(int artistId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.Works
+                .AsNoTracking()
+                .Where(work => work.ArtistId == artistId)
+                .OrderBy(work => work.Sort)
+                .ThenBy(work => work.Id)
+                .Select(SzaipaHomeProjections.WorkSummary)
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingColumn(exception))
+        {
+            return await _context.Works
+                .AsNoTracking()
+                .Where(work => work.ArtistId == artistId)
+                .Select(SzaipaHomeProjections.WorkSummary)
+                .ToListAsync(cancellationToken);
+        }
+    }
+
+    /// <summary>
+    /// 后台为艺术家勾选并排序的关联展览（<c>ArtistPublication</c> → <c>Publication</c>），转成与 Exhibition 行同形的
+    /// 展讯条目。表不存在（老库）时返回空列表。
+    /// </summary>
+    private async Task<IReadOnlyList<ArtistExhibitionItemModel>> LoadLinkedExhibitionsAsync(
+        int artistId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var links = await _context.ArtistPublication.AsNoTracking()
+                .Where(link => link.ArtistId == artistId)
+                .OrderBy(link => link.Sort)
+                .ThenBy(link => link.Id)
+                .Select(link => new { link.Id, link.PublicationId })
+                .ToListAsync(cancellationToken);
+            var publicationIds = links.Select(link => link.PublicationId).ToArray();
+            var rows = await _context.Publication.AsNoTracking()
+                .Where(publication => publicationIds.Contains(publication.Id))
+                .Select(publication => new
+                {
+                    publication.Id,
+                    publication.TitleCN,
+                    publication.FolderName,
+                    publication.CoverPath,
+                    publication.Location,
+                    publication.StartDate,
+                    publication.EndDate
+                })
+                .ToListAsync(cancellationToken);
+            var databaseById = rows.ToDictionary(row => row.Id);
+            var resolved = new List<ArtistExhibitionItemModel>(links.Count);
+            foreach (var link in links)
+            {
+                if (databaseById.TryGetValue(link.PublicationId, out var row))
+                {
+                    resolved.Add(new ArtistExhibitionItemModel
+                    {
+                        Id = row.Id,
+                        ArtistId = artistId,
+                        Title = row.TitleCN ?? string.Empty,
+                        CoverUrl = string.IsNullOrWhiteSpace(row.CoverPath)
+                            ? string.Empty
+                            : $"/Content/images/{row.FolderName}/{row.CoverPath}",
+                        Location = row.Location ?? string.Empty,
+                        Link = $"/Home/Publication/{row.Id}",
+                        StartDate = row.StartDate?.ToString("yyyy.MM.dd") ?? string.Empty,
+                        EndDate = row.EndDate?.ToString("yyyy.MM.dd") ?? string.Empty
+                    });
+                    continue;
+                }
+
+                var fallback = ArtistExhibitionCompatibilityCatalog.Find(link.PublicationId);
+                if (fallback is not null)
+                {
+                    resolved.Add(new ArtistExhibitionItemModel
+                    {
+                        Id = fallback.Id,
+                        ArtistId = artistId,
+                        Title = fallback.Title,
+                        CoverUrl = fallback.CoverUrl,
+                        Location = fallback.Location,
+                        Link = fallback.Link,
+                        StartDate = fallback.StartDate,
+                        EndDate = fallback.EndDate
+                    });
+                }
+            }
+
+            return resolved;
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingTable(exception, "ArtistPublication"))
+        {
+            return Array.Empty<ArtistExhibitionItemModel>();
+        }
+    }
+
+    /// <summary>缺 <c>Artist.HideDefaultExhibitions</c> 列（老库）或艺术家不存在时一律 true = 保持旧页面。</summary>
+    private async Task<bool> ShowDefaultExhibitionsAsync(int artistId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var hide = await _context.Artist
+                .AsNoTracking()
+                .Where(artist => artist.Id == artistId)
+                .Select(artist => artist.HideDefaultExhibitions)
+                .FirstOrDefaultAsync(cancellationToken);
+            return !hide;
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingColumn(exception))
+        {
+            return true;
+        }
     }
 
     public async Task<ArtistArchiveSnapshotModel?> GetArtistArchiveAsync(

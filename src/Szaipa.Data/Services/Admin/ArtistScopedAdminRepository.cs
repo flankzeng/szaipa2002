@@ -34,13 +34,28 @@ public abstract class ArtistScopedAdminRepository<T>
     /// </summary>
     protected abstract void ApplyEditableFields(T target, T input);
 
-    public async Task<PagedResult<ArtistScopedListItem>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken)
+    /// <summary>
+    /// Hook run after the editable fields are copied and before the new row is saved — lets a module derive
+    /// values that need the database (e.g. Works appends itself to the end of the artist's display order).
+    /// </summary>
+    protected virtual Task OnCreatingAsync(T entity, CancellationToken cancellationToken) => Task.CompletedTask;
+
+    /// <param name="artistId">When set, only that artist's rows (the "官网总览" entry links use this).</param>
+    public async Task<PagedResult<ArtistScopedListItem>> GetPagedAsync(
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken,
+        int? artistId = null)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 200);
 
+        var scoped = artistId is int filterArtistId
+            ? Set.AsNoTracking().Where(e => e.ArtistId == filterArtistId)
+            : Set.AsNoTracking();
+
         var query =
-            from e in Set.AsNoTracking()
+            from e in scoped
             join artist in Db.Artist.AsNoTracking() on e.ArtistId equals artist.Id into joined
             from artist in joined.DefaultIfEmpty()
             orderby e.Id descending
@@ -80,6 +95,7 @@ public abstract class ArtistScopedAdminRepository<T>
 
         var now = DateTime.Now;
         entity.EditRecord = $"{actor.StaffName} 于 {now:yyyy年MM月dd日 HH:mm:ss} 新增了此{Noun}。/";
+        await OnCreatingAsync(entity, cancellationToken);
 
         Set.Add(entity);
         await OperationRecorder.RecordAsync(Db, actor, $"新增了 {entity.Title}的{Noun}。", cancellationToken);

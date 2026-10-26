@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,23 +19,27 @@ public sealed class WorksController : Controller
     private const int PageSize = 20;
 
     private readonly WorksAdminRepository _repository;
+    private readonly IArtistSiteAdminRepository _artistSiteRepository;
 
-    public WorksController(WorksAdminRepository repository)
+    public WorksController(WorksAdminRepository repository, IArtistSiteAdminRepository artistSiteRepository)
     {
         _repository = repository;
+        _artistSiteRepository = artistSiteRepository;
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> Index(int page = 1, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Index(int page = 1, int? artistId = null, CancellationToken cancellationToken = default)
     {
-        return View(await _repository.GetPagedAsync(page, PageSize, cancellationToken));
+        ViewBag.ArtistId = artistId;
+        ViewBag.WorksSortSupported = await _artistSiteRepository.SupportsWorksSortAsync(cancellationToken);
+        return View(await _repository.GetPagedAsync(page, PageSize, cancellationToken, artistId));
     }
 
     [HttpGet("Create")]
-    public async Task<IActionResult> Create(CancellationToken cancellationToken)
+    public async Task<IActionResult> Create(int? artistId, CancellationToken cancellationToken)
     {
-        await PopulateArtistsAsync(null, cancellationToken);
-        return View(new WorksFormViewModel());
+        await PopulateArtistsAsync(artistId, cancellationToken);
+        return View(new WorksFormViewModel { ArtistId = artistId ?? 0 });
     }
 
     [HttpPost("Create")]
@@ -47,15 +52,33 @@ public sealed class WorksController : Controller
             return View(model);
         }
 
-        await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        try
+        {
+            await _repository.CreateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            ModelState.AddModelError(string.Empty, "后台数据库缺少 Works.Sort，作品未保存。请先执行 docs/sql/2026-10-26-artist-site.sql。");
+            await PopulateArtistsAsync(model.ArtistId, cancellationToken);
+            return View(model);
+        }
         TempData["Success"] = "作品已新增。";
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), new { artistId = model.ArtistId == 0 ? (int?)null : model.ArtistId });
     }
 
     [HttpGet("Edit/{id:int}")]
     public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
     {
-        var works = await _repository.GetByIdAsync(id, cancellationToken);
+        Works? works;
+        try
+        {
+            works = await _repository.GetByIdAsync(id, cancellationToken);
+        }
+        catch (DbException)
+        {
+            TempData["Error"] = "后台数据库缺少 Works.Sort，编辑表单不可用。请先执行 docs/sql/2026-10-26-artist-site.sql。";
+            return RedirectToAction(nameof(Index));
+        }
         if (works is null)
         {
             return NotFound();
@@ -76,7 +99,16 @@ public sealed class WorksController : Controller
             return View(model);
         }
 
-        var updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        bool updated;
+        try
+        {
+            updated = await _repository.UpdateAsync(ToEntity(model), CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            TempData["Error"] = "后台数据库缺少 Works.Sort，作品未修改。请先执行 docs/sql/2026-10-26-artist-site.sql。";
+            return RedirectToAction(nameof(Index), new { artistId = model.ArtistId });
+        }
         if (!updated)
         {
             return NotFound();
@@ -90,7 +122,16 @@ public sealed class WorksController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        var deleted = await _repository.DeleteAsync(id, CurrentActor(), cancellationToken);
+        bool deleted;
+        try
+        {
+            deleted = await _repository.DeleteAsync(id, CurrentActor(), cancellationToken);
+        }
+        catch (DbException)
+        {
+            TempData["Error"] = "后台数据库缺少 Works.Sort，未删除作品。请先执行 docs/sql/2026-10-26-artist-site.sql。";
+            return RedirectToAction(nameof(Index));
+        }
         TempData[deleted ? "Success" : "Error"] = deleted ? "作品已删除。" : "未找到该作品。";
         return RedirectToAction(nameof(Index));
     }

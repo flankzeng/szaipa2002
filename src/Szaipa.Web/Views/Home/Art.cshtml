@@ -304,17 +304,19 @@
                     @foreach (var h in Model.RelatedExhibitions)
                     {
                     <div class="swiper-slide">
-                        <img loading="lazy" decoding="async" src="/Content/ArtImg/Artist/Exhibition/@h.CoverPath" alt="">
+                        <img loading="lazy" decoding="async" src="@(string.IsNullOrEmpty(h.CoverUrl) ? "/Content/ArtImg/Artist/Exhibition/" + h.CoverPath : h.CoverUrl)" alt="">
                         <a href="@h.Link">
                             <p class="information">
                                 @h.Location<br />
-                                @h.StartDate - @h.EndDate
+                                @h.StartDate@if (!string.IsNullOrWhiteSpace(h.EndDate)) { <text> - @h.EndDate</text> }
                                 <span>@h.Title</span>
                             </p>
                         </a>
                     </div>
                     }
 
+                    @if (Model.ShowDefaultExhibitions)
+                    {
                     <div class="swiper-slide">
                         <!-- 活动1 春语II -->
                         <img loading="lazy" decoding="async" src="/Content/images/IMG_9282.jpg" width="5472" height="3648" alt="">
@@ -349,6 +351,7 @@
                             </p>
                         </a>
                     </div>
+                    }
                 </div>
                 <div class="swiper-pagination"></div>
 

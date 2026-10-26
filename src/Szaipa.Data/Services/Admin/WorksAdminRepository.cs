@@ -20,6 +20,15 @@ public sealed class WorksAdminRepository : ArtistScopedAdminRepository<Works>
 
     protected override string Noun => "作品";
 
+    /// <summary>新作品默认排到该艺术家官网作品集的最后（Sort = 现有最大值 + 1）。</summary>
+    protected override async Task OnCreatingAsync(Works entity, CancellationToken cancellationToken)
+    {
+        var max = await Db.Works
+            .Where(w => w.ArtistId == entity.ArtistId)
+            .MaxAsync(w => (int?)w.Sort, cancellationToken);
+        entity.Sort = (max ?? 0) + 1;
+    }
+
     protected override void ApplyEditableFields(Works target, Works input)
     {
         target.ArtistId = input.ArtistId;

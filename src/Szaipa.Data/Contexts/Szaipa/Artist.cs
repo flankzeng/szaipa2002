@@ -54,4 +54,11 @@ public sealed class Artist
     public string? DeedsThings { get; set; }
 
     public string? DeedsYears { get; set; }
+
+    /// <summary>
+    /// T4 新增列：true = 官网「相关展览」不再追加旧版写死的 3 张默认活动图（春语II/同构II/春语I）。
+    /// 故意取「隐藏」语义而不是「显示」：这样 CLR 默认值 false 与数据库默认值 0 一致，老艺术家
+    /// 全部保持原样（仍显示默认三张），新建艺术家由后台创建时置 true。
+    /// </summary>
+    public bool HideDefaultExhibitions { get; set; }
 }
