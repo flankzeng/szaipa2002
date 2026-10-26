@@ -51,6 +51,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<Partner> Partner => Set<Partner>();
 
+    public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<News>(entity =>
@@ -140,6 +142,9 @@ public sealed class SzaipaLegacyReadContext : DbContext
         });
         // Additive homepage-block tables (OrgMember / SaleWork / Partner); may not exist in the live DB yet.
         HomeBlocksModelConfiguration.Configure(modelBuilder);
+
+        // 艺术家出版著作（老库无此表，读侧缺表时降级为空）。
+        ArtistBookModelConfiguration.Configure(modelBuilder);
     }
 
     public override int SaveChanges() => throw ReadOnlyViolation();

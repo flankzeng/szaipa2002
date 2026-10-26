@@ -89,6 +89,17 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
             defaultExhibitionFlagSupported = false;
         }
 
+        var bookCount = 0;
+        var booksSupported = true;
+        try
+        {
+            bookCount = await _db.ArtistBook.CountAsync(b => b.ArtistId == artistId, cancellationToken);
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingTable(exception, "ArtistBook"))
+        {
+            booksSupported = false;
+        }
+
         return new ArtistSiteOverview
         {
             Artist = artist,
@@ -97,6 +108,8 @@ public sealed class ArtistSiteAdminRepository : IArtistSiteAdminRepository
             FavCount = await _db.Fav.CountAsync(f => f.ArtistId == artistId, cancellationToken),
             AuctionCount = await _db.Auction.CountAsync(a => a.ArtistId == artistId, cancellationToken),
             ExhibitionRowCount = await _db.Exhibition.CountAsync(e => e.ArtistId == artistId, cancellationToken),
+            BookCount = bookCount,
+            BooksSupported = booksSupported,
             LinkedPublicationCount = linkedCount,
             WorksSortSupported = sortSupported,
             ExhibitionLinksSupported = linksSupported,

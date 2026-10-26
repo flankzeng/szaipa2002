@@ -601,6 +601,12 @@
 
 .artist-record-grid dt { color: var(--artist-muted); font-weight: 400; }
 .artist-record-grid dd { margin: 0; overflow-wrap: anywhere; }
+
+/* 出版著作：沿用 artist-record-grid 的卡片与 dl 样式，只补两处差异——
+   封面是竖版书影，改成 4:5 并完整显示（contain，不裁切书脊/书名），底色沿用图片占位灰；
+   简介段落沿用资讯摘要的灰色小字，保持与相邻分区一致。 */
+.artist-record-grid--books img { aspect-ratio: 4 / 5; object-fit: contain; }
+.artist-record-grid--books p { margin: .9rem 0 0; color: var(--artist-muted); font-size: .9rem; line-height: 1.7; }
 .artist-article { max-width: 62rem; padding: clamp(4rem, 10vh, 9rem) 0; }
 .artist-article header { margin-bottom: clamp(2rem, 6vh, 5rem); }
 

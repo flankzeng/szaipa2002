@@ -108,7 +108,34 @@
 
     <section id="publications" class="artist-content-section">
         <div class="artist-content-heading"><h2>出版著作</h2><span>PUBLICATIONS</span></div>
-        <p class="artist-content-empty">暂无出版著作资料</p>
+        @if (Model.Books.Count == 0)
+        {
+            <p class="artist-content-empty">暂无出版著作资料</p>
+        }
+        else
+        {
+            <div class="artist-record-grid artist-record-grid--books">
+                @foreach (var item in Model.Books)
+                {
+                    var image = ContentUrl("/Content/ArtImg/Artist/Book/", item.CoverPath);
+                    <article>
+                        @if (image.Length > 0)
+                        {
+                            <img src="@ImagePreviewResolver.Resolve(image)" alt="@item.Title" loading="lazy" decoding="async">
+                        }
+                        <h3>《@item.Title》</h3>
+                        <dl>
+                            @if (item.Publisher.Length > 0) { <div><dt>出版社</dt><dd>@item.Publisher</dd></div> }
+                            @if (item.PublishYear.Length > 0) { <div><dt>出版年份</dt><dd>@item.PublishYear</dd></div> }
+                        </dl>
+                        @if (item.Description.Length > 0)
+                        {
+                            <p>@item.Description</p>
+                        }
+                    </article>
+                }
+            </div>
+        }
     </section>
 
     <section id="auctions" class="artist-content-section">

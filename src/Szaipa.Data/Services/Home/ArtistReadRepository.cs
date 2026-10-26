@@ -11,7 +11,7 @@ namespace Szaipa.Data.Services.Home;
 /// Read-only EF Core implementation of the Artist public link. Mirrors the legacy HomeController:
 /// <c>newvip</c> orders by Id descending (legacy <c>vip</c> was ascending), <c>newArt</c> loads the artist,
 /// all of the artist's works (no cap), the per-feed side panels via an UNORDERED Take(1) (legacy does not
-/// OrderBy — the publication slot reuses ArtNews), and the per-artist Exhibition feed. No visit-count writes.
+/// OrderBy — the publication slot now reads ArtistBook instead of re-reading ArtNews), and the per-artist Exhibition feed. No visit-count writes.
 /// </summary>
 public sealed class ArtistReadRepository : IArtistReadRepository
 {
@@ -80,13 +80,8 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             .Select(SzaipaHomeProjections.ArtNewsSidePanel)
             .ToListAsync(cancellationToken);
 
-        // The legacy "publication" side panel reads ArtNews again (explicit compatibility placeholder).
-        var latestPublications = await _context.ArtNews
-            .AsNoTracking()
-            .Where(news => news.ArtistId == artistId)
-            .Take(SidePanelItemCount)
-            .Select(SzaipaHomeProjections.ArtNewsSidePanel)
-            .ToListAsync(cancellationToken);
+        // 「出版著作」侧栏读 ArtistBook（旧站占位 bug：曾把 ArtNews 的资讯标题当书名）。缺表/无数据 => 空。
+        var latestPublications = await LoadLatestBooksAsync(artistId, cancellationToken);
 
         var latestFavorites = await _context.Fav
             .AsNoTracking()
@@ -120,6 +115,48 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             latestAuctions,
             relatedExhibitions,
             await ShowDefaultExhibitionsAsync(artistId, cancellationToken));
+    }
+
+    /// <summary>
+    /// Art 侧栏「出版著作」：该艺术家按 <c>Sort</c>、<c>Id</c> 排序的前几本书。<c>ArtistBook</c> 表不存在（老库未执行
+    /// SQL）时返回空列表，与收藏/拍卖为空时的表现一致，前台绝不 500；其余错误照常抛出。
+    /// </summary>
+    private async Task<List<ArtistSidePanelItemModel>> LoadLatestBooksAsync(int artistId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.ArtistBook
+                .AsNoTracking()
+                .Where(book => book.ArtistId == artistId)
+                .OrderBy(book => book.Sort)
+                .ThenBy(book => book.Id)
+                .Take(SidePanelItemCount)
+                .Select(SzaipaHomeProjections.ArtistBookSidePanel)
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingTable(exception, "ArtistBook"))
+        {
+            return new List<ArtistSidePanelItemModel>();
+        }
+    }
+
+    /// <summary>档案页「出版著作」全量书目（Sort, Id）；缺表返回空列表。</summary>
+    private async Task<List<ArtistBookModel>> LoadBooksAsync(int artistId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.ArtistBook
+                .AsNoTracking()
+                .Where(book => book.ArtistId == artistId)
+                .OrderBy(book => book.Sort)
+                .ThenBy(book => book.Id)
+                .Select(SzaipaHomeProjections.ArtistBookItem)
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (MissingSchema.IsMissingTable(exception, "ArtistBook"))
+        {
+            return new List<ArtistBookModel>();
+        }
     }
 
     /// <summary>
@@ -280,7 +317,8 @@ public sealed class ArtistReadRepository : IArtistReadRepository
             Artist = artist,
             News = news,
             Favorites = favorites,
-            Auctions = auctions
+            Auctions = auctions,
+            Books = await LoadBooksAsync(artistId, cancellationToken)
         };
     }
 

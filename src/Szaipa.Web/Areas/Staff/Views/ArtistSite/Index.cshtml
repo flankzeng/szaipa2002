@@ -25,14 +25,23 @@
     </div>
 }
 
-<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+@if (!Model.Overview.BooksSupported)
+{
+    <div class="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        后台数据库还没有 <code>ArtistBook</code> 表，出版著作模块暂不可用。执行
+        <code>docs/sql/2026-10-26-artist-books.sql</code> 后可启用。
+    </div>
+}
+
+<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-6">
     @foreach (var item in new[]
     {
         ("作品", Model.Overview.WorkCount, "Works"),
         ("资讯", Model.Overview.NewsCount, "ArtNews"),
         ("收藏", Model.Overview.FavCount, "Fav"),
         ("拍卖", Model.Overview.AuctionCount, "Auction"),
-        ("展览", Model.Overview.ExhibitionRowCount, "Exhibition")
+        ("展览", Model.Overview.ExhibitionRowCount, "Exhibition"),
+        ("出版著作", Model.Overview.BookCount, "ArtistBook")
     })
     {
         <a class="rounded-xl border border-black/5 bg-white p-4 hover:border-brand/30" href="/Staff/@item.Item3?artistId=@artist.Id">

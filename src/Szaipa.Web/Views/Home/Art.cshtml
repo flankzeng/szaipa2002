@@ -151,10 +151,11 @@
             <li class="hoverLine JhengBold">
                 出版著作
                 <div class="moreInfo">
-                    《@foreach (var p in Model.LatestPublications)
+                    @* 书名来自 ArtistBook；无数据（或老库缺表）时与收藏/拍卖一样留空，不再显示空的《》。 *@
+                    @foreach (var p in Model.LatestPublications)
                     {
-                    @p.Title
-                    }》
+                    @:《@p.Title》
+                    }
                     <span class="arrow-right"></span>
                 </div>
 

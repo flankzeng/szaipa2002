@@ -193,6 +193,30 @@ internal static class SzaipaHomeProjections
             Date = auction.Date ?? string.Empty
         };
 
+    public static readonly Expression<Func<ArtistBook, ArtistBookModel>> ArtistBookItem =
+        book => new ArtistBookModel
+        {
+            Id = book.Id,
+            ArtistId = book.ArtistId,
+            Title = book.Title ?? string.Empty,
+            Publisher = book.Publisher ?? string.Empty,
+            PublishYear = book.PublishYear ?? string.Empty,
+            CoverPath = book.CoverPath ?? string.Empty,
+            Description = book.Description ?? string.Empty
+        };
+
+    /// <summary>Art 侧栏「出版著作」：书名取 Title，副标题放出版社。</summary>
+    public static readonly Expression<Func<ArtistBook, ArtistSidePanelItemModel>> ArtistBookSidePanel =
+        book => new ArtistSidePanelItemModel
+        {
+            Id = book.Id,
+            ArtistId = book.ArtistId,
+            Title = book.Title ?? string.Empty,
+            Subtitle = book.Publisher ?? string.Empty,
+            Date = null,
+            CoverPath = book.CoverPath ?? string.Empty
+        };
+
     public static readonly Expression<Func<Fav, ArtistSidePanelItemModel>> FavSidePanel =
         fav => new ArtistSidePanelItemModel
         {
