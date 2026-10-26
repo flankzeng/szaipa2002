@@ -1,6 +1,59 @@
 # 交接（HANDOFF）
 
-> 新 session 接手时：先读 [PROJECT_MAP.md](PROJECT_MAP.md) 和记忆目录里的各条记忆，再开工。下面的 prompt 可直接粘进新 session。
+> 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
+
+## 最新交接（2026-10-26，后台自动化 Epic，因 5 小时额度将尽而暂停）
+
+### 已完成并合并到集成分支 `codex-refactor-dotnet-modernization`
+- 规范与看板：`docs/AGENT_SPEC.md`、`docs/TASKS.md`（用户决策表在看板顶部，**不要再问一遍**）。
+- **T0 本地镜像库**（merge of f1b854c）：`mirror-sync` 只读拷生产 → `.local-db/*.db`；`LocalMirror__Enabled=true` 启动后前后台都连镜像，后台 `debug`/`debug`。详见 `docs/updates/2026-10-26-local-mirror-db.md`。
+- **T3 组织架构/首页静态块**（merge of e79f4b6 等 4 个 commit）：`OrgMember`/`SaleWork`/`Partner` + 后台 3 模块 + 首页 #section05/#section05guwen/#section5to6 与 About 合作伙伴数据化，缺表回退原硬编码。SQL：`docs/sql/2026-10-26-org-and-home-blocks.sql`。详见 `docs/updates/2026-10-26-org-and-home-blocks.md`。
+- 合并后状态：build 0 error，测试 **422 全绿**（Data 155 + Web 267）。
+
+### 进行中（各在独立 worktree 分支上，未合并）
+| 任务 | 分支 | worktree 路径 |
+|---|---|---|
+| T1 公众号同步 → News | `worktree-agent-a27f15c31f63d6375` | `.claude/worktrees/agent-a27f15c31f63d6375` |
+| T2 展览自动化 + 专题积木 | `worktree-agent-a47abf2973a8fa0ec` | `.claude/worktrees/agent-a47abf2973a8fa0ec` |
+| T4 艺术家官网 + 头像裁切/黑白 | `worktree-agent-a2b2e509401a8294c` | `.claude/worktrees/agent-a2b2e509401a8294c` |
+
+暂停前已要求三个 agent 立即提交 WIP（commit 标题 `WIP(Tn):`，正文含已完成/未完成/下一步）。接手时**先逐个检查**：
+1. `git log --oneline codex-refactor-dotnet-modernization..<分支>` 看提交；读最新 WIP commit 正文。
+2. `git -C <worktree路径> status --short` 看是否还有未提交改动（额度中断时可能有）；有则先审阅再提交到该分支。
+3. 每个分支：`git merge codex-refactor-dotnet-modernization`（拿到 T0+T3）→ build/test → 按 TASKS.md 对应卡片补完剩余步骤 → 合回集成分支。
+
+### 各任务已知要点（接手者必须知道）
+- **生产 Publication 表是 0 行**；前台展览全部来自 `LegacyPublicationGalleryCatalog` 兼容目录（固定 id 92001–92015）+ 三个手写专题页 + 首页硬编码。T2 的「首页推荐」必须能指向兼容目录里的展览和三个手写页 URL，并在执行/未执行 slug 迁移 SQL 两种状态下都正确。
+- **T1 公众号现实**：主体「其他组织」、**未认证**；有 AppID/AppSecret、IP 白名单，token 正常（2000 次/天）。要同步的是**群发**文章；freepublish 只含「发布」记录，与群发历史不相通。方案＝批量链接导入（主通道，补全历史）+ freepublish/永久图文素材接口（按能力启用）+ 群发完成事件回调（默认关，启用会使编辑模式自动回复/菜单失效）+ `wechat-probe` 探测命令；去重键 = 文章页解析出的 biz+mid+idx。**文章填入现有 News 表与现有版式**（详情左正文、右近 3 期推荐），不照搬公众号整页；旧手录新闻列表隐藏、URL 保留。
+- **T4 裁切组件**：`wwwroot/admin/image-cropper.js`（Cropper.js + canvas 灰度，原图另存），T4 合并后要由集成者接到 T3 的 OrgMember 头像表单（`Areas/Staff/Views/OrgMember/_Form.cshtml`，T3 用的是 `upload-field` + `home-block-form.js`）。
+- **T4 状态（WIP 8e88857）**：只完成数据层（`Works.Sort`、`Artist.HideDefaultExhibitions`、新表 `ArtistPublication`、`ArtistSiteAdminRepository`、`AdminAssetStorage` 原图存取、cropperjs@1.6.2 依赖），build 0 error 但**测试未跑**；视图/JS/裁切组件/总览页/Art.cshtml/SQL/文档/单测都未做，8 步剩余清单在该 commit 正文里。⚠️ 风险：`Works.Sort`、`Artist.HideDefaultExhibitions` 是实体列，**未执行 SQL 的后台库上 Works/Artist 模块会报错**——补完时要么给后台写路径也加缺列降级，要么在上线手册里写明「必须先执行 SQL 再部署」。该 worktree 的 node_modules 是真实拷贝（含 cropperjs），不是软链。
+- 合并任何带新实体的分支后**重跑 `mirror-sync`**（镜像表结构来自 admin 上下文）。T3 的三张表在镜像里是空表，走数据路径需灌种子（SQLite 转换规则见 T3 update 文档）。
+- `admin.css` 冲突不要手解，合并后重跑 `cd src/Szaipa.Web && npm run build`。
+- 主检出目录里 `szaipa2022/`、`.vs/`、`packages/`、`docs/updates/2026-08-04-newsletter-subscribe-partial.md` 是用户自己的未提交改动，**不要 add、不要还原**。
+
+### 之后的 T5（集成与上线就绪）
+见 TASKS.md T5：全量端到端走查（镜像库，前台全部正式路由 × 390/1440，后台全部模块 CRUD）、汇总本 Epic 的 `docs/sql/*2026-10-26*` 为一份按序上线脚本 + 回滚脚本、`dotnet publish -c Release` 产物检查（SQLite 原生库是否需要瘦身——镜像模式在 Production 禁用）、写上线切换手册（WeChat 凭据/IP 白名单、`WeChat:LegacyNewsMaxId`、可写连接串、ContentRoot、DataProtection、qqwry.dat、执行顺序、验证清单、回滚）。**交付＝发布包 + 手册，用户自己部署，agent 不碰服务器。**
+
+### 用户待办
+- 公众号凭据：在 Mac 上 `cd src/Szaipa.Web && dotnet user-secrets set "WeChat:AppId" …` / `"WeChat:AppSecret" …`（不要贴到聊天）；跑 `wechat-probe` 前把本机公网 IP 临时加入公众号 IP 白名单（或部署后在服务器上探测）。
+- 上线前在生产执行本 Epic 的 SQL（T5 会汇总成一份）。
+
+### 粘贴用 prompt（新 session，Claude Code / Codex 通用）
+```
+你接手「szaipa2002」官网的「后台自动化」Epic。仓库 /Users/arthur/Project/GitClone/szaipa2002，集成分支 codex-refactor-dotnet-modernization。
+先按顺序读：docs/AGENT_SPEC.md（硬约束）、docs/HANDOFF.md 顶部「最新交接」、docs/TASKS.md（含用户已确认的全部决策，不要再问）、docs/PROJECT_MAP.md。用中文给我简短汇报现状后开工。
+
+本轮目标：
+1. 逐个接手 T1/T2/T4 三个未合并分支（HANDOFF 表格里有分支名和 worktree 路径）：检查 WIP 提交与未提交改动 → 合入集成分支最新内容 → 按 TASKS.md 卡片补完剩余步骤 → build 0 error + 全部测试绿 → 合并回集成分支。T4 合并后把头像裁切组件接到 OrgMember 表单。
+2. 然后做 T5：镜像库全站端到端走查、SQL 汇总成上线/回滚脚本、Release 发布包检查、上线切换手册。
+
+约束：~/.dotnet/dotnet build|test Szaipa.Modernization.slnx；前端 cd src/Szaipa.Web && npm run build。生产库只读，写只在本地 SQLite 镜像（mirror-sync），生产 SQL 写进 docs/sql 由用户执行；不碰服务器/IIS；不改 szaipa2022/；上传测试用 LegacyAssets__ContentRoot 指向临时目录，不写 web24.05/Content。中文 commit（写细）+ docs/updates 中文文档 + 更新 TASKS.md 状态。可用子 agent 并行（最多 4 个，用 Sonnet）。额度将尽时停下，按 AGENT_SPEC §8 更新本交接。
+```
+
+---
+
+## 历史交接（2026-07 之前的迁移阶段）
+
 
 ## 现状（已完成的核心，均 build 0/0 + 252 测试绿）
 - **Phase 0 基座**：可写 `SzaipaAdminContext`（门控本地副本）、cookie 认证替换 Session、`Areas/Staff` 外壳、Tailwind 主题（品牌红 #bf272d，贴近 NewIndex）。
