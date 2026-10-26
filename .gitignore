@@ -43,3 +43,6 @@ szaipa2022/App_Data/
 szaipa2022/connectionStrings.config
 /artifacts/
 src/Szaipa.Web/SecuritySampleData/audit/
+
+# LocalMirror 本地镜像库（SQLite 副本，含 Staff 密码哈希等生产数据，绝不提交）
+.local-db/

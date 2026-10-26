@@ -10,6 +10,7 @@ using Szaipa.Data.Contexts.Tongou;
 using Szaipa.Data.Contexts.TongouAdmin;
 using Szaipa.Data.Contracts.Home;
 using Szaipa.Data.Contracts.Tongou;
+using Szaipa.Data.LocalMirror;
 using Szaipa.Data.Services;
 using Szaipa.Data.Services.IpGeolocation;
 using Szaipa.Data.Services.Admin;
@@ -107,6 +108,14 @@ public static class SzaipaDataServiceCollectionExtensions
                 }
             });
 
+        // LocalMirror（本地镜像库，见 docs/updates/2026-10-26-local-mirror-db.md）：启用时四个上下文都改连 SQLite
+        // 镜像文件，并把上面三组选项改写成「已配置」。Production 环境下启用在这里直接抛异常（启动失败）。
+        // 必须放在上面所有 PostConfigure 之后，下面四个 AddDbContext 之前。
+        var localMirror = LocalMirrorOptions.FromConfiguration(configuration);
+        localMirror.EnsureAllowed();
+        services.AddSingleton(localMirror);
+        LocalMirrorRegistration.ConfigureOptions(services, localMirror);
+
         services.AddSingleton<ILegacyConnectionPolicy, LegacyConnectionPolicy>();
         services.AddSingleton<ILegacyScaffoldCommandService, LegacyScaffoldCommandService>();
 
@@ -117,7 +126,10 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddDbContext<SzaipaLegacyReadContext>((serviceProvider, options) =>
         {
             var connectionPolicy = serviceProvider.GetRequiredService<ILegacyConnectionPolicy>();
-            options.UseSqlServer(connectionPolicy.GetConnectionString(LegacyDataSource.Szaipa));
+            LocalMirrorRegistration.UseProvider(
+                options,
+                localMirror.Enabled,
+                connectionPolicy.GetConnectionString(LegacyDataSource.Szaipa));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
@@ -126,7 +138,10 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddDbContext<TongouLegacyReadContext>((serviceProvider, options) =>
         {
             var connectionPolicy = serviceProvider.GetRequiredService<ILegacyConnectionPolicy>();
-            options.UseSqlServer(connectionPolicy.GetConnectionString(LegacyDataSource.Tongou));
+            LocalMirrorRegistration.UseProvider(
+                options,
+                localMirror.Enabled,
+                connectionPolicy.GetConnectionString(LegacyDataSource.Tongou));
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
@@ -147,7 +162,7 @@ public static class SzaipaDataServiceCollectionExtensions
                     + "this at the production / Windows-connected database.");
             }
 
-            options.UseSqlServer(adminOptions.ConnectionString);
+            LocalMirrorRegistration.UseProvider(options, localMirror.Enabled, adminOptions.ConnectionString);
         });
 
         // Write-capable admin context over a LOCAL writable copy of the Tongou database. Same gating posture
@@ -164,7 +179,7 @@ public static class SzaipaDataServiceCollectionExtensions
                     + "this at the production / Windows-connected database.");
             }
 
-            options.UseSqlServer(tongouAdminOptions.ConnectionString);
+            LocalMirrorRegistration.UseProvider(options, localMirror.Enabled, tongouAdminOptions.ConnectionString);
         });
 
         // qqwry 离线 IP 定位（懒加载），供 Dashboard 访客分布按 IP 现场解析省/市。路径解析见 QqwryIpLocator；
@@ -260,7 +275,7 @@ public static class SzaipaDataServiceCollectionExtensions
     // Read-only-debug fallback: pull the existing least-privilege read-only connection from the same sources
     // the read contexts use, so the admin context can reuse it for local login/inspection (writes still fail
     // at the SQL level). Mirrors the precedence in ApplyConnectionStringResolution.
-    private static string? ResolveReadOnlyConnection(
+    internal static string? ResolveReadOnlyConnection(
         IConfiguration configuration,
         string connectionStringsKey,
         string legacyDataKey,
