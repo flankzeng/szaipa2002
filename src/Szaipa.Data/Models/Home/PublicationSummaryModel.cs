@@ -1,3 +1,5 @@
+using Szaipa.Data.Composition;
+
 namespace Szaipa.Data.Models.Home;
 
 public sealed class PublicationSummaryModel
@@ -43,4 +45,8 @@ public sealed class PublicationSummaryModel
     /// section, and <c>null</c> is dropped from both. Kept nullable to reproduce that exact render gate.
     /// </summary>
     public bool? Status { get; init; }
+
+    /// <summary>按日期自动流转后的展览状态（见 <see cref="PublicationLifecycleCalculator"/>）。</summary>
+    public PublicationLifecycle GetLifecycle(DateTime today) =>
+        PublicationLifecycleCalculator.Compute(Status, StartDate, EndDate, today);
 }

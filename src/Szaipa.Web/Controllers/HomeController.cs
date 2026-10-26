@@ -51,6 +51,10 @@ public class HomeController : Controller
         {
             var newsRepository = HttpContext.RequestServices.GetRequiredService<INewsReadRepository>();
             var snapshot = await newsRepository.GetHomePageSnapshotAsync(cancellationToken);
+
+            // 首页推荐展览（后台勾选）。仓储内部已对旧库缺列降级为空列表，此时 Index 视图回退到原硬编码展览块。
+            var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
+            snapshot.FeaturedExhibitions = await publicationRepository.GetHomeFeaturedAsync(cancellationToken);
             return View("Index", snapshot);
         }
 

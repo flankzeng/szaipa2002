@@ -36,7 +36,10 @@ public sealed class PublicationDetailModel
 
     public string EditRecord { get; init; } = string.Empty;
 
-    /// <summary>Template type: 0 = 普通 (simple gallery), 1 = 重要 (banner + preface skin).</summary>
+    /// <summary>Legacy <c>Status</c> flag (true = 自动按日期, false = 手动已结束, null = 下架); see <see cref="Composition.PublicationLifecycleCalculator"/>.</summary>
+    public bool? Status { get; init; }
+
+    /// <summary>Template type: 0 = 普通 (simple gallery), 1 = 重要 (banner + preface skin), 2 = 专题 (blocks).</summary>
     public int Type { get; init; }
 
     public string Preface { get; init; } = string.Empty;
@@ -45,4 +48,13 @@ public sealed class PublicationDetailModel
 
     /// <summary>Optional 参展作品目录 rows (重要 skin only), ordered by SortOrder. Empty when none configured.</summary>
     public IReadOnlyList<ExhibitionWorkModel> Works { get; init; } = Array.Empty<ExhibitionWorkModel>();
+
+    /// <summary>专题页主题色（#RRGGBB）；空 = 站点默认红。仅 Type == 2 读取。</summary>
+    public string ThemeColor { get; init; } = string.Empty;
+
+    /// <summary>专题页头部横幅图 URL；空 = 回退文件夹 10000.jpg。仅 Type == 2 读取。</summary>
+    public string BannerPath { get; init; } = string.Empty;
+
+    /// <summary>专题页积木（Type == 2），按 SortOrder 排好。表不存在 / 非专题时为空。</summary>
+    public IReadOnlyList<PublicationBlockModel> Blocks { get; init; } = Array.Empty<PublicationBlockModel>();
 }

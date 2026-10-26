@@ -1,0 +1,467 @@
+/* ==========================================================================
+   exhibition-topic.css — 专题页（Publication.Type == 2）
+   加载方：Views/Home/Publication.cshtml（仅专题时，位于 public-pages.css 之后）
+   结构来源：Views/Shared/_ExhibitionTopic.cshtml
+   依赖：public-core.css（地基）/ public-layout.css / public-pages.css §5（作品目录 .exh-works*）
+         /Content/css/publication.css（现场图库 .imgCon_Pub* / .mySwiper*，与「重要展览」共用）
+
+   设计语言沿用「重要展览」皮肤（public-pages.css §5）与三个手写专题页
+   （chunyu3 / tonggou2 / tonggou2024）：通栏深色头图 + 宋体大标题 + 留白很大的序言正文。
+   与重要展览的区别：
+     · 强调色不再写死站点红，而是读 --topic-accent（后台「主题色」，由 _ExhibitionTopic 内联注入）；
+     · 页面由后台「积木」按顺序拼装，每种积木对应下面一节，互相独立，可任意增删换序。
+
+   设计师改色 / 改间距时：只需要动本文件顶部的变量和各节内的数值，不用碰视图。
+   ========================================================================== */
+
+.topic {
+    /* 主题色默认值；真实值由视图内联 style="--topic-accent: #xxxxxx" 覆盖。 */
+    --topic-accent: #bf272d;
+    --topic-text: #333;
+    --topic-muted: #666;
+    --topic-serif: 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif;
+    --topic-sans: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+    --topic-measure: 860px;     /* 正文最大宽度（序言 / 富文本 / 引言） */
+    --topic-gutter: 6vw;        /* 左右留白 */
+
+    /* 图库区使用 float 栅格（.col-*），其后的积木必须清除浮动，避免上下重叠。 */
+    overflow-x: clip;
+}
+
+.topic > section,
+.topic > nav {
+    clear: both;
+}
+
+/* --------------------------------------------------------------------------
+   §1 头图 Hero（始终在最上方，内容来自展览本身的标题 / 日期 / 地点）
+   -------------------------------------------------------------------------- */
+
+.topic-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;      /* 图片加载前 / 缺图时的底色 */
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.topic-hero__picture,
+.topic-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.topic-hero__img {
+    object-fit: cover;
+    object-position: center;
+}
+
+/* 压暗遮罩，保证白字在任何头图上都可读。 */
+.topic-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, .35), rgba(0, 0, 0, .6));
+}
+
+.topic-hero__inner {
+    position: relative;
+    z-index: 1;
+    padding: 0 var(--topic-gutter);
+}
+
+.topic-hero__title {
+    font-family: var(--topic-serif);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: .12em;
+    line-height: 1.3;
+}
+
+/* 标题下的主题色短线：专题的「签名」。头图很暗，所以线条之外再加一层白色微光保证可见。 */
+.topic-hero__title::after {
+    content: '';
+    display: block;
+    width: 3.5rem;
+    height: 3px;
+    margin: 1.2rem auto 0;
+    background: var(--topic-accent);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .35);
+}
+
+.topic-hero__sub {
+    margin-top: 1.2rem;
+    font-family: var(--topic-sans);
+    font-weight: 300;
+    font-size: clamp(.85rem, 1.4vw, 1.1rem);
+    letter-spacing: .18em;
+    opacity: .92;
+}
+
+.topic-hero__meta {
+    margin-top: .8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .2rem 1.6rem;
+    font-family: var(--topic-sans);
+    font-size: .9rem;
+    letter-spacing: .1em;
+    opacity: .85;
+}
+
+.topic-hero__chip {
+    display: inline-block;
+    margin-top: 1.2rem;
+    padding: .25rem 1rem;
+    border: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 999px;
+    font-family: var(--topic-sans);
+    font-size: .8rem;
+    letter-spacing: .2em;
+}
+
+/* --------------------------------------------------------------------------
+   §2 通栏横幅积木 banner（章节分隔：一张图 + 可选标题）
+   -------------------------------------------------------------------------- */
+
+.topic-banner {
+    position: relative;
+    height: 38vh;
+    min-height: 220px;
+    margin: 7vh 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* 没有图片时用主题色做纯色横幅。 */
+.topic-banner--plain {
+    background: var(--topic-accent);
+}
+
+.topic-banner__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.topic-banner:not(.topic-banner--plain)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .38);
+}
+
+.topic-banner__inner {
+    position: relative;
+    z-index: 1;
+    padding: 0 var(--topic-gutter);
+}
+
+.topic-banner__title {
+    font-family: var(--topic-serif);
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    letter-spacing: .2em;
+}
+
+.topic-banner__sub {
+    margin-top: .8rem;
+    font-family: var(--topic-sans);
+    font-weight: 300;
+    letter-spacing: .16em;
+    opacity: .9;
+}
+
+/* --------------------------------------------------------------------------
+   §3 序言积木 preface（标题 + 分段正文 + 右对齐署名）
+   -------------------------------------------------------------------------- */
+
+.topic-preface {
+    max-width: var(--topic-measure);
+    margin: 9vh auto 7vh;
+    padding: 0 var(--topic-gutter);
+}
+
+.topic-preface__h {
+    margin-bottom: 4vh;
+    text-align: center;
+    font-family: var(--topic-serif);
+    font-size: 2rem;
+    letter-spacing: .4em;
+    color: var(--topic-accent);
+}
+
+.topic-preface p {
+    margin-bottom: 1.2em;
+    text-indent: 2em;
+    text-align: justify;
+    font-size: 1.05rem;
+    line-height: 2.1;
+    color: var(--topic-text);
+}
+
+.topic-preface__sign {
+    margin-top: 4vh;
+    text-align: right;
+    font-size: .98rem;
+    line-height: 1.9;
+    color: var(--topic-muted);
+    white-space: pre-line;
+}
+
+/* --------------------------------------------------------------------------
+   §4 通用小节标题（富文本 / 作品目录 / 图库共用）
+   -------------------------------------------------------------------------- */
+
+.topic-section-h {
+    margin: 7vh 0 3vh;
+    text-align: center;
+    font-family: var(--topic-serif);
+    font-size: 1.6rem;
+    letter-spacing: .25em;
+    color: var(--topic-accent);
+}
+
+.topic-section-h__en {
+    font-family: var(--topic-sans);
+    font-weight: 300;
+}
+
+/* --------------------------------------------------------------------------
+   §5 富文本积木 richtext（TipTap 输出，已在服务端白名单清洗）
+   -------------------------------------------------------------------------- */
+
+.topic-richtext {
+    max-width: var(--topic-measure);
+    margin: 5vh auto;
+    padding: 0 var(--topic-gutter);
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--topic-text);
+}
+
+.topic-richtext__body > :first-child {
+    margin-top: 0;
+}
+
+.topic-richtext__body p {
+    margin: 0 0 1.2em;
+    text-align: justify;
+}
+
+.topic-richtext__body h2,
+.topic-richtext__body h3,
+.topic-richtext__body h4 {
+    margin: 2.2em 0 .8em;
+    font-family: var(--topic-serif);
+    line-height: 1.5;
+    color: var(--topic-accent);
+}
+
+.topic-richtext__body h2 { font-size: 1.5rem; letter-spacing: .15em; }
+.topic-richtext__body h3 { font-size: 1.25rem; letter-spacing: .1em; }
+.topic-richtext__body h4 { font-size: 1.1rem; }
+
+.topic-richtext__body ul,
+.topic-richtext__body ol {
+    margin: 0 0 1.2em;
+    padding-left: 1.6em;
+}
+
+.topic-richtext__body ul { list-style: disc; }
+.topic-richtext__body ol { list-style: decimal; }
+
+.topic-richtext__body blockquote {
+    margin: 1.6em 0;
+    padding: .2em 0 .2em 1.2em;
+    border-left: 3px solid var(--topic-accent);
+    color: var(--topic-muted);
+}
+
+.topic-richtext__body a {
+    color: var(--topic-accent);
+    text-decoration: underline !important;  /* 全站 a 默认 none !important（publication.css），正文链接需要可辨识 */
+}
+
+.topic-richtext__body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.6em auto;
+}
+
+.topic-richtext__body hr {
+    margin: 2.4em auto;
+    width: 4rem;
+    border: 0;
+    border-top: 2px solid var(--topic-accent);
+}
+
+/* --------------------------------------------------------------------------
+   §6 作品目录积木 works（卡片栅格沿用 public-pages.css 的 .exh-works*，仅改配色）
+   -------------------------------------------------------------------------- */
+
+.topic-works .exh-works__cat {
+    color: var(--topic-accent);
+}
+
+/* --------------------------------------------------------------------------
+   §7 图库积木 gallery（栅格 / Swiper 规则全部来自 publication.css，这里只管标题与清除浮动）
+   -------------------------------------------------------------------------- */
+
+.topic-gallery::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+/* --------------------------------------------------------------------------
+   §8 视频积木 video（本地 mp4 / 白名单外链播放器，16:9 自适应）
+   -------------------------------------------------------------------------- */
+
+.topic-video {
+    max-width: 1100px;
+    margin: 6vh auto;
+    padding: 0 var(--topic-gutter);
+}
+
+.topic-video__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.topic-video__frame iframe,
+.topic-video__frame video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: contain;
+}
+
+.topic-video__caption {
+    margin-top: .9rem;
+    text-align: center;
+    font-family: var(--topic-sans);
+    font-size: .9rem;
+    letter-spacing: .08em;
+    color: var(--topic-muted);
+}
+
+/* --------------------------------------------------------------------------
+   §9 引言积木 quote
+   -------------------------------------------------------------------------- */
+
+.topic-quote {
+    max-width: var(--topic-measure);
+    margin: 8vh auto;
+    padding: 0 var(--topic-gutter);
+    text-align: center;
+}
+
+.topic-quote blockquote {
+    position: relative;
+    margin: 0;
+    padding-top: 3.2rem;
+}
+
+/* 主题色的大引号做装饰，位于文字上方居中。 */
+.topic-quote blockquote::before {
+    content: '\201C';
+    position: absolute;
+    top: -.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--topic-serif);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--topic-accent);
+}
+
+.topic-quote p {
+    font-family: var(--topic-serif);
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    line-height: 1.9;
+    letter-spacing: .08em;
+    color: #222;
+}
+
+.topic-quote footer {
+    margin-top: 1.2rem;
+    font-family: var(--topic-sans);
+    font-size: .95rem;
+    letter-spacing: .15em;
+    color: var(--topic-muted);
+}
+
+.topic-quote footer::before {
+    content: '— ';
+}
+
+/* --------------------------------------------------------------------------
+   §10 返回链接
+   -------------------------------------------------------------------------- */
+
+.topic-back {
+    margin: 6vh 0 4vh;
+    padding: 0 var(--topic-gutter);
+    text-align: center;
+    font-family: var(--topic-sans);
+    font-size: 1rem;
+    letter-spacing: .1em;
+}
+
+.topic-back a {
+    color: var(--topic-muted);
+}
+
+/* --------------------------------------------------------------------------
+   §11 窄屏（与 public-pages.css §5 的 991px 断点保持一致）
+   -------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 991px) {
+    .topic-hero {
+        height: 52vh;
+        min-height: 300px;
+    }
+
+    .topic-banner {
+        height: 30vh;
+        min-height: 180px;
+        margin-top: 5vh;
+    }
+
+    .topic-preface {
+        margin: 6vh auto 4vh;
+    }
+
+    .topic-preface__h {
+        font-size: 1.6rem;
+    }
+
+    .topic-section-h {
+        font-size: 1.35rem;
+        letter-spacing: .18em;
+    }
+
+    .topic-richtext {
+        font-size: 1rem;
+        line-height: 1.95;
+    }
+}

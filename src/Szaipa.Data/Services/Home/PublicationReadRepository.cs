@@ -89,7 +89,7 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         }
 
         IReadOnlyList<ExhibitionWorkModel> works = Array.Empty<ExhibitionWorkModel>();
-        if (type == 1)
+        if (type == PublicationTypes.Important || type == PublicationTypes.Topic)
         {
             try
             {
@@ -106,6 +106,15 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
                 // ExhibitionWork is an additive modern feature. Older read-only databases do not have the table yet;
                 // the existing gallery must remain available with an empty optional works catalogue.
             }
+        }
+
+        var themeColor = string.Empty;
+        var bannerPath = string.Empty;
+        IReadOnlyList<PublicationBlockModel> blocks = Array.Empty<PublicationBlockModel>();
+        if (type == PublicationTypes.Topic)
+        {
+            (themeColor, bannerPath) = await LoadTopicThemeAsync(id, cancellationToken);
+            blocks = await LoadTopicBlocksAsync(id, cancellationToken);
         }
 
         detail = new PublicationDetailModel
@@ -125,10 +134,14 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
             Host = detail.Host,
             CoHost = detail.CoHost,
             EditRecord = detail.EditRecord,
+            Status = detail.Status,
             Type = type,
             Preface = preface,
             Signature = signature,
-            Works = works
+            Works = works,
+            ThemeColor = themeColor,
+            BannerPath = bannerPath,
+            Blocks = blocks
         };
 
         IQueryable<Publication> relatedQuery = _context.Publication
@@ -147,13 +160,121 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         return LegacyReadModelComposer.CreatePublicationDetailSnapshot(detail, related);
     }
 
-    private static bool IsMissingExhibitionWorkTable(DbException exception)
+    public async Task<IReadOnlyList<PublicationFeaturedModel>> GetHomeFeaturedAsync(
+        CancellationToken cancellationToken = default)
     {
-        var message = exception.Message;
-        return message.Contains("ExhibitionWork", StringComparison.OrdinalIgnoreCase)
-            && (message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)
-                || message.Contains("no such table", StringComparison.OrdinalIgnoreCase));
+        try
+        {
+            // IsFeatured/FeaturedSort/FeaturedImages are additive columns (2026-10-26 script). They are read in
+            // their own query so an un-migrated database only loses this feature, never the home page.
+            // Offline (Status == null) exhibitions are never shown, even if still ticked as featured.
+            var rows = await _context.Publication
+                .AsNoTracking()
+                .Where(publication => publication.IsFeatured && publication.Status != null)
+                .OrderBy(publication => publication.FeaturedSort)
+                .ThenByDescending(publication => publication.StartDate)
+                .ThenByDescending(publication => publication.Id)
+                .Select(publication => new
+                {
+                    Summary = new PublicationSummaryModel
+                    {
+                        Id = publication.Id,
+                        TitleCn = publication.TitleCN ?? string.Empty,
+                        TitleEn = publication.TitleEN ?? string.Empty,
+                        StartDate = publication.StartDate,
+                        EndDate = publication.EndDate,
+                        CoverPath = publication.CoverPath ?? string.Empty,
+                        LogoPath = publication.LogoPath ?? string.Empty,
+                        Location = publication.Location ?? string.Empty,
+                        FolderName = publication.FolderName ?? string.Empty,
+                        Organizer = publication.zhuban ?? string.Empty,
+                        Host = publication.chengban ?? string.Empty,
+                        CoHost = publication.xieban ?? string.Empty,
+                        Status = publication.Status
+                    },
+                    publication.FeaturedSort,
+                    publication.FeaturedImages
+                })
+                .ToListAsync(cancellationToken);
+
+            return rows
+                .Select(row => new PublicationFeaturedModel
+                {
+                    Publication = row.Summary,
+                    FeaturedSort = row.FeaturedSort,
+                    ImageNames = SplitImageNames(row.FeaturedImages)
+                })
+                .ToList();
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            return Array.Empty<PublicationFeaturedModel>();
+        }
     }
+
+    /// <summary>Splits the comma/newline separated <c>FeaturedImages</c> value into bare, safe file names.</summary>
+    internal static IReadOnlyList<string> SplitImageNames(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return Array.Empty<string>();
+        }
+
+        return value
+            .Split(new[] { ',', '，', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            // The names are appended to /Content/images/{FolderName}/ — refuse anything that could climb out.
+            .Where(name => name.Length > 0 && !name.Contains('/') && !name.Contains('\\') && !name.Contains(".."))
+            .ToArray();
+    }
+
+    private async Task<(string ThemeColor, string BannerPath)> LoadTopicThemeAsync(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var theme = await _context.Publication
+                .AsNoTracking()
+                .Where(publication => publication.Id == id)
+                .Select(publication => new { publication.ThemeColor, publication.BannerPath })
+                .FirstOrDefaultAsync(cancellationToken);
+            return (theme?.ThemeColor ?? string.Empty, theme?.BannerPath ?? string.Empty);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // Theme columns not migrated yet: the topic still renders with the default accent colour.
+            return (string.Empty, string.Empty);
+        }
+    }
+
+    private async Task<IReadOnlyList<PublicationBlockModel>> LoadTopicBlocksAsync(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.PublicationBlock
+                .AsNoTracking()
+                .Where(block => block.PublicationId == id)
+                .OrderBy(block => block.SortOrder)
+                .ThenBy(block => block.Id)
+                .Select(block => new PublicationBlockModel
+                {
+                    Id = block.Id,
+                    BlockType = block.BlockType,
+                    Content = block.Content
+                })
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "PublicationBlock"))
+        {
+            // PublicationBlock is additive. Without it a 专题 simply has no blocks yet (page shows its header only).
+            return Array.Empty<PublicationBlockModel>();
+        }
+    }
+
+    private static bool IsMissingExhibitionWorkTable(DbException exception) =>
+        SchemaCompatibility.IsMissingTable(exception, "ExhibitionWork");
 
     private static bool IsMissingOptionalTemplateColumn(DbException exception)
     {

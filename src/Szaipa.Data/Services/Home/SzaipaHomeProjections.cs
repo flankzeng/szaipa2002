@@ -77,6 +77,7 @@ internal static class SzaipaHomeProjections
             Host = publication.chengban ?? string.Empty,
             CoHost = publication.xieban ?? string.Empty,
             EditRecord = publication.EditRecord ?? string.Empty,
+            Status = publication.Status,
             Type = 0,
             Preface = string.Empty,
             Signature = string.Empty

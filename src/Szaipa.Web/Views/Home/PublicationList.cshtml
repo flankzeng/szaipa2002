@@ -1,5 +1,6 @@
 @inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model IReadOnlyList<Szaipa.Data.Models.Home.PublicationSummaryModel>
+@using Szaipa.Data.Composition
 @{
     ViewData["Title"] = "展会动态";
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
@@ -15,51 +16,85 @@
         <p class="publication-list-heading__english">EXHIBITIONS</p>
     </header>
 
-    @if (Model.Count == 0)
+    @{
+        // 状态由 PublicationLifecycleCalculator 按日期自动流转（Status: true=自动 / false=手动已结束 / null=下架）。
+        // 下架的展览不出现在列表；展览中 → 即将开幕 → 已结束 依次分组。只有一组时不显示分组标题，版式与改动前一致。
+        var today = DateTime.Today;
+        var visible = Model
+            .Select(exhibition => (Exhibition: exhibition, Lifecycle: exhibition.GetLifecycle(today)))
+            .Where(item => item.Lifecycle != PublicationLifecycle.Offline)
+            .ToList();
+        var groups = new[] { PublicationLifecycle.Ongoing, PublicationLifecycle.Upcoming, PublicationLifecycle.Ended }
+            .Select(lifecycle => (Lifecycle: lifecycle, Items: visible.Where(item => item.Lifecycle == lifecycle).ToList()))
+            .Where(group => group.Items.Count > 0)
+            .ToList();
+        var showGroupHeadings = groups.Count > 1;
+        var groupEnglish = new Dictionary<PublicationLifecycle, string>
+        {
+            [PublicationLifecycle.Ongoing] = "NOW ON",
+            [PublicationLifecycle.Upcoming] = "COMING SOON",
+            [PublicationLifecycle.Ended] = "PAST"
+        };
+    }
+
+    @if (groups.Count == 0)
     {
         <p class="publication-list-empty">暂时没有可展示的展会。</p>
     }
     else
     {
-        <section class="publication-list-grid" aria-label="展会列表">
-            @foreach (var exhibition in Model)
+        @foreach (var group in groups)
+        {
+            var groupLabel = PublicationLifecycleCalculator.Label(group.Lifecycle);
+            @if (showGroupHeadings)
             {
-                var ended = exhibition.Status == false || exhibition.EndDate is { } endDate && endDate.Date < DateTime.Today;
-                var dateText = exhibition.StartDate?.ToString("yyyy.M.d") ?? string.Empty;
-                if (exhibition.EndDate is { } end)
-                {
-                    dateText += $" – {end:yyyy.M.d}";
-                }
-
-                <a class="publication-card @(ended ? "publication-card--ended" : string.Empty)"
-                   href="/Home/Publication/@exhibition.Id">
-                    <div class="publication-card__image">
-                        <img src="@ImagePreviewResolver.Resolve($"/Content/images/{exhibition.FolderName}/{exhibition.CoverPath}")"
-                             alt="@exhibition.TitleCn"
-                             loading="lazy"
-                             decoding="async" />
-                        @if (ended)
-                        {
-                            <span>已结束</span>
-                        }
-                    </div>
-                    <div class="publication-card__info">
-                        <strong>@exhibition.TitleCn</strong>
-                        @if (!string.IsNullOrWhiteSpace(exhibition.TitleEn))
-                        {
-                            <small>@exhibition.TitleEn</small>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(exhibition.Location))
-                        {
-                            <p>地点：@exhibition.Location</p>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(dateText))
-                        {
-                            <p>时间：@dateText</p>
-                        }
-                    </div>
-                </a>
+                <h2 class="publication-list-group-title JhengBold">@groupLabel <span>|</span> <small>@groupEnglish[group.Lifecycle]</small></h2>
             }
-        </section>
+
+            <section class="publication-list-grid" aria-label="@(showGroupHeadings ? groupLabel : "展会列表")">
+                @foreach (var (exhibition, lifecycle) in group.Items)
+                {
+                    var ended = lifecycle == PublicationLifecycle.Ended;
+                    var dateText = exhibition.StartDate?.ToString("yyyy.M.d") ?? string.Empty;
+                    if (exhibition.EndDate is { } end)
+                    {
+                        dateText += $" – {end:yyyy.M.d}";
+                    }
+
+                    <a class="publication-card @(ended ? "publication-card--ended" : string.Empty)"
+                       href="/Home/Publication/@exhibition.Id">
+                        <div class="publication-card__image">
+                            <img src="@ImagePreviewResolver.Resolve($"/Content/images/{exhibition.FolderName}/{exhibition.CoverPath}")"
+                                 alt="@exhibition.TitleCn"
+                                 loading="lazy"
+                                 decoding="async" />
+                            @if (ended)
+                            {
+                                <span>已结束</span>
+                            }
+                            else if (showGroupHeadings)
+                            {
+                                <em class="publication-card__tag">@PublicationLifecycleCalculator.Label(lifecycle)</em>
+                            }
+                        </div>
+                        <div class="publication-card__info">
+                            <strong>@exhibition.TitleCn</strong>
+                            @if (!string.IsNullOrWhiteSpace(exhibition.TitleEn))
+                            {
+                                <small>@exhibition.TitleEn</small>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(exhibition.Location))
+                            {
+                                <p>地点：@exhibition.Location</p>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(dateText))
+                            {
+                                <p>时间：@dateText</p>
+                            }
+                        </div>
+                    </a>
+                }
+            </section>
+        }
     }
 </main>

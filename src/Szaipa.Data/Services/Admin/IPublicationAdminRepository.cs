@@ -1,3 +1,4 @@
+using Szaipa.Data.Composition;
 using Szaipa.Data.Contexts.Szaipa;
 
 namespace Szaipa.Data.Services.Admin;
@@ -6,6 +7,20 @@ namespace Szaipa.Data.Services.Admin;
 public interface IPublicationAdminRepository
 {
     Task<PagedResult<Publication>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Same as above but optionally restricted to one <see cref="PublicationLifecycle"/> (evaluated against
+    /// <paramref name="today"/> in SQL via <see cref="PublicationLifecycleCalculator.Matches"/>).
+    /// </summary>
+    Task<PagedResult<Publication>> GetPagedAsync(
+        int page,
+        int pageSize,
+        PublicationLifecycle? lifecycle,
+        DateTime today,
+        CancellationToken cancellationToken);
+
+    /// <summary>Number of exhibitions in each lifecycle state, for the admin filter tabs.</summary>
+    Task<IReadOnlyDictionary<PublicationLifecycle, int>> GetLifecycleCountsAsync(DateTime today, CancellationToken cancellationToken);
 
     Task<Publication?> GetByIdAsync(int id, CancellationToken cancellationToken);
 
