@@ -55,4 +55,10 @@
     <PackageReference Include="SkiaSharp" Version="4.153.1" />
   </ItemGroup>
 
+  <!-- T8：SkiaSharp 原生库自带约 96MB 调试符号 libSkiaSharp.pdb，线上无用，发布时排除（发布包 153MB → 约 57MB）。 -->
+  <Target Name="ExcludeSkiaNativeSymbolsFromPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'libSkiaSharp.pdb'" />
+    </ItemGroup>
+  </Target>
 </Project>
