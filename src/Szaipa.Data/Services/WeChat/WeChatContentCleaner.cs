@@ -66,7 +66,8 @@ public sealed class WeChatContentCleaner
         // 阅读原文 / 轻触阅读原文
         @"阅读原文",
         // 长按/扫描/识别二维码
-        @"(长按|扫描|扫码|扫一扫|识别|微信扫).{0,10}(二维码|二维吗|图中|下方|上方|关注|添加)",
+        @"(长按|扫描|扫码|扫一扫|识别|微信扫).{0,8}(二维码|二维吗)",
+        @"^[\s\W]*(请)?(长按|扫描|扫码|扫一扫|识别|微信扫)[^，。,.]{0,10}(关注|添加|订阅|加入)",
         @"二维码.{0,12}(关注|识别|扫描|添加|订阅|加入)",
         @"^[\s\W]*(识别|扫描|扫码|长按)[\s\W]*$",
         // 点击蓝字关注 / 点击名片关注
@@ -376,7 +377,7 @@ public sealed class WeChatContentCleaner
     /// 只保留不会破坏站点排版的内联样式：对齐、粗/斜、下划线/删除线。
     /// 字号、字体、颜色、背景、宽高、边距、行高、字距等一律剥离，交给 <c>.article-body</c> 统一排版。
     /// </summary>
-    internal static string FilterStyle(string? style)
+    public static string FilterStyle(string? style)
     {
         if (string.IsNullOrWhiteSpace(style))
         {

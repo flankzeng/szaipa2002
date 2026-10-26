@@ -162,14 +162,14 @@ public sealed class WeChatImageLocalizer
     }
 
     /// <summary>URL 路径部分（不含查询串）的 SHA256 前 32 个十六进制字符。</summary>
-    internal static string HashOf(Uri uri)
+    public static string HashOf(Uri uri)
     {
         var path = uri.Host.ToLowerInvariant() + uri.AbsolutePath;
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(path)))[..32].ToLowerInvariant();
     }
 
     /// <summary>按文件头判断图片类型，返回带点的小写扩展名；不是图片返回 null。</summary>
-    internal static string? SniffExtension(ReadOnlySpan<byte> data)
+    public static string? SniffExtension(ReadOnlySpan<byte> data)
     {
         if (data.Length < 12)
         {

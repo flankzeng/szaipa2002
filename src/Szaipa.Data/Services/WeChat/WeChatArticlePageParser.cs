@@ -74,10 +74,11 @@ public static class WeChatArticlePageParser
             meta.GetValueOrDefault("author"),
             ReadJsString(html, "author"));
         var account = FirstNonEmpty(ReadJsString(html, "nickname"), ReadElementText(html, "js_name"));
+        // 页面 meta 里的摘要有时带字面量的 JS 转义（如 \x0a），统一反转义。
         var digest = FirstNonEmpty(
             ReadJsString(html, "msg_desc"),
-            meta.GetValueOrDefault("og:description"),
-            meta.GetValueOrDefault("description"));
+            UnescapeJs(meta.GetValueOrDefault("og:description") ?? string.Empty),
+            UnescapeJs(meta.GetValueOrDefault("description") ?? string.Empty));
         var cover = FirstNonEmpty(meta.GetValueOrDefault("og:image"), ReadJsString(html, "msg_cdn_url"));
 
         return new WeChatArticle
@@ -98,7 +99,7 @@ public static class WeChatArticlePageParser
 
     /// <summary>北京时间（UTC+8），与库里其余 News.Date 的"本地时间"口径一致，且不依赖服务器时区。</summary>
     public static DateTime FromUnixSecondsToBeijing(long seconds) =>
-        DateTimeOffset.FromUnixTimeSeconds(seconds).UtcDateTime.AddHours(8);
+        DateTime.SpecifyKind(DateTimeOffset.FromUnixTimeSeconds(seconds).UtcDateTime.AddHours(8), DateTimeKind.Unspecified);
 
     private static DateTime? ReadPublishedAt(string html)
     {
@@ -182,7 +183,7 @@ public static class WeChatArticlePageParser
         return null;
     }
 
-    internal static string UnescapeJs(string value)
+    public static string UnescapeJs(string value)
     {
         if (value.IndexOf('\\') < 0)
         {
