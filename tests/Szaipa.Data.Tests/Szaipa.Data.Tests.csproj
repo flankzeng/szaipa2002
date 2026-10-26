@@ -23,14 +23,4 @@
     <ProjectReference Include="../../src/Szaipa.Data/Szaipa.Data.csproj" />
   </ItemGroup>
 
-  <!--
-    Test-only suppression. EF Core 10's Microsoft.Data.Sqlite pulls SQLitePCLRaw.lib.e_sqlite3 2.1.11,
-    which carries advisory GHSA-2m69-gcr7-jv3q. The fix is a SQLitePCLRaw 3.x bundle that Microsoft.Data.Sqlite
-    10.0.9 does not target, so we do not force it. This native SQLite bundle is used ONLY by these unit tests
-    and is never referenced by Szaipa.Web or Szaipa.Data (production uses SQL Server), so it does not ship.
-  -->
-  <ItemGroup>
-    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
-  </ItemGroup>
-
 </Project>
