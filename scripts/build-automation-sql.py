@@ -12,6 +12,7 @@ SOURCES = (
     "2026-10-26-org-and-home-blocks.sql",
     "2026-10-26-exhibition-automation.sql",
     "2026-10-26-artist-site.sql",
+    "2026-10-26-artist-books.sql",
 )
 OUTPUT = ROOT / "docs/sql/2026-10-26-automation-deploy.sql"
 
@@ -59,7 +60,7 @@ def main():
     if args.check:
         if not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != rendered:
             parser.exit(1, "SQL 汇总过期，请运行 python3 scripts/build-automation-sql.py\n")
-        print("SQL 汇总与六份来源一致")
+        print("SQL 汇总与七份来源一致")
     else:
         OUTPUT.write_text(rendered, encoding="utf-8")
         print(OUTPUT.relative_to(ROOT))

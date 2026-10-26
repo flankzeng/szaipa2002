@@ -53,6 +53,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<Partner> Partner => Set<Partner>();
 
+    public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
+
     // Admin-only entities (not part of the public read surface).
     public DbSet<Staff> Staff => Set<Staff>();
 
@@ -99,5 +101,8 @@ public sealed class SzaipaAdminContext : DbContext
 
         // Additive homepage-block tables (OrgMember / SaleWork / Partner), shared mapping with the read context.
         HomeBlocksModelConfiguration.Configure(modelBuilder);
+
+        // 艺术家出版著作，与读上下文共用同一份映射。
+        ArtistBookModelConfiguration.Configure(modelBuilder);
     }
 }

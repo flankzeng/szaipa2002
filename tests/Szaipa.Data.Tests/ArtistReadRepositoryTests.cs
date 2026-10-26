@@ -66,9 +66,8 @@ public sealed class ArtistReadRepositoryTests
         Assert.Single(profile.LatestNews);
         Assert.Equal(10, profile.LatestNews[0].Id);
 
-        // The "publication" panel reuses ArtNews (legacy placeholder).
-        Assert.Single(profile.LatestPublications);
-        Assert.Equal(10, profile.LatestPublications[0].Id);
+        // 「出版著作」侧栏读 ArtistBook，不再复用 ArtNews（旧站占位 bug）；此处没有书 => 空。
+        Assert.Empty(profile.LatestPublications);
 
         // Fav subtitle <- Location; Auction subtitle <- Price.
         Assert.Single(profile.LatestFavorites);

@@ -15,6 +15,12 @@ public sealed class ArtistSiteOverview
 
     public int AuctionCount { get; init; }
 
+    /// <summary>出版著作（<c>ArtistBook</c>）数量；表不存在时为 0。</summary>
+    public int BookCount { get; init; }
+
+    /// <summary><c>ArtistBook</c> 表是否存在（不存在则出版著作模块需先执行 SQL）。</summary>
+    public bool BooksSupported { get; init; } = true;
+
     /// <summary>手工维护的 Exhibition 行（旧「展览」子模块）数量。</summary>
     public int ExhibitionRowCount { get; init; }
 
