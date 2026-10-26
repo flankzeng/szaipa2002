@@ -2,7 +2,52 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-26，Codex 已集成，按剩余约 5% 额度停止）
+## 最新交接（2026-10-26 第二轮，Claude 集成验收后交付候选）
+
+### 当前基线
+- 分支 `codex-refactor-dotnet-modernization`。**发布包对应源码 `1f51e81da3f30113a63be9178c776701ef144e42`**；之后的提交只改文档（看板/交接）。
+- build 0 error；测试 **648 全绿**（Data 376 + Web 272）；`scripts/build-automation-sql.py --check` 七份来源一致；发布审计脚本测试 OK。
+- 本轮完整记录：`docs/updates/2026-10-26-claude-acceptance.md`；上一轮（Codex）：`docs/updates/2026-10-26-automation-integration.md`；上线手册 `docs/automation-rollout.md`；公众号管理员指引 `docs/wechat-setup-guide.md`。
+
+### 本轮修复（均已实测）
+1. 生产 SQL Server 缺 `WeChatSyncRecord` 时**首页 500**（中文错误信息漏判）→ 统一按错误号 208（`f292f05`，附反射构造中文 SqlException 的回归测试）。
+2. 后台组织架构/在售作品/合作伙伴缺表 500 → `_SchemaMissing` 提示页（`f292f05`）。
+3. 执行种子 SQL 后首页轮播少 4 张 → 只有勾选「接管轮播」的推荐才接管（`f292f05`）。
+4. 专题富文本积木加载为空、保存/重排清空正文（`abac36d`）+ 积木编辑器易用性。
+5. 公众号真实长链接导入失败（误删 `chksm` 被跳人机验证）（`2eb196f`）。
+6. 出版著作无数据源 → 新 `ArtistBook` 模块（`98b7c44`，SQL 已并入汇总）。
+7. 后台菜单分组、首页推荐表单图片上传（`b3e898d`）。
+
+### 验收证据（本机 `artifacts/verification/claude-2026-10-26/`，gitignored）
+- 生产只读实例（真实 SQL Server，新表全不存在）爬取 239 页、灌入 T3+T2 种子的隔离镜像 240 页：零 500。
+- 首页 6 个区块 + 关于我们：回退路径 vs 种子数据路径逐字节一致；轮播接管三态正确。
+- 16 个公开路由 × 390/1440 无横向溢出；专题积木 GUI 闭环；2 篇真实群发文章导入并与旧手录版版式一致。
+
+### 交付包（本机，未部署）
+- `artifacts/szaipa-automation-1f51e81-win-x64.zip`：**27,117,885 B**，SHA-256 `c22f9e1857ff3a253376661b26e907a49e22ee047c950504c81e2ab97ec0b90e`（旁有 `.sha256`）。
+- 目录 `artifacts/publish-win-x64-1f51e81/`，清单 `artifacts/publish-win-x64-1f51e81.manifest.json`：217 文件、42,982,704 B，revision 已记录；审计通过（无凭据/Content/App_Data/镜像库）。
+- win-x64 包在 Apple Silicon 上不能直接运行（架构不同，预期）；已用同源码的 portable 发布冒烟：首页/新闻/关于/展会列表/后台登录 200，后台未登录 302。
+- SQL：`docs/sql/2026-10-26-automation-deploy.sql`（七份来源，SQLCMD 模式）与 `-automation-rollback.sql`。**未在真实 SQL Server 执行**，由用户执行。旧候选包 `szaipa-automation-128a585-*` 作废。
+
+### 仍待用户 / 下一位 agent
+1. 用户按 `docs/wechat-setup-guide.md` 配置 AppID/AppSecret/IP 白名单 → 运行 `wechat-probe` → 按结果开关来源、`WeChat__Enabled`；用链接导入补齐群发历史；上线时设 `WeChat__LegacyNewsMaxId`。
+2. 用户在生产执行 deploy SQL、按手册部署 Windows/IIS（agent 不碰服务器）。代码已能在 SQL 之前部署而不 500，但仍建议先 SQL。
+3. 可选优化：「会员风采」页无后台排序/隐藏；`_SchemaMissing` 文案「前台照常显示原有内容」对出版著作模块略不贴切；后台表单顶部空校验条（Exhibition 等表单既有现象）。
+
+### 本机续测
+- 主镜像 `.local-db/`：保留样本 Artist 1053、Works 1143/1144、Publication 2（专题）、News 1126/1127（真实公众号导入）。重跑 mirror-sync 会丢失。
+- 上传安全副本：`/var/folders/jr/yvdkbjjd7czcsljyhxtvf96r0000gn/T/szaipa-epic-assets-w0anexd9/Content`（勿写 web24.05/Content）。
+- 启动：`LocalMirror__Enabled=true LegacyAssets__ContentRoot=<上述路径> ~/.dotnet/dotnet run --project src/Szaipa.Web --urls http://127.0.0.1:5070`，后台 debug/debug。
+- 种子对照工具（可复跑）：`artifacts/verification/claude-2026-10-26/{seed2sqlite.py,cmp.py,crawl.py}`。
+
+### 可粘贴给下一位 agent（Claude Code / Codex 通用）
+```text
+接手 szaipa2002「后台自动化」Epic 收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接。T0–T5 代码与验收已完成，648 测试绿，交付包 1f51e81 见 HANDOFF。剩余主要是：用户配好公众号凭据后运行 wechat-probe 并按结果启用接口来源；协助用户执行生产 SQL/部署时只给步骤，不碰服务器。生产只读，写只在 SQLite 镜像；上传用 HANDOFF 中的临时 Content。改代码后需重建发布包并更新 HANDOFF。中文 commit 与 docs/updates 文档。5 小时额度剩 5% 时停下更新交接。
+```
+
+---
+
+## 上一轮交接（2026-10-26，Codex 集成，已被上方覆盖）
 
 ### 当前基线
 - 集成分支 `codex-refactor-dotnet-modernization`；**T0–T4 全部已合入**。不要再按下方旧交接重复合并 WIP 分支。
