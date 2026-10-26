@@ -16,6 +16,7 @@ using Szaipa.Data.Services.IpGeolocation;
 using Szaipa.Web.Authorization;
 using Szaipa.Web.Configuration;
 using Szaipa.Web.Infrastructure;
+using Szaipa.Web.LiveEdit;
 using Szaipa.Web.Middleware;
 using Szaipa.Web.Services;
 using Szaipa.Web.Services.Admin;
@@ -161,6 +162,8 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
+                services.AddHttpContextAccessor();
+                services.AddScoped<LiveEditHtml>();
                 services.AddSingleton<Szaipa.Data.Services.WeChat.IWeChatImageStore, WeChatImageStore>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 
@@ -332,6 +335,8 @@ var hostBuilder = new HostBuilder()
                 }
 
                 app.UseAuthentication();
+                // 现场编辑（T6）：已登录后台且开启编辑 cookie 时，前台页面输出编辑标记（编辑态 no-store）。
+                app.UseLiveEdit();
                 app.UseAuthorization();
                 app.UseEndpoints(endpoints =>
                 {

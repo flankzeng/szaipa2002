@@ -1,0 +1,108 @@
+/* ==========================================================================
+   现场编辑（T6）样式 —— 只在后台开启「现场编辑」时加载，普通访客不会下载本文件。
+   1. 可编辑元素的虚线框提示   2. 底部状态条   3. 富文本弹窗与编辑器
+   ========================================================================== */
+
+/* ---- 1. 可编辑元素：悬停虚线框，编辑中实线框 ---- */
+[data-le-site],
+[data-le-entity] {
+  outline: 1px dashed rgba(191, 39, 45, 0.45);
+  outline-offset: 2px;
+  cursor: text;
+  transition: outline-color 0.15s, background-color 0.15s;
+}
+[data-le-site]:hover,
+[data-le-entity]:hover {
+  outline: 2px dashed #bf272d;
+  background-color: rgba(191, 39, 45, 0.06);
+}
+[data-le-kind="html"] { cursor: pointer; }
+.le-editing {
+  outline: 2px solid #bf272d !important;
+  background-color: #fff8f8 !important;
+  color: #222 !important;
+}
+.le-saving { opacity: 0.55; }
+
+/* ---- 2. 底部悬浮状态条（固定在最上层，不占文档流、不遮挡导航） ---- */
+.le-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 24px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(34, 34, 34, 0.92);
+  color: #fff;
+  font: 13px/1.4 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+.le-bar__title { font-weight: 600; color: #ff8a8f; white-space: nowrap; }
+.le-bar__hint { opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.le-bar__status { min-width: 3em; white-space: nowrap; }
+.le-bar__status.is-error { color: #ffb4b4; }
+.le-bar__exit { color: #fff; text-decoration: underline; white-space: nowrap; }
+@media (max-width: 480px) { .le-bar__hint { display: none; } }
+
+/* ---- 3. 富文本弹窗：沿用后台 TipTap 编辑器的结构，这里补一份不依赖 admin.css 的最小样式 ---- */
+.le-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  font: 14px/1.6 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #222;
+}
+.le-modal__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(860px, 100%);
+  max-height: calc(100vh - 32px);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.le-modal__head,
+.le-modal__foot { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+.le-modal__head { border-bottom: 1px solid #eee; }
+.le-modal__foot { justify-content: flex-end; border-top: 1px solid #eee; }
+.le-modal__tip { color: #939393; font-size: 12px; }
+.le-modal .admin-editor { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.le-modal .admin-editor__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+  background: #f7f7f7;
+}
+.le-modal .admin-editor__btn {
+  padding: 2px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+.le-modal .admin-editor__btn.is-active { border-color: #bf272d; color: #bf272d; }
+.le-modal .admin-editor__divider { width: 1px; margin: 0 4px; background: #ddd; }
+.le-modal .admin-editor__surface { flex: 1; min-height: 240px; overflow: auto; padding: 12px 16px; }
+.le-modal .admin-editor__surface .ProseMirror { min-height: 220px; outline: none; }
+.le-modal .admin-editor__surface img { max-width: 100%; height: auto; }
+.le-btn {
+  padding: 6px 16px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+}
+.le-btn--primary { border-color: #bf272d; background: #bf272d; color: #fff; }

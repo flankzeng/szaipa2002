@@ -53,6 +53,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
 
+    public DbSet<SiteText> SiteText => Set<SiteText>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<News>(entity =>
@@ -145,6 +147,9 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
         // 艺术家出版著作（老库无此表，读侧缺表时降级为空）。
         ArtistBookModelConfiguration.Configure(modelBuilder);
+
+        // 现场编辑：站点文案（老库无此表，读侧缺表时一律用模板原文）。
+        SiteTextModelConfiguration.Configure(modelBuilder);
     }
 
     public override int SaveChanges() => throw ReadOnlyViolation();

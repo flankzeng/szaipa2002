@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "现场编辑";
+    var startPath = ViewData["StartPath"] as string ?? "/";
+    var pages = new (string Label, string Path)[]
+    {
+        ("首页", "/"), ("新闻动态", "/Home/News"), ("会员风采", "/Home/Vip"), ("关于我们", "/Home/About"),
+        ("展会动态", "/Home/PublicationList"), ("协会章程", "/Home/Constitution")
+    };
+}
+
+<div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+    <div>
+        <h1 class="font-serif text-2xl font-bold">现场编辑</h1>
+        <p class="mt-1 text-sm text-muted">在下面的「微缩官网」里直接点带虚线框的文字修改，回车或点别处即保存，立即生效；正文类内容会弹出编辑框。点链接可进入新闻、艺术家等页面继续编辑。</p>
+    </div>
+    <a asp-action="Exit" class="admin-btn-ghost">退出现场编辑</a>
+</div>
+
+<div class="mb-3 flex flex-wrap items-center gap-2 rounded-xl bg-white p-3 shadow-sm">
+    <div class="flex gap-1" role="group" aria-label="预览尺寸">
+        <button type="button" class="admin-btn-ghost px-3 py-1" data-device="390x844">手机</button>
+        <button type="button" class="admin-btn-ghost px-3 py-1" data-device="768x1024">平板</button>
+        <button type="button" class="admin-btn-ghost px-3 py-1" data-device="1440x900">电脑</button>
+    </div>
+    <span class="mx-1 h-5 w-px bg-black/10"></span>
+    @foreach (var item in pages)
+    {
+        <button type="button" class="rounded-full px-3 py-1 text-sm text-ink/70 hover:bg-canvas hover:text-brand" data-go="@item.Path">@item.Label</button>
+    }
+    <form class="ml-auto flex min-w-[16rem] flex-1 gap-2" data-address>
+        <input class="admin-input py-1 text-sm" name="path" value="@startPath" aria-label="页面地址" />
+        <button class="admin-btn-ghost px-3 py-1" type="submit">打开</button>
+        <button class="admin-btn-ghost px-3 py-1" type="button" data-reload title="刷新">↻</button>
+    </form>
+</div>
+
+@* 微缩官网：iframe 按所选设备的真实宽度渲染，再整体缩放到可用宽度内（所见即所得）。 *@
+<div class="flex justify-center rounded-2xl bg-canvas/60 p-4" data-stage>
+    <div class="overflow-hidden rounded-[1.75rem] border-8 border-ink/80 bg-white shadow-xl" data-frame-shell>
+        <iframe src="@startPath" title="官网预览" class="block origin-top-left border-0" data-frame></iframe>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var stage = document.querySelector('[data-stage]');
+    var shell = document.querySelector('[data-frame-shell]');
+    var frame = document.querySelector('[data-frame]');
+    var address = document.querySelector('[data-address]');
+    var device = { w: 390, h: 844 };
+    try { var saved = localStorage.getItem('szaipa-live-edit-device'); if (saved) { var p = saved.split('x'); device = { w: +p[0], h: +p[1] }; } } catch (e) {}
+
+    function layout() {
+        var available = stage.clientWidth - 32 - 16;
+        var scale = Math.min(1, available / device.w);
+        frame.style.width = device.w + 'px';
+        frame.style.height = device.h + 'px';
+        frame.style.transform = 'scale(' + scale + ')';
+        shell.style.width = Math.round(device.w * scale) + 16 + 'px';
+        shell.style.height = Math.round(device.h * scale) + 16 + 'px';
+        document.querySelectorAll('[data-device]').forEach(function (b) {
+            b.classList.toggle('text-brand', b.getAttribute('data-device') === device.w + 'x' + device.h);
+        });
+    }
+    function go(path) {
+        if (!path || path[0] !== '/' || path.indexOf('/Staff') === 0) return;
+        frame.src = path;
+        address.elements.path.value = path;
+    }
+    document.querySelectorAll('[data-device]').forEach(function (b) {
+        b.addEventListener('click', function () {
+            var p = b.getAttribute('data-device').split('x');
+            device = { w: +p[0], h: +p[1] };
+            try { localStorage.setItem('szaipa-live-edit-device', device.w + 'x' + device.h); } catch (e) {}
+            layout();
+        });
+    });
+    document.querySelectorAll('[data-go]').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-go')); }); });
+    address.addEventListener('submit', function (e) { e.preventDefault(); go(address.elements.path.value.trim()); });
+    document.querySelector('[data-reload]').addEventListener('click', function () { frame.contentWindow.location.reload(); });
+    // 前台页面在编辑态会回报当前地址（站内跳转后同步地址栏）。
+    window.addEventListener('message', function (e) {
+        if (e.origin === location.origin && e.data && e.data.type === 'szaipa-live-edit') address.elements.path.value = e.data.url;
+    });
+    window.addEventListener('resize', layout);
+    layout();
+})();
+</script>
+}

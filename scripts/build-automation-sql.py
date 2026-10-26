@@ -13,6 +13,7 @@ SOURCES = (
     "2026-10-26-exhibition-automation.sql",
     "2026-10-26-artist-site.sql",
     "2026-10-26-artist-books.sql",
+    "2026-10-26-site-text.sql",
 )
 OUTPUT = ROOT / "docs/sql/2026-10-26-automation-deploy.sql"
 

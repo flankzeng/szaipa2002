@@ -69,7 +69,7 @@ public sealed class HomeBlocksReadRepository : IHomeBlocksReadRepository
             ? HomeBlocksDefaults.Partners
             : partners
                 .Where(p => p.IsVisible)
-                .Select(p => new PartnerModel(p.Name, p.LogoPath, p.ImageWidth, p.ImageHeight, p.Link, p.Description))
+                .Select(p => new PartnerModel(p.Name, p.LogoPath, p.ImageWidth, p.ImageHeight, p.Link, p.Description) { Id = p.Id })
                 .ToArray();
     }
 
@@ -137,7 +137,7 @@ public sealed class HomeBlocksReadRepository : IHomeBlocksReadRepository
             height = null;
         }
 
-        return new OrgMemberModel(member.Name, member.Role, member.Title, member.ArtistId, avatar, width, height);
+        return new OrgMemberModel(member.Name, member.Role, member.Title, member.ArtistId, avatar, width, height) { Id = member.Id };
     }
 
     private static SaleWorkModel ToModel(SaleWork work, Dictionary<int, (string? Path, string? Name)> artists)
@@ -150,7 +150,7 @@ public sealed class HomeBlocksReadRepository : IHomeBlocksReadRepository
         }
 
         return new SaleWorkModel(
-            work.ArtistId, artistName, work.Title, work.Size, work.Medium, work.ImagePath, work.ImageWidth, work.ImageHeight);
+            work.ArtistId, artistName, work.Title, work.Size, work.Medium, work.ImagePath, work.ImageWidth, work.ImageHeight) { Id = work.Id };
     }
 
     /// <summary>

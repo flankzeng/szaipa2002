@@ -387,6 +387,21 @@ END
 GO
 GO
 
+-- ===== 来源: 2026-10-26-site-text.sql；SHA256: 3645057a4d5b4824ba20bcde4830e9e2d06404c6fb5c5d7019725a93f8fe68c7 =====
+-- 现场编辑（T6）：站点文案表。模板里原本写死的标题/段落按 Key 保存可改的值；
+-- 没有记录时页面显示模板原文，所以建表本身不改变任何页面。幂等，可重复执行。
+IF OBJECT_ID(N'dbo.SiteText', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SiteText (
+        [Key] nvarchar(200) NOT NULL CONSTRAINT PK_SiteText PRIMARY KEY,
+        [Value] nvarchar(max) NOT NULL,
+        UpdatedAt datetime2 NULL,
+        UpdatedBy nvarchar(100) NULL
+    );
+END
+GO
+GO
+
 IF XACT_STATE() <> 1
     THROW 51002, N'升级事务不可提交，停止并回滚后核对错误。', 1;
 COMMIT TRANSACTION;

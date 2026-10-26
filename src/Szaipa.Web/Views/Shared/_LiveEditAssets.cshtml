@@ -1,0 +1,8 @@
+@* 现场编辑（T6）资源：仅编辑态输出；普通访客页面不增加任何字节。放在各前台布局/独立页 </body> 前。 *@
+@if (LiveEdit.Active)
+{
+    <div hidden data-live-edit-token>@Html.AntiForgeryToken()</div>
+    <link rel="stylesheet" href="~/css/live-edit.css" asp-append-version="true" />
+    <script src="~/admin/editor.js" asp-append-version="true" defer></script>
+    <script src="~/js/live-edit.js" asp-append-version="true" defer></script>
+}

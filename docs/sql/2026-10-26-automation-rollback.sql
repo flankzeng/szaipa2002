@@ -14,7 +14,7 @@ IF DB_NAME() <> @ExpectedDatabase
 DECLARE @Tables table (Name sysname NOT NULL);
 INSERT @Tables(Name) VALUES
     (N'ArtistPublication'), (N'PublicationBlock'), (N'FeaturedExhibition'),
-    (N'OrgMember'), (N'SaleWork'), (N'Partner'), (N'WeChatSyncRecord'), (N'ArtistBook');
+    (N'OrgMember'), (N'SaleWork'), (N'Partner'), (N'WeChatSyncRecord'), (N'ArtistBook'), (N'SiteText');
 
 DECLARE @Name sysname, @Rows bigint, @Sql nvarchar(max), @HasData bit = 0;
 DECLARE table_cursor CURSOR LOCAL FAST_FORWARD FOR SELECT Name FROM @Tables;
@@ -83,6 +83,7 @@ BEGIN TRY
     DROP TABLE IF EXISTS dbo.Partner;
     DROP TABLE IF EXISTS dbo.WeChatSyncRecord;
     DROP TABLE IF EXISTS dbo.ArtistBook;
+    DROP TABLE IF EXISTS dbo.SiteText;
 
     -- 默认约束名可由既存 schema 决定，因此先按列查系统目录，不硬编码约束名。
     DECLARE @TableName sysname, @ColumnName sysname, @ConstraintName sysname;

@@ -89,7 +89,8 @@ public sealed class HomeBlocksReadRepositoryTests
         var blocks = await fixture.Read.GetHomeBlocksAsync();
 
         Assert.Equal(new[] { "甲", "丙" }, blocks.CoreMembers.Select(m => m.Name).ToArray());
-        Assert.Equal(new OrgMemberModel("甲", "会长", "艺术家", 1000, "/Content/a.png", 5, 6), blocks.CoreMembers[0]);
+        Assert.Equal(new OrgMemberModel("甲", "会长", "艺术家", 1000, "/Content/a.png", 5, 6), blocks.CoreMembers[0] with { Id = null });
+        Assert.NotNull(blocks.CoreMembers[0].Id); // 数据行带 Id，供现场编辑定位
         Assert.Equal(new[] { "顾问甲" }, blocks.AdvisoryMembers.Select(m => m.Name).ToArray());
         // The OrgMember table has rows, so the other blocks keep their own fallbacks independently.
         Assert.Same(HomeBlocksDefaults.SaleWorks, blocks.SaleWorks);
@@ -142,7 +143,7 @@ public sealed class HomeBlocksReadRepositoryTests
 
         Assert.Equal(
             new SaleWorkModel(1049, "陈硕子", "冲气", "85x58cm", "纸本设色", "/Content/ArtImg/selling/cxz.jpg", 1726, 1224),
-            Assert.Single(blocks.SaleWorks));
+            Assert.Single(blocks.SaleWorks) with { Id = null });
     }
 
     [Fact]
@@ -159,7 +160,7 @@ public sealed class HomeBlocksReadRepositoryTests
         var result = await fixture.Read.GetPartnersAsync();
 
         Assert.Equal(new[] { "一", "三" }, result.Select(p => p.Name).ToArray());
-        Assert.Equal(new PartnerModel("一", "/Content/1.png", 800, 800, "https://a.example", "简介"), result[0]);
+        Assert.Equal(new PartnerModel("一", "/Content/1.png", 800, 800, "https://a.example", "简介"), result[0] with { Id = null });
     }
 
     /// <summary>
@@ -196,10 +197,11 @@ public sealed class HomeBlocksReadRepositoryTests
         var blocks = await fixture.Read.GetHomeBlocksAsync();
         var readPartners = await fixture.Read.GetPartnersAsync();
 
-        Assert.Equal(HomeBlocksDefaults.CoreMembers, blocks.CoreMembers);
-        Assert.Equal(HomeBlocksDefaults.AdvisoryMembers, blocks.AdvisoryMembers);
-        Assert.Equal(HomeBlocksDefaults.SaleWorks, blocks.SaleWorks);
-        Assert.Equal(HomeBlocksDefaults.Partners, readPartners);
+        // 比较内容（数据行多了 Id，回退内容 Id 为 null）。
+        Assert.Equal(HomeBlocksDefaults.CoreMembers, blocks.CoreMembers.Select(m => m with { Id = null }));
+        Assert.Equal(HomeBlocksDefaults.AdvisoryMembers, blocks.AdvisoryMembers.Select(m => m with { Id = null }));
+        Assert.Equal(HomeBlocksDefaults.SaleWorks, blocks.SaleWorks.Select(w => w with { Id = null }));
+        Assert.Equal(HomeBlocksDefaults.Partners, readPartners.Select(p => p with { Id = null }));
     }
 
     [Fact]

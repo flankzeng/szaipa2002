@@ -55,6 +55,8 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<ArtistBook> ArtistBook => Set<ArtistBook>();
 
+    public DbSet<SiteText> SiteText => Set<SiteText>();
+
     // Admin-only entities (not part of the public read surface).
     public DbSet<Staff> Staff => Set<Staff>();
 
@@ -104,5 +106,8 @@ public sealed class SzaipaAdminContext : DbContext
 
         // 艺术家出版著作，与读上下文共用同一份映射。
         ArtistBookModelConfiguration.Configure(modelBuilder);
+
+        // 现场编辑：站点文案（模板写死文字的可改副本），与读上下文共用映射。
+        SiteTextModelConfiguration.Configure(modelBuilder);
     }
 }

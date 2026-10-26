@@ -102,14 +102,14 @@
 
 
         <header class="JhengBold">
-            @Model.Article.Title
+            @LiveEdit.Field("News", Model.Article.Id, "Title", Model.Article.Title)
         </header>
 
 
 
         <!-- 正文 -->
 
-        <div class="article-body">
+        <div class="article-body"@LiveEdit.Attr("News", Model.Article.Id, "Content")>
             @Html.Raw(Model.Article.Content)
         </div>
 
@@ -133,7 +133,7 @@
                     <a href="/Home/NewsRead/@news.Id">
                         <li class="contentSon" style="background-image: url('@relatedCoverUrl');">
                             <h3 class="JhengRegular">@string.Format("{0:yyyy.MM.dd}", news.Date)</h3>
-                            <h1>@news.Title</h1>
+                            <h1>@LiveEdit.Field("News", news.Id, "Title", news.Title)</h1>
                             <h4 class="JhengLight">查看更多</h4>
                         </li>
                     </a>
@@ -283,4 +283,5 @@
 
 
     <script src="~/js/newsread.js" asp-append-version="true" defer></script>
+<partial name="_LiveEditAssets" />
 </body>

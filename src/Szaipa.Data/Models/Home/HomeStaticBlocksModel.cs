@@ -8,7 +8,11 @@ public sealed record OrgMemberModel(
     int? ArtistId,
     string? AvatarPath,
     int? ImageWidth,
-    int? ImageHeight);
+    int? ImageHeight)
+{
+    /// <summary>数据库行 Id；回退到内置默认内容时为 null（此时不可现场编辑）。</summary>
+    public int? Id { get; init; }
+}
 
 /// <summary>One slide in the homepage 在售艺术品 carousel. <see cref="ImagePath"/> is the original image URL.</summary>
 public sealed record SaleWorkModel(
@@ -19,7 +23,11 @@ public sealed record SaleWorkModel(
     string? Medium,
     string? ImagePath,
     int? ImageWidth,
-    int? ImageHeight);
+    int? ImageHeight)
+{
+    /// <summary>数据库行 Id；回退到内置默认内容时为 null（此时不可现场编辑）。</summary>
+    public int? Id { get; init; }
+}
 
 /// <summary>One 合作伙伴 card on the About page.</summary>
 public sealed record PartnerModel(
@@ -28,7 +36,11 @@ public sealed record PartnerModel(
     int? ImageWidth,
     int? ImageHeight,
     string? Link,
-    string? Description);
+    string? Description)
+{
+    /// <summary>数据库行 Id；回退到内置默认内容时为 null（此时不可现场编辑）。</summary>
+    public int? Id { get; init; }
+}
 
 /// <summary>
 /// The data-driven static blocks of the homepage, already filtered to visible rows and ordered. When the
