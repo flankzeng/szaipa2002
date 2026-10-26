@@ -131,6 +131,14 @@ public sealed class WeChatContentCleaner
 
         SanitizeChildren(root, images, seen, imageMapper);
         RemoveNoiseAndTail(root);
+        // 首轮清洗先收集候选图片；去掉二维码、往期推荐尾部后必须重建清单，
+        // 否则已从正文移除的图片仍会被同步服务下载到 Content。
+        if (imageMapper is null)
+        {
+            images.Clear();
+            seen.Clear();
+            CollectRemainingImages(root, images, seen);
+        }
         if (!string.IsNullOrWhiteSpace(articleTitle))
         {
             RemoveLeadingTitle(root, articleTitle);
@@ -143,6 +151,18 @@ public sealed class WeChatContentCleaner
         var html = MiniHtml.SerializeChildren(root).Trim();
         var plain = Normalize(MiniHtml.InnerText(root));
         return new WeChatCleanedContent(html, images, plain);
+    }
+
+    private void CollectRemainingImages(HtmlElement root, List<string> images, HashSet<string> seen)
+    {
+        foreach (var image in MiniHtml.Descendants(root).Where(element => element.Name == "img"))
+        {
+            var remote = ResolveImageUrl(image.GetAttribute("src"));
+            if (remote is not null && seen.Add(remote))
+            {
+                images.Add(remote);
+            }
+        }
     }
 
     /// <summary>从 data-src/src 取出可下载的 http(s) 图片地址；不在允许域名内返回 null。</summary>

@@ -92,9 +92,12 @@ public sealed class NewsReadWeChatVisibilityTests
         var context = fixture.Context;
         for (var id = 1; id <= 6; id++)
         {
-            context.Database.ExecuteSqlRaw(
-                "INSERT INTO News (Id, Title, Subtitle, Autor, original, Date, Content, CoverPath, ReadCount, Important) " +
-                $"VALUES ({id}, 'N{id}', 's', 'a', 0, '2026-0{id}-01 00:00:00', '正文{id}', '{id}.jpg', 0, 0)");
+            var title = $"N{id}";
+            var date = $"2026-0{id}-01 00:00:00";
+            var content = $"正文{id}";
+            var cover = $"{id}.jpg";
+            context.Database.ExecuteSqlInterpolated(
+                $"INSERT INTO News (Id, Title, Subtitle, Autor, original, Date, Content, CoverPath, ReadCount, Important) VALUES ({id}, {title}, 's', 'a', 0, {date}, {content}, {cover}, 0, 0)");
         }
 
         context.Database.ExecuteSqlRaw(

@@ -100,12 +100,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
     public async Task<IReadOnlyList<WeChatImportOutcome>> ImportLinksAsync(
         string rawInput, AdminActor actor, bool force, CancellationToken cancellationToken, string source = WeChatSources.Link)
     {
-        var inputs = (rawInput ?? string.Empty)
-            .Split(new[] { '\r', '\n', ' ', '\t', ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(s => s.Trim())
-            .Where(s => s.Length > 0)
-            .Distinct(StringComparer.Ordinal)
-            .ToList();
+        var inputs = ParseLinkInputs(rawInput);
 
         var results = new List<WeChatImportOutcome>();
         if (inputs.Count == 0)
@@ -156,6 +151,34 @@ public sealed class WeChatSyncService : IWeChatSyncService
 
         RecordLinkStatus(source, results);
         return results;
+    }
+
+    private static List<string> ParseLinkInputs(string? rawInput)
+    {
+        var inputs = new List<string>();
+        foreach (var segment in (rawInput ?? string.Empty)
+                     .Split(new[] { '\r', '\n', ',', '，', ';', '；' }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            var line = segment.Trim();
+            if (line.Length == 0)
+            {
+                continue;
+            }
+
+            var whitespaceParts = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+            // 接受同一行以空格/制表符分隔的多条合法链接；若行内包含自然语言或无效 token，
+            // 保留整行作为单个输入，从而给出一个清楚的格式错误，而不是拆成多个噪声错误。
+            if (whitespaceParts.Length > 1 && whitespaceParts.All(part => WeChatSourceKey.NormalizeArticleUrl(part) is not null))
+            {
+                inputs.AddRange(whitespaceParts);
+            }
+            else
+            {
+                inputs.Add(line);
+            }
+        }
+
+        return inputs.Distinct(StringComparer.Ordinal).ToList();
     }
 
     private void RecordLinkStatus(string source, IReadOnlyList<WeChatImportOutcome> results)

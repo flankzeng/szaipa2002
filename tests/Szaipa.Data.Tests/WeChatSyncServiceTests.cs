@@ -5,6 +5,7 @@ using Szaipa.Data.Configuration;
 using Szaipa.Data.Contexts.Szaipa;
 using Szaipa.Data.Contexts.SzaipaAdmin;
 using Szaipa.Data.Services.Admin;
+using Szaipa.Data.Services.Home;
 using Szaipa.Data.Services.WeChat;
 using Xunit;
 
@@ -159,7 +160,9 @@ public sealed class WeChatSyncServiceTests
         await env.Service.ImportLinksAsync(ShortUrl, Actor, false, CancellationToken.None);
         var before = await env.Db.News.AsNoTracking().SingleAsync();
         var hashBefore = (await env.Db.WeChatSyncRecord.AsNoTracking().SingleAsync()).ContentHash;
-        await env.Service.ImportOrderedPinAsync(before.Id);
+        var pinned = await env.Db.News.SingleAsync(news => news.Id == before.Id);
+        pinned.Important = true; // 后台置顶写入 News.Important；同步更新不得覆盖。
+        await env.Db.SaveChangesAsync();
 
         env.Pages[ShortUrl] = env.Pages[ShortUrl].Replace("感谢各位到场。", "感谢各位到场，作品已更新。");
         var outcome = Assert.Single(await env.Service.ImportLinksAsync(ShortUrl, Actor, force: true, CancellationToken.None));
@@ -197,16 +200,32 @@ public sealed class WeChatSyncServiceTests
     {
         await using var env = new Env();
         env.Pages["https://mp.weixin.qq.com/s/DeletedOne"] = "<html><body>该内容已被发布者删除</body></html>";
-        var input = string.Join('\n', ShortUrl, "https://evil.example.com/s/abc", "not a link", "https://mp.weixin.qq.com/s/DeletedOne", ShortUrl);
+        var input = string.Join(Environment.NewLine, new[] { ShortUrl, "https://evil.example.com/s/abc", "not a link", "https://mp.weixin.qq.com/s/DeletedOne", ShortUrl });
 
         var results = await env.Service.ImportLinksAsync(input, Actor, false, CancellationToken.None);
 
-        Assert.Equal(4, results.Count); // 重复行去重
+        Assert.True(results.Count == 4, string.Join(" | ", results.Select(result => $"{result.Input}:{result.Status}:{result.Message}"))); // 重复行去重
         Assert.Equal(WeChatImportStatus.Created, results[0].Status);
         Assert.Equal(WeChatImportStatus.Failed, results[1].Status);
         Assert.Equal(WeChatImportStatus.Failed, results[2].Status);
         Assert.Contains("已被发布者删除", results[3].Message);
         Assert.DoesNotContain(env.Handler.Requests, r => r.Contains("evil.example.com"));
+        Assert.Equal(1, await env.Db.News.CountAsync());
+    }
+
+    [Fact]
+    public async Task Batch_import_accepts_space_separated_links_and_keeps_natural_language_together()
+    {
+        await using var env = new Env();
+        env.Pages[LongUrl] = env.Pages[ShortUrl];
+
+        var results = await env.Service.ImportLinksAsync($"{ShortUrl} {LongUrl}{Environment.NewLine}not a link", Actor, false, CancellationToken.None);
+
+        Assert.Equal(3, results.Count);
+        Assert.Equal(WeChatImportStatus.Created, results[0].Status);
+        Assert.Equal(WeChatImportStatus.Unchanged, results[1].Status);
+        Assert.Equal("not a link", results[2].Input);
+        Assert.Equal(WeChatImportStatus.Failed, results[2].Status);
         Assert.Equal(1, await env.Db.News.CountAsync());
     }
 
@@ -380,6 +399,30 @@ public sealed class WeChatSyncServiceTests
     }
 
     [Fact]
+    public async Task Fixture_import_flows_to_public_news_and_hidden_news_stays_reachable_by_id()
+    {
+        await using var env = new Env();
+        await env.Service.ImportLinksAsync(ShortUrl, Actor, false, CancellationToken.None);
+        await using var readDb = new SzaipaLegacyReadContext(
+            new DbContextOptionsBuilder<SzaipaLegacyReadContext>().UseSqlite(env.Connection).Options);
+        var publicNews = new NewsReadRepository(readDb, WeChatTestSupport.Opts(new WeChatOptions { LegacyNewsMaxId = 5000 }));
+
+        var created = Assert.Single(await publicNews.GetLatestNewsAsync(0));
+        Assert.Equal("同构第三季开幕 & 艺术家座谈", created.Title);
+        Assert.NotNull(await publicNews.GetNewsByIdAsync(created.Id));
+
+        var record = await env.Db.WeChatSyncRecord.AsNoTracking().SingleAsync();
+        var admin = new WeChatSyncAdminRepository(env.Db, new OperationRecorder());
+        Assert.True(await admin.SetHiddenAsync(record.Id, true, Actor, CancellationToken.None));
+        Assert.Empty(await publicNews.GetLatestNewsAsync(0));
+        Assert.NotNull(await publicNews.GetNewsByIdAsync(created.Id)); // 隐藏不退役旧详情 URL
+
+        Assert.True(await admin.SetHiddenAsync(record.Id, false, Actor, CancellationToken.None));
+        Assert.True(await admin.SetPinnedAsync(record.Id, true, Actor, CancellationToken.None));
+        Assert.True((await publicNews.GetLatestNewsAsync(0)).Single().Important);
+    }
+
+    [Fact]
     public async Task Reimport_refetches_the_recorded_url_and_overwrites()
     {
         await using var env = new Env();
@@ -485,6 +528,7 @@ public sealed class WeChatSyncServiceTests
         }
 
         public SzaipaAdminContext Db { get; }
+        public SqliteConnection Connection => _connection;
         public FakeHandler Handler { get; }
         public FakeImageStore Store { get; } = new();
         public FakeApi Api { get; } = new();
@@ -520,15 +564,5 @@ public sealed class WeChatSyncServiceTests
             await Db.DisposeAsync();
             _connection.Dispose();
         }
-    }
-}
-
-internal static class WeChatSyncServiceTestExtensions
-{
-    /// <summary>测试辅助：模拟后台"置顶"——直接把 Important 置 true。</summary>
-    public static async Task ImportOrderedPinAsync(this WeChatSyncService _, int newsId)
-    {
-        // 通过独立连接不可行（内存库），改由调用方的 Db 完成；见 Changed_source_article… 里的使用方式。
-        await Task.CompletedTask;
     }
 }

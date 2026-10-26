@@ -53,20 +53,27 @@ public sealed class WeChatImageStore : IWeChatImageStore
             return url;
         }
 
+        string? temp = null;
         try
         {
             Directory.CreateDirectory(directory);
 
             // 先写临时文件再改名，避免并发/中断留下半截图片被前台读到。
-            var temp = fullPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            temp = fullPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
             await File.WriteAllBytesAsync(temp, data, cancellationToken);
             try
             {
                 File.Move(temp, fullPath, overwrite: false);
+                temp = null;
             }
             catch (IOException)
             {
-                File.Delete(temp); // 另一路已写好同名文件
+                if (!File.Exists(fullPath))
+                {
+                    return null;
+                }
+
+                return url; // 另一路已写好同名文件
             }
 
             return url;
@@ -74,6 +81,18 @@ public sealed class WeChatImageStore : IWeChatImageStore
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             return null;
+        }
+        finally
+        {
+            if (temp is not null)
+            {
+                try
+                {
+                    File.Delete(temp);
+                }
+                catch (IOException) { }
+                catch (UnauthorizedAccessException) { }
+            }
         }
     }
 
