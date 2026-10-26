@@ -1,8 +1,12 @@
+using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Szaipa.Data.Composition;
+using Szaipa.Data.Configuration;
 using Szaipa.Data.Contexts.Szaipa;
 using Szaipa.Data.Contracts.Home;
 using Szaipa.Data.Models.Home;
+using Szaipa.Data.Services.WeChat;
 
 namespace Szaipa.Data.Services.Home;
 
@@ -19,21 +23,58 @@ namespace Szaipa.Data.Services.Home;
 public sealed class NewsReadRepository : INewsReadRepository
 {
     private readonly SzaipaLegacyReadContext _context;
+    private readonly int? _legacyNewsMaxId;
 
-    public NewsReadRepository(SzaipaLegacyReadContext context)
+    public NewsReadRepository(SzaipaLegacyReadContext context, IOptions<WeChatOptions>? weChatOptions = null)
     {
         _context = context;
+        _legacyNewsMaxId = weChatOptions?.Value.LegacyNewsMaxId;
+    }
+
+    /// <summary>
+    /// 前台列表用的新闻源：已套用"隐藏的同步文章 / 旧手录新闻"过滤。<paramref name="applyVisibility"/>=false
+    /// 为降级路径（同步记录表不存在），等价于改造前的 <c>_context.News</c>。
+    /// </summary>
+    private IQueryable<News> NewsSource(bool applyVisibility)
+    {
+        var query = _context.News.AsNoTracking();
+        if (!applyVisibility)
+        {
+            return query;
+        }
+
+        query = query.Where(news => !_context.WeChatSyncRecord.Any(record => record.NewsId == news.Id && record.IsHidden));
+        if (_legacyNewsMaxId is > 0)
+        {
+            var legacyMax = _legacyNewsMaxId.Value;
+            query = query.Where(news => news.Id > legacyMax
+                || _context.WeChatSyncRecord.Any(record => record.NewsId == news.Id));
+        }
+
+        return query;
+    }
+
+    private async Task<T> WithVisibilityAsync<T>(Func<IQueryable<News>, Task<T>> run)
+    {
+        try
+        {
+            return await run(NewsSource(applyVisibility: true));
+        }
+        catch (DbException exception) when (WeChatSchema.IsMissingSyncTable(exception))
+        {
+            // 加性新表尚未建立：前台照旧显示全部 News，绝不 500。
+            return await run(NewsSource(applyVisibility: false));
+        }
     }
 
     public async Task<HomePageSnapshotModel> GetHomePageSnapshotAsync(
         CancellationToken cancellationToken = default)
     {
-        var latestNews = await _context.News
-            .AsNoTracking()
+        var latestNews = await WithVisibilityAsync(source => source
             .OrderByDescending(news => news.Date)
             .Take(LegacyDisplayRules.LandingPageNewsCount)
             .Select(SzaipaHomeProjections.NewsSummary)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken));
 
         var featuredPublications = await _context.Publication
             .AsNoTracking()
@@ -49,7 +90,7 @@ public sealed class NewsReadRepository : INewsReadRepository
         int count,
         CancellationToken cancellationToken = default)
     {
-        return await QueryLatestNews(count).ToListAsync(cancellationToken);
+        return await WithVisibilityAsync(source => QueryLatestNews(source, count).ToListAsync(cancellationToken));
     }
 
     public async Task<NewsDetailModel?> GetNewsByIdAsync(
@@ -67,7 +108,7 @@ public sealed class NewsReadRepository : INewsReadRepository
         int count,
         CancellationToken cancellationToken = default)
     {
-        return await QueryLatestNews(count).ToListAsync(cancellationToken);
+        return await WithVisibilityAsync(source => QueryLatestNews(source, count).ToListAsync(cancellationToken));
     }
 
     public async Task<IReadOnlyList<NewsSummaryModel>> SearchNewsAsync(
@@ -76,21 +117,18 @@ public sealed class NewsReadRepository : INewsReadRepository
     {
         keyword ??= string.Empty;
 
-        return await _context.News
-            .AsNoTracking()
+        return await WithVisibilityAsync(source => source
             .Where(news =>
                 (news.Title != null && news.Title.Contains(keyword)) ||
                 (news.Content != null && news.Content.Contains(keyword)))
             .OrderByDescending(news => news.Date)
             .Select(SzaipaHomeProjections.NewsSummary)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken));
     }
 
-    private IQueryable<NewsSummaryModel> QueryLatestNews(int count)
+    private static IQueryable<NewsSummaryModel> QueryLatestNews(IQueryable<News> source, int count)
     {
-        IQueryable<News> query = _context.News
-            .AsNoTracking()
-            .OrderByDescending(news => news.Date);
+        IQueryable<News> query = source.OrderByDescending(news => news.Date);
 
         if (count > 0)
         {

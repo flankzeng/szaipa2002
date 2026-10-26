@@ -15,6 +15,7 @@ using Szaipa.Data.Services.IpGeolocation;
 using Szaipa.Data.Services.Admin;
 using Szaipa.Data.Services.Home;
 using Szaipa.Data.Services.Tongou;
+using Szaipa.Data.Services.WeChat;
 
 namespace Szaipa.Data.DependencyInjection;
 
@@ -191,6 +192,24 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<ITongouAtristAdminRepository, TongouAtristAdminRepository>();
         services.AddScoped<ITongouWorksAdminRepository, TongouWorksAdminRepository>();
         services.AddScoped<IDashboardAnalyticsRepository, DashboardAnalyticsRepository>();
+
+        // 微信公众号文章同步（T1）。HTTP 一律经 IHttpClientFactory 命名客户端，测试里可替换 handler；
+        // IWeChatImageStore（把图片写进 ContentRoot）由宿主 Szaipa.Web 注册。定时同步仅在
+        // WeChat:Enabled + 凭据齐全 + AdminWrite 已配置时才会真正工作，否则启动即静默退出。
+        services
+            .AddOptions<WeChatOptions>()
+            .Bind(configuration.GetSection(WeChatOptions.SectionName));
+        services.AddHttpClient(WeChatApiClient.ClientName, client => client.Timeout = TimeSpan.FromSeconds(30));
+        services.AddHttpClient(WeChatSyncService.PageClientName, client => client.Timeout = TimeSpan.FromSeconds(30));
+        services.AddHttpClient(WeChatImageLocalizer.ClientName, client => client.Timeout = TimeSpan.FromSeconds(60));
+        services.AddSingleton<IWeChatApiClient, WeChatApiClient>();
+        services.AddScoped<WeChatImageLocalizer>();
+        services.AddScoped<IWeChatSyncService, WeChatSyncService>();
+        services.AddScoped<IWeChatSyncAdminRepository, WeChatSyncAdminRepository>();
+        services.AddSingleton<IWeChatSourceStatusStore, WeChatSourceStatusStore>();
+        services.AddSingleton<WeChatImportQueue>();
+        services.AddHostedService<WeChatCallbackImportWorker>();
+        services.AddHostedService<WeChatSyncBackgroundService>();
         return services;
     }
 

@@ -77,34 +77,5 @@ public sealed class AdminAssetStorage : IAdminAssetStorage
         return AdminAssetSaveResult.Ok(url, fileName);
     }
 
-    private static string SanitizeSubfolder(string subfolder)
-    {
-        if (string.IsNullOrWhiteSpace(subfolder))
-        {
-            return "newsImg";
-        }
-
-        // Allow safe nested folders (e.g. "ArtImg/Artist/ArtNews") but reject traversal, drive letters,
-        // and any segment with invalid file-name characters.
-        var invalid = Path.GetInvalidFileNameChars();
-        var segments = subfolder.Trim().Replace('\\', '/').Split('/', StringSplitOptions.RemoveEmptyEntries);
-        var clean = new List<string>();
-        foreach (var raw in segments)
-        {
-            var segment = raw.Trim();
-            if (segment == ".")
-            {
-                continue;
-            }
-
-            if (segment == ".." || segment.Contains(':') || segment.IndexOfAny(invalid) >= 0)
-            {
-                return "newsImg";
-            }
-
-            clean.Add(segment);
-        }
-
-        return clean.Count == 0 ? "newsImg" : string.Join('/', clean);
-    }
+    private static string SanitizeSubfolder(string subfolder) => AdminAssetPaths.SanitizeSubfolder(subfolder);
 }

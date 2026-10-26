@@ -1,0 +1,251 @@
+@using Szaipa.Data.Services.WeChat
+@model WeChatIndexViewModel
+@{
+    ViewData["Title"] = "公众号同步";
+    var list = Model.List.Page;
+    string StatusText(WeChatImportStatus status) => status switch
+    {
+        WeChatImportStatus.Created => "已导入",
+        WeChatImportStatus.Updated => "已更新",
+        WeChatImportStatus.Unchanged => "无变化",
+        _ => "失败"
+    };
+    string StatusClass(WeChatImportStatus status) => status switch
+    {
+        WeChatImportStatus.Created or WeChatImportStatus.Updated => "text-emerald-700",
+        WeChatImportStatus.Unchanged => "text-muted",
+        _ => "text-brand"
+    };
+}
+<div class="mb-6">
+    <h1 class="font-serif text-2xl font-bold text-ink">公众号同步</h1>
+    <p class="mt-1 text-sm text-muted">
+        把公众号文章按现有新闻结构填入「新闻」栏目（前台版式不变）。导入后的新闻可继续在「新闻」模块里编辑；
+        后台隐藏的文章不在前台列表出现，详情链接仍可访问。
+    </p>
+</div>
+
+@if (!Model.List.TableAvailable)
+{
+    <div class="mb-6 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand">
+        需先执行 SQL：尚未建立 <code>WeChatSyncRecord</code> 表。请在数据库执行 <code>docs/sql/2026-10-26-wechat-sync.sql</code> 后刷新本页；
+        在此之前前台新闻照旧显示全部新闻，同步功能不可用。
+    </div>
+}
+
+@if (!Model.ContentRootReady)
+{
+    <div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        未配置可写的内容目录（<code>LegacyAssets:ContentRoot</code>），无法把文章图片保存到本站，导入会失败。
+    </div>
+}
+
+<section class="mb-8 overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <div class="border-b border-black/5 px-5 py-3 text-sm font-medium text-ink">来源状态</div>
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">来源</th>
+                <th class="px-5 py-3 font-medium">启用情况</th>
+                <th class="px-5 py-3 font-medium">最近成功</th>
+                <th class="px-5 py-3 font-medium">最近错误 / 摘要</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @foreach (var source in Model.Sources)
+            {
+                <tr>
+                    <td class="px-5 py-3 font-medium text-ink">@source.DisplayName</td>
+                    <td class="px-5 py-3 @(source.Enabled ? "text-emerald-700" : "text-muted")">@source.EnabledNote</td>
+                    <td class="px-5 py-3 text-muted">@(source.LastSuccessAt?.ToString("MM-dd HH:mm") ?? "—")</td>
+                    <td class="px-5 py-3">
+                        @if (!string.IsNullOrEmpty(source.LastError))
+                        {
+                            <span class="text-brand">@source.LastError</span>
+                        }
+                        else if (!string.IsNullOrEmpty(source.LastSummary))
+                        {
+                            <span class="text-muted">@source.LastSummary</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p class="border-t border-black/5 px-5 py-3 text-xs text-muted">
+        状态保存在进程内存中，站点重启后清空。未认证的公众号通常没有 freepublish / material 接口权限（errcode 48001），
+        此时请以「链接导入」为主。
+        @if (Model.LegacyNewsMaxId is > 0)
+        {
+            <span>旧手录新闻分界：News.Id ≤ @Model.LegacyNewsMaxId 且无同步记录的新闻已从前台列表隐藏。</span>
+        }
+        else
+        {
+            <span>尚未配置 <code>WeChat:LegacyNewsMaxId</code>，旧手录新闻仍显示在前台列表。</span>
+        }
+    </p>
+</section>
+
+<section class="mb-8 rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+    <h2 class="mb-1 text-sm font-medium text-ink">批量链接导入</h2>
+    <p class="mb-3 text-xs text-muted">
+        每行粘贴一条公众号文章链接（https://mp.weixin.qq.com/s/…），一次最多 50 条。同一篇文章无论长短链接，只会生成一条新闻；
+        已导入的会跳过。
+    </p>
+    <form asp-action="Import" method="post">
+        <textarea name="links" class="admin-textarea" rows="6" placeholder="https://mp.weixin.qq.com/s/xxxxxxxx&#10;https://mp.weixin.qq.com/s/yyyyyyyy"
+                  disabled="@(!Model.List.TableAvailable)">@Model.ImportInput</textarea>
+        <div class="mt-3 flex items-center gap-3">
+            <button type="submit" class="admin-btn-primary" disabled="@(!Model.List.TableAvailable)">导入</button>
+            <span class="text-xs text-muted">每条需抓取页面并下载图片，条数多时请耐心等待页面返回。</span>
+        </div>
+    </form>
+
+    @if (Model.Results is { Count: > 0 })
+    {
+        <ul class="mt-5 divide-y divide-black/5 rounded-lg border border-black/5 text-sm">
+            @foreach (var result in Model.Results)
+            {
+                <li class="flex flex-col gap-1 px-4 py-2.5 sm:flex-row sm:items-baseline sm:gap-3">
+                    <span class="w-14 shrink-0 font-medium @StatusClass(result.Status)">@StatusText(result.Status)</span>
+                    <span class="min-w-0 flex-1 break-all text-ink/80">@(result.Title ?? result.Input)</span>
+                    <span class="text-xs text-muted">@result.Message</span>
+                    @if (result.NewsId is int newsId)
+                    {
+                        <a asp-controller="News" asp-action="Edit" asp-route-id="@newsId" class="text-xs text-brand hover:underline">编辑新闻</a>
+                    }
+                </li>
+            }
+        </ul>
+    }
+</section>
+
+<section class="mb-8 rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+    <h2 class="mb-1 text-sm font-medium text-ink">官方接口同步</h2>
+    @if (Model.ApiConfigured)
+    {
+        <p class="mb-3 text-xs text-muted">
+            从发布记录 / 永久图文素材两个来源发现文章链接（各自独立，某个接口未开通不影响另一个），再抓页面入库；已导入的不会重复处理。
+            站点也会按间隔自动做增量同步。「全量回填」会翻完全部历史页，耗时较长。
+        </p>
+        <div class="flex items-center gap-3">
+            <form asp-action="Sync" method="post">
+                <input type="hidden" name="full" value="false" />
+                <button type="submit" class="admin-btn-primary" disabled="@(!Model.List.TableAvailable)">立即同步（增量）</button>
+            </form>
+            <form asp-action="Sync" method="post" onsubmit="return confirm('全量回填会翻完全部历史并逐篇抓取，可能需要几分钟。继续？');">
+                <input type="hidden" name="full" value="true" />
+                <button type="submit" class="admin-btn-ghost" disabled="@(!Model.List.TableAvailable)">全量回填历史</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <p class="text-xs text-muted">
+            官方接口未启用。在 <code>appsettings.Local.json</code> / 环境变量配置 <code>WeChat:Enabled=true</code>、<code>AppId</code>、<code>AppSecret</code>
+            并把服务器出口 IP 加入公众号 IP 白名单后即可使用；不配置也不影响链接导入。
+        </p>
+    }
+</section>
+
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
+    <div class="border-b border-black/5 px-5 py-3 text-sm font-medium text-ink">同步记录（共 @list.TotalCount 条）</div>
+    <table class="w-full text-sm">
+        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
+            <tr>
+                <th class="px-5 py-3 font-medium">新闻</th>
+                <th class="px-5 py-3 font-medium">来源</th>
+                <th class="px-5 py-3 font-medium">同步时间</th>
+                <th class="px-5 py-3 font-medium">状态</th>
+                <th class="px-5 py-3 text-right font-medium">操作</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+            @foreach (var item in list.Items)
+            {
+                <tr class="hover:bg-canvas/40">
+                    <td class="px-5 py-3">
+                        @if (item.NewsExists)
+                        {
+                            <a href="/Home/NewsRead/@item.NewsId" target="_blank" class="font-medium text-ink hover:text-brand">@item.Title</a>
+                            <div class="mt-0.5 text-xs text-muted">@(item.NewsDate?.ToString("yyyy-MM-dd") ?? "—")</div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">新闻已删除</span>
+                        }
+                        @if (!string.IsNullOrEmpty(item.SourceUrl))
+                        {
+                            <div class="mt-0.5 break-all text-xs"><a href="@item.SourceUrl" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-brand">公众号原文</a></div>
+                        }
+                    </td>
+                    <td class="px-5 py-3 text-muted">@WeChatSources.DisplayName(item.Source)</td>
+                    <td class="px-5 py-3 text-muted">@item.SyncedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="px-5 py-3">
+                        @if (item.IsHidden)
+                        {
+                            <span class="rounded-full bg-black/5 px-2 py-0.5 text-xs text-muted">已隐藏</span>
+                        }
+                        else
+                        {
+                            <span class="text-xs text-emerald-700">前台显示</span>
+                        }
+                        @if (item.IsPinned)
+                        {
+                            <span class="ml-1 rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">置顶</span>
+                        }
+                    </td>
+                    <td class="px-5 py-3">
+                        <div class="flex items-center justify-end gap-3">
+                            @if (item.NewsExists)
+                            {
+                                <a asp-controller="News" asp-action="Edit" asp-route-id="@item.NewsId" class="text-brand hover:underline">编辑</a>
+                                <form asp-action="Pin" asp-route-id="@item.RecordId" method="post" class="inline">
+                                    <input type="hidden" name="pinned" value="@((!item.IsPinned).ToString().ToLowerInvariant())" />
+                                    <input type="hidden" name="page" value="@list.Page" />
+                                    <button type="submit" class="text-muted hover:text-brand">@(item.IsPinned ? "取消置顶" : "置顶")</button>
+                                </form>
+                            }
+                            <form asp-action="Hide" asp-route-id="@item.RecordId" method="post" class="inline">
+                                <input type="hidden" name="hidden" value="@((!item.IsHidden).ToString().ToLowerInvariant())" />
+                                <input type="hidden" name="page" value="@list.Page" />
+                                <button type="submit" class="text-muted hover:text-brand">@(item.IsHidden ? "取消隐藏" : "隐藏")</button>
+                            </form>
+                            @if (!string.IsNullOrEmpty(item.SourceUrl))
+                            {
+                                <form asp-action="Reimport" asp-route-id="@item.RecordId" method="post" class="inline"
+                                      onsubmit="return confirm('重新抓取会覆盖这条新闻在后台的人工修改。继续？');">
+                                    <input type="hidden" name="page" value="@list.Page" />
+                                    <button type="submit" class="text-muted hover:text-brand">重新抓取</button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (list.Items.Count == 0)
+            {
+                <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无同步记录。在上方粘贴公众号文章链接开始导入。</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (list.TotalPages > 1)
+{
+    <div class="mt-5 flex items-center justify-center gap-2 text-sm">
+        @if (list.HasPrevious)
+        {
+            <a asp-action="Index" asp-route-page="@(list.Page - 1)" class="admin-btn-ghost px-3 py-1.5">上一页</a>
+        }
+        <span class="px-3 py-1.5 text-muted">第 @list.Page / @list.TotalPages 页</span>
+        @if (list.HasNext)
+        {
+            <a asp-action="Index" asp-route-page="@(list.Page + 1)" class="admin-btn-ghost px-3 py-1.5">下一页</a>
+        }
+    </div>
+}

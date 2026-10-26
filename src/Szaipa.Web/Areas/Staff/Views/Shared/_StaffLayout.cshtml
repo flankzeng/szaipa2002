@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "WeChat" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -44,6 +44,7 @@
                             </button>
                             <div class="invisible absolute left-0 top-full z-40 w-40 translate-y-1 rounded-xl border border-black/5 bg-white p-1.5 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
                                 <a asp-area="Staff" asp-controller="News" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">新闻</a>
+                                <a asp-area="Staff" asp-controller="WeChat" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">公众号同步</a>
                                 <a asp-area="Staff" asp-controller="ArtNews" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">艺术家动态</a>
                                 <a asp-area="Staff" asp-controller="Artist" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">会员管理</a>
                                 <a asp-area="Staff" asp-controller="Works" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">作品管理</a>

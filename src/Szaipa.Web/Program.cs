@@ -56,6 +56,12 @@ var configuration = configurationBuilder
     })
     .Build();
 
+// 公众号接口能力探测命令：dotnet run --project src/Szaipa.Web -- wechat-probe（探测后直接退出，不启动站点）。
+if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
+{
+    Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(configuration));
+}
+
 var persistentDataProtection = configuration
     .GetSection(PersistentDataProtectionOptions.SectionName)
     .Get<PersistentDataProtectionOptions>()
@@ -146,6 +152,7 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<ILegacyImagePreviewResolver, LegacyImagePreviewResolver>();
                 services.AddSingleton<IDerivedImageResolver, DerivedImageResolver>();
                 services.AddSingleton<IAdminAssetStorage, AdminAssetStorage>();
+                services.AddSingleton<Szaipa.Data.Services.WeChat.IWeChatImageStore, WeChatImageStore>();
                 services.AddSingleton<IExhibitionGalleryStorage, ExhibitionGalleryStorage>();
 
                 // Security-monitoring (Areas/Staff SecurityMonitoring): file-root paths resolved at startup,

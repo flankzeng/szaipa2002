@@ -26,6 +26,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<ExhibitionWork> ExhibitionWork => Set<ExhibitionWork>();
 
+    public DbSet<WeChatSyncRecord> WeChatSyncRecord => Set<WeChatSyncRecord>();
+
     public DbSet<Artist> Artist => Set<Artist>();
 
     public DbSet<Works> Works => Set<Works>();
@@ -59,6 +61,8 @@ public sealed class SzaipaLegacyReadContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.SortOrder).HasDefaultValue(0);
         });
+
+        modelBuilder.Entity<WeChatSyncRecord>(entity => WeChatSyncRecordModel.Configure(entity));
 
         modelBuilder.Entity<Artist>(entity =>
         {
