@@ -1,0 +1,15 @@
+@* 首页「核心成员 / 顾问团队」的人物卡片列表。数据来自 OrgMember（后台「组织架构」），缺表或无数据时由
+   IHomeBlocksProvider 回退 HomeBlocksDefaults（原手写内容）。输出结构沿用改造前的 a.member-item：
+   关联了艺术家 → 链接到 /Home/Art/{ArtistId}；未关联 → 同样的卡片，只是没有 href。 *@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@model IReadOnlyList<Szaipa.Data.Models.Home.OrgMemberModel>
+@foreach (var member in Model)
+{
+    var hasRole = !string.IsNullOrWhiteSpace(member.Role);
+    var hasTitle = !string.IsNullOrWhiteSpace(member.Title);
+    var avatarUrl = string.IsNullOrWhiteSpace(member.AvatarPath) ? null : ImagePreviewResolver.Resolve(member.AvatarPath);
+            <a class="member-item" href="@(member.ArtistId is { } artistId ? $"/Home/Art/{artistId}" : null)">
+                <div class="relative after">@if (avatarUrl is not null) {<img loading="lazy" decoding="async" src="@avatarUrl" width="@member.ImageWidth" height="@member.ImageHeight" alt="">}</div>
+                <p class="JhengBold">@member.Name@if (hasRole || hasTitle) {<br /><span class="JhengLight">@member.Role@(hasRole && hasTitle ? Html.Raw("&nbsp;|&nbsp;") : null)@member.Title</span>}</p>
+            </a>
+}

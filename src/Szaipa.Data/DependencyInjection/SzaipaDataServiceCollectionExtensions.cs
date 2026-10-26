@@ -191,6 +191,8 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<IArtistReadRepository, ArtistReadRepository>();
         services.AddScoped<IPublicationReadRepository, PublicationReadRepository>();
         services.AddScoped<ITongouReadRepository, TongouReadRepository>();
+        services.AddSingleton<HomeBlocksSchemaState>();
+        services.AddScoped<IHomeBlocksReadRepository, HomeBlocksReadRepository>();
 
         // Admin (write) services. Scoped alongside SzaipaAdminContext; only resolved on admin routes.
         services.AddScoped<IOperationRecorder, OperationRecorder>();
@@ -207,7 +209,6 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddScoped<ITongouAtristAdminRepository, TongouAtristAdminRepository>();
         services.AddScoped<ITongouWorksAdminRepository, TongouWorksAdminRepository>();
         services.AddScoped<IDashboardAnalyticsRepository, DashboardAnalyticsRepository>();
-
         // 微信公众号文章同步（T1）。HTTP 一律经 IHttpClientFactory 命名客户端，测试里可替换 handler；
         // IWeChatImageStore（把图片写进 ContentRoot）由宿主 Szaipa.Web 注册。定时同步仅在
         // WeChat:Enabled + 凭据齐全 + AdminWrite 已配置时才会真正工作，否则启动即静默退出。
@@ -225,6 +226,9 @@ public static class SzaipaDataServiceCollectionExtensions
         services.AddSingleton<WeChatImportQueue>();
         services.AddHostedService<WeChatCallbackImportWorker>();
         services.AddHostedService<WeChatSyncBackgroundService>();
+        services.AddScoped<IOrgMemberAdminRepository, OrgMemberAdminRepository>();
+        services.AddScoped<ISaleWorkAdminRepository, SaleWorkAdminRepository>();
+        services.AddScoped<IPartnerAdminRepository, PartnerAdminRepository>();
         return services;
     }
 

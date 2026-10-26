@@ -1,0 +1,62 @@
+@model SaleWorkFormViewModel
+
+<div asp-validation-summary="All" class="mb-4 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand empty:hidden"></div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="lg:col-span-1">
+        <label class="admin-label">作品图片</label>
+        <div class="rounded-xl border border-dashed border-black/15 bg-white p-3 text-center"
+             data-upload-field data-store="url" data-upload-url="/Staff/Upload/Image?folder=ArtImg/selling" data-target="ImagePath"
+             data-dims-width="ImageWidth" data-dims-height="ImageHeight">
+            <div data-upload-trigger class="cursor-pointer rounded-lg px-4 py-8 text-sm text-muted hover:text-brand">
+                点击上传作品图<br /><span class="text-xs">请上传原图；首页自动使用压缩预览，放大镜才加载原图</span>
+            </div>
+            <img data-upload-preview src="@Model.ImagePath" alt="作品预览"
+                 class="mx-auto mt-2 max-h-56 rounded @(string.IsNullOrEmpty(Model.ImagePath) ? "hidden" : "")" />
+            <div data-upload-status class="mt-1 text-xs text-muted"></div>
+        </div>
+        <input type="hidden" asp-for="ImagePath" />
+        <input type="hidden" asp-for="ImageWidth" />
+        <input type="hidden" asp-for="ImageHeight" />
+        <span asp-validation-for="ImagePath" class="mt-1 block text-xs text-brand"></span>
+    </div>
+
+    <div class="space-y-4 lg:col-span-2">
+        <div>
+            <label asp-for="ArtistId" class="admin-label"></label>
+            <select asp-for="ArtistId" class="admin-input" data-artist-select data-fill-name="ArtistName">
+                <option value="">（不关联：标题不带链接）</option>
+                @foreach (var artist in Model.ArtistOptions)
+                {
+                    <option value="@artist.Id" data-name="@artist.Name">@artist.Name</option>
+                }
+            </select>
+            <span asp-validation-for="ArtistId" class="mt-1 block text-xs text-brand"></span>
+            <p class="mt-1 text-xs text-muted">关联后，首页「某某 作品」会链接到该艺术家官网的作品位置。</p>
+        </div>
+        <div>
+            <label asp-for="ArtistName" class="admin-label"></label>
+            <input asp-for="ArtistName" class="admin-input" placeholder="首页显示为「艺术家名 作品」" autocomplete="off" />
+            <span asp-validation-for="ArtistName" class="mt-1 block text-xs text-brand"></span>
+        </div>
+        <div>
+            <label asp-for="Title" class="admin-label"></label>
+            <input asp-for="Title" class="admin-input" placeholder="不用加书名号，例：冲气" autocomplete="off" />
+            <span asp-validation-for="Title" class="mt-1 block text-xs text-brand"></span>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label asp-for="Size" class="admin-label"></label>
+                <input asp-for="Size" class="admin-input" placeholder="例：85x58cm" autocomplete="off" />
+            </div>
+            <div>
+                <label asp-for="Medium" class="admin-label"></label>
+                <input asp-for="Medium" class="admin-input" placeholder="例：纸本设色" autocomplete="off" />
+            </div>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-ink/80">
+            <input asp-for="IsVisible" type="checkbox" class="h-4 w-4 rounded border-black/20 text-brand focus:ring-brand/30" />
+            在首页显示
+        </label>
+    </div>
+</div>

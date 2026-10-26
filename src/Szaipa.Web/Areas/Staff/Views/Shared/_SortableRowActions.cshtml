@@ -1,0 +1,22 @@
+@* 组织架构 / 在售作品 / 合作伙伴 三个列表共用的操作列：上移、下移、显示/隐藏、编辑、删除。
+   所有写操作都是 POST + 防伪令牌（form tag helper 自动附带），落在各自控制器的 Move / Visible / Delete。 *@
+@model SortableRowActionsModel
+<div class="flex items-center justify-end gap-3">
+    <form asp-action="Move" asp-route-id="@Model.Id" method="post" class="inline">
+        <input type="hidden" name="direction" value="up" />
+        <button type="submit" title="上移" class="text-muted hover:text-brand" disabled="@(Model.CanMoveUp ? null : "disabled")">▲</button>
+    </form>
+    <form asp-action="Move" asp-route-id="@Model.Id" method="post" class="inline">
+        <input type="hidden" name="direction" value="down" />
+        <button type="submit" title="下移" class="text-muted hover:text-brand" disabled="@(Model.CanMoveDown ? null : "disabled")">▼</button>
+    </form>
+    <form asp-action="Visible" asp-route-id="@Model.Id" method="post" class="inline">
+        <input type="hidden" name="visible" value="@(Model.IsVisible ? "false" : "true")" />
+        <button type="submit" class="text-muted hover:text-brand">@(Model.IsVisible ? "隐藏" : "显示")</button>
+    </form>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="text-brand hover:underline">编辑</a>
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="inline"
+          data-confirm="@Model.DeletePrompt" onsubmit="return confirm(this.dataset.confirm);">
+        <button type="submit" class="text-muted hover:text-brand">删除</button>
+    </form>
+</div>
