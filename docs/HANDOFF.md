@@ -2,7 +2,42 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-26 第二轮，Claude 集成验收后交付候选）
+## 最新交接（2026-10-26 第三轮：现场编辑 + 会员风采排序，按 5% 额度规则停止）
+
+### 当前基线
+- 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `83e9dee`**（之后仅文档提交）。测试 **661 全绿**（Data 389 + Web 272）；SQL 汇总 **9 份来源**一致（新增 `site-text.sql`、`vip-order.sql`）。
+- 交付包：`artifacts/szaipa-automation-83e9dee-win-x64.zip`，**27,170,654 B**，SHA-256 `790bb7622cb5dfd8451319c5f659ccc6a7afd48f3d8c1a87a623da0b37e5bbf7`；清单 `artifacts/publish-win-x64-83e9dee.manifest.json`（220 文件，审计通过）。旧包 1f51e81 作废。
+- 本轮记录：`docs/updates/2026-10-26-live-edit.md`、`2026-10-26-vip-order.md`。
+
+### 本轮完成
+- **T6 现场编辑核心**（`4d06828`）：后台导航「现场编辑」→ 微缩官网（手机/平板/电脑），点虚线框文字直接改、富文本弹窗、立即保存+操作记录；访客页面零变化；白名单 `LiveEditRegistry` + 新表 `SiteText`。浏览器实测：首页标题、新闻标题、新闻正文（含 12 张图保留）三类编辑均成功（测试数据已还原）。
+- **T7 会员风采排序**（`05ec21f` 合入 `a05823a`）：`/Staff/VipOrder` 拖拽/▲▼/显隐，Vip 页按序显示，缺表回退。
+
+### 下一位 agent 要做（T6 剩余：给其余页面加编辑标记，纯视图工作）
+模式见 `docs/PROJECT_MAP.md`「现场编辑」节与已接入的 `Views/Home/Index.cshtml`、`Views/Shared/_HomeMemberItems.cshtml`、`Views/Home/NewsRead.cshtml`：
+1. `About.cshtml`：简介段落 → `@LiveEdit.Lines("about.xxx", "原文")`；合作伙伴名称/简介 → `@LiveEdit.Field("Partner", p.Id, ...)`（`PartnerModel.Id` 已有）。
+2. `News.cshtml`（新闻列表）：标题/摘要 → `Field("News", ...)`。
+3. `Art.cshtml` / `ArtArchive.cshtml`：艺术家姓名/职务/简介（Field Artist）、事迹 `DeedsThings` 容器加 `Attr`（富文本）、作品名 `Works.Title`、出版著作（ArtistBook）。
+4. `Views/Shared/_ExhibitionGallery.cshtml` / `_ExhibitionImportant.cshtml` / `_ExhibitionTopic.cshtml`：展览中英文标题、序言、落款、地点、主办承办（Field Publication）；注意兼容目录展览（固定 id 92001–92015，数据库无行）不可编辑，需判断行真实存在（读模型若无此标志，可只在 Id 不在 92001–92015 时输出）。
+5. `Vip.cshtml`：卡片姓名/头衔（Field Artist）。`Constitution.cshtml`：章程正文较长，建议按段落 `@LiveEdit.Lines("constitution.pN", ...)`，或暂不接入。
+6. 每接一页：普通访客 HTML 必须与改动前一致（`curl` 对比，`grep -c data-le-` 应为 0）；编辑态在浏览器实测一次保存；`~/.dotnet/dotnet test` 全绿；重建发布包并更新本节。
+
+### 其他待办
+- 用户：按 `docs/wechat-setup-guide.md` 配公众号凭据 → 运行 `wechat-probe`；生产执行 `docs/sql/2026-10-26-automation-deploy.sql`；按 `docs/automation-rollout.md` 部署。IIS 不能对本站加 `X-Frame-Options: DENY`（现场编辑预览需同源 iframe，至多 `SAMEORIGIN`）。
+- 可选：现场编辑支持换图（目前只改文字）；SiteText 改动历史/撤销。
+
+### 本机续测
+- 主镜像 `.local-db/` 已手工建 `SiteText` 表（未重跑 mirror-sync，样本 Artist 1053 / Publication 2 / News 1126、1127 仍在）；`ArtistDisplay` 表未建（Vip 走回退）。如重跑 `mirror-sync` 会按最新模型建全表但丢样本。
+- 启动：`LocalMirror__Enabled=true LegacyAssets__ContentRoot=/var/folders/jr/yvdkbjjd7czcsljyhxtvf96r0000gn/T/szaipa-epic-assets-w0anexd9/Content ~/.dotnet/dotnet run --project src/Szaipa.Web --urls http://127.0.0.1:5070`，后台 debug/debug，导航「现场编辑」。
+
+### 可粘贴给下一位 agent（Claude Code / Codex 通用）
+```text
+接手 szaipa2002「后台自动化」Epic。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md（含「现场编辑」节）→ TASKS.md → HANDOFF.md 顶部最新交接。T0–T5、T7 已完成，T6 现场编辑核心已完成并在首页/新闻详情接入；你的任务是按 HANDOFF「下一位 agent 要做」给关于我们、新闻列表、艺术家官网/档案、展览、会员风采等页面加现场编辑标记，逐页保证访客 HTML 不变并在浏览器实测保存，最后全量测试、重建发布包、更新 HANDOFF。生产只读，写只在本地 SQLite 镜像；上传用 HANDOFF 里的临时 Content。中文 commit 与 docs/updates 文档。5 小时额度剩 5% 时停下更新交接。
+```
+
+---
+
+## 上一轮交接（2026-10-26 第二轮，Claude 集成验收后交付候选）
 
 ### 当前基线
 - 分支 `codex-refactor-dotnet-modernization`。**发布包对应源码 `1f51e81da3f30113a63be9178c776701ef144e42`**；之后的提交只改文档（看板/交接）。
