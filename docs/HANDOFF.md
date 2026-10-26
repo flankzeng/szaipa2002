@@ -26,6 +26,7 @@
 - **生产 Publication 表是 0 行**；前台展览全部来自 `LegacyPublicationGalleryCatalog` 兼容目录（固定 id 92001–92015）+ 三个手写专题页 + 首页硬编码。T2 的「首页推荐」必须能指向兼容目录里的展览和三个手写页 URL，并在执行/未执行 slug 迁移 SQL 两种状态下都正确。
 - **T1 公众号现实**：主体「其他组织」、**未认证**；有 AppID/AppSecret、IP 白名单，token 正常（2000 次/天）。要同步的是**群发**文章；freepublish 只含「发布」记录，与群发历史不相通。方案＝批量链接导入（主通道，补全历史）+ freepublish/永久图文素材接口（按能力启用）+ 群发完成事件回调（默认关，启用会使编辑模式自动回复/菜单失效）+ `wechat-probe` 探测命令；去重键 = 文章页解析出的 biz+mid+idx。**文章填入现有 News 表与现有版式**（详情左正文、右近 3 期推荐），不照搬公众号整页；旧手录新闻列表隐藏、URL 保留。
 - **T4 裁切组件**：`wwwroot/admin/image-cropper.js`（Cropper.js + canvas 灰度，原图另存），T4 合并后要由集成者接到 T3 的 OrgMember 头像表单（`Areas/Staff/Views/OrgMember/_Form.cshtml`，T3 用的是 `upload-field` + `home-block-form.js`）。
+- **T2 状态（WIP c87c37c，已含 T0 合并）**：build 0 error、465 测试绿。已完成：状态计算器 `PublicationLifecycleCalculator`（新语义：`Status` true=按日期自动、false=强制已结束、null=下架；依据 legacy 首页「近期/过往」三态用法与 slug SQL 全写 0 的事实）、PublicationList 按状态分组并并入 14 个兼容展览、首页推荐独立表 `FeaturedExhibition`（靠 LinkUrl，可指向手写专题页）+ #section02/#section07 数据化、专题页 `PublicationBlock`+`_ExhibitionTopic.cshtml`+`exhibition-topic.css`、`RichTextSanitizer`、缺表探测改按 SQL 错误号 207/208（生产错误信息是中文，原英文匹配会漏——顺带修了旧的 Type/ExhibitionWork 探测）。生产只读实测首页/展览页字节级一致。**剩余 7 步在 commit 正文**：后台展览列表/表单接线、`block-manager.js` 块编辑器、首页推荐后台模块、封面回退、SQL 脚本（含 4 条推荐种子）、文档、镜像端到端。
 - **T4 状态（WIP 8e88857）**：只完成数据层（`Works.Sort`、`Artist.HideDefaultExhibitions`、新表 `ArtistPublication`、`ArtistSiteAdminRepository`、`AdminAssetStorage` 原图存取、cropperjs@1.6.2 依赖），build 0 error 但**测试未跑**；视图/JS/裁切组件/总览页/Art.cshtml/SQL/文档/单测都未做，8 步剩余清单在该 commit 正文里。⚠️ 风险：`Works.Sort`、`Artist.HideDefaultExhibitions` 是实体列，**未执行 SQL 的后台库上 Works/Artist 模块会报错**——补完时要么给后台写路径也加缺列降级，要么在上线手册里写明「必须先执行 SQL 再部署」。该 worktree 的 node_modules 是真实拷贝（含 cropperjs），不是软链。
 - 合并任何带新实体的分支后**重跑 `mirror-sync`**（镜像表结构来自 admin 上下文）。T3 的三张表在镜像里是空表，走数据路径需灌种子（SQLite 转换规则见 T3 update 文档）。
 - `admin.css` 冲突不要手解，合并后重跑 `cd src/Szaipa.Web && npm run build`。
@@ -37,6 +38,7 @@
 ### 用户待办
 - 公众号凭据：在 Mac 上 `cd src/Szaipa.Web && dotnet user-secrets set "WeChat:AppId" …` / `"WeChat:AppSecret" …`（不要贴到聊天）；跑 `wechat-probe` 前把本机公网 IP 临时加入公众号 IP 白名单（或部署后在服务器上探测）。
 - 上线前在生产执行本 Epic 的 SQL（T5 会汇总成一份）。
+- **待确认**：首页硬编码里「漫MAN」展览结束日期写的是 05.28，兼容目录/迁移 SQL 里是 05.30，以哪个为准？（T2 种子暂按首页原文）
 
 ### 粘贴用 prompt（新 session，Claude Code / Codex 通用）
 ```
