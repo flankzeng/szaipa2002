@@ -1,11 +1,132 @@
 @model Szaipa.Web.Areas.Staff.Models.ArtistSiteViewModel
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-@{ ViewData["Title"] = $"{Model.Overview.Artist.ArtistNameCN} 官网"; var a=Model.Overview.Artist; }
-<div class="mb-6 flex flex-wrap items-center justify-between gap-3"><div><a asp-controller="Artist" asp-action="Index" class="text-sm text-muted hover:text-brand">← 会员管理</a><h1 class="mt-2 text-2xl font-bold text-ink">@a.ArtistNameCN · 官网总览</h1></div><a asp-controller="Artist" asp-action="Edit" asp-route-id="@a.Id" class="admin-btn-primary">编辑基本信息</a></div>
-@if (!Model.Overview.WorksSortSupported || !Model.Overview.ExhibitionLinksSupported || !Model.Overview.DefaultExhibitionFlagSupported) { <div class="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">后台数据库缺少艺术家官网升级字段或关联表；作品排序/展讯编辑已安全停用。执行 <code>docs/sql/2026-10-26-artist-site.sql</code> 后可启用。</div> }
-<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">@foreach(var item in new[]{("作品",Model.Overview.WorkCount,"Works"),("资讯",Model.Overview.NewsCount,"ArtNews"),("收藏",Model.Overview.FavCount,"Fav"),("拍卖",Model.Overview.AuctionCount,"Auction"),("展览",Model.Overview.ExhibitionRowCount,"Exhibition")}) { <a class="rounded-xl border border-black/5 bg-white p-4 hover:border-brand/30" href="/Staff/@item.Item3?artistId=@a.Id"><div class="text-xs text-muted">@item.Item1</div><div class="mt-1 text-2xl font-semibold">@item.Item2</div><span class="text-xs text-brand">进入管理 →</span></a> }</div>
-<section class="mb-6 rounded-2xl border border-black/5 bg-white p-5"><h2 class="mb-3 text-lg font-semibold">横幅与配色预览</h2><div id="artist-banner-preview" class="flex min-h-44 items-center rounded-xl bg-cover bg-center p-8 text-white" style="background-image:linear-gradient(120deg,@a.Color1,@a.Color2),url('/Content/ArtImg/Artist/Banner/@a.Path1');background-blend-mode:multiply"><div><div class="text-3xl font-bold">@a.ArtistNameCN</div><div>@a.ArtistNameEN</div></div></div><div class="mt-4 grid max-w-lg grid-cols-2 gap-3"><label class="text-sm">渐变色 1<input id="preview-color1" type="color" value="@a.Color1" class="mt-1 h-10 w-full rounded border"></label><label class="text-sm">渐变色 2<input id="preview-color2" type="color" value="@a.Color2" class="mt-1 h-10 w-full rounded border"></label></div><p class="mt-2 text-xs text-muted">颜色选择会即时预览；保存请进入基本信息编辑。</p></section>
-<section class="mb-6 rounded-2xl border border-black/5 bg-white p-5"><h2 class="mb-3 text-lg font-semibold">作品集（可批量上传）</h2><form method="post" enctype="multipart/form-data" action="/Staff/Artist/@a.Id/Site/Works/Upload"><input name="__RequestVerificationToken" type="hidden" value="@Antiforgery.GetAndStoreTokens(Context).RequestToken"/><input type="file" name="files" accept="image/*" multiple class="admin-input"><button class="admin-btn-primary mt-3">上传并加入作品集</button></form>@if(!Model.Works.SortSupported){<p class="mt-3 text-sm text-amber-800">缺少 Works.Sort，作品仍按旧顺序显示，排序已停用。</p>}<ol id="artist-work-list" class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">@foreach(var w in Model.Works.Items){<li draggable="@(Model.Works.SortSupported ? "true" : "false")" data-work-id="@w.Id" class="rounded-lg border p-3"><img class="mb-2 aspect-square w-full rounded object-cover" src="/Content/ArtImg/Artist/works-narrow/@w.Path" alt=""><div class="text-sm">@w.Title</div><small class="text-muted">顺序 @w.Sort · 拖动可排序</small></li>}</ol></section>
-<section class="rounded-2xl border border-black/5 bg-white p-5"><h2 class="mb-3 text-lg font-semibold">展讯</h2>@if(Model.Exhibitions.Supported && Model.Overview.DefaultExhibitionFlagSupported){<form method="post" action="/Staff/Artist/@a.Id/Site/Exhibitions"><input name="__RequestVerificationToken" type="hidden" value="@Antiforgery.GetAndStoreTokens(Context).RequestToken"><label class="mb-3 flex gap-2 text-sm"><input type="checkbox" name="hideDefaultExhibitions" value="true" checked="@(Model.Exhibitions.HideDefaultExhibitions ? "checked" : null)">隐藏旧模板默认的三张展讯</label><p class="mb-2 text-xs text-muted">勾选的展讯按下方列表顺序展示，可使用 ↑↓ 调整。</p><div id="publication-options" class="grid gap-2 sm:grid-cols-2">@foreach(var p in Model.Publications){var selected=Model.Exhibitions.Linked.Any(x=>x.Id==p.Id);<label class="flex items-center gap-2 rounded border p-3 text-sm" data-publication-row><input type="checkbox" name="publicationIds" value="@p.Id" checked="@(selected ? "checked" : null)"><span class="flex-1">@p.Title (@p.StartDate?.ToString("yyyy.MM.dd"))</span><button type="button" data-move="up">↑</button><button type="button" data-move="down">↓</button></label>}</div><button class="admin-btn-primary mt-3">保存展讯</button></form>}else{<p class="text-sm text-amber-800">后台表结构尚未升级，显示仍回退到手工展讯与旧模板。</p>}</section>
 
-@section Scripts { <script>document.addEventListener("DOMContentLoaded",function(){const p=document.getElementById("artist-banner-preview"),a=document.getElementById("preview-color1"),b=document.getElementById("preview-color2");function sync(){p.style.backgroundImage=`linear-gradient(120deg,${a.value},${b.value}),url('/Content/ArtImg/Artist/Banner/@a.Path1')`;};a.addEventListener("input",sync);b.addEventListener("input",sync);const list=document.getElementById("artist-work-list");if(list){let dragging=null;list.addEventListener("dragstart",e=>{const li=e.target.closest("[data-work-id]");if(li)dragging=li;});list.addEventListener("dragover",e=>{e.preventDefault();const li=e.target.closest("[data-work-id]");if(li&&dragging&&li!==dragging){const box=li.getBoundingClientRect();list.insertBefore(dragging,e.clientY<box.top+box.height/2?li:li.nextSibling);}});list.addEventListener("drop",async e=>{e.preventDefault();const token=document.querySelector("input[name=__RequestVerificationToken]")?.value;const ids=[...list.querySelectorAll("[data-work-id]")].map(x=>Number(x.dataset.workId));const response=await fetch("/Staff/Artist/@a.Id/Site/Works/Reorder",{method:"POST",headers:{"Content-Type":"application/json","RequestVerificationToken":token},body:JSON.stringify(ids)});if(!response.ok)alert("排序保存失败，请刷新后重试。");});}document.querySelectorAll("[data-move]").forEach(button=>button.addEventListener("click",()=>{const row=button.closest("[data-publication-row]");const parent=row.parentElement;if(button.dataset.move==="up"&&row.previousElementSibling)parent.insertBefore(row,row.previousElementSibling);if(button.dataset.move==="down"&&row.nextElementSibling)parent.insertBefore(row.nextElementSibling,row);}));});</script> }
+@{
+    ViewData["Title"] = $"{Model.Overview.Artist.ArtistNameCN} 官网";
+    var artist = Model.Overview.Artist;
+    var token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var bannerUrl = $"/Content/ArtImg/Artist/Banner/{artist.Path1}";
+    var reorderUrl = $"/Staff/Artist/{artist.Id}/Site/Works/Reorder";
+}
+
+<div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <div>
+        <a asp-controller="Artist" asp-action="Index" class="text-sm text-muted hover:text-brand">← 会员管理</a>
+        <h1 class="mt-2 text-2xl font-bold text-ink">@artist.ArtistNameCN · 官网总览</h1>
+    </div>
+    <a asp-controller="Artist" asp-action="Edit" asp-route-id="@artist.Id" class="admin-btn-primary">编辑基本信息</a>
+</div>
+
+@if (!Model.Overview.WorksSortSupported || !Model.Overview.ExhibitionLinksSupported || !Model.Overview.DefaultExhibitionFlagSupported)
+{
+    <div class="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        后台数据库缺少艺术家官网升级字段或关联表；作品排序/展讯编辑已安全停用。执行
+        <code>docs/sql/2026-10-26-artist-site.sql</code> 后可启用。
+    </div>
+}
+
+<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+    @foreach (var item in new[]
+    {
+        ("作品", Model.Overview.WorkCount, "Works"),
+        ("资讯", Model.Overview.NewsCount, "ArtNews"),
+        ("收藏", Model.Overview.FavCount, "Fav"),
+        ("拍卖", Model.Overview.AuctionCount, "Auction"),
+        ("展览", Model.Overview.ExhibitionRowCount, "Exhibition")
+    })
+    {
+        <a class="rounded-xl border border-black/5 bg-white p-4 hover:border-brand/30" href="/Staff/@item.Item3?artistId=@artist.Id">
+            <div class="text-xs text-muted">@item.Item1</div>
+            <div class="mt-1 text-2xl font-semibold">@item.Item2</div>
+            <span class="text-xs text-brand">进入管理 →</span>
+        </a>
+    }
+</div>
+
+<section class="mb-6 rounded-2xl border border-black/5 bg-white p-5">
+    <h2 class="mb-3 text-lg font-semibold">横幅与配色预览</h2>
+    <div id="artist-banner-preview"
+         data-banner-url="@bannerUrl"
+         class="flex min-h-44 items-center rounded-xl bg-cover bg-center p-8 text-white"
+         style="background-image:linear-gradient(120deg,@artist.Color1,@artist.Color2),url('@bannerUrl');background-blend-mode:multiply">
+        <div>
+            <div class="text-3xl font-bold">@artist.ArtistNameCN</div>
+            <div>@artist.ArtistNameEN</div>
+        </div>
+    </div>
+    <div class="mt-4 grid max-w-lg grid-cols-2 gap-3">
+        <label class="text-sm">渐变色 1
+            <input id="preview-color1" type="color" value="@artist.Color1" class="mt-1 h-10 w-full rounded border">
+        </label>
+        <label class="text-sm">渐变色 2
+            <input id="preview-color2" type="color" value="@artist.Color2" class="mt-1 h-10 w-full rounded border">
+        </label>
+    </div>
+    <p class="mt-2 text-xs text-muted">颜色选择会即时预览；保存请进入基本信息编辑。</p>
+</section>
+
+<section class="mb-6 rounded-2xl border border-black/5 bg-white p-5">
+    <h2 class="mb-3 text-lg font-semibold">作品集（可批量上传）</h2>
+    <form method="post" enctype="multipart/form-data" action="/Staff/Artist/@artist.Id/Site/Works/Upload">
+        <input name="__RequestVerificationToken" type="hidden" value="@token">
+        <input type="file" name="files" accept="image/*" multiple class="admin-input">
+        <button class="admin-btn-primary mt-3">上传并加入作品集</button>
+    </form>
+    @if (!Model.Works.SortSupported)
+    {
+        <p class="mt-3 text-sm text-amber-800">缺少 Works.Sort，作品仍按旧顺序显示，排序已停用。</p>
+    }
+    <ol id="artist-work-list"
+        data-reorder-url="@reorderUrl"
+        class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        @foreach (var work in Model.Works.Items)
+        {
+            <li draggable="@(Model.Works.SortSupported ? "true" : "false")"
+                data-work-id="@work.Id"
+                class="rounded-lg border p-3">
+                <img class="mb-2 aspect-square w-full rounded object-cover"
+                     src="/Content/ArtImg/Artist/works-narrow/@work.Path" alt="">
+                <div class="text-sm">@work.Title</div>
+                <small class="text-muted">顺序 @work.Sort · 拖动可排序</small>
+            </li>
+        }
+    </ol>
+</section>
+
+<section class="rounded-2xl border border-black/5 bg-white p-5">
+    <h2 class="mb-3 text-lg font-semibold">展讯</h2>
+    @if (Model.Exhibitions.Supported && Model.Overview.DefaultExhibitionFlagSupported)
+    {
+        <form method="post" action="/Staff/Artist/@artist.Id/Site/Exhibitions">
+            <input name="__RequestVerificationToken" type="hidden" value="@token">
+            <label class="mb-3 flex gap-2 text-sm">
+                <input type="checkbox" name="hideDefaultExhibitions" value="true"
+                       checked="@(Model.Exhibitions.HideDefaultExhibitions ? "checked" : null)">
+                隐藏旧模板默认的三张展讯
+            </label>
+            <p class="mb-2 text-xs text-muted">勾选的展讯按下方列表顺序展示，可使用 ↑↓ 调整。</p>
+            <div id="publication-options" class="grid gap-2 sm:grid-cols-2">
+                @foreach (var publication in Model.Publications)
+                {
+                    var selected = Model.Exhibitions.Linked.Any(item => item.Id == publication.Id);
+                    <label class="flex items-center gap-2 rounded border p-3 text-sm" data-publication-row>
+                        <input type="checkbox" name="publicationIds" value="@publication.Id"
+                               checked="@(selected ? "checked" : null)">
+                        <span class="flex-1">@publication.Title (@publication.StartDate?.ToString("yyyy.MM.dd"))</span>
+                        <button type="button" data-move="up">↑</button>
+                        <button type="button" data-move="down">↓</button>
+                    </label>
+                }
+            </div>
+            <button class="admin-btn-primary mt-3">保存展讯</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-sm text-amber-800">后台表结构尚未升级，显示仍回退到手工展讯与旧模板。</p>
+    }
+</section>
+
+@section Scripts {
+    <script src="~/admin/artist-site.js" defer></script>
+}
