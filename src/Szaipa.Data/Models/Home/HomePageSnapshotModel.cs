@@ -16,6 +16,13 @@ public sealed class HomePageSnapshotModel
     public required IReadOnlyList<PublicationSummaryModel> FeaturedPublications { get; init; }
 
     /// <summary>
+    /// 后台勾选「首页推荐」的展览（已按 FeaturedSort 排序）。由 <c>HomeController.Index</c> 通过
+    /// <c>IPublicationReadRepository.GetHomeFeaturedAsync</c> 单独填充；旧库缺列 / 没有推荐数据时为空，
+    /// 首页回退到原有硬编码展览块。
+    /// </summary>
+    public IReadOnlyList<FeaturedExhibitionModel> FeaturedExhibitions { get; set; } = Array.Empty<FeaturedExhibitionModel>();
+
+    /// <summary>
     /// Legacy newIndex section06 renders rows flagged <c>Important</c> as featured blocks
     /// (cover image + trimmed subtitle + CTA). Per the legacy <c>newslist</c> rule, null counts as featured
     /// (<c>!= false</c>). Order is preserved from <see cref="LatestNews"/>.

@@ -17,6 +17,7 @@
         <select asp-for="Type" class="admin-input">
             <option value="0">普通（标题 + 画廊）</option>
             <option value="1">重要（banner + 序 + 画廊）</option>
+            <option value="2">专题（积木拼装）</option>
         </select>
     </div>
     <div>
@@ -35,9 +36,9 @@
     <div>
         <label asp-for="Status" class="admin-label"></label>
         <select asp-for="Status" class="admin-input">
-            <option value="true">进行中</option>
-            <option value="false">已结束</option>
-            <option value="">隐藏</option>
+            <option value="true">按日期自动</option>
+            <option value="false">强制已结束</option>
+            <option value="">下架</option>
         </select>
     </div>
     <div>
@@ -55,6 +56,16 @@
     <div>
         <label asp-for="xieban" class="admin-label"></label>
         <input asp-for="xieban" class="admin-input" autocomplete="off" />
+    </div>
+</div>
+
+<div class="mt-6 rounded-xl border border-brand/15 bg-brand/5 p-4" data-topic-editor hidden>
+    <h2 class="mb-3 font-semibold text-ink">专题页设置</h2>
+    <div class="grid gap-3 sm:grid-cols-2"><div><label asp-for="ThemeColor" class="admin-label"></label><input asp-for="ThemeColor" type="color" class="admin-input h-11" value="@(Model.ThemeColor ?? "#bf272d")" /></div><div><label asp-for="BannerPath" class="admin-label"></label><input asp-for="BannerPath" class="admin-input" placeholder="/Content/images/.../banner.jpg" /></div></div>
+    <div class="mt-4" data-block-manager>
+        <input type="hidden" asp-for="BlocksJson" />
+        <div class="mb-3 flex flex-wrap gap-2"><select data-block-type class="admin-input max-w-xs"><option value="banner">横幅</option><option value="preface">序言</option><option value="richtext">富文本</option><option value="works">作品目录</option><option value="gallery">图库</option><option value="video">视频</option><option value="quote">引言</option></select><button type="button" data-block-add class="admin-btn-ghost">＋ 添加积木</button></div>
+        <div data-block-list class="space-y-3"></div>
     </div>
 </div>
 

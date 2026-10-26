@@ -6,6 +6,17 @@ namespace Szaipa.Web.Tests;
 
 public sealed class LegacyPublicationGalleryCatalogTests
 {
+    [Fact]
+    public void Compatibility_catalog_uses_confirmed_mannman_end_date_and_gallery_cover()
+    {
+        var man = Assert.Single(LegacyPublicationGalleryCatalog.GetAllSummaries(), item => item.Id == 92009);
+
+        Assert.Equal(new DateTime(2024, 5, 28), man.EndDate);
+        Assert.Equal("10001.jpg", man.CoverPath);
+        Assert.Equal(Szaipa.Data.Composition.PublicationLifecycle.Ended,
+            Szaipa.Data.Composition.PublicationLifecycleCalculator.Compute(man.Status, man.StartDate, man.EndDate, new DateTime(2024, 5, 29)));
+    }
+
     public static TheoryData<int, int, string, string> MigratedGalleries => new()
     {
         { 92001, 30, "/Content/images/tonggouEurope/100000.jpg", "/Content/images/tonggouEurope/100029.jpg" },

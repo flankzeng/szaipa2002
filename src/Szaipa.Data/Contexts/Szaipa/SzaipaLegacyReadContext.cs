@@ -28,6 +28,10 @@ public sealed class SzaipaLegacyReadContext : DbContext
 
     public DbSet<WeChatSyncRecord> WeChatSyncRecord => Set<WeChatSyncRecord>();
 
+    public DbSet<PublicationBlock> PublicationBlock => Set<PublicationBlock>();
+
+    public DbSet<FeaturedExhibition> FeaturedExhibition => Set<FeaturedExhibition>();
+
     public DbSet<Artist> Artist => Set<Artist>();
 
     public DbSet<Works> Works => Set<Works>();
@@ -70,6 +74,24 @@ public sealed class SzaipaLegacyReadContext : DbContext
         });
 
         modelBuilder.Entity<WeChatSyncRecord>(entity => WeChatSyncRecordModel.Configure(entity));
+
+        modelBuilder.Entity<PublicationBlock>(entity =>
+        {
+            entity.ToTable("PublicationBlock");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SortOrder).HasDefaultValue(0);
+            entity.Property(e => e.BlockType).HasMaxLength(30);
+        });
+
+        modelBuilder.Entity<FeaturedExhibition>(entity =>
+        {
+            entity.ToTable("FeaturedExhibition");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.SortOrder).HasDefaultValue(0);
+            entity.Property(e => e.IsVisible).HasDefaultValue(true);
+            entity.Property(e => e.ShowInCarousel).HasDefaultValue(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
+        });
 
         modelBuilder.Entity<Artist>(entity =>
         {

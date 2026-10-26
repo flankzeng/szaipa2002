@@ -52,6 +52,35 @@ public class HomeController : Controller
         {
             var newsRepository = HttpContext.RequestServices.GetRequiredService<INewsReadRepository>();
             var snapshot = await newsRepository.GetHomePageSnapshotAsync(cancellationToken);
+
+            // 首页推荐展览（后台勾选）。仓储内部已对旧库缺列降级为空列表，此时 Index 视图回退到原硬编码展览块。
+            var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
+            var recommendations = (await publicationRepository.GetHomeFeaturedAsync(cancellationToken)).ToList();
+            var legacySummaries = LegacyPublicationGalleryCatalog.GetAllSummaries().ToDictionary(item => item.Id);
+            foreach (var recommendation in recommendations)
+            {
+                if (TryGetPublicationId(recommendation.LinkUrl, out var publicationId))
+                {
+                    // DB rows take precedence, then the retired-slug compatibility catalog.
+                    var linked = await publicationRepository.GetPublicationByIdAsync(publicationId, cancellationToken);
+                    if (linked is not null)
+                    {
+                        recommendation.Lifecycle = linked.GetLifecycle(DateTime.Today);
+                        continue;
+                    }
+
+                    if (legacySummaries.TryGetValue(publicationId, out var legacy))
+                    {
+                        recommendation.Lifecycle = legacy.GetLifecycle(DateTime.Today);
+                        continue;
+                    }
+                }
+
+                recommendation.Lifecycle = Szaipa.Data.Composition.PublicationLifecycleCalculator.Compute(
+                    recommendation.Status, recommendation.StartDate, recommendation.EndDate, DateTime.Today);
+            }
+
+            snapshot.FeaturedExhibitions = recommendations;
             return View("Index", snapshot);
         }
 
@@ -60,6 +89,15 @@ public class HomeController : Controller
             LatestNews = Array.Empty<Szaipa.Data.Models.Home.NewsSummaryModel>(),
             FeaturedPublications = Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>()
         });
+    }
+
+    private static bool TryGetPublicationId(string link, out int id)
+    {
+        const string prefix = "/Home/Publication/";
+        var path = link.Split('?', '#')[0];
+        id = 0;
+        return path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+            && int.TryParse(path[prefix.Length..], out id);
     }
 
     [HttpGet("newIndex")]
@@ -248,7 +286,15 @@ public class HomeController : Controller
         {
             var publicationRepository = HttpContext.RequestServices.GetRequiredService<IPublicationReadRepository>();
             var publications = await publicationRepository.GetLatestPublicationsAsync(0, cancellationToken);
-            return View("PublicationList", publications);
+
+            // 退役 slug 页的 14 个展览（固定 id 92001–92015）在生产库里还没有 Publication 行时，由兼容目录补上，
+            // 数据库真实行优先；执行 slug 迁移 SQL 前后列表内容一致。目录里的展览都是历史展览（已结束）。
+            var databaseIds = publications.Select(publication => publication.Id).ToHashSet();
+            var merged = publications
+                .Concat(LegacyPublicationGalleryCatalog.GetAllSummaries().Where(summary => !databaseIds.Contains(summary.Id)))
+                .OrderByDescending(publication => publication.Id)
+                .ToList();
+            return View("PublicationList", merged);
         }
 
         return View("PublicationList", Array.Empty<Szaipa.Data.Models.Home.PublicationSummaryModel>());

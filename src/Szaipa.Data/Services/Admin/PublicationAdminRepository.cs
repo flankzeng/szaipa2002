@@ -1,4 +1,7 @@
+using System.Data.Common;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Szaipa.Data.Composition;
 using Szaipa.Data.Contexts.Szaipa;
 using Szaipa.Data.Contexts.SzaipaAdmin;
 
@@ -16,14 +19,63 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         _operationRecorder = operationRecorder;
     }
 
-    public async Task<PagedResult<Publication>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken)
+    private static readonly Regex HexColor = new("^#[0-9a-fA-F]{6}$", RegexOptions.Compiled);
+
+    public Task<PagedResult<Publication>> GetPagedAsync(int page, int pageSize, CancellationToken cancellationToken) =>
+        GetPagedAsync(page, pageSize, null, DateTime.Today, cancellationToken);
+
+    public async Task<PagedResult<Publication>> GetPagedAsync(
+        int page,
+        int pageSize,
+        PublicationLifecycle? lifecycle,
+        DateTime today,
+        CancellationToken cancellationToken)
     {
         page = Math.Max(1, page);
         pageSize = Math.Clamp(pageSize, 1, 200);
 
-        var query = _db.Publication.AsNoTracking().OrderByDescending(p => p.Id);
+        IQueryable<Publication> query = _db.Publication.AsNoTracking();
+        if (lifecycle is { } wanted)
+        {
+            query = query.Where(PublicationLifecycleCalculator.Matches(wanted, today));
+        }
+
+        query = query.OrderByDescending(p => p.Id);
+
         var total = await query.CountAsync(cancellationToken);
-        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        List<Publication> items;
+        try
+        {
+            items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // Database not migrated yet (no Type / featured / theme columns): list with the legacy columns only,
+            // so the admin list is still usable (e.g. the read-only debug login). Editing still needs the SQL.
+            items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new Publication
+                {
+                    Id = p.Id,
+                    TitleCN = p.TitleCN,
+                    TitleEN = p.TitleEN,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    FolderName = p.FolderName,
+                    MaxImg = p.MaxImg,
+                    LogoPath = p.LogoPath,
+                    CoverPath = p.CoverPath,
+                    ReadCount = p.ReadCount,
+                    EditRecord = p.EditRecord,
+                    Status = p.Status,
+                    Location = p.Location,
+                    zhuban = p.zhuban,
+                    chengban = p.chengban,
+                    xieban = p.xieban
+                })
+                .ToListAsync(cancellationToken);
+        }
 
         return new PagedResult<Publication>
         {
@@ -34,8 +86,56 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         };
     }
 
-    public Task<Publication?> GetByIdAsync(int id, CancellationToken cancellationToken) =>
-        _db.Publication.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    public async Task<IReadOnlyDictionary<PublicationLifecycle, int>> GetLifecycleCountsAsync(
+        DateTime today,
+        CancellationToken cancellationToken)
+    {
+        var counts = new Dictionary<PublicationLifecycle, int>();
+        foreach (var lifecycle in Enum.GetValues<PublicationLifecycle>())
+        {
+            counts[lifecycle] = await _db.Publication
+                .AsNoTracking()
+                .CountAsync(PublicationLifecycleCalculator.Matches(lifecycle, today), cancellationToken);
+        }
+
+        return counts;
+    }
+
+    public async Task<Publication?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _db.Publication.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // The form remains readable before the T2 theme columns (and older Type/Preface fields) are migrated.
+            return await _db.Publication.AsNoTracking().Where(p => p.Id == id).Select(p => new Publication
+            {
+                Id = p.Id,
+                TitleCN = p.TitleCN,
+                TitleEN = p.TitleEN,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                FolderName = p.FolderName,
+                MaxImg = p.MaxImg,
+                LogoPath = p.LogoPath,
+                CoverPath = p.CoverPath,
+                ReadCount = p.ReadCount,
+                EditRecord = p.EditRecord,
+                Status = p.Status,
+                Location = p.Location,
+                zhuban = p.zhuban,
+                chengban = p.chengban,
+                xieban = p.xieban,
+                Type = 0,
+                Preface = string.Empty,
+                Signature = string.Empty,
+                ThemeColor = null,
+                BannerPath = null
+            }).FirstOrDefaultAsync(cancellationToken);
+        }
+    }
 
     public async Task<int> CreateAsync(Publication input, AdminActor actor, CancellationToken cancellationToken)
     {
@@ -58,6 +158,8 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
             Type = input.Type,
             Preface = input.Preface,
             Signature = input.Signature,
+            ThemeColor = CleanThemeColor(input.ThemeColor),
+            BannerPath = CleanBannerPath(input.BannerPath),
             ReadCount = 0,
             EditRecord = $"{actor.StaffName} 于 {now:yyyy年MM月dd日 HH:mm:ss} 新建了此展览。/"
         };
@@ -89,6 +191,8 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         publication.Type = input.Type;
         publication.Preface = input.Preface;
         publication.Signature = input.Signature;
+        publication.ThemeColor = CleanThemeColor(input.ThemeColor);
+        publication.BannerPath = CleanBannerPath(input.BannerPath);
         if (!string.IsNullOrEmpty(input.CoverPath))
         {
             publication.CoverPath = input.CoverPath;
@@ -128,9 +232,20 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
             return false;
         }
 
+        // Child rows are removed explicitly so the behaviour does not depend on the FK cascade of the target database.
+        _db.PublicationBlock.RemoveRange(_db.PublicationBlock.Where(b => b.PublicationId == id));
+        _db.ExhibitionWork.RemoveRange(_db.ExhibitionWork.Where(w => w.PublicationId == id));
         _db.Publication.Remove(publication);
         await _operationRecorder.RecordAsync(_db, actor, $"删除了 {publication.TitleCN}的展览。", cancellationToken);
         await _db.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    /// <summary>Keeps only a valid #RRGGBB colour (lower-cased); anything else means "use the default accent".</summary>
+    private static string? CleanThemeColor(string? value) =>
+        value is not null && HexColor.IsMatch(value.Trim()) ? value.Trim().ToLowerInvariant() : null;
+
+    /// <summary>Banner must be a site-local path (<c>/Content/...</c>); otherwise it is ignored.</summary>
+    private static string? CleanBannerPath(string? value) =>
+        PublicationBlockContent.IsSafeLocalPath(value) ? value!.Trim() : null;
 }

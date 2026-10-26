@@ -89,7 +89,7 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         }
 
         IReadOnlyList<ExhibitionWorkModel> works = Array.Empty<ExhibitionWorkModel>();
-        if (type == 1)
+        if (type == PublicationTypes.Important || type == PublicationTypes.Topic)
         {
             try
             {
@@ -106,6 +106,15 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
                 // ExhibitionWork is an additive modern feature. Older read-only databases do not have the table yet;
                 // the existing gallery must remain available with an empty optional works catalogue.
             }
+        }
+
+        var themeColor = string.Empty;
+        var bannerPath = string.Empty;
+        IReadOnlyList<PublicationBlockModel> blocks = Array.Empty<PublicationBlockModel>();
+        if (type == PublicationTypes.Topic)
+        {
+            (themeColor, bannerPath) = await LoadTopicThemeAsync(id, cancellationToken);
+            blocks = await LoadTopicBlocksAsync(id, cancellationToken);
         }
 
         detail = new PublicationDetailModel
@@ -125,10 +134,14 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
             Host = detail.Host,
             CoHost = detail.CoHost,
             EditRecord = detail.EditRecord,
+            Status = detail.Status,
             Type = type,
             Preface = preface,
             Signature = signature,
-            Works = works
+            Works = works,
+            ThemeColor = themeColor,
+            BannerPath = bannerPath,
+            Blocks = blocks
         };
 
         IQueryable<Publication> relatedQuery = _context.Publication
@@ -147,18 +160,98 @@ public sealed class PublicationReadRepository : IPublicationReadRepository
         return LegacyReadModelComposer.CreatePublicationDetailSnapshot(detail, related);
     }
 
-    private static bool IsMissingExhibitionWorkTable(DbException exception)
+    public async Task<IReadOnlyList<FeaturedExhibitionModel>> GetHomeFeaturedAsync(
+        CancellationToken cancellationToken = default)
     {
-        var message = exception.Message;
-        return message.Contains("ExhibitionWork", StringComparison.OrdinalIgnoreCase)
-            && (message.Contains("Invalid object name", StringComparison.OrdinalIgnoreCase)
-                || message.Contains("no such table", StringComparison.OrdinalIgnoreCase));
+        try
+        {
+            // FeaturedExhibition is an additive table (2026-10-26 script). Without it the home page simply keeps
+            // its original hard-coded exhibition blocks. Hidden rows are returned too: the view needs their links
+            // to know which hard-coded blocks have been taken over (and must stay hidden).
+            var rows = await _context.FeaturedExhibition
+                .AsNoTracking()
+                .OrderBy(row => row.SortOrder)
+                .ThenBy(row => row.Id)
+                .ToListAsync(cancellationToken);
+
+            return rows
+                .Select(row => new FeaturedExhibitionModel
+                {
+                    Id = row.Id,
+                    SortOrder = row.SortOrder,
+                    IsVisible = row.IsVisible,
+                    ShowInCarousel = row.ShowInCarousel,
+                    Title = row.Title ?? string.Empty,
+                    YearText = row.YearText ?? string.Empty,
+                    LinkUrl = row.LinkUrl ?? string.Empty,
+                    InfoLines = FeaturedExhibitionContent.SplitLines(row.InfoLines),
+                    ImageUrls = FeaturedExhibitionContent.SplitPaths(row.ImageUrls),
+                    LogoUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.LogoUrl),
+                    CoverUrl = FeaturedExhibitionContent.SafePathOrEmpty(row.CoverUrl),
+                    StartDate = row.StartDate,
+                    EndDate = row.EndDate,
+                    Status = row.Status
+                })
+                .Where(model => FeaturedExhibitionContent.IsSafeLink(model.LinkUrl))
+                .ToList();
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "FeaturedExhibition")
+            || SchemaCompatibility.IsMissingColumn(exception))
+        {
+            return Array.Empty<FeaturedExhibitionModel>();
+        }
     }
 
-    private static bool IsMissingOptionalTemplateColumn(DbException exception)
+    private async Task<(string ThemeColor, string BannerPath)> LoadTopicThemeAsync(
+        int id,
+        CancellationToken cancellationToken)
     {
-        var message = exception.Message;
-        return message.Contains("Invalid column name", StringComparison.OrdinalIgnoreCase)
-            || message.Contains("no such column", StringComparison.OrdinalIgnoreCase);
+        try
+        {
+            var theme = await _context.Publication
+                .AsNoTracking()
+                .Where(publication => publication.Id == id)
+                .Select(publication => new { publication.ThemeColor, publication.BannerPath })
+                .FirstOrDefaultAsync(cancellationToken);
+            return (theme?.ThemeColor ?? string.Empty, theme?.BannerPath ?? string.Empty);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // Theme columns not migrated yet: the topic still renders with the default accent colour.
+            return (string.Empty, string.Empty);
+        }
     }
+
+    private async Task<IReadOnlyList<PublicationBlockModel>> LoadTopicBlocksAsync(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await _context.PublicationBlock
+                .AsNoTracking()
+                .Where(block => block.PublicationId == id)
+                .OrderBy(block => block.SortOrder)
+                .ThenBy(block => block.Id)
+                .Select(block => new PublicationBlockModel
+                {
+                    Id = block.Id,
+                    BlockType = block.BlockType,
+                    Content = block.Content
+                })
+                .ToListAsync(cancellationToken);
+        }
+        catch (DbException exception) when (SchemaCompatibility.IsMissingTable(exception, "PublicationBlock")
+            || SchemaCompatibility.IsMissingColumn(exception))
+        {
+            // PublicationBlock is additive. Without it a 专题 simply has no blocks yet (page shows its header only).
+            return Array.Empty<PublicationBlockModel>();
+        }
+    }
+
+    private static bool IsMissingExhibitionWorkTable(DbException exception) =>
+        SchemaCompatibility.IsMissingTable(exception, "ExhibitionWork");
+
+    private static bool IsMissingOptionalTemplateColumn(DbException exception) =>
+        SchemaCompatibility.IsMissingColumn(exception);
 }

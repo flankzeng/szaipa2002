@@ -18,9 +18,15 @@
         Works = publication.Works
     };
     var isImportant = publication.Type == 1;
+    // 专题（Type == 2）：由后台积木拼装，走 _ExhibitionTopic；ImagePaths 仅保留给退役 slug 页，专题用文件夹约定编号。
+    var isTopic = publication.Type == 2;
 }
 
-@if (isImportant)
+@if (isTopic)
+{
+    <partial name="_ExhibitionTopic" model="@Szaipa.Web.Models.ExhibitionTopicModel.Create(publication, gallery.ImagePaths)" />
+}
+else if (isImportant)
 {
     <partial name="_ExhibitionImportant" model="gallery" />
 }
@@ -35,9 +41,13 @@ else
 @section Styles {
     <link rel="stylesheet" href="~/public/vendor/swiper-public.css" asp-append-version="true" />
     <link rel="stylesheet" href="/Content/css/publication.css" />
-    @if (isImportant)
+    @if (isImportant || isTopic)
     {
         <link rel="stylesheet" href="~/css/public-pages.css" asp-append-version="true" />
+    }
+    @if (isTopic)
+    {
+        <link rel="stylesheet" href="~/css/exhibition-topic.css" asp-append-version="true" />
     }
 }
 

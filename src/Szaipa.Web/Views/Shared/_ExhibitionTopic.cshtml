@@ -1,0 +1,271 @@
+@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
+@inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
+@using Szaipa.Data.Composition
+@using Szaipa.Data.Contexts.Szaipa
+@using Szaipa.Data.Services
+@model Szaipa.Web.Models.ExhibitionTopicModel
+@*
+    专题页（Publication.Type == 2）：头部 + 后台拼装的积木。
+    样式：wwwroot/css/exhibition-topic.css（主题色由下方 --topic-accent 变量注入；作品目录沿用 public-pages.css §5 的 .exh-works*）。
+    积木数据已在 ExhibitionTopicModel.Create 里重新规范化，这里可以放心输出（richtext 的 html 已过白名单清洗）。
+*@
+@{
+    var publication = Model.Publication;
+    var lifecycle = PublicationLifecycleCalculator.Compute(publication.Status, publication.StartDate, publication.EndDate, DateTime.Today);
+    var heroSource = DerivedImageResolver.Resolve(Model.BannerUrl);
+    var dateText = string.Empty;
+    if (publication.StartDate.HasValue)
+    {
+        dateText = publication.StartDate.Value.ToString("yyyy.MM.dd");
+    }
+    if (publication.EndDate.HasValue)
+    {
+        dateText += (dateText.Length > 0 ? " — " : "截至 ") + publication.EndDate.Value.ToString("yyyy.MM.dd");
+    }
+}
+
+<article class="topic" style="--topic-accent: @Model.AccentColor">
+
+    <header class="topic-hero">
+        <picture class="topic-hero__picture">
+            @if (heroSource?.AvifUrl is not null)
+            {
+                <source type="image/avif" srcset="@heroSource.AvifUrl">
+            }
+            <img class="topic-hero__img" src="@Model.BannerUrl" alt="" decoding="async" fetchpriority="high" />
+        </picture>
+        <div class="topic-hero__inner">
+            <h1 class="topic-hero__title">@publication.TitleCn</h1>
+            @if (!string.IsNullOrWhiteSpace(publication.TitleEn))
+            {
+                <div class="topic-hero__sub">@publication.TitleEn</div>
+            }
+            @if (dateText.Length > 0 || !string.IsNullOrWhiteSpace(publication.Location))
+            {
+                <div class="topic-hero__meta">
+                    @if (dateText.Length > 0)
+                    {
+                        <span>@dateText</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(publication.Location))
+                    {
+                        <span>@publication.Location</span>
+                    }
+                </div>
+            }
+            @if (lifecycle is PublicationLifecycle.Ongoing or PublicationLifecycle.Upcoming)
+            {
+                <span class="topic-hero__chip">@PublicationLifecycleCalculator.Label(lifecycle)</span>
+            }
+        </div>
+    </header>
+
+    @foreach (var block in Model.Blocks)
+    {
+        switch (block.Type)
+        {
+            case PublicationBlockTypes.Banner:
+            {
+                var bannerImage = block.Get("imagePath");
+                <section class="topic-banner @(bannerImage.Length == 0 ? "topic-banner--plain" : string.Empty)">
+                    @if (bannerImage.Length > 0)
+                    {
+                        <img class="topic-banner__img" src="@ImagePreviewResolver.Resolve(bannerImage)" alt="" loading="lazy" decoding="async" />
+                    }
+                    <div class="topic-banner__inner">
+                        @if (block.Get("title").Length > 0)
+                        {
+                            <h2 class="topic-banner__title">@block.Get("title")</h2>
+                        }
+                        @if (block.Get("subtitle").Length > 0)
+                        {
+                            <p class="topic-banner__sub">@block.Get("subtitle")</p>
+                        }
+                    </div>
+                </section>
+                break;
+            }
+
+            case PublicationBlockTypes.Preface:
+            {
+                var heading = block.Get("heading").Length > 0 ? block.Get("heading") : "序";
+                var paragraphs = block.Paragraphs("body");
+                <section class="topic-preface">
+                    <h2 class="topic-preface__h">@heading</h2>
+                    @foreach (var paragraph in paragraphs)
+                    {
+                        <p>@paragraph</p>
+                    }
+                    @if (block.Get("signature").Length > 0)
+                    {
+                        <div class="topic-preface__sign">@block.Get("signature")</div>
+                    }
+                </section>
+                break;
+            }
+
+            case PublicationBlockTypes.RichText:
+            {
+                <section class="topic-richtext">
+                    @if (block.Get("heading").Length > 0)
+                    {
+                        <h2 class="topic-section-h">@block.Get("heading")</h2>
+                    }
+                    <div class="topic-richtext__body">@Html.Raw(block.Get("html"))</div>
+                </section>
+                break;
+            }
+
+            case PublicationBlockTypes.Works:
+            {
+                if (publication.Works.Count > 0)
+                {
+                    <section class="exh-works topic-works">
+                        <h2 class="topic-section-h">
+                            @if (block.Get("heading").Length > 0)
+                            {
+                                @block.Get("heading")
+                            }
+                            else
+                            {
+                                <text>参展作品目录 <span class="topic-section-h__en">| WORKS</span></text>
+                            }
+                        </h2>
+                        <div class="exh-works__grid">
+                            @foreach (var work in publication.Works)
+                            {
+                                <div class="exh-works__item">
+                                    @if (!string.IsNullOrWhiteSpace(work.ImagePath))
+                                    {
+                                        <div class="exh-works__img">
+                                            <img src="@ImagePreviewResolver.Resolve(work.ImagePath)" alt="@work.Title" loading="lazy" decoding="async" />
+                                        </div>
+                                    }
+                                    <div class="exh-works__meta">
+                                        @if (!string.IsNullOrWhiteSpace(work.Category))
+                                        {
+                                            <span class="exh-works__cat">@work.Category</span>
+                                        }
+                                        <div class="exh-works__title">@work.Title</div>
+                                        @if (!string.IsNullOrWhiteSpace(work.Artist))
+                                        {
+                                            <div class="exh-works__artist">@work.Artist</div>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(work.Size) || !string.IsNullOrWhiteSpace(work.Medium))
+                                        {
+                                            <div class="exh-works__spec">
+                                                @string.Join(" · ", new[] { work.Size, work.Medium }.Where(part => !string.IsNullOrWhiteSpace(part)))
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+                break;
+            }
+
+            case PublicationBlockTypes.Gallery:
+            {
+                <section class="topic-gallery col-xs20 col-sm20 col-md20 col-lg20">
+                    <h2 class="topic-section-h">
+                        @if (block.Get("heading").Length > 0)
+                        {
+                            @block.Get("heading")
+                        }
+                        else
+                        {
+                            <text>现场照片 <span class="topic-section-h__en">| GALLERY</span></text>
+                        }
+                    </h2>
+                    @* 画廊栅格结构与 _ExhibitionImportant 底部完全一致（沿用 /Content/css/publication.css 的 .imgCon_Pub* 规则）；
+                       publication-gallery.js 按 .mySwiper3 / .mySwiper2 初始化，因此每页只渲染一组。 *@
+                    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+                    <div class="col-xs16 col-sm16 col-md16 col-lg16 imgCon_Pub imgCon_PubMobCon">
+                        <div style="--swiper-pagination-color: #fff" class="swiper mySwiper3">
+                            <div class="swiper-wrapper">
+                                @foreach (var imagePath in Model.MainImages)
+                                {
+                                    var previewPath = ImagePreviewResolver.Resolve(imagePath);
+                                    <div class="swiper-slide">
+                                        <img loading="lazy" decoding="async"
+                                             src="@previewPath"
+                                             data-original-src="@(previewPath == imagePath ? null : imagePath)" />
+                                    </div>
+                                }
+                            </div>
+                            <div class="swiper-button-next xs-hide sm-hide"></div>
+                            <div class="swiper-button-prev xs-hide sm-hide"></div>
+                        </div>
+                        <div thumbsSlider="" class="swiper mySwiper2 imgCon_PubSon imgCon_PubMob">
+                            <div class="swiper-wrapper">
+                                @foreach (var imagePath in Model.ThumbnailImages)
+                                {
+                                    <div class="swiper-slide">
+                                        <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve(imagePath)" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs2 col-sm2 col-md2 col-lg2">&nbsp;</div>
+                </section>
+                break;
+            }
+
+            case PublicationBlockTypes.Video:
+            {
+                var videoUrl = block.Get("url");
+                if (videoUrl.Length > 0)
+                {
+                    <section class="topic-video">
+                        @if (block.Get("source") == "embed")
+                        {
+                            @* 外链播放器：地址已在保存与渲染两次校验为白名单站点的 https 页面。 *@
+                            <div class="topic-video__frame">
+                                <iframe src="@videoUrl" title="@(block.Get("caption").Length > 0 ? block.Get("caption") : publication.TitleCn)"
+                                        loading="lazy" allowfullscreen referrerpolicy="no-referrer"
+                                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"></iframe>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="topic-video__frame">
+                                <video controls preload="metadata" playsinline
+                                       poster="@(block.Get("poster").Length > 0 ? block.Get("poster") : null)"
+                                       src="@videoUrl"></video>
+                            </div>
+                        }
+                        @if (block.Get("caption").Length > 0)
+                        {
+                            <p class="topic-video__caption">@block.Get("caption")</p>
+                        }
+                    </section>
+                }
+                break;
+            }
+
+            case PublicationBlockTypes.Quote:
+            {
+                if (block.Get("text").Length > 0)
+                {
+                    <section class="topic-quote">
+                        <blockquote>
+                            <p>@block.Get("text")</p>
+                            @if (block.Get("author").Length > 0)
+                            {
+                                <footer>@block.Get("author")</footer>
+                            }
+                        </blockquote>
+                    </section>
+                }
+                break;
+            }
+        }
+    }
+
+    <nav class="topic-back" aria-label="返回">
+        <a href="/Home/PublicationList">&lt; 返回展会列表</a>
+    </nav>
+</article>

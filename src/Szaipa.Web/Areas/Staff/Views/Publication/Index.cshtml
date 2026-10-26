@@ -1,74 +1,14 @@
-@model PagedResult<Publication>
+@model PublicationIndexViewModel
+@using Szaipa.Data.Composition
 @{
     ViewData["Title"] = "展览管理";
+    var pageModel = Model.Paged;
+    var filters = new (PublicationLifecycle? Value, string Label)[] { (null, "全部"), (PublicationLifecycle.Upcoming, "即将开幕"), (PublicationLifecycle.Ongoing, "展览中"), (PublicationLifecycle.Ended, "已结束"), (PublicationLifecycle.Offline, "下架") };
 }
-<div class="mb-6 flex items-center justify-between">
-    <div>
-        <h1 class="font-serif text-2xl font-bold text-ink">展览管理</h1>
-        <p class="mt-1 text-sm text-muted">共 @Model.TotalCount 个展览</p>
-    </div>
-    <a asp-action="Create" class="admin-btn-primary">＋ 新建展览</a>
-</div>
-
-<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
-    <table class="w-full text-sm">
-        <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
-            <tr>
-                <th class="px-5 py-3 font-medium">标题</th>
-                <th class="px-5 py-3 font-medium">时间</th>
-                <th class="px-5 py-3 font-medium">图片</th>
-                <th class="px-5 py-3 font-medium">状态</th>
-                <th class="px-5 py-3 text-right font-medium">操作</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-black/5">
-            @foreach (var p in Model.Items)
-            {
-                <tr class="hover:bg-canvas/40">
-                    <td class="px-5 py-3">
-                        <div class="font-medium text-ink">@p.TitleCN</div>
-                        <a href="/Home/Publication/@p.Id" target="_blank" class="text-xs text-brand hover:underline">公开页 ↗</a>
-                    </td>
-                    <td class="px-5 py-3 text-muted">@(p.StartDate?.ToString("yyyy-MM-dd") ?? "—")</td>
-                    <td class="px-5 py-3 text-muted">@(p.MaxImg + 1) 张</td>
-                    <td class="px-5 py-3">
-                        @switch (p.Status)
-                        {
-                            case true: <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">进行中</span> break;
-                            case false: <span class="rounded-full bg-black/5 px-2 py-0.5 text-xs text-muted">已结束</span> break;
-                            default: <span class="text-xs text-muted">隐藏</span> break;
-                        }
-                    </td>
-                    <td class="px-5 py-3">
-                        <div class="flex items-center justify-end gap-3">
-                            <a asp-action="Edit" asp-route-id="@p.Id" class="text-brand hover:underline">编辑</a>
-                            <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="inline"
-                                  onsubmit="return confirm('确定删除这个展览？此操作不可撤销。');">
-                                <button type="submit" class="text-muted hover:text-brand">删除</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            }
-            @if (Model.Items.Count == 0)
-            {
-                <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无展览，点击右上角新建。</td></tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-@if (Model.TotalPages > 1)
-{
-    <div class="mt-5 flex items-center justify-center gap-2 text-sm">
-        @if (Model.HasPrevious)
-        {
-            <a asp-action="Index" asp-route-page="@(Model.Page - 1)" class="admin-btn-ghost px-3 py-1.5">上一页</a>
-        }
-        <span class="px-3 py-1.5 text-muted">第 @Model.Page / @Model.TotalPages 页</span>
-        @if (Model.HasNext)
-        {
-            <a asp-action="Index" asp-route-page="@(Model.Page + 1)" class="admin-btn-ghost px-3 py-1.5">下一页</a>
-        }
-    </div>
-}
+<div class="mb-6 flex items-center justify-between"><div><h1 class="font-serif text-2xl font-bold text-ink">展览管理</h1><p class="mt-1 text-sm text-muted">共 @pageModel.TotalCount 个展览</p></div><a asp-action="Create" class="admin-btn-primary">＋ 新建展览</a></div>
+<nav class="mb-4 flex flex-wrap gap-2">@foreach (var filter in filters) { var count = filter.Value is null ? Model.Counts.Values.Sum() : Model.Counts[filter.Value.Value]; <a asp-action="Index" asp-route-status="@filter.Value" class="rounded-full px-3 py-1.5 text-sm @(Model.Filter == filter.Value ? "bg-brand text-white" : "bg-white text-ink")">@filter.Label <span class="opacity-70">@count</span></a> }</nav>
+<div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm"><table class="w-full text-sm"><thead class="border-b border-black/5 bg-canvas/60 text-left text-xs text-muted"><tr><th class="px-5 py-3">标题</th><th class="px-5 py-3">时间</th><th class="px-5 py-3">图片</th><th class="px-5 py-3">状态</th><th class="px-5 py-3 text-right">操作</th></tr></thead><tbody class="divide-y divide-black/5">
+@foreach (var p in pageModel.Items) { var lifecycle = PublicationLifecycleCalculator.Compute(p.Status, p.StartDate, p.EndDate, Model.Today); <tr><td class="px-5 py-3"><div class="font-medium">@p.TitleCN</div><a href="/Home/Publication/@p.Id" target="_blank" class="text-xs text-brand">公开页 ↗</a></td><td class="px-5 py-3 text-muted">@(p.StartDate?.ToString("yyyy-MM-dd") ?? "—") — @(p.EndDate?.ToString("yyyy-MM-dd") ?? "—")</td><td class="px-5 py-3 text-muted">@(p.MaxImg + 1) 张</td><td class="px-5 py-3"><span class="rounded-full bg-canvas px-2 py-1 text-xs">@PublicationLifecycleCalculator.Label(lifecycle)</span></td><td class="px-5 py-3"><div class="flex justify-end gap-3"><a asp-action="Edit" asp-route-id="@p.Id" class="text-brand">编辑</a><form asp-action="Delete" asp-route-id="@p.Id" method="post" onsubmit="return confirm('确定删除这个展览？此操作不可撤销。');"><button class="text-muted">删除</button></form></div></td></tr> }
+@if (pageModel.Items.Count == 0) { <tr><td colspan="5" class="px-5 py-14 text-center text-muted">暂无展览。</td></tr> }
+</tbody></table></div>
+@if(pageModel.TotalPages > 1){<div class="mt-5 flex justify-center gap-2">@if(pageModel.HasPrevious){<a asp-action="Index" asp-route-page="@(pageModel.Page-1)" asp-route-status="@Model.Filter" class="admin-btn-ghost">上一页</a>}<span>第 @pageModel.Page / @pageModel.TotalPages 页</span>@if(pageModel.HasNext){<a asp-action="Index" asp-route-page="@(pageModel.Page+1)" asp-route-status="@Model.Filter" class="admin-btn-ghost">下一页</a>}</div>}

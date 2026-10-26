@@ -43,6 +43,10 @@ public sealed class SzaipaAdminContext : DbContext
 
     public DbSet<ArtistPublication> ArtistPublication => Set<ArtistPublication>();
 
+    public DbSet<PublicationBlock> PublicationBlock => Set<PublicationBlock>();
+
+    public DbSet<FeaturedExhibition> FeaturedExhibition => Set<FeaturedExhibition>();
+
     public DbSet<OrgMember> OrgMember => Set<OrgMember>();
 
     public DbSet<SaleWork> SaleWork => Set<SaleWork>();
@@ -80,6 +84,9 @@ public sealed class SzaipaAdminContext : DbContext
         modelBuilder.Entity<WeChatSyncRecord>(e => WeChatSyncRecordModel.Configure(e));
 
         modelBuilder.Entity<ArtistPublication>(e => { e.ToTable("ArtistPublication"); e.HasKey(x => x.Id); e.Property(x => x.Sort).HasDefaultValue(0); });
+
+        modelBuilder.Entity<PublicationBlock>(e => { e.ToTable("PublicationBlock"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); e.Property(x => x.BlockType).HasMaxLength(30); });
+        modelBuilder.Entity<FeaturedExhibition>(e => { e.ToTable("FeaturedExhibition"); e.HasKey(x => x.Id); e.Property(x => x.SortOrder).HasDefaultValue(0); e.Property(x => x.IsVisible).HasDefaultValue(true); e.Property(x => x.ShowInCarousel).HasDefaultValue(false); e.Property(x => x.Status).HasDefaultValue(true); });
 
         modelBuilder.Entity<Staff>(e => { e.ToTable("Staff"); e.HasKey(x => x.Id); });
         modelBuilder.Entity<Diary>(e => { e.ToTable("Diary"); e.HasKey(x => x.Id); });

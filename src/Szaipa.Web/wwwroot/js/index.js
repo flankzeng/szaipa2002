@@ -76,25 +76,17 @@
     });
 
     // 关于在展活动的Swiper
-    var swiper10 = new Swiper(".mySwiper10", {
-        pagination: {
-            el: ".swiper-pagination",
-            type: "progressbar",
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-        },
-        loop: true,
-        autoplay: {
-            delay: 5000,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        disableOnInteraction: true
-    })
+    var recentSwiperElement = document.querySelector(".mySwiper10");
+    if (recentSwiperElement && recentSwiperElement.querySelectorAll('.swiper-slide').length > 0) {
+        new Swiper(recentSwiperElement, {
+            pagination: { el: ".swiper-pagination", type: "progressbar" },
+            keyboard: { enabled: true, onlyInViewport: true },
+            loop: true,
+            autoplay: { delay: 5000 },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            disableOnInteraction: true
+        });
+    }
 
     // 放大镜：首次交互时再请求原图，列表首屏只下载缩略图。
     window.SzaipaMagnifyLoader?.bind(document);
@@ -121,7 +113,18 @@
     var btn02 = document.querySelector('#btn02');
     var processing = document.querySelector('#processing');
     var ended = document.querySelector('#ended');
-    btn01?.classList.add('active');
+    var defaultPastTab = btn01?.closest('[data-default-tab]')?.getAttribute('data-default-tab') === 'past';
+    if (defaultPastTab) {
+        btn01?.classList.remove('active');
+        btn02?.classList.add('active');
+        if (processing) processing.style.display = 'none';
+        if (ended) { ended.style.display = 'flex'; ended.style.flexWrap = 'wrap'; }
+    } else {
+        btn02?.classList.remove('active');
+        btn01?.classList.add('active');
+        if (processing) processing.style.display = 'block';
+        if (ended) ended.style.display = 'none';
+    }
 
     btn01?.addEventListener('click', function () {
         btn02?.classList.remove('active');

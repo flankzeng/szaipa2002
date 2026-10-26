@@ -939,6 +939,44 @@
     line-height: 1.7;
 }
 
+/* 状态分组（展览中 / 即将开幕 / 已结束）：仅在同时存在两组及以上时才输出标题与角标，
+   只有一组时页面与分组功能上线前完全一致。 */
+.publication-list-group-title {
+    margin: 0 0 2.2rem;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+}
+
+.publication-list-group-title:not(:first-of-type) {
+    margin-top: clamp(3rem, 7vh, 5rem);
+}
+
+.publication-list-group-title span {
+    margin-left: 0.2em;
+    font-weight: 300;
+}
+
+.publication-list-group-title small {
+    margin-left: 0.4em;
+    font-family: 'dinLightI', sans-serif;
+    font-size: 0.7em;
+    font-weight: 400;
+    color: #939393;
+}
+
+/* 卡片左上角状态角标（已结束沿用图片居中的大字，不用角标） */
+.publication-card__tag {
+    position: absolute;
+    top: 0.8rem;
+    left: 0.8rem;
+    padding: 0.2em 0.8em;
+    background: #bf272d;
+    color: #fff;
+    font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
+    font-size: 0.8rem;
+    font-style: normal;
+    letter-spacing: 0.15em;
+}
+
 @media (max-width: 48em) {
     .publication-list-page {
         width: 88%;
