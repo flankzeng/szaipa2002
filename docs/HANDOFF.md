@@ -39,7 +39,7 @@
 ### 用户待办
 - 公众号凭据：在 Mac 上 `cd src/Szaipa.Web && dotnet user-secrets set "WeChat:AppId" …` / `"WeChat:AppSecret" …`（不要贴到聊天）；跑 `wechat-probe` 前把本机公网 IP 临时加入公众号 IP 白名单（或部署后在服务器上探测）。
 - 上线前在生产执行本 Epic 的 SQL（T5 会汇总成一份）。
-- **待确认**：首页硬编码里「漫MAN」展览结束日期写的是 05.28，兼容目录/迁移 SQL 里是 05.30，以哪个为准？（T2 种子暂按首页原文）
+- **已确认（用户 2026-10-26）**：「漫MAN」结束日期以 **05.28** 为准（首页原文正确）。需修正：`Services/LegacyPublicationGalleryCatalog.cs` 里漫MAN 的 EndDate 与 `docs/sql/2026-07-09-publication-slug-migration.sql` 中对应行的 05.30 → 05.28；T2 首页推荐种子保持 05.28。
 
 ### 粘贴用 prompt（新 session，Claude Code / Codex 通用）
 ```
