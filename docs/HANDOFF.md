@@ -2,6 +2,25 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
+## 最新交接（2026-10-27 晚，交给 Codex）
+
+### 现状
+- **新站已上线**（20:06:58）：线上 IIS 站点 `szaipa` → `C:\SzaipaData\releases\031f211` + 应用池 `SzaipaProd`（生产账号 `szaipa_web_rw`，仅 Szaipa/Tongou 读写）。旧站目录 `web24.05` 保留可回退。记录与回退命令：`docs/cutover-2026-10-27.md`。
+- 已修：后台弹「选择证书」（IIS 站点客户端证书改为忽略）。
+- 公众号：凭据已在后台配置页录入（加密存 `C:\SzaipaData\secure\wechat-credentials.json`）；自动同步已开，仅「永久图文素材」来源（freepublish 48001 无权限）；已导入 13 篇（News 1126–1138，1 篇纯视频跳过）。**群发历史无接口可列，需从公众号后台「内容管理 → 发表记录」取链接，经后台「公众号同步 → 批量链接导入」导入（每次 ≤50）**。
+- 旧手录新闻已隐藏：`appsettings.Production.json` 设 `WeChat:LegacyNewsMaxId=1124`（旧新闻 73 条，详情 URL 仍可访问；改前备份 `.bak-20261027`）。
+- 测试站 `szaipa-new` 已停；副本库 `Szaipa_staging`/`Tongou_staging`、`C:\SzaipaData\staging*`、登录 `szaipa_staging_rw`、副本库测试管理员仍在（待用户同意后清理）。
+- 源码分支 `codex-refactor-dotnet-modernization`，712 测试绿；本地仍有未部署的小改动 `cd9542a`（同步失败日志带标题）——已包含在线上 031f211 中。
+
+### 剩余任务（优先级）
+1. **补全公众号历史文章**：协助用户在公众号后台「发表记录」逐页取全部文章链接（需用户本人扫码登录，agent 只读列表），整理成每 50 条一组的文本；用户（或获授权的 agent）在正式站后台批量导入；检查导入失败项（人机验证/纯视频/正文为空）并报告。
+2. **观察线上**：`C:\SzaipaData\logs\prod-stdout*` 是否有 `fail:`；首页/新闻/图片 WebP 正常；次日查 `C:\SzaipaData\logs\image-warm.log`（02:00 预热）。
+3. **安全**：线上 `web24.05\Content` 为 Everyone 完全控制，建议收紧为 Administrators/SYSTEM 完全控制 + `IIS AppPool\SzaipaProd` 修改（须用户确认后执行，先备份 ACL：`icacls ... /save`）。
+4. **清理 staging**（用户同意后）：停用/删除 `szaipa-new` 站点与 `SzaipaNew` 池、DROP `Szaipa_staging`/`Tongou_staging`、DROP LOGIN `szaipa_staging_rw`、删除 `C:\SzaipaData\staging*` 目录。
+5. 可选：T6 现场编辑其余页面加标记（关于/新闻列表/艺术家/展览/会员风采，模式见 PROJECT_MAP「现场编辑」）；小项：上传接口非法 folder 静默改 newsImg、VipOrder 查询 EF Skip/Take 警告。
+
+---
+
 ## 最新交接（2026-10-27 20:07：**新站已正式上线**）
 - 线上 `szaipa` 站已切到新站（`031f211`，应用池 `SzaipaProd`，生产账号 `szaipa_web_rw`），旧站目录 `web24.05` 原样保留可随时回退。执行记录与回退命令：`docs/cutover-2026-10-27.md`。
 - 待用户：后台用自己账号登录确认；配置页开启公众号自动同步（仅素材来源）；补群发历史链接后再设 `LegacyNewsMaxId`；决定 Content 目录 Everyone 权限是否收紧。
