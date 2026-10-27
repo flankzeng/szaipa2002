@@ -126,3 +126,9 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 配置 `ImageVariants:{Enabled,CacheRoot,Quality,PreviewQuality}`；改编码规则时递增 `ImageVariants.EncoderVersion`（旧缓存与浏览器缓存自动失效）。
 - 不想被自动加 srcset 的 `<img>` 加 `data-no-variants`。
 
+
+## 公众号接口配置（T9，2026-10-27）
+- 后台 `/Staff/WeChat/Settings`（`Areas/Staff/Controllers/WeChatSettingsController.cs` + `Views/WeChatSettings/Index.cshtml` + `Models/WeChatSettingsViewModel.cs`），与 `/Staff/WeChat` 用选项卡互通：接入指引、AppID/AppSecret（只写）/开关/间隔/分界 Id 表单、测试连接（`WeChatProbe`，40164 显示需加白名单的 IP）。
+- 存储 `src/Szaipa.Data/Services/WeChat/WeChatCredentialStore.cs`：`WeChatCredentialStoreLocation`（`WeChat:CredentialStorePath`；Development 默认 `App_Data/secure/wechat-credentials.json`，其他环境必须发布目录外绝对路径，否则 fail-closed）、JSON 文件 + Data Protection（purpose `Szaipa.WeChat.Credentials.v1`）加密 AppSecret、原子写入。
+- **有效配置** = `WeChat` 配置段 → 被存储值覆盖（`WeChatStoredSettingsPostConfigure` + 变更令牌 `WeChatCredentialStoreChangeTokenSource`，接线 `AddWeChatEffectiveOptions`）。所有消费方读 `IOptionsMonitor<WeChatOptions>.CurrentValue`（`WeChatApiClient`、`WeChatSyncService`、`WeChatSyncBackgroundService`、`NewsReadRepository`、`WeChatController`、`wechat-probe`），**不要再注入 `IOptions<WeChatOptions>` 读这些项**。`WeChatApiClient` 按凭据指纹作废 token 缓存；后台定时服务挂起等待配置变化。
+- 详情与部署要点：`docs/updates/2026-10-27-wechat-settings.md`。

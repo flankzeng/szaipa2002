@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Szaipa.Data.Abstractions;
 using Szaipa.Data.Configuration;
@@ -220,9 +221,17 @@ public static class SzaipaDataServiceCollectionExtensions
         // 微信公众号文章同步（T1）。HTTP 一律经 IHttpClientFactory 命名客户端，测试里可替换 handler；
         // IWeChatImageStore（把图片写进 ContentRoot）由宿主 Szaipa.Web 注册。定时同步仅在
         // WeChat:Enabled + 凭据齐全 + AdminWrite 已配置时才会真正工作，否则启动即静默退出。
-        services
-            .AddOptions<WeChatOptions>()
-            .Bind(configuration.GetSection(WeChatOptions.SectionName));
+        // 后台「公众号接口配置」页（T9）：加密存储文件覆盖配置段绑定值，保存后无需重启即生效。
+        services.AddWeChatEffectiveOptions(configuration, serviceProvider =>
+        {
+            var environment = serviceProvider.GetService<IHostEnvironment>();
+            return environment is null
+                ? WeChatCredentialStoreLocation.Unavailable("宿主环境不可用，无法确定存储位置。")
+                : WeChatCredentialStoreLocation.Resolve(
+                    environment.ContentRootPath,
+                    configuration[WeChatCredentialStoreLocation.ConfigurationKey],
+                    environment.IsDevelopment());
+        });
         services.AddHttpClient(WeChatApiClient.ClientName, client => client.Timeout = TimeSpan.FromSeconds(30));
         services.AddHttpClient(WeChatSyncService.PageClientName, client => client.Timeout = TimeSpan.FromSeconds(30))
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false });

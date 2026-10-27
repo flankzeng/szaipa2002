@@ -101,6 +101,24 @@ public sealed class WeChatApiClientTests
         Assert.Equal(new WeChatMaterialCount(1, 2, 3, 4), count);
     }
 
+    [Fact]
+    public async Task Post_bodies_are_sent_with_content_length_because_wechat_rejects_chunked_requests()
+    {
+        var lengths = new List<long?>();
+        var (client, _) = Create(request =>
+        {
+            lengths.Add(request.Content?.Headers.ContentLength);
+            return request.RequestUri!.AbsolutePath == "/cgi-bin/stable_token"
+                ? FakeHandler.Json(TokenJson)
+                : FakeHandler.Json(PageJson);
+        });
+
+        await client.GetPublishedPageAsync(0, 20, CancellationToken.None);
+
+        Assert.Equal(2, lengths.Count);
+        Assert.All(lengths, length => Assert.True(length > 0)); // 微信对 chunked 请求回 HTTP 412
+    }
+
     [Theory]
     [InlineData(48001, "未开通")]
     [InlineData(50001, "未开通")]

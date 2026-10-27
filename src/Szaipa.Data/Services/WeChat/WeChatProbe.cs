@@ -2,14 +2,16 @@ using Szaipa.Data.Configuration;
 
 namespace Szaipa.Data.Services.WeChat;
 
-/// <summary>能力探测的一步结果。</summary>
-public sealed record WeChatProbeStep(string Name, bool Ok, string Detail, int? ItemCount);
+/// <summary>能力探测的一步结果。<see cref="CallerIp"/> 仅 40164（IP 不在白名单）时有值：微信看到的调用方出口 IP。</summary>
+public sealed record WeChatProbeStep(string Name, bool Ok, string Detail, int? ItemCount, int? ErrorCode = null, string? CallerIp = null);
 
 /// <summary>
 /// 公众号接口能力探测（<c>dotnet run --project src/Szaipa.Web -- wechat-probe</c>）。依次探测：
 /// token → freepublish/batchget(count=1) → material/get_materialcount → batchget_material(news, count=1)，
 /// 每一步独立报告「可用 / 错误码+含义」与可拿到的条目数。<b>只读；输出里永远不含 AppSecret / access_token。</b>
 /// 未认证号常见：token 通过，freepublish/material 返回 48001/50001。
+/// 调用方传入「有效配置」（<c>IOptionsMonitor&lt;WeChatOptions&gt;.CurrentValue</c>：配置文件 + 后台设置页覆盖）；
+/// 不要求 <c>Enabled</c>，以便先测试再开启自动同步。
 /// </summary>
 public static class WeChatProbe
 {
@@ -20,7 +22,7 @@ public static class WeChatProbe
 
         if (string.IsNullOrWhiteSpace(options.AppId) || string.IsNullOrWhiteSpace(options.AppSecret))
         {
-            steps.Add(new WeChatProbeStep("配置", false, "未找到 WeChat:AppId / WeChat:AppSecret（请放在 appsettings.Local.json、user-secrets 或环境变量 WeChat__AppId / WeChat__AppSecret）。", null));
+            steps.Add(new WeChatProbeStep("配置", false, "未找到 AppID / AppSecret：请在后台「公众号同步 → 接口配置」页填写保存（或放在 appsettings.Local.json、user-secrets、环境变量 WeChat__AppId / WeChat__AppSecret）。", null));
             return steps;
         }
 
@@ -68,7 +70,7 @@ public static class WeChatProbe
         }
         catch (WeChatApiException exception)
         {
-            steps.Add(new WeChatProbeStep(name, false, exception.Message, null));
+            steps.Add(new WeChatProbeStep(name, false, exception.Message, null, exception.ErrorCode, exception.CallerIp));
             return false;
         }
     }

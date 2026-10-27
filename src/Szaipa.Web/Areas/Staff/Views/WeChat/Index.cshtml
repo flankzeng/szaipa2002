@@ -17,13 +17,18 @@
         _ => "text-brand"
     };
 }
-<div class="mb-6">
+<div class="mb-4">
     <h1 class="font-serif text-2xl font-bold text-ink">公众号同步</h1>
     <p class="mt-1 text-sm text-muted">
         把公众号文章按现有新闻结构填入「新闻」栏目（前台版式不变）。导入后的新闻可继续在「新闻」模块里编辑；
         后台隐藏的文章不在前台列表出现，详情链接仍可访问。
     </p>
 </div>
+
+<nav class="mb-6 flex gap-1 border-b border-black/10 text-sm">
+    <a asp-controller="WeChat" asp-action="Index" class="-mb-px border-b-2 border-brand px-4 py-2 font-medium text-brand">同步记录</a>
+    <a asp-controller="WeChatSettings" asp-action="Index" class="-mb-px border-b-2 border-transparent px-4 py-2 text-muted hover:text-brand">接口配置</a>
+</nav>
 
 @if (!Model.List.TableAvailable)
 {
@@ -146,8 +151,8 @@
     else
     {
         <p class="text-xs text-muted">
-            官方接口未启用。在 <code>appsettings.Local.json</code> / 环境变量配置 <code>WeChat:Enabled=true</code>、<code>AppId</code>、<code>AppSecret</code>
-            并把服务器出口 IP 加入公众号 IP 白名单后即可使用；不配置也不影响链接导入。
+            官方接口未启用。请到「<a asp-controller="WeChatSettings" asp-action="Index" class="text-brand hover:underline">接口配置</a>」页按指引填写 AppID / AppSecret、
+            把服务器出口 IP 加入公众号 IP 白名单、测试通过后开启自动同步；不配置也不影响链接导入。
         </p>
     }
 </section>

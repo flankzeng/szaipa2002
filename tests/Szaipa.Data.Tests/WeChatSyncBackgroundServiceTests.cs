@@ -64,6 +64,61 @@ public sealed class WeChatSyncBackgroundServiceTests
         Assert.Empty(((FakeSyncService)provider.GetRequiredService<IWeChatSyncService>()).FullArguments);
     }
 
+    [Fact]
+    public async Task Turning_sync_on_in_the_settings_page_starts_it_without_restart_and_off_stops_it()
+    {
+        var options = WeChatTestSupport.Opts(new WeChatOptions());
+        var runs = new List<bool>();
+        var ran = new SemaphoreSlim(0);
+        var service = new WeChatSyncBackgroundService(
+            new ServiceCollection().BuildServiceProvider().GetRequiredService<IServiceScopeFactory>(),
+            options,
+            Options.Create(new AdminWriteOptions { EnableWrites = true, ConnectionString = "Data Source=:memory:" }),
+            NullLogger<WeChatSyncBackgroundService>.Instance)
+        {
+            StartupDelay = TimeSpan.Zero,
+            RunOnceOverride = (full, _) =>
+            {
+                lock (runs)
+                {
+                    runs.Add(full);
+                }
+
+                ran.Release();
+                return Task.FromResult(true);
+            }
+        };
+
+        await service.StartAsync(CancellationToken.None);
+        try
+        {
+            Assert.False(await ran.WaitAsync(TimeSpan.FromMilliseconds(300))); // 未启用：不同步
+
+            options.Set(Enabled("0123456789abcdef0123456789abcdef"));
+            Assert.True(await ran.WaitAsync(TimeSpan.FromSeconds(5)));      // 开启：立即首轮（全量）
+
+            options.Set(Enabled("fedcba9876543210fedcba9876543210"));
+            Assert.True(await ran.WaitAsync(TimeSpan.FromSeconds(5)));      // 换凭据：立即重新全量
+
+            options.Set(new WeChatOptions());                               // 关闭
+            Assert.False(await ran.WaitAsync(TimeSpan.FromMilliseconds(300)));
+        }
+        finally
+        {
+            await service.StopAsync(CancellationToken.None);
+        }
+
+        Assert.Equal(new[] { true, true }, runs);
+    }
+
+    private static WeChatOptions Enabled(string secret) => new()
+    {
+        Enabled = true,
+        AppId = "wx0123456789abcdef",
+        AppSecret = secret,
+        SyncIntervalMinutes = 60
+    };
+
     public static IEnumerable<object[]> IncompleteSummaries()
     {
         yield return [WeChatSyncSummary.Failure("来源接口失败")];
@@ -82,7 +137,7 @@ public sealed class WeChatSyncBackgroundServiceTests
 
     private static WeChatSyncBackgroundService CreateBackgroundService(IServiceScopeFactory scopeFactory) => new(
         scopeFactory,
-        Options.Create(new WeChatOptions()),
+        WeChatTestSupport.Opts(new WeChatOptions()),
         Options.Create(new AdminWriteOptions()),
         NullLogger<WeChatSyncBackgroundService>.Instance);
 

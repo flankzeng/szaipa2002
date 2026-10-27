@@ -25,14 +25,14 @@ public sealed class WeChatController : Controller
 
     private readonly IWeChatSyncService _syncService;
     private readonly IWeChatSyncAdminRepository _repository;
-    private readonly IOptions<WeChatOptions> _options;
+    private readonly IOptionsMonitor<WeChatOptions> _options;
     private readonly IOptions<LegacyAssetsOptions> _legacyAssets;
     private readonly IWeChatSourceStatusStore _status;
 
     public WeChatController(
         IWeChatSyncService syncService,
         IWeChatSyncAdminRepository repository,
-        IOptions<WeChatOptions> options,
+        IOptionsMonitor<WeChatOptions> options,
         IOptions<LegacyAssetsOptions> legacyAssets,
         IWeChatSourceStatusStore status)
     {
@@ -118,13 +118,14 @@ public sealed class WeChatController : Controller
         int page, string? input, IReadOnlyList<WeChatImportOutcome>? results, CancellationToken cancellationToken)
     {
         var root = _legacyAssets.Value.ContentRoot;
+        var options = _options.CurrentValue; // 有效配置（配置文件 + 「接口配置」页保存的值）
         return new WeChatIndexViewModel
         {
             List = await _repository.GetPagedAsync(page, PageSize, cancellationToken),
-            ApiConfigured = _options.Value.IsApiConfigured,
+            ApiConfigured = options.IsApiConfigured,
             ContentRootReady = !string.IsNullOrWhiteSpace(root) && Directory.Exists(root),
-            LegacyNewsMaxId = _options.Value.LegacyNewsMaxId,
-            Sources = _status.Snapshot(_options.Value),
+            LegacyNewsMaxId = options.LegacyNewsMaxId,
+            Sources = _status.Snapshot(options),
             ImportInput = input,
             Results = results
         };
