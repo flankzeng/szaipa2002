@@ -122,8 +122,13 @@ var hostBuilder = new HostBuilder()
     })
     .ConfigureWebHost(webBuilder =>
     {
+        // IIS 部署（web.config hostingModel="inprocess"）必须接入 IIS 服务器：只有 UseKestrel 时 IIS 转发的请求进不来，
+        // 应用启动超时报 500.30（2026-10-27 服务器实测）。UseIIS/UseIISIntegration 在非 IIS 环境下自动不生效，
+        // 本地 dotnet run 仍走 Kestrel + UseUrls。顺序同框架默认宿主（ConfigureWebHostDefaults）。
         webBuilder
             .UseKestrel()
+            .UseIIS()
+            .UseIISIntegration()
             .UseContentRoot(contentRoot)
             .UseWebRoot(Path.Combine(contentRoot, "wwwroot"))
             .UseConfiguration(configuration)
