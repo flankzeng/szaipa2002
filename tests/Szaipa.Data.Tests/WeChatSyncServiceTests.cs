@@ -224,6 +224,22 @@ public sealed class WeChatSyncServiceTests
     }
 
     [Fact]
+    public async Task Reimporting_after_the_news_was_deleted_in_admin_recreates_it_without_force()
+    {
+        await using var env = new Env();
+        var first = Assert.Single(await env.Service.ImportLinksAsync(ShortUrl, Actor, false, CancellationToken.None));
+        env.Db.News.Remove(await env.Db.News.SingleAsync(n => n.Id == first.NewsId));
+        await env.Db.SaveChangesAsync();
+
+        var again = Assert.Single(await env.Service.ImportLinksAsync(ShortUrl, Actor, false, CancellationToken.None));
+
+        Assert.NotEqual(WeChatImportStatus.Unchanged, again.Status);
+        Assert.NotEqual(WeChatImportStatus.Failed, again.Status);
+        Assert.Equal(1, await env.Db.News.CountAsync());
+        Assert.Equal(1, await env.Db.WeChatSyncRecord.CountAsync());
+    }
+
+    [Fact]
     public async Task Deleted_news_is_recreated_under_the_same_record()
     {
         await using var env = new Env();

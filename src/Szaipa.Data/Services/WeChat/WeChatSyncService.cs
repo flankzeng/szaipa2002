@@ -138,6 +138,8 @@ public sealed class WeChatSyncService : IWeChatSyncService
                 var key = WeChatSourceKey.TryFromLongUrl(input);
                 var known = await _db.WeChatSyncRecord.AsNoTracking()
                     .Where(r => key != null ? r.SourceKey == key : r.SourceUrl == url)
+                    // 对应新闻已在后台被删除时不算「已导入」，允许直接重新导入（2026-10-27 staging 抽测发现）。
+                    .Where(r => _db.News.Any(n => n.Id == r.NewsId))
                     .Select(r => new { r.NewsId })
                     .FirstOrDefaultAsync(cancellationToken);
                 if (known is not null)
