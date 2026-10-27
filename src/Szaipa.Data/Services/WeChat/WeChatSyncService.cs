@@ -367,7 +367,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
                         case WeChatImportStatus.Unchanged: unchanged++; break;
                         default:
                             failed++;
-                            _logger.LogWarning("公众号文章同步失败（{Source}）：{Message}", sourceId, outcome.Message);
+                            _logger.LogWarning("公众号文章同步失败（{Source}）《{Title}》：{Message}", sourceId, outcome.Title, outcome.Message);
                             break;
                     }
                 }
