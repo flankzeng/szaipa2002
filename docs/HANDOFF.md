@@ -2,6 +2,15 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
+## 最新交接（2026-10-27 晚，staging 清理完成）
+
+- 用户确认后已清理 `szaipa-new` / `SzaipaNew`、两个 staging 库、专用登录及三个 staging 目录；备份先行，两个数据库备份通过 VERIFYONLY，4,812 个文件 SHA-256 一致。受限备份路径和恢复注意事项见 `docs/updates/2026-10-27-staging-cleanup.md`。未做完整恢复演练。
+- 正式站和生产数据库在线，首页、新闻、健康检查、原图及 WebP 抽样均 200；三个生产 stdout 检查无 `fail:`。保留备份后净释放约 83 MiB。
+- Content ACL 已收紧；回退旧站前须先恢复 ACL，见下节。公众号后台访问仍受浏览器安全策略阻止，用户需提供仍公开文章的完整链接；排除已删除和隐藏的文章。10 月 28 日 02:00 后检查图片预热结果。
+- ACL 记录的推送被自动审批拒绝：远端是否私有可信未核实，文档包含服务器路径、ACL 和回退细节；本地提交保留，推送需用户明确确认相关敏感内容及目的地。
+
+---
+
 ## 最新交接（2026-10-27 晚，Content ACL 已收紧）
 
 - 用户确认后已备份并收紧生产 Content ACL：SYSTEM/Administrators 完全控制、`IIS AppPool\SzaipaProd` 修改；4,903 项复查无 Everyone 条目。首页、新闻、原图和 WebP 抽样 200；后台上传未实写验证。详情及 ACL 恢复步骤见 `docs/updates/2026-10-27-content-acl.md`。
