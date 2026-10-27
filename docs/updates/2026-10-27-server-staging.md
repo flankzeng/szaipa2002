@@ -40,3 +40,13 @@
 1. 次日查看 `image-warm.log`，确认预热完成。
 2. 真实写入验收：需在 SQL Server 建 `Szaipa_staging`/`Tongou_staging` 副本 + 专用可写账号（高权限操作，待用户确认），然后把 staging 站的 `AdminWrite` 指向副本库，后台全模块增删改走一遍。
 3. 正式切换按 `docs/automation-rollout.md`。
+
+## 追加：真实 SQL Server 写入验收（用户授权的 9 步）
+- **副本库**：`BACKUP ... WITH COPY_ONLY, CHECKSUM` 备份 Szaipa/Tongou（不影响备份链）→ 还原为 `Szaipa_staging`/`Tongou_staging`（`C:\SzaipaData\staging\db\`，SIMPLE 恢复模式）。生产库仅被读取。
+- **上线 SQL 首次在真实 SQL Server 2016 执行**：`automation-deploy.sql` 目标改为 Szaipa_staging，11 张新表 + 种子写入成功，重复执行幂等。⚠️ **服务器上必须用 `sqlcmd -f 65001`**（或 SSMS 以 UTF-8 打开）：默认按 GBK 读 UTF-8 脚本会吞掉 `:setvar` 行导致「未定义 TargetDatabase」。另有警告：`UX_FeaturedExhibition_LinkUrl` 键长上限 2000 字节超过 1700 建议值（链接超过 850 字才会失败）。
+- **专用账号** `szaipa_staging_rw`：仅两个 staging 库的 db_datareader/db_datawriter；已验证对生产 Szaipa/Tongou 无访问权限、非 sysadmin。密码仅存在于应用池环境变量。
+- **图片副本** `C:\SzaipaData\staging-content`（1.15GB）+ 独立缓存 `C:\SzaipaData\staging-image-cache`；staging 站配置已切到副本库与副本图片，后台写入开启。
+- **测试管理员** `claude_staging_test`（仅 Szaipa_staging，Id 1019），密码在本机 gitignore 的 `artifacts/verification/staging-test-login.txt`。
+- **验收**：后台 16 个模块增删改 + 超长名称兜底 = **17/17 通过**（脚本 `artifacts/verification/claude-2026-10-26/staging-http-crud.py`，写入前强制核对连接串指向 *_staging）。首轮发现并修复 4 个只在真实库出现的问题（`43f7eb6`）：Artist.Sex、Publication.CoverPath/Location 为 NOT NULL；TongouAtrist/TongouWorks.id 非自增；超长/必填错误改为中文提示（`StaffSaveErrorFilter`）。
+- 部署版本现为 **`43f7eb6`**（`C:\SzaipaData\releases\43f7eb6`，SHA-256 `f6763dc68dfa9e29ea3add7c62d1f779441883ec3e927517623dc95efffec32b`）；夜间预热任务已改指向 43f7eb6，并用环境变量固定为线上 Content + 正式缓存目录。
+- 登录 cookie 在 Production 强制 Secure：经 http://localhost 隧道时浏览器可用（Chrome 视 localhost 为安全来源），脚本需放宽 cookie 策略。
