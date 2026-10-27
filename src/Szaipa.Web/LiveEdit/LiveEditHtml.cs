@@ -77,14 +77,14 @@ public sealed class LiveEditHtml
     public IHtmlContent Field(string entity, int? id, string field, string? value)
     {
         var body = _encoder.Encode(value ?? string.Empty);
-        var attributes = Attr(entity, id, field);
+        var attributes = Attr(entity, id, field, value);
         return ReferenceEquals(attributes, HtmlString.Empty)
             ? new HtmlString(body)
             : new HtmlString($"<span{((HtmlString)attributes).Value}>{body}</span>");
     }
 
     /// <summary>数据库字段的编辑标记；id 为空/非正（回退内容）、字段不在白名单或非编辑态时输出空。</summary>
-    public IHtmlContent Attr(string entity, int? id, string field)
+    public IHtmlContent Attr(string entity, int? id, string field, string? editValue = null)
     {
         if (!Active || id is not > 0 || !LiveEditRegistry.TryGet(entity, field, out _, out var fieldEntry))
         {
@@ -92,8 +92,12 @@ public sealed class LiveEditHtml
         }
 
         var encoder = _encoder;
+        // 多行字段的原值不能依赖 innerText：HTML 可能折叠换行或按段落拆开。
+        var valueAttribute = fieldEntry!.Kind == LiveEditKind.Lines && editValue is not null
+            ? $" data-le-value=\"{encoder.Encode(editValue)}\""
+            : string.Empty;
         return new HtmlString(
-            $" data-le-entity=\"{encoder.Encode(entity)}\" data-le-id=\"{id.Value}\" data-le-field=\"{encoder.Encode(field)}\" data-le-kind=\"{KindName(fieldEntry!.Kind)}\"");
+            $" data-le-entity=\"{encoder.Encode(entity)}\" data-le-id=\"{id.Value}\" data-le-field=\"{encoder.Encode(field)}\" data-le-kind=\"{KindName(fieldEntry.Kind)}\"{valueAttribute}");
     }
 
     private IHtmlContent SiteText(string key, string fallback, bool multiline)
@@ -108,8 +112,9 @@ public sealed class LiveEditHtml
             return new HtmlString(body);
         }
 
+        var valueAttribute = multiline ? $" data-le-value=\"{encoder.Encode(value)}\"" : string.Empty;
         return new HtmlString(
-            $"<span data-le-site=\"{encoder.Encode(key)}\" data-le-kind=\"{(multiline ? "lines" : "text")}\">{body}</span>");
+            $"<span data-le-site=\"{encoder.Encode(key)}\" data-le-kind=\"{(multiline ? "lines" : "text")}\"{valueAttribute}>{body}</span>");
     }
 
     private static string KindName(LiveEditKind kind) => kind switch

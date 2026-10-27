@@ -32,14 +32,14 @@
                             alt="@artist.ArtistNameCn" loading="lazy" decoding="async" />
                     </div>
                     <figcaption>
-                        <strong>@artist.ArtistNameCn</strong>
+                        <strong>@LiveEdit.Field("Artist", artist.Id, "ArtistNameCN", artist.ArtistNameCn)</strong>
                         @if (!string.IsNullOrWhiteSpace(artist.ArtistNameEn))
                         {
-                        <span>@artist.ArtistNameEn</span>
+                        <span>@LiveEdit.Field("Artist", artist.Id, "ArtistNameEN", artist.ArtistNameEn)</span>
                         }
                         @if (!string.IsNullOrWhiteSpace(artist.Title))
                         {
-                        <small>@artist.Title</small>
+                        <small>@LiveEdit.Field("Artist", artist.Id, "Title", artist.Title)</small>
                         }
                     </figcaption>
                 </figure>

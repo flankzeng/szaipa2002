@@ -118,7 +118,7 @@
 
     <ul class="introduce">
         <li class="name JhengLight" style="color: white;">
-            @artist.ArtistNameCn 作品 ©️
+            @LiveEdit.Field("Artist", artist.Id, "ArtistNameCN", artist.ArtistNameCn) 作品 ©️
         </li>
         <a href="/Home/Art/@artist.Id/Archive#news">
             <li class="hoverLine JhengBold">
@@ -127,7 +127,7 @@
                 <div class="moreInfo">
                     @foreach (var n in Model.LatestNews)
                     {
-                    @n.Title
+                    @LiveEdit.Field("ArtNews", n.Id, "Title", n.Title)
                     }
                     <span class="arrow-right"></span>
                 </div>
@@ -154,7 +154,7 @@
                     @* 书名来自 ArtistBook；无数据（或老库缺表）时与收藏/拍卖一样留空，不再显示空的《》。 *@
                     @foreach (var p in Model.LatestPublications)
                     {
-                    @:《@p.Title》
+                    @:《@LiveEdit.Field("ArtistBook", p.Id, "Title", p.Title)》
                     }
                     <span class="arrow-right"></span>
                 </div>
@@ -196,11 +196,11 @@
 
                 <div class="jieshao JhengLight">
                     <div class="padding"></div>
-                    <h1 class="JhengBold">@artist.ArtistNameCn</h1>
-                    @artist.Introduction
+                    <h1 class="JhengBold">@LiveEdit.Field("Artist", artist.Id, "ArtistNameCN", artist.ArtistNameCn)</h1>
+                    @LiveEdit.Field("Artist", artist.Id, "Introduction", artist.Introduction)
                     @* 加两个项目。1.Introduction; 2.Position; 分别为简介和职务 *@
                     <h1 class="JhengBold">社会职务</h1>
-                    @artist.Position
+                    @LiveEdit.Field("Artist", artist.Id, "Position", artist.Position)
                 </div>
             </div>
 
@@ -215,7 +215,14 @@
                 <button class="JhengRegular" style="text-decoration: none;" id="toggleBtn">查看全部 / VIEW ALL</button>
             </div>
 
-            @Html.Raw(artist.DeedsThings)
+            @if (LiveEdit.Active)
+            {
+                <div class="live-edit-chronology"@LiveEdit.Attr("Artist", artist.Id, "DeedsThings")>@Html.Raw(artist.DeedsThings)</div>
+            }
+            else
+            {
+                @Html.Raw("            " + artist.DeedsThings + "\n")
+            }
 
         </div>
         <div class="col-xs1 col-sm1 col-md1 col-lg1">&nbsp;</div>
@@ -251,7 +258,7 @@
                     var workOriginalUrl = $"/Content/ArtImg/Artist/works-narrow/{w.Path}";
                     <div class="swiper-slide">
                         <div class="material JhengLight">
-                            <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@w.Content
+                            <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@LiveEdit.Field("Works", w.Id, "Content", w.Content)
                         </div>
 
                         <a href="@workOriginalUrl">
@@ -269,7 +276,7 @@
                             <div class="number">
                                 <p>@counter</p> <!-- 使用计数器变量 -->
                             </div>
-                            <h2>@w.Title</h2>
+                            <h2>@LiveEdit.Field("Works", w.Id, "Title", w.Title)</h2>
                             <p>
                                 @w.Tags
                             </p>

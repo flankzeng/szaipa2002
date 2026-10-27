@@ -35,10 +35,10 @@
             <img class="topic-hero__img" src="@Model.BannerUrl" alt="" decoding="async" fetchpriority="high" />
         </picture>
         <div class="topic-hero__inner">
-            <h1 class="topic-hero__title">@publication.TitleCn</h1>
+            <h1 class="topic-hero__title">@LiveEdit.Field("Publication", publication.Id, "TitleCN", publication.TitleCn)</h1>
             @if (!string.IsNullOrWhiteSpace(publication.TitleEn))
             {
-                <div class="topic-hero__sub">@publication.TitleEn</div>
+                <div class="topic-hero__sub">@LiveEdit.Field("Publication", publication.Id, "TitleEN", publication.TitleEn)</div>
             }
             @if (dateText.Length > 0 || !string.IsNullOrWhiteSpace(publication.Location))
             {
@@ -49,7 +49,7 @@
                     }
                     @if (!string.IsNullOrWhiteSpace(publication.Location))
                     {
-                        <span>@publication.Location</span>
+                        <span>@LiveEdit.Field("Publication", publication.Id, "Location", publication.Location)</span>
                     }
                 </div>
             }

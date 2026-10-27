@@ -9,6 +9,9 @@ namespace Szaipa.Web.Models;
 /// </summary>
 public sealed class ExhibitionGalleryModel
 {
+    /// <summary>真实数据库展览 Id；历史目录回退页面为 null，不显示现场编辑标记。</summary>
+    public int? EditablePublicationId { get; init; }
+
     public string? TitleCn { get; init; }
 
     public string? TitleEn { get; init; }

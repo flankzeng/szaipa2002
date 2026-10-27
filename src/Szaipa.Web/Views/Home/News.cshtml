@@ -32,8 +32,8 @@
                     <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
                     <li class="col-sm14 col-md13 col-lg13 title importantTXT">
                         <a href="/Home/NewsRead/@news.Id">
-                            @news.Title
-                            <p>@news.Subtitle</p>
+                            @LiveEdit.Field("News", news.Id, "Title", news.Title)
+                            <p>@LiveEdit.Field("News", news.Id, "Subtitle", news.Subtitle)</p>
                             <div>
                                 <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/content/newsImg/{news.CoverPath}")" alt="">
                             </div>
@@ -52,7 +52,7 @@
             {
                 <ul class="col-sm20 col-md20 col-lg20 normal">
                     <li class="col-sm5 col-md5 col-lg5 date">@string.Format("{0:yyyy.MM.dd}", news.Date)</li>
-                    <li class="col-sm14 col-md13 col-lg13 title"><a href="/Home/NewsRead/@news.Id">@news.Title</a></li>
+                    <li class="col-sm14 col-md13 col-lg13 title"><a href="/Home/NewsRead/@news.Id">@LiveEdit.Field("News", news.Id, "Title", news.Title)</a></li>
                     <li class="col-xs1 col-sm1 col-md1 col-lg1">
                         <a href="/Home/NewsRead/@news.Id"><img loading="lazy" decoding="async" src="/Content/icon/enter-02.png" style="transform: translateX(20%);" alt="" class="enter"></a>
                     </li>

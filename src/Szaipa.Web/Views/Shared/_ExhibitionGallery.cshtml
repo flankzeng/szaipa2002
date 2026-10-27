@@ -17,9 +17,9 @@
     <div class="col-xs2 col-sm2 col-md1 col-lg1">&nbsp;</div>
     <div class="col-xs17 col-sm17 col-md7 col-lg7">
         <div class="titlePub">
-            <h1 class="JhengRegular">@Model.TitleCn</h1>
+            <h1 class="JhengRegular">@LiveEdit.Field("Publication", Model.EditablePublicationId, "TitleCN", Model.TitleCn)</h1>
             <h3 class="JhengLight">
-                @Model.TitleEn
+                @LiveEdit.Field("Publication", Model.EditablePublicationId, "TitleEN", Model.TitleEn)
                 <br />
                 开幕时间：@string.Format("{0:yyyy年MM月dd日}", Model.StartDate)
                 <br />

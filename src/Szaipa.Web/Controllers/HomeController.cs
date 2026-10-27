@@ -321,6 +321,8 @@ public class HomeController : Controller
         var fallback = LegacyPublicationGalleryCatalog.GetFallbackPublication(id);
         if (fallback is not null)
         {
+            // 历史目录页面可能没有数据库行；现场编辑不能把它当成可保存的展览。
+            ViewData["PublicationIsFallback"] = true;
             return View("Publication", fallback);
         }
 

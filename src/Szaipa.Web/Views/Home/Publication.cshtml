@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
     var gallery = new ExhibitionGalleryModel
     {
+        EditablePublicationId = ViewData["PublicationIsFallback"] is true ? null : publication.Id,
         TitleCn = publication.TitleCn,
         TitleEn = publication.TitleEn,
         StartDate = publication.StartDate,

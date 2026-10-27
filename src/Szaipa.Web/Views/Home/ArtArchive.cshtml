@@ -39,8 +39,8 @@
 
 <main class="artist-content">
     <header class="artist-content-hero">
-        <p>@artist.ArtistNameEn</p>
-        <h1>@artist.ArtistNameCn</h1>
+        <p>@LiveEdit.Field("Artist", artist.Id, "ArtistNameEN", artist.ArtistNameEn)</p>
+        <h1>@LiveEdit.Field("Artist", artist.Id, "ArtistNameCN", artist.ArtistNameCn)</h1>
         <span>艺术档案 / ARCHIVE</span>
     </header>
 
@@ -64,8 +64,8 @@
                             }
                             <div>
                                 <time>@item.Date?.ToString("yyyy.MM.dd")</time>
-                                <h3>@item.Title</h3>
-                                <p>@item.Subtitle</p>
+                                <h3>@LiveEdit.Field("ArtNews", item.Id, "Title", item.Title)</h3>
+                                <p>@LiveEdit.Field("ArtNews", item.Id, "SubTitle", item.Subtitle)</p>
                             </div>
                         </a>
                     </article>
@@ -123,14 +123,14 @@
                         {
                             <img src="@ImagePreviewResolver.Resolve(image)" alt="@item.Title" loading="lazy" decoding="async">
                         }
-                        <h3>《@item.Title》</h3>
+                        <h3>《@LiveEdit.Field("ArtistBook", item.Id, "Title", item.Title)》</h3>
                         <dl>
-                            @if (item.Publisher.Length > 0) { <div><dt>出版社</dt><dd>@item.Publisher</dd></div> }
-                            @if (item.PublishYear.Length > 0) { <div><dt>出版年份</dt><dd>@item.PublishYear</dd></div> }
+                            @if (item.Publisher.Length > 0) { <div><dt>出版社</dt><dd>@LiveEdit.Field("ArtistBook", item.Id, "Publisher", item.Publisher)</dd></div> }
+                            @if (item.PublishYear.Length > 0) { <div><dt>出版年份</dt><dd>@LiveEdit.Field("ArtistBook", item.Id, "PublishYear", item.PublishYear)</dd></div> }
                         </dl>
                         @if (item.Description.Length > 0)
                         {
-                            <p>@item.Description</p>
+                            <p>@LiveEdit.Field("ArtistBook", item.Id, "Description", item.Description)</p>
                         }
                     </article>
                 }

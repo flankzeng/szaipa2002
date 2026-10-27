@@ -22,6 +22,8 @@
   background-color: #fff8f8 !important;
   color: #222 !important;
 }
+/* 多行纯文本在 contenteditable 中保留换行，保存时不会被浏览器折叠为空格。 */
+.le-editing[data-le-kind="lines"] { white-space: pre-wrap; }
 .le-saving { opacity: 0.55; }
 
 /* ---- 2. 底部悬浮状态条（固定在最上层，不占文档流、不遮挡导航） ---- */

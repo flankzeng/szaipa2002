@@ -19,10 +19,10 @@
 
 <section class="exh-banner" style="background-image: url('@bannerBg')">
     <div class="exh-banner__inner">
-        <h1 class="exh-banner__title">@Model.TitleCn</h1>
+        <h1 class="exh-banner__title">@LiveEdit.Field("Publication", Model.EditablePublicationId, "TitleCN", Model.TitleCn)</h1>
         @if (!string.IsNullOrWhiteSpace(Model.TitleEn))
         {
-            <div class="exh-banner__sub">@Model.TitleEn</div>
+            <div class="exh-banner__sub">@LiveEdit.Field("Publication", Model.EditablePublicationId, "TitleEN", Model.TitleEn)</div>
         }
         <div class="exh-banner__date">
             @if (Model.StartDate.HasValue)
@@ -41,13 +41,25 @@
 {
     <section class="exh-preface">
         <h2 class="exh-preface__h">序</h2>
-        @foreach (var paragraph in prefaceParagraphs)
+        @if (LiveEdit.Active && Model.EditablePublicationId is not null)
         {
-            <p>@paragraph</p>
+            <div class="live-edit-preface"@LiveEdit.Attr("Publication", Model.EditablePublicationId, "Preface", Model.Preface)>
+                @foreach (var paragraph in prefaceParagraphs)
+                {
+                    <p>@paragraph</p>
+                }
+            </div>
+        }
+        else
+        {
+            @foreach (var paragraph in prefaceParagraphs)
+            {
+                <p>@paragraph</p>
+            }
         }
         @if (!string.IsNullOrWhiteSpace(Model.Signature))
         {
-            <div class="exh-preface__sign">@Model.Signature</div>
+            <div class="exh-preface__sign">@LiveEdit.Field("Publication", Model.EditablePublicationId, "Signature", Model.Signature)</div>
         }
     </section>
 }

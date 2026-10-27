@@ -64,6 +64,7 @@
 
   function render(el, value, kind) {
     if (kind === 'html') { el.innerHTML = value; return; }
+    if (el.hasAttribute('data-le-value')) el.setAttribute('data-le-value', value);
     el.textContent = '';
     value.split('\n').forEach(function (line, index) {
       if (index > 0) el.appendChild(document.createElement('br'));
@@ -75,7 +76,9 @@
   function startInline(el) {
     var kind = el.getAttribute('data-le-kind') || 'text';
     var original = el.innerHTML;
-    var originalText = el.innerText;
+    var originalText = el.hasAttribute('data-le-value') ? el.getAttribute('data-le-value') : el.innerText;
+    // 多行内容先转成纯文本；保留可见换行，避免编辑时把原有链接或段落标签当作正文。
+    if (kind === 'lines') el.textContent = originalText;
     editing = el;
     el.classList.add('le-editing');
     el.setAttribute('contenteditable', 'plaintext-only');
@@ -88,12 +91,13 @@
     selection.addRange(range);
 
     function finish(commit) {
+      // 在移除保留换行的样式之前读取，否则 innerText 会把换行折叠为空格。
+      var text = el.innerText.replace(/ /g, ' ');
       el.removeEventListener('keydown', onKey);
       el.removeEventListener('blur', onBlur);
       el.removeAttribute('contenteditable');
       el.classList.remove('le-editing');
       editing = null;
-      var text = el.innerText.replace(/ /g, ' ');
       if (!commit || text === originalText) { el.innerHTML = original; return; }
       el.classList.add('le-saving');
       save(el, text)

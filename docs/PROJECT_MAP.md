@@ -120,6 +120,7 @@ cd src/Szaipa.Web && npm run build                    # Tailwind(admin.css) + es
 - 开关中间件与视图助手 `src/Szaipa.Web/LiveEdit/LiveEditHtml.cs`（`LiveEditState.UseLiveEdit`、`@LiveEdit.Text/Lines/Field/Attr`，在 `Views/_ViewImports.cshtml` 注入）；资源 partial `Views/Shared/_LiveEditAssets.cshtml`，脚本 `wwwroot/js/live-edit.js`、样式 `wwwroot/css/live-edit.css`。
 - 数据层 `src/Szaipa.Data/Services/LiveEdit/`：白名单 `LiveEditRegistry`（新增可编辑字段只改这里）、`LiveEditService`（写入+清洗+审计）、`SiteTextProvider`（SiteText 单例缓存）。表 `SiteText`（`docs/sql/2026-10-26-site-text.sql`）。
 - 给新页面接入：写死文字用 `@LiveEdit.Text("页面.区块.名", "原文")`；数据库字段用 `@LiveEdit.Field("实体", id, "字段", 值)` 或在容器上 `@LiveEdit.Attr(...)`（富文本）。实体/字段须先在 `LiveEditRegistry` 白名单里。
+- 2026-10-27 扩展：关于我们、新闻列表、会员风采、艺术家官网/档案、普通/重要/专题展览的常见已显示字段已接入；专题积木仍在后台维护。`PublicationIsFallback` 区分历史目录与真实数据库行，避免回退页出现无效编辑入口。多行字段使用 HTML 编码的 `data-le-value` 保留原始换行；`live-edit.js` 编辑态保留空行并在保存前读取文本。详见 `docs/updates/2026-10-27-live-edit-pages.md`。
 
 ## 图片变体（T8，2026-10-26）
 - `src/Szaipa.Web/Services/ImageVariants.cs`（生成/缓存/URL/srcset，SkiaSharp）、`VariantPreviewResolver.cs`（预览解析统一走 960 WebP + `/_img` 端点）、`TagHelpers/ImageVariantTagHelper.cs`（/Content 图片自动 srcset）、`Infrastructure/ImageVariantsWarmCommand.cs`（`image-variants-warm`）。
