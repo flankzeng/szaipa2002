@@ -78,7 +78,7 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
         {
             ArtistNameCN = input.ArtistNameCN,
             ArtistNameEN = input.ArtistNameEN,
-            Sex = input.Sex,
+            Sex = input.Sex ?? string.Empty, // 生产库 Sex 列 NOT NULL（无默认值），未选时写空串
             Nation = input.Nation,
             City = input.City,
             Title = input.Title,
@@ -124,7 +124,7 @@ public sealed class ArtistAdminRepository : IArtistAdminRepository
         // Only the editable fields are copied; WorkCount/VisitCount/AddDate stay as originally stored.
         artist.ArtistNameCN = input.ArtistNameCN;
         artist.ArtistNameEN = input.ArtistNameEN;
-        artist.Sex = input.Sex;
+        artist.Sex = input.Sex ?? string.Empty;
         artist.Nation = input.Nation;
         artist.City = input.City;
         artist.Title = input.Title;

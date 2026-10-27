@@ -149,8 +149,9 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
             FolderName = input.FolderName,
             MaxImg = input.MaxImg,
             LogoPath = input.LogoPath,
-            CoverPath = input.CoverPath,
-            Location = input.Location,
+            // 生产库 CoverPath、Location 为 NOT NULL（无默认值）：未填时写空串，否则新建即失败。
+            CoverPath = input.CoverPath ?? string.Empty,
+            Location = input.Location ?? string.Empty,
             Status = input.Status,
             zhuban = input.zhuban,
             chengban = input.chengban,
@@ -183,7 +184,7 @@ public sealed class PublicationAdminRepository : IPublicationAdminRepository
         publication.StartDate = input.StartDate;
         publication.EndDate = input.EndDate;
         publication.FolderName = input.FolderName;
-        publication.Location = input.Location;
+        publication.Location = input.Location ?? string.Empty;
         publication.Status = input.Status;
         publication.zhuban = input.zhuban;
         publication.chengban = input.chengban;

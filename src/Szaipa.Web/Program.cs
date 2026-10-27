@@ -219,7 +219,7 @@ var hostBuilder = new HostBuilder()
                         policy => policy.RequireAuthenticatedUser());
                 });
 
-                services.AddControllersWithViews();
+                services.AddControllersWithViews(options => options.Filters.Add<StaffSaveErrorFilter>());
                 services.AddResponseCompression(options =>
                 {
                     options.EnableForHttps = true;

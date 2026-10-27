@@ -26,7 +26,7 @@ public sealed class TongouAdminContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TongouAtrist>(e => { e.ToTable("TongouAtrist"); e.HasKey(x => x.id); });
-        modelBuilder.Entity<TongouWorks>(e => { e.ToTable("TongouWorks"); e.HasKey(x => x.id); });
+        modelBuilder.Entity<TongouAtrist>(e => { e.ToTable("TongouAtrist"); e.HasKey(x => x.id); e.Property(x => x.id).ValueGeneratedNever(); });
+        modelBuilder.Entity<TongouWorks>(e => { e.ToTable("TongouWorks"); e.HasKey(x => x.id); e.Property(x => x.id).ValueGeneratedNever(); });
     }
 }

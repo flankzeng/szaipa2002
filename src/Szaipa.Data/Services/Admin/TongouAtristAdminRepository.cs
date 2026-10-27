@@ -58,8 +58,11 @@ public sealed class TongouAtristAdminRepository : ITongouAtristAdminRepository
 
     public async Task<int> CreateAsync(TongouAtrist input, AdminActor actor, CancellationToken cancellationToken)
     {
+        // 生产库 TongouAtrist.id 不是自增列（旧后台自行编号）：取当前最大值 + 1。
+        var nextId = (await _tongouDb.TongouAtrist.MaxAsync(a => (int?)a.id, cancellationToken) ?? 0) + 1;
         var artist = new TongouAtrist
         {
+            id = nextId,
             Name = input.Name,
             Title = input.Title,
             HeardPath = input.HeardPath,

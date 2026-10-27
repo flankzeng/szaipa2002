@@ -65,8 +65,11 @@ public sealed class TongouWorksAdminRepository : ITongouWorksAdminRepository
     {
         var artist = await _tongouDb.TongouAtrist.FirstOrDefaultAsync(a => a.id == input.Atristid, cancellationToken);
 
+        // 生产库 TongouWorks.id 不是自增列（旧后台自行编号）：取当前最大值 + 1。
+        var nextId = (await _tongouDb.TongouWorks.MaxAsync(w => (int?)w.id, cancellationToken) ?? 0) + 1;
         var work = new TongouWorks
         {
+            id = nextId,
             Atristid = input.Atristid,
             AtristidName = artist?.Name,
             Title = input.Title,
