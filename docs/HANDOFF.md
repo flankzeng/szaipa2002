@@ -2,7 +2,18 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-26 第四轮：图片流量优化 T8）
+## 最新交接（2026-10-27：服务器 staging 已部署）
+
+- **服务器（`ssh szaipa`，Windows Server 2019）已就绪**：Hosting Bundle 10.0.14；新站 `szaipa-new`（应用池 `SzaipaNew`）**仅绑定 127.0.0.1:8088**，跑发布包 **`faadcb8`**（`C:\SzaipaData\releases\faadcb8`），只读浏览真实生产数据、后台写入关闭；线上 `szaipa` 站未动。详细记录、权限、回退：`docs/updates/2026-10-27-server-staging.md`。
+- 访问 staging：本机 `ssh -f -N -L 18088:127.0.0.1:8088 szaipa`，浏览器开 `http://localhost:18088`。
+- 部署时修复上线阻断：宿主缺 `UseIIS()` 导致 IIS 500.30（`faadcb8`，673 测试绿）。**当前交付包改为 `artifacts/szaipa-automation-faadcb8-win-x64.zip`，SHA-256 `d7e53413c85fb4a54463f8927648e9204e959a8bc354bfcd0a128a41f8f89779`**（efb56aa 作废）。
+- 今晚 02:00（服务器时间）定时任务 `Szaipa-ImageWarm-Once` 预热存量图片；次日看 `C:\SzaipaData\logs\image-warm.log`。
+- 待用户决定：① 建 `Szaipa_staging` 副本库 + 可写账号做真实写入验收；② 线上 `web24.05\Content` 的 Everyone 完全控制 ACL 是否收紧；③ 正式切换时间。
+- Windows 远程操作注意：命令行有 8191 字符上限，长 PowerShell 脚本用 scp 上传后 `-File` 执行（含凭据的脚本执行后立即删除）；控制台为 GBK，脚本里先设 `[Console]::OutputEncoding=UTF8`。
+
+---
+
+## 第四轮交接（2026-10-26：图片流量优化 T8）
 
 ### 当前基线
 - 分支 `codex-refactor-dotnet-modernization`；**发布包对应源码 `efb56aa`**（之后仅文档）。测试 **672 全绿**（Data 389 + Web 283）。
