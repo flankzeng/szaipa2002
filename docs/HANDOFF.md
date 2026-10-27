@@ -2,14 +2,26 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
-## 最新交接（2026-10-27：服务器 staging + 真实写入验收）
+## 最新交接（2026-10-27 晚：公众号官方接口已在服务器跑通，周额度 95% 停止）
 
-- **服务器**（`ssh szaipa`）：`szaipa-new` 仅 127.0.0.1:8088，现跑 **`e0ea09a`**，读写指向副本库 `Szaipa_staging`/`Tongou_staging` 与图片副本；线上站未动。全部记录与回退：`docs/updates/2026-10-27-server-staging.md`。
-- **真实写入验收 17/17 通过**；修复 4 个真实库才暴露的问题 + 保存失败中文兜底（`43f7eb6`，673 测试绿）。**当前交付包 `artifacts/szaipa-automation-43f7eb6-win-x64.zip`，SHA-256 `f6763dc68dfa9e29ea3add7c62d1f779441883ec3e927517623dc95efffec32b`**（faadcb8 作废）。
-- 上线 SQL 在服务器执行必须 `sqlcmd -f 65001`（见部署记录）。
-- 今晚 02:00 预热任务已改指向 43f7eb6（线上 Content → 正式缓存）。
-- T9 公众号接口配置页已合入并部署到 staging（`e0ea09a`），服务器实测加密保存/测试连接通过；修复微信接口一律 412 的旧 bug。staging 抽测 5 项全部通过。**当前交付包 `artifacts/szaipa-automation-e0ea09a-win-x64.zip`，SHA-256 `4df230660d388dc74e9ce9b9ce7b8b041ba5e1e5a61bef053d32162b541b8aa8`**（43f7eb6 作废）。
-- 待用户决定：线上 `web24.05\Content` 的 Everyone 完全控制 ACL；正式切换时间。
+### 当前状态
+- **服务器**（`ssh szaipa`，Windows；白名单只有服务器 IP，**公众号接口相关测试必须在服务器上跑**）：`szaipa-new` 仅 127.0.0.1:8088，现跑 **`e0ea09a`**，读写指向副本库 `Szaipa_staging`/`Tongou_staging` + 图片副本；线上 `szaipa` 站未动。部署全记录/回退：`docs/updates/2026-10-27-server-staging.md`。
+- **交付包 `artifacts/szaipa-automation-e0ea09a-win-x64.zip`**，SHA-256 `4df230660d388dc74e9ce9b9ce7b8b041ba5e1e5a61bef053d32162b541b8aa8`；712 测试绿。
+- 验收：后台全模块真实写入 17/17、staging 抽测 5/5、公众号接口配置页（加密保存）服务器实测通过。
+- **公众号**：用户已在 staging 配置页录入真实 AppID/AppSecret（加密存于 `C:\SzaipaData\secure\wechat-credentials.json`，切换上线后直接可用）。测试连接：token 可用；**freepublish 48001 无权限（已关）**；**永久图文素材可用**（图文 14、图片 1977、视频 29）。在副本库上跑一次全量同步：拉取 14、**新增 13、失败 1**（原因未查，见 `/Staff/WeChat` 来源状态或 `C:\SzaipaData\logs\stdout*`）；自动同步已关回。群发历史仍需「批量粘贴链接」补齐。
+- 今晚 02:00 预热任务 `Szaipa-ImageWarm-Once` 指向 e0ea09a（线上 Content → 正式缓存 `C:\SzaipaData\image-cache`），次日查 `C:\SzaipaData\logs\image-warm.log`。
+
+### 下一步（按顺序）
+1. 查那 1 条素材同步失败的原因并修复（在服务器 staging 上复现，副本库可写）。
+2. 可选：旧 News 里带 `mp.weixin.qq.com` 原文链接的条目可直接批量喂给「链接导入」补历史（先在 staging 试）。
+3. 正式切换（用户定时间）：按 `docs/automation-rollout.md`；生产执行 SQL 必须 `sqlcmd -f 65001`；切换后在配置页开启自动同步（仅永久图文素材来源）、设 `LegacyNewsMaxId`。
+4. 用户待决：线上 `web24.05\Content` 的 Everyone 完全控制 ACL 是否收紧。
+5. 上线后可补：T6 现场编辑其余页面加标记；上传接口非法 folder 静默改 newsImg、VipOrder 查询的 EF Skip/Take 警告等小项。
+
+### 可粘贴给下一位 agent（Claude Code / Codex 通用）
+```text
+接手 szaipa2002 上线收尾。先读 docs/AGENT_SPEC.md → PROJECT_MAP.md → TASKS.md → HANDOFF.md 顶部最新交接 → docs/updates/2026-10-27-server-staging.md。服务器 ssh szaipa（Windows，长 PowerShell 脚本 scp 后 -File 执行；sqlcmd 必须 -f 65001），staging 站 127.0.0.1:8088（隧道 ssh -f -N -L 18088:127.0.0.1:8088 szaipa），读写副本库 Szaipa_staging；测试管理员凭据在本机 artifacts/verification/staging-test-login.txt；登录 cookie 为 Secure，脚本需放宽 cookie 策略（见 artifacts/verification/claude-2026-10-26/staging-http-crud.py）。公众号白名单只有服务器 IP，接口测试必须在服务器上跑。先查永久图文素材同步 14 条中失败的 1 条，再按 HANDOFF 下一步推进。生产库与线上站不动，正式切换须用户确认时间。中文 commit 与 docs/updates；额度剩 5% 时停下更新交接。
+```
 
 ---
 
