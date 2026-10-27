@@ -12,8 +12,8 @@
 - 今晚 02:00 预热任务 `Szaipa-ImageWarm-Once` 指向 e0ea09a（线上 Content → 正式缓存 `C:\SzaipaData\image-cache`），次日查 `C:\SzaipaData\logs\image-warm.log`。
 
 ### 下一步（按顺序）
-1. 查那 1 条素材同步失败的原因并修复（在服务器 staging 上复现，副本库可写）。
-2. 可选：旧 News 里带 `mp.weixin.qq.com` 原文链接的条目可直接批量喂给「链接导入」补历史（先在 staging 试）。
+1. ~~素材同步失败 1 条~~：原因「清洗后正文为空」= 纯视频文章（站内无法播放微信视频，跳过属预期）；日志已加文章标题（`cd9542a`，尚未部署到服务器）。
+2. ~~旧新闻原文链接补历史~~：旧手录新闻里只有 2 条带公众号链接，已在 staging 从服务器导入成功（0 失败）。**群发历史需用户从公众号后台复制链接批量导入**（每次 ≤50 条）。
 3. 正式切换（用户定时间）：按 `docs/automation-rollout.md`；生产执行 SQL 必须 `sqlcmd -f 65001`；切换后在配置页开启自动同步（仅永久图文素材来源）、设 `LegacyNewsMaxId`。
 4. 用户待决：线上 `web24.05\Content` 的 Everyone 完全控制 ACL 是否收紧。
 5. 上线后可补：T6 现场编辑其余页面加标记；上传接口非法 folder 静默改 newsImg、VipOrder 查询的 EF Skip/Take 警告等小项。
