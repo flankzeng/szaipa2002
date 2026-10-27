@@ -155,6 +155,9 @@ public sealed class WeChatSettingsControllerTests : IDisposable
 
         public Task<WeChatMaterialCount> GetMaterialCountAsync(CancellationToken cancellationToken) =>
             throw new NotSupportedException();
+
+        public Task<System.Text.Json.Nodes.JsonNode> QueryReadOnlyAsync(string path, System.Text.Json.Nodes.JsonNode? body, CancellationToken cancellationToken) =>
+            throw new NotSupportedException();
     }
 
     private sealed class NullTempDataProvider : ITempDataProvider

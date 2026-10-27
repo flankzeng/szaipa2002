@@ -40,6 +40,12 @@ public interface IWeChatApiClient
 
     /// <summary><c>material/get_materialcount</c>。</summary>
     Task<WeChatMaterialCount> GetMaterialCountAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// 调用白名单内的<b>只读查询</b>接口（<see cref="WeChatApiClient.ReadOnlyQueryPaths"/>：草稿/发布列表、数据统计、菜单等），
+    /// 返回原始 JSON；errcode≠0 抛 <see cref="WeChatApiException"/>。供 <c>wechat-history-probe</c> 核查历史文章途径。
+    /// </summary>
+    Task<JsonNode> QueryReadOnlyAsync(string path, JsonNode? body, CancellationToken cancellationToken);
 }
 
 /// <summary>
@@ -99,6 +105,34 @@ public sealed class WeChatApiClient : IWeChatApiClient
             json["video_count"]?.GetValue<int>() ?? 0,
             json["image_count"]?.GetValue<int>() ?? 0,
             json["news_count"]?.GetValue<int>() ?? 0);
+    }
+
+    /// <summary>
+    /// 允许 <see cref="QueryReadOnlyAsync"/> 调用的接口：全部是查询类，不会群发、发布、删除或修改公众号任何内容。
+    /// 新增前先查官方文档确认它只读。
+    /// </summary>
+    public static readonly IReadOnlySet<string> ReadOnlyQueryPaths = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "/cgi-bin/freepublish/batchget",
+        "/cgi-bin/draft/count",
+        "/cgi-bin/draft/batchget",
+        "/cgi-bin/material/batchget_material",
+        "/cgi-bin/get_current_selfmenu_info",
+        "/cgi-bin/get_current_autoreply_info",
+        "/datacube/getusersummary",
+        "/datacube/getarticlesummary",
+        "/datacube/getarticletotal",
+        "/datacube/getuserread"
+    };
+
+    public async Task<JsonNode> QueryReadOnlyAsync(string path, JsonNode? body, CancellationToken cancellationToken)
+    {
+        if (!ReadOnlyQueryPaths.Contains(path))
+        {
+            throw new ArgumentException($"{path} 不在只读查询白名单内。", nameof(path));
+        }
+
+        return await CallAsync(path, body, cancellationToken);
     }
 
     /// <summary>带 access_token 调用；token 失效时强刷重试一次；errcode≠0 抛 <see cref="WeChatApiException"/>。</summary>

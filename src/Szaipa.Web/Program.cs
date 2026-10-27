@@ -101,14 +101,16 @@ Action<IServiceCollection> configureDataProtection = services =>
 
 // 公众号接口能力探测命令：dotnet run --project src/Szaipa.Web -- wechat-probe（探测后直接退出，不启动站点）。
 // 使用有效配置（配置文件 + 后台「接口配置」页的加密存储），所以放在 Data Protection 配置解析之后。
-if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
+// wechat-history-probe [--scan-from yyyy-MM-dd] [--out 文件.json]：核查能列出历史文章的只读接口（同样探测后退出）。
+if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase)
+    || args.Contains("wechat-history-probe", StringComparer.OrdinalIgnoreCase))
 {
     var probeStoreLocation = Szaipa.Data.Services.WeChat.WeChatCredentialStoreLocation.Resolve(
         contentRoot,
         configuration[Szaipa.Data.Services.WeChat.WeChatCredentialStoreLocation.ConfigurationKey],
         isDevelopment);
     Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(
-        configuration, probeStoreLocation, configureDataProtection));
+        configuration, probeStoreLocation, configureDataProtection, args: args));
 }
 var staffAuthenticationCookie = StaffAuthenticationCookiePolicy.Resolve(environmentName);
 var urls = ResolveUrls(args, configuration);

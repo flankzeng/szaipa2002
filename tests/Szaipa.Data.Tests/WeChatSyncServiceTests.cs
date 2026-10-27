@@ -557,6 +557,9 @@ public sealed class WeChatSyncServiceTests
 
         public Task<WeChatMaterialCount> GetMaterialCountAsync(CancellationToken cancellationToken) =>
             Task.FromResult(new WeChatMaterialCount(0, 0, 0, 0));
+
+        public Task<System.Text.Json.Nodes.JsonNode> QueryReadOnlyAsync(string path, System.Text.Json.Nodes.JsonNode? body, CancellationToken cancellationToken) =>
+            throw new NotSupportedException();
     }
 
     private sealed class Env : IAsyncDisposable

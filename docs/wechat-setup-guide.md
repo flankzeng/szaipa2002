@@ -65,6 +65,7 @@ mp.weixin.qq.com →「设置与开发 → 基本配置」（新版可能叫「�
 cd /Users/arthur/Project/GitClone/szaipa2002 && ~/.dotnet/dotnet run --project src/Szaipa.Web -- wechat-probe
 ```
 结果与后台「测试连接」相同（同样叠加后台保存的配置），逐项显示 token、「发布记录接口」「永久图文素材接口」是否有权限、能拿到多少条，不打印密钥。
+想核查「还有哪些接口能列出历史文章」：在服务器上运行 `dotnet Szaipa.Web.dll wechat-history-probe --out 清单.json`（Production 环境）。它逐项测试发布记录、草稿箱、永久素材、菜单、自动回复和数据统计接口，只调用查询类接口；认证后加 `--scan-from 2014-12-01` 可以逐日扫描群发标题。2026-10-28 的实测结果见 [updates/2026-10-28-wechat-history-api.md](updates/2026-10-28-wechat-history-api.md)。
 只用配置文件时：没权限的来源关掉（`WeChat__Sources__FreePublish=false` / `WeChat__Sources__Material=false`），至少一个可用时设 `WeChat__Enabled=true`。
 
 ### 5. 服务器首次启用后台设置页（运维一次性）
