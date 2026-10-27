@@ -2,6 +2,13 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
+## 最新交接（2026-10-27 20:07：**新站已正式上线**）
+- 线上 `szaipa` 站已切到新站（`031f211`，应用池 `SzaipaProd`，生产账号 `szaipa_web_rw`），旧站目录 `web24.05` 原样保留可随时回退。执行记录与回退命令：`docs/cutover-2026-10-27.md`。
+- 待用户：后台用自己账号登录确认；配置页开启公众号自动同步（仅素材来源）；补群发历史链接后再设 `LegacyNewsMaxId`；决定 Content 目录 Everyone 权限是否收紧。
+- 后续 agent：观察 `C:\SzaipaData\logs\prod-stdout*`；T6 现场编辑其余页面加标记；staging 副本库/图片副本可在用户同意后清理。
+
+---
+
 ## 最新交接（2026-10-27 晚：公众号官方接口已在服务器跑通，周额度 95% 停止）
 
 ### 当前状态
