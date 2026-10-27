@@ -2,6 +2,14 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
+## 最新交接（2026-10-27 晚，Content ACL 已收紧）
+
+- 用户确认后已备份并收紧生产 Content ACL：SYSTEM/Administrators 完全控制、`IIS AppPool\SzaipaProd` 修改；4,903 项复查无 Everyone 条目。首页、新闻、原图和 WebP 抽样 200；后台上传未实写验证。详情及 ACL 恢复步骤见 `docs/updates/2026-10-27-content-acl.md`。
+- 回退旧站前须先恢复 ACL；旧 `.NET v4.5` 池不在新 ACL 中。备份位于 `C:\SzaipaData\backup\content-acl-20261027-2042`。
+- staging 清理准备中；公众号历史仍需用户提供公开文章完整链接，排除已删除或隐藏文章；10 月 28 日 02:00 后检查图片预热日志。
+
+---
+
 ## 最新交接（2026-10-27 20:27，上线后只读观察）
 
 - 生产 stdout 共 3 个文件，检查时均无 `fail:`；首页、新闻列表、健康检查均 200，抽样 WebP 返回 200 且文件头正确。详细记录：`docs/updates/2026-10-27-post-launch-observation.md`。
