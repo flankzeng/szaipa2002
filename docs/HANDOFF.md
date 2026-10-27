@@ -2,6 +2,15 @@
 
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
+## 最新交接（2026-10-28 00:54，旧新闻恢复显示）
+
+- 用户澄清：无需切回旧 MVC 程序，正式站仍用 `269d7b8`；先恢复旧版新闻条目，继续补公众号历史。新版首页与新闻另建仅经 SSH 隧道访问的隔离测试环境。
+- 已备份配置并将 `WeChat:LegacyNewsMaxId` 从 1124 改为 0，重启 `SzaipaProd`；新闻列表 86 篇（旧手录 73 + 已同步 13），首页/新闻/健康/原图/WebP 均 200，最新 stdout 无 `fail:`。详见 `docs/updates/2026-10-28-restore-old-news.md`。未写生产数据库。
+- 旧手录及已同步文章是否在公众号被删除或隐藏无法从现有列表确认，须对照发表记录；公众号后台仍受浏览器安全策略拦截，不能绕过，需用户提供可核对的仍公开链接。
+- 图片预热 02:00 后复查；测试环境建设进行中。五小时额度到 95% 时停止并更新交接。
+
+---
+
 ## 最新交接（2026-10-27 22:21，现场编辑扩展已上线）
 
 - 用户确认后，22:21:40 正式站 `szaipa` 切至 `C:\SzaipaData\releases\269d7b8` / `SzaipaProd`；旧发布 `031f211` 保留。包哈希、配置/IIS 备份、检查与回退见 `docs/updates/2026-10-27-live-edit-deploy.md`。未由 agent 执行生产数据库写操作。
