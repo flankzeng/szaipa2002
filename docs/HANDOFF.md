@@ -4,11 +4,11 @@
 
 ## 最新交接（2026-10-27：服务器 staging + 真实写入验收）
 
-- **服务器**（`ssh szaipa`）：`szaipa-new` 仅 127.0.0.1:8088，现跑 **`43f7eb6`**，读写指向副本库 `Szaipa_staging`/`Tongou_staging` 与图片副本；线上站未动。全部记录与回退：`docs/updates/2026-10-27-server-staging.md`。
+- **服务器**（`ssh szaipa`）：`szaipa-new` 仅 127.0.0.1:8088，现跑 **`e0ea09a`**，读写指向副本库 `Szaipa_staging`/`Tongou_staging` 与图片副本；线上站未动。全部记录与回退：`docs/updates/2026-10-27-server-staging.md`。
 - **真实写入验收 17/17 通过**；修复 4 个真实库才暴露的问题 + 保存失败中文兜底（`43f7eb6`，673 测试绿）。**当前交付包 `artifacts/szaipa-automation-43f7eb6-win-x64.zip`，SHA-256 `f6763dc68dfa9e29ea3add7c62d1f779441883ec3e927517623dc95efffec32b`**（faadcb8 作废）。
 - 上线 SQL 在服务器执行必须 `sqlcmd -f 65001`（见部署记录）。
 - 今晚 02:00 预热任务已改指向 43f7eb6（线上 Content → 正式缓存）。
-- 进行中（子 agent）：T9 公众号接口配置页（后台填写 AppID/AppSecret，Data Protection 加密存文件，测试连接，40164 显示服务器出口 IP）；staging 抽测（公众号导入/专题积木/现场编辑/会员排序/图片上传）。
+- T9 公众号接口配置页已合入并部署到 staging（`e0ea09a`），服务器实测加密保存/测试连接通过；修复微信接口一律 412 的旧 bug。staging 抽测 5 项全部通过。**当前交付包 `artifacts/szaipa-automation-e0ea09a-win-x64.zip`，SHA-256 `4df230660d388dc74e9ce9b9ce7b8b041ba5e1e5a61bef053d32162b541b8aa8`**（43f7eb6 作废）。
 - 待用户决定：线上 `web24.05\Content` 的 Everyone 完全控制 ACL；正式切换时间。
 
 ---

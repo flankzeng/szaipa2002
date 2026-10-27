@@ -50,3 +50,10 @@
 - **验收**：后台 16 个模块增删改 + 超长名称兜底 = **17/17 通过**（脚本 `artifacts/verification/claude-2026-10-26/staging-http-crud.py`，写入前强制核对连接串指向 *_staging）。首轮发现并修复 4 个只在真实库出现的问题（`43f7eb6`）：Artist.Sex、Publication.CoverPath/Location 为 NOT NULL；TongouAtrist/TongouWorks.id 非自增；超长/必填错误改为中文提示（`StaffSaveErrorFilter`）。
 - 部署版本现为 **`43f7eb6`**（`C:\SzaipaData\releases\43f7eb6`，SHA-256 `f6763dc68dfa9e29ea3add7c62d1f779441883ec3e927517623dc95efffec32b`）；夜间预热任务已改指向 43f7eb6，并用环境变量固定为线上 Content + 正式缓存目录。
 - 登录 cookie 在 Production 强制 Secure：经 http://localhost 隧道时浏览器可用（Chrome 视 localhost 为安全来源），脚本需放宽 cookie 策略。
+
+## 追加：staging 抽测 + T9 公众号接口配置页上服务器
+- 抽测 5 项（公众号链接导入、专题积木、现场编辑、会员排序、图片上传裁切）在副本库上全部通过；修复「后台删除导入的新闻后同链接无法重新导入」（`26793e2`）。证据 `artifacts/verification/claude-2026-10-26/staging-spot-checks.json`（本地）。
+- T9 合入（`e0ea09a`，712 测试绿）：后台「公众号同步 → 接口配置」`/Staff/WeChat/Settings`，AppID/AppSecret 手工录入，AppSecret 经 Data Protection 加密写入 `C:\SzaipaData\secure\wechat-credentials.json`（目录去继承，仅 SYSTEM/Administrators/`IIS AppPool\SzaipaNew`），保存后无需重启生效；测试连接显示每一步结果，40164 时提示服务器出口 IP。顺带修复：原 `WeChatApiClient` 请求体为 chunked，微信一律返回 HTTP 412，官方接口此前从未可用。
+- 服务器实测：假凭据保存 → 页面仅显示末 4 位、文件无明文；测试连接从服务器真实请求微信得到 40013（证明出站网络通、412 已修）；清空后文件删除。
+- 部署版本 **`e0ea09a`**（SHA-256 `4df230660d388dc74e9ce9b9ce7b8b041ba5e1e5a61bef053d32162b541b8aa8`），夜间预热任务已改指向 e0ea09a。
+- **凭据与正式环境**：凭据存于文件（不在数据库），密钥目录 `C:\SzaipaData\dp-keys` 与正式切换后共用；现在在 staging 页面录入的真实凭据，切换上线后（同一路径、同一密钥、同一应用池）直接可用。录入前保持「启用自动同步」关闭，避免往副本库同步。
