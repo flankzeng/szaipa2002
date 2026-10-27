@@ -105,11 +105,13 @@ a:hover {
     outline: 0;
 }
 
-a:hover,
-a:focus {
-    color: #23527c;
-    text-decoration: underline;
-}
+/* 链接悬停/聚焦：不变色、不加下划线（2026-10-28 修复）
+   原先这里沿用 bootstrap 的 a:hover / a:focus { color:#23527c; text-decoration:underline }。
+   旧站每个组件都会自己把它盖掉；CSS 合并后多处覆盖丢失，结果是：
+   - 首页展览卡片、会员风采、展会列表、新闻推荐列表悬停时，白字下出现深蓝下划线；
+   - 春语 / 同构专题页的白色导航悬停时变成深蓝，在深色背景上几乎看不见。
+   全站设计规范是“悬停不变，沿用链接本身的颜色”，所以这里不再给悬停设颜色和下划线。
+   哪个组件需要悬停效果，就在它自己的 CSS 里写（例如 art.css 的 .hoverLine）。 */
 
 a:focus {
     outline: 5px auto -webkit-focus-ring-color;

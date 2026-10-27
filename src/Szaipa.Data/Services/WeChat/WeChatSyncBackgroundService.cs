@@ -167,8 +167,8 @@ public sealed class WeChatSyncBackgroundService : BackgroundService
             else
             {
                 _logger.LogInformation(
-                    "公众号定时同步完成（{Mode}）：拉取 {Fetched}，新增 {Created}，更新 {Updated}，无变化 {Unchanged}，失败 {Failed}。",
-                    full ? "全量回填" : "增量", summary.Fetched, summary.Created, summary.Updated, summary.Unchanged, summary.Failed);
+                    "公众号定时同步完成（{Mode}）：拉取 {Fetched}，新增 {Created}，更新 {Updated}，无变化 {Unchanged}，跳过 {Skipped}，失败 {Failed}。",
+                    full ? "全量回填" : "增量", summary.Fetched, summary.Created, summary.Updated, summary.Unchanged, summary.Skipped, summary.Failed);
             }
 
             return succeeded;

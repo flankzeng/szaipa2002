@@ -320,6 +320,28 @@ public sealed class WeChatSyncServiceTests
         Assert.Equal(0, await env.Db.News.CountAsync());
     }
 
+    [Fact]
+    public async Task Article_without_displayable_body_is_skipped_not_failed()
+    {
+        // 纯视频、转载他号文章的分享卡片：页面正常但清洗后没有正文。2026-10-28 前算「失败」，
+        // 导致素材接口每轮定时同步都报「未完成」。
+        await using var env = new Env();
+        var article = new WeChatArticle
+        {
+            SourceKey = WeChatSourceKey.FromIds("MzkwNjIwMDU5Mg==", "100000099", "1"),
+            SourceUrl = ShortUrl,
+            Title = "开幕花絮",
+            ContentHtml = "<div><p><br></p></div>"
+        };
+
+        var outcome = await env.Service.ImportArticleAsync(article, Actor, false, CancellationToken.None);
+
+        Assert.Equal(WeChatImportStatus.Skipped, outcome.Status);
+        Assert.Contains("已跳过", outcome.Message);
+        Assert.Equal(0, await env.Db.News.CountAsync());
+        Assert.Empty(env.Handler.Requests); // 没有正文就不下载任何图片
+    }
+
     // ---------------------------------------------------------------- 官方接口来源
 
     [Fact]

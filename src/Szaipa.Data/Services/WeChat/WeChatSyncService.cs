@@ -44,6 +44,9 @@ public sealed class WeChatSyncService : IWeChatSyncService
     public const string PageClientName = "wechat-page";
     public const int MaxLinksPerBatch = 50;
 
+    /// <summary>单篇文章正文图的并发下载数（对 mmbiz.qpic.cn 保持克制）。</summary>
+    private const int ImageDownloadConcurrency = 4;
+
     /// <summary>后台定时同步与手动"立即同步"互斥，避免同时回填。</summary>
     private static readonly SemaphoreSlim ApiSyncGate = new(1, 1);
 
@@ -201,7 +204,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
 
         _status.RecordSuccess(
             source,
-            $"新增 {results.Count(r => r.Status == WeChatImportStatus.Created)}，更新 {results.Count(r => r.Status == WeChatImportStatus.Updated)}，无变化 {results.Count(r => r.Status == WeChatImportStatus.Unchanged)}，失败 {results.Count(r => r.Status == WeChatImportStatus.Failed)}");
+            $"新增 {results.Count(r => r.Status == WeChatImportStatus.Created)}，更新 {results.Count(r => r.Status == WeChatImportStatus.Updated)}，无变化 {results.Count(r => r.Status == WeChatImportStatus.Unchanged)}，跳过 {results.Count(r => r.Status == WeChatImportStatus.Skipped)}，失败 {results.Count(r => r.Status == WeChatImportStatus.Failed)}");
     }
 
     /// <summary>两次抓取文章页之间至少间隔 FetchDelayMilliseconds，对微信公开页保持礼貌。</summary>
@@ -347,7 +350,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
         AdminActor actor,
         CancellationToken cancellationToken)
     {
-        int fetched = 0, created = 0, updated = 0, unchanged = 0, failed = 0;
+        int fetched = 0, created = 0, updated = 0, unchanged = 0, failed = 0, skipped = 0;
         const int pageSize = 20;
         const int incrementalPages = 2;
         try
@@ -365,6 +368,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
                         case WeChatImportStatus.Created: created++; break;
                         case WeChatImportStatus.Updated: updated++; break;
                         case WeChatImportStatus.Unchanged: unchanged++; break;
+                        case WeChatImportStatus.Skipped: skipped++; break;
                         default:
                             failed++;
                             _logger.LogWarning("公众号文章同步失败（{Source}）《{Title}》：{Message}", sourceId, outcome.Title, outcome.Message);
@@ -379,14 +383,14 @@ public sealed class WeChatSyncService : IWeChatSyncService
                 }
             }
 
-            _status.RecordSuccess(sourceId, $"拉取 {fetched}，新增 {created}，更新 {updated}，无变化 {unchanged}，失败 {failed}");
-            return new WeChatSourceRunResult(sourceId, fetched, created, updated, unchanged, failed, null);
+            _status.RecordSuccess(sourceId, $"拉取 {fetched}，新增 {created}，更新 {updated}，无变化 {unchanged}，跳过 {skipped}，失败 {failed}");
+            return new WeChatSourceRunResult(sourceId, fetched, created, updated, unchanged, failed, null, skipped);
         }
         catch (WeChatApiException exception)
         {
             _logger.LogWarning("公众号来源 {Source} 同步中断：{Message}", sourceId, exception.Message);
             _status.RecordFailure(sourceId, exception.Message);
-            return new WeChatSourceRunResult(sourceId, fetched, created, updated, unchanged, failed, exception.Message);
+            return new WeChatSourceRunResult(sourceId, fetched, created, updated, unchanged, failed, exception.Message, skipped);
         }
     }
 
@@ -454,7 +458,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
             var remote = _cleaner.Clean(article.ContentHtml, article.Title);
             if (remote.Html.Length == 0)
             {
-                return new WeChatImportOutcome(input, WeChatImportStatus.Failed, null, article.Title, "清洗后正文为空（可能是纯视频/纯图文卡片文章）。");
+                return new WeChatImportOutcome(input, WeChatImportStatus.Skipped, null, article.Title, "已跳过：没有可展示的正文（纯视频或转载他号文章的分享卡片）。");
             }
 
             var hash = ComputeHash(article, remote.Html);
@@ -477,15 +481,19 @@ public sealed class WeChatSyncService : IWeChatSyncService
 
             // 2) 图片本地化（正文图 + 封面）。
             var publishedAt = article.PublishedAt ?? existingNews?.Date ?? DateTime.Now;
-            var map = new Dictionary<string, string>(StringComparer.Ordinal);
-            foreach (var imageUrl in remote.ImageUrls)
-            {
-                var local = await _images.LocalizeBodyImageAsync(imageUrl, publishedAt, cancellationToken);
-                if (local is not null)
+            // 正文图同时下载 4 张（原先逐张串行，一篇 30 张图要 5 秒以上，批量导入 50 篇要 6 分钟）。
+            var map = new System.Collections.Concurrent.ConcurrentDictionary<string, string>(StringComparer.Ordinal);
+            await Parallel.ForEachAsync(
+                remote.ImageUrls.Distinct(StringComparer.Ordinal),
+                new ParallelOptions { MaxDegreeOfParallelism = ImageDownloadConcurrency, CancellationToken = cancellationToken },
+                async (imageUrl, token) =>
                 {
-                    map[imageUrl] = local.Url;
-                }
-            }
+                    var local = await _images.LocalizeBodyImageAsync(imageUrl, publishedAt, token);
+                    if (local is not null)
+                    {
+                        map[imageUrl] = local.Url;
+                    }
+                });
 
             string? coverFile = null;
             var coverRemote = _cleaner.ResolveImageUrl(article.CoverUrl);

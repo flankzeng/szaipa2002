@@ -46,7 +46,13 @@ public enum WeChatImportStatus
     Created,
     Updated,
     Unchanged,
-    Failed
+    Failed,
+
+    /// <summary>
+    /// 页面正常但没有可展示的正文（纯视频、转载他号文章的分享卡片等），按设计不导入。
+    /// 不算失败：定时同步不会因为它一直报「未完成」。
+    /// </summary>
+    Skipped
 }
 
 /// <summary>导入一篇文章的结果（后台页面逐条展示）。</summary>
@@ -101,7 +107,8 @@ public sealed record WeChatSourceRunResult(
     int Updated,
     int Unchanged,
     int Failed,
-    string? Error);
+    string? Error,
+    int Skipped = 0);
 
 /// <summary>一次接口同步（所有启用来源）的汇总；任一来源出错不影响其他来源。</summary>
 public sealed record WeChatSyncSummary(IReadOnlyList<WeChatSourceRunResult> Sources, string? Error)
@@ -111,6 +118,7 @@ public sealed record WeChatSyncSummary(IReadOnlyList<WeChatSourceRunResult> Sour
     public int Updated => Sources.Sum(s => s.Updated);
     public int Unchanged => Sources.Sum(s => s.Unchanged);
     public int Failed => Sources.Sum(s => s.Failed);
+    public int Skipped => Sources.Sum(s => s.Skipped);
 
     public static WeChatSyncSummary Failure(string error) => new(Array.Empty<WeChatSourceRunResult>(), error);
 }

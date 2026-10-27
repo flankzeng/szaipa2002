@@ -466,8 +466,12 @@ body {
     transform: translateY(-50%);
 }
 
+/* 底栏文字和链接统一灰色 #939393（与旧版 _newLayout 一致）。
+   2026-08 CSS 合并时漏掉了这条颜色，备案号、新闻动态、后台登录等链接
+   退回了 bootstrap 默认蓝 #337ab7；艺术家页在 §5 另设为白色。 */
 .copyright-container a,
 .copyright-container p {
+    color: #939393;
     text-decoration: none;
     font-weight: 300;
     font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;

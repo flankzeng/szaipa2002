@@ -112,12 +112,22 @@ internal sealed class FakeImageStore : IWeChatImageStore
 
     public bool IsAvailable { get; set; } = true;
 
-    public string? TryGetExistingUrl(string subfolder, string fileName) =>
-        Files.ContainsKey($"{subfolder}/{fileName}") ? $"/Content/{subfolder}/{fileName}" : null;
+    // 正文图并发下载（2026-10-28）：读写都加锁，和真实存储一样可被多线程调用。
+    public string? TryGetExistingUrl(string subfolder, string fileName)
+    {
+        lock (Files)
+        {
+            return Files.ContainsKey($"{subfolder}/{fileName}") ? $"/Content/{subfolder}/{fileName}" : null;
+        }
+    }
 
     public Task<string?> SaveAsync(string subfolder, string fileName, byte[] data, CancellationToken cancellationToken)
     {
-        Files[$"{subfolder}/{fileName}"] = data;
+        lock (Files)
+        {
+            Files[$"{subfolder}/{fileName}"] = data;
+        }
+
         return Task.FromResult<string?>($"/Content/{subfolder}/{fileName}");
     }
 }

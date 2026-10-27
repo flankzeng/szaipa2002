@@ -8,12 +8,13 @@
         WeChatImportStatus.Created => "已导入",
         WeChatImportStatus.Updated => "已更新",
         WeChatImportStatus.Unchanged => "无变化",
+        WeChatImportStatus.Skipped => "已跳过",
         _ => "失败"
     };
     string StatusClass(WeChatImportStatus status) => status switch
     {
         WeChatImportStatus.Created or WeChatImportStatus.Updated => "text-emerald-700",
-        WeChatImportStatus.Unchanged => "text-muted",
+        WeChatImportStatus.Unchanged or WeChatImportStatus.Skipped => "text-muted",
         _ => "text-brand"
     };
 }
