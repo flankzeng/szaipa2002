@@ -55,7 +55,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IWeChatApiClient _apiClient;
     private readonly WeChatImageLocalizer _images;
-    private readonly IOptions<WeChatOptions> _options;
+    private readonly IOptionsMonitor<WeChatOptions> _options;
     private readonly ILogger<WeChatSyncService> _logger;
     private readonly IWeChatSourceStatusStore _status;
     private readonly WeChatContentCleaner _cleaner;
@@ -67,7 +67,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
         IHttpClientFactory httpClientFactory,
         IWeChatApiClient apiClient,
         WeChatImageLocalizer images,
-        IOptions<WeChatOptions> options,
+        IOptionsMonitor<WeChatOptions> options,
         ILogger<WeChatSyncService> logger,
         IWeChatSourceStatusStore status)
     {
@@ -79,7 +79,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
         _options = options;
         _logger = logger;
         _status = status;
-        _cleaner = new WeChatContentCleaner(options.Value);
+        _cleaner = new WeChatContentCleaner(options.CurrentValue);
     }
 
     public async Task<bool> IsTableAvailableAsync(CancellationToken cancellationToken)
@@ -207,7 +207,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
     /// <summary>两次抓取文章页之间至少间隔 FetchDelayMilliseconds，对微信公开页保持礼貌。</summary>
     private async Task PoliteDelayAsync(CancellationToken cancellationToken)
     {
-        var delay = _options.Value.FetchDelayMilliseconds;
+        var delay = _options.CurrentValue.FetchDelayMilliseconds;
         if (delay > 0)
         {
             var wait = _lastPageFetchUtc.AddMilliseconds(delay) - DateTime.UtcNow;
@@ -291,7 +291,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
 
     public async Task<WeChatSyncSummary> SyncFromApiAsync(bool full, AdminActor actor, CancellationToken cancellationToken)
     {
-        var options = _options.Value;
+        var options = _options.CurrentValue; // 有效配置：后台设置页保存后下一次调用即生效
         if (!options.IsApiConfigured)
         {
             return WeChatSyncSummary.Failure("官方接口未启用：请配置 WeChat:Enabled、AppId、AppSecret。");
@@ -526,7 +526,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
                 news.Date = publishedAt;
                 news.Year = publishedAt.Year;
                 news.ReadCount = 0;
-                news.Important = _options.Value.NewArticlesImportant;
+                news.Important = _options.CurrentValue.NewArticlesImportant;
                 news.EditRecord = $"公众号同步 于 {now:yyyy年MM月dd日 HH:mm:ss} 导入了此新闻条目。/";
                 _db.News.Add(news);
             }

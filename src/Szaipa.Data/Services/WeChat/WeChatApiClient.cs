@@ -1,7 +1,8 @@
 using System.Globalization;
-using System.Net.Http.Json;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using Szaipa.Data.Configuration;
 
@@ -10,12 +11,16 @@ namespace Szaipa.Data.Services.WeChat;
 /// <summary>官方接口调用失败（凭据无效、IP 不在白名单、接口未开通、频率限制等）。消息可直接展示，不含 AppSecret/access_token。</summary>
 public sealed class WeChatApiException : Exception
 {
-    public WeChatApiException(string message, int? errorCode = null) : base(message)
+    public WeChatApiException(string message, int? errorCode = null, string? callerIp = null) : base(message)
     {
         ErrorCode = errorCode;
+        CallerIp = callerIp;
     }
 
     public int? ErrorCode { get; }
+
+    /// <summary>40164（IP 不在白名单）时微信报出的调用方出口 IP，用于提示「把它加入白名单」。</summary>
+    public string? CallerIp { get; }
 }
 
 /// <summary>永久素材数量（material/get_materialcount）。</summary>
@@ -43,6 +48,8 @@ public interface IWeChatApiClient
 ///   <item><c>POST /cgi-bin/stable_token</c> 取 access_token，进程内缓存到过期前 5 分钟（不强制刷新，避免互相顶掉；
 ///         日额度 2000 次，所以每次同步只会用到 1 次取 token + 每页 1 次列表调用）；</item>
 ///   <item>token 失效类错误（40001/40014/42001）自动强刷并重试一次；</item>
+///   <item>每次都读 <see cref="IOptionsMonitor{TOptions}.CurrentValue"/>（后台设置页保存即生效）；AppId/AppSecret/接口地址
+///         一变，缓存的 token 立即作废，用新凭据重新获取；</item>
 ///   <item>错误码转成后台可读提示（40164 IP 未加白名单、48001/50001 接口未开通…），按调用点区分，互不影响。</item>
 /// </list>
 /// 经 <see cref="IHttpClientFactory"/> 的命名客户端 <see cref="ClientName"/> 访问，测试里可替换 handler。
@@ -51,13 +58,17 @@ public sealed class WeChatApiClient : IWeChatApiClient
 {
     public const string ClientName = "wechat-api";
 
+    private static readonly Regex InvalidIpPattern = new(
+        @"invalid ip\s+(?<ip>[0-9A-Fa-f:.]+)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IOptions<WeChatOptions> _options;
+    private readonly IOptionsMonitor<WeChatOptions> _options;
     private readonly SemaphoreSlim _tokenLock = new(1, 1);
     private string? _token;
+    private string? _tokenFingerprint;
     private DateTime _tokenExpiresUtc = DateTime.MinValue;
 
-    public WeChatApiClient(IHttpClientFactory httpClientFactory, IOptions<WeChatOptions> options)
+    public WeChatApiClient(IHttpClientFactory httpClientFactory, IOptionsMonitor<WeChatOptions> options)
     {
         _httpClientFactory = httpClientFactory;
         _options = options;
@@ -109,7 +120,7 @@ public sealed class WeChatApiClient : IWeChatApiClient
 
             if (errorCode != 0)
             {
-                throw new WeChatApiException(DescribeError(errorCode, json["errmsg"]?.GetValue<string>()), errorCode);
+                throw CreateException(errorCode, json["errmsg"]?.GetValue<string>());
             }
 
             return json;
@@ -172,12 +183,20 @@ public sealed class WeChatApiClient : IWeChatApiClient
         await _tokenLock.WaitAsync(cancellationToken);
         try
         {
+            var options = _options.CurrentValue;
+            var fingerprint = WeChatSecretMask.Fingerprint(options);
+            if (!string.Equals(fingerprint, _tokenFingerprint, StringComparison.Ordinal))
+            {
+                // 凭据或接口地址变了（后台设置页保存）：旧 token 属于旧凭据，立即作废。
+                _token = null;
+                _tokenExpiresUtc = DateTime.MinValue;
+            }
+
             if (!forceRefresh && _token is not null && DateTime.UtcNow < _tokenExpiresUtc)
             {
                 return _token;
             }
 
-            var options = _options.Value;
             var body = new JsonObject
             {
                 ["grant_type"] = "client_credential",
@@ -191,11 +210,14 @@ public sealed class WeChatApiClient : IWeChatApiClient
             var token = json["access_token"]?.GetValue<string>();
             if (errorCode != 0 || string.IsNullOrEmpty(token))
             {
-                throw new WeChatApiException(DescribeError(errorCode, json["errmsg"]?.GetValue<string>()), errorCode == 0 ? null : errorCode);
+                throw errorCode == 0
+                    ? new WeChatApiException(DescribeError(0, json["errmsg"]?.GetValue<string>()))
+                    : CreateException(errorCode, json["errmsg"]?.GetValue<string>());
             }
 
             var expiresIn = json["expires_in"]?.GetValue<int>() ?? 7200;
             _token = token;
+            _tokenFingerprint = fingerprint;
             _tokenExpiresUtc = DateTime.UtcNow.AddSeconds(Math.Max(60, expiresIn - 300));
             return token;
         }
@@ -208,11 +230,14 @@ public sealed class WeChatApiClient : IWeChatApiClient
     private async Task<JsonNode> SendAsync(HttpMethod method, string pathAndQuery, JsonNode? body, CancellationToken cancellationToken)
     {
         var client = _httpClientFactory.CreateClient(ClientName);
-        var baseUrl = _options.Value.ApiBaseUrl.TrimEnd('/');
+        var baseUrl = _options.CurrentValue.ApiBaseUrl.TrimEnd('/');
         using var request = new HttpRequestMessage(method, baseUrl + pathAndQuery);
         if (body is not null)
         {
-            request.Content = JsonContent.Create(body, options: new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            // 必须带 Content-Length：JsonContent 以 chunked 方式发送，微信接口对 chunked 请求直接回 HTTP 412
+            // （2026-10-27 用假凭据实测：同一 JSON，定长 → errcode 40013，chunked → 412），导致 token 永远取不到。
+            var json = body.ToJsonString(new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
         }
 
         HttpResponseMessage response;
@@ -245,10 +270,39 @@ public sealed class WeChatApiClient : IWeChatApiClient
         }
     }
 
+    private static WeChatApiException CreateException(int errorCode, string? message)
+    {
+        var callerIp = errorCode == 40164 ? ParseCallerIp(message) : null;
+        return new WeChatApiException(DescribeError(errorCode, message), errorCode, callerIp);
+    }
+
+    /// <summary>
+    /// 从 40164 的 errmsg（形如 <c>invalid ip 1.2.3.4 ipv6 ::ffff:1.2.3.4, not in whitelist rid: …</c>）解析调用方出口 IP；
+    /// 解析不出返回 null。
+    /// </summary>
+    public static string? ParseCallerIp(string? message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return null;
+        }
+
+        var match = InvalidIpPattern.Match(message);
+        if (!match.Success)
+        {
+            return null;
+        }
+
+        var candidate = match.Groups["ip"].Value.TrimEnd('.', ':');
+        return IPAddress.TryParse(candidate, out var address) ? address.ToString() : null;
+    }
+
     /// <summary>微信 errcode → 后台可读提示。</summary>
     public static string DescribeError(int errorCode, string? message) => errorCode switch
     {
-        40164 => "服务器出口 IP 不在公众号后台的 IP 白名单内（errcode 40164）。请在公众号后台「基础配置 → IP 白名单」添加。",
+        40164 when ParseCallerIp(message) is { } ip =>
+            $"服务器出口 IP {ip} 不在公众号后台的 IP 白名单内（errcode 40164）。请在公众号后台「设置与开发 → 基本配置 / 开发接口管理 → IP 白名单」添加 {ip}。",
+        40164 => "服务器出口 IP 不在公众号后台的 IP 白名单内（errcode 40164）。请在公众号后台「设置与开发 → 基本配置 / 开发接口管理 → IP 白名单」添加。",
         40013 or 40125 or 40001 => $"AppId 或 AppSecret 无效（errcode {errorCode}）。",
         48001 => "该接口未开通（errcode 48001：未认证的公众号没有此接口权限）。",
         50001 => "该接口未开通（errcode 50001：用户未授权该 api，通常是账号类型/认证不满足）。",

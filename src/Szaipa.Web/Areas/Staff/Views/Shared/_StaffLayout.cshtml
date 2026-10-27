@@ -6,7 +6,7 @@
     string NavClass(string controller) => string.Equals(ActiveController(), controller, StringComparison.OrdinalIgnoreCase)
         ? "text-brand border-brand"
         : "text-ink/70 border-transparent hover:text-brand hover:border-brand/40";
-    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "WeChat", "OrgMember", "SaleWork", "Partner", "FeaturedExhibition", "ArtistSite", "ArtistBook", "VipOrder" };
+    var contentControllers = new[] { "News", "ArtNews", "Artist", "Works", "Company", "Publication", "Fav", "Auction", "Exhibition", "TongouAtrist", "TongouWorks", "WeChat", "WeChatSettings", "OrgMember", "SaleWork", "Partner", "FeaturedExhibition", "ArtistSite", "ArtistBook", "VipOrder" };
     var contentActive = contentControllers.Contains(ActiveController(), StringComparer.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
@@ -49,6 +49,7 @@
                                 <div>
                                     <p class="px-3 pb-1 pt-1 text-xs font-medium text-muted">新闻</p>
                                     <a asp-area="Staff" asp-controller="WeChat" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">公众号同步</a>
+                                    <a asp-area="Staff" asp-controller="WeChatSettings" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">公众号接口配置</a>
                                     <a asp-area="Staff" asp-controller="News" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">新闻</a>
                                     <p class="px-3 pb-1 pt-3 text-xs font-medium text-muted">展览</p>
                                     <a asp-area="Staff" asp-controller="Publication" asp-action="Index" class="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-canvas hover:text-brand">展览与专题</a>

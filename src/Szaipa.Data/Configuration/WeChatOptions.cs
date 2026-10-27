@@ -1,8 +1,12 @@
 namespace Szaipa.Data.Configuration;
 
 /// <summary>
-/// 微信公众号同步配置（配置段 <c>WeChat</c>）。凭据（AppSecret）只允许出现在 gitignore 的
-/// <c>appsettings.Local.json</c> / user-secrets / 环境变量里，绝不进仓库。
+/// 微信公众号同步配置（配置段 <c>WeChat</c>）。凭据（AppSecret）只允许出现在后台设置页的加密存储文件
+/// （<see cref="CredentialStorePath"/>）、gitignore 的 <c>appsettings.Local.json</c> / user-secrets / 环境变量里，绝不进仓库。
+/// <para>
+/// <b>有效配置</b> = 本配置段绑定值 → 再被后台「公众号接口配置」页保存的值覆盖（见 <c>WeChatCredentialStore</c>）。
+/// 保存后无需重启：消费方一律读 <c>IOptionsMonitor&lt;WeChatOptions&gt;.CurrentValue</c>，不要缓存 <c>IOptions.Value</c>。
+/// </para>
 /// </summary>
 public sealed class WeChatOptions
 {
@@ -51,6 +55,12 @@ public sealed class WeChatOptions
 
     /// <summary>群发完成事件回调（默认关闭，见 <see cref="WeChatCallbackOptions"/>）。</summary>
     public WeChatCallbackOptions Callback { get; set; } = new();
+
+    /// <summary>
+    /// 后台设置页的加密存储文件路径。Development 未配置时默认 <c>{ContentRoot}/App_Data/secure/wechat-credentials.json</c>；
+    /// 其他环境必须是发布目录之外的绝对路径，未配置则设置页不可保存（fail-closed）。只由存储本身读取，不被存储覆盖。
+    /// </summary>
+    public string? CredentialStorePath { get; set; }
 
     public bool IsApiConfigured =>
         Enabled && !string.IsNullOrWhiteSpace(AppId) && !string.IsNullOrWhiteSpace(AppSecret);

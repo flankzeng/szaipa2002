@@ -25,10 +25,11 @@ public sealed class NewsReadRepository : INewsReadRepository
     private readonly SzaipaLegacyReadContext _context;
     private readonly int? _legacyNewsMaxId;
 
-    public NewsReadRepository(SzaipaLegacyReadContext context, IOptions<WeChatOptions>? weChatOptions = null)
+    public NewsReadRepository(SzaipaLegacyReadContext context, IOptionsMonitor<WeChatOptions>? weChatOptions = null)
     {
         _context = context;
-        _legacyNewsMaxId = weChatOptions?.Value.LegacyNewsMaxId;
+        // 仓储是 scoped：每个请求取一次有效配置，后台设置页改了分界 Id 后下一个请求即生效。
+        _legacyNewsMaxId = weChatOptions?.CurrentValue.LegacyNewsMaxId;
     }
 
     /// <summary>

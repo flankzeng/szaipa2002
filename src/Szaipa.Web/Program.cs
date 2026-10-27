@@ -57,12 +57,6 @@ var configuration = configurationBuilder
     })
     .Build();
 
-// 公众号接口能力探测命令：dotnet run --project src/Szaipa.Web -- wechat-probe（探测后直接退出，不启动站点）。
-if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
-{
-    Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(configuration));
-}
-
 // T8 存量图片预热：dotnet Szaipa.Web.dll image-variants-warm [--widths 480,960,1600] [--only images/man]（生成后退出）。
 if (args.Length > 0 && string.Equals(args[0], "image-variants-warm", StringComparison.OrdinalIgnoreCase))
 {
@@ -92,6 +86,30 @@ var dataProtectionKeysPath = DataProtectionKeyPathResolver.Resolve(
 var protectKeysWithMachineDpapi = DataProtectionKeyProtectionPolicy.ShouldUseMachineDpapi(
     isDevelopment,
     OperatingSystem.IsWindows());
+// 站点与 wechat-probe 命令共用同一套 Data Protection 配置：后台设置页加密保存的公众号 AppSecret 两边都能解密。
+Action<IServiceCollection> configureDataProtection = services =>
+{
+    var dataProtectionBuilder = services
+        .AddDataProtection()
+        .SetApplicationName(dataProtectionApplicationName)
+        .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
+    if (protectKeysWithMachineDpapi && OperatingSystem.IsWindows())
+    {
+        dataProtectionBuilder.ProtectKeysWithDpapi(protectToLocalMachine: true);
+    }
+};
+
+// 公众号接口能力探测命令：dotnet run --project src/Szaipa.Web -- wechat-probe（探测后直接退出，不启动站点）。
+// 使用有效配置（配置文件 + 后台「接口配置」页的加密存储），所以放在 Data Protection 配置解析之后。
+if (args.Contains("wechat-probe", StringComparer.OrdinalIgnoreCase))
+{
+    var probeStoreLocation = Szaipa.Data.Services.WeChat.WeChatCredentialStoreLocation.Resolve(
+        contentRoot,
+        configuration[Szaipa.Data.Services.WeChat.WeChatCredentialStoreLocation.ConfigurationKey],
+        isDevelopment);
+    Environment.Exit(await Szaipa.Web.Infrastructure.WeChatProbeCommand.RunAsync(
+        configuration, probeStoreLocation, configureDataProtection));
+}
 var staffAuthenticationCookie = StaffAuthenticationCookiePolicy.Resolve(environmentName);
 var urls = ResolveUrls(args, configuration);
 
@@ -154,14 +172,7 @@ var hostBuilder = new HostBuilder()
                 services
                     .AddOptions<SecurityMonitoringOptions>()
                     .Bind(configuration.GetSection(SecurityMonitoringOptions.SectionName));
-                var dataProtectionBuilder = services
-                    .AddDataProtection()
-                    .SetApplicationName(dataProtectionApplicationName)
-                    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
-                if (protectKeysWithMachineDpapi && OperatingSystem.IsWindows())
-                {
-                    dataProtectionBuilder.ProtectKeysWithDpapi(protectToLocalMachine: true);
-                }
+                configureDataProtection(services);
                 services.AddSzaipaData(configuration);
                 // contentRoot 已知，用它覆盖 AddSzaipaData 里的 qqwry 定位注册（cwd 不可靠）。
                 // 本地：<contentRoot>/App_Data/security/qqwry.dat（gitignored）；生产：部署根下同路径，或用

@@ -1,0 +1,250 @@
+@using Szaipa.Data.Services.WeChat
+@model WeChatSettingsViewModel
+@{
+    ViewData["Title"] = "公众号接口配置";
+    var available = Model.Location.IsAvailable;
+    var stored = Model.Stored;
+    var form = Model.Form;
+}
+@* 公众号接口配置页：AppSecret 只写不回显（密码框不带 value），页面上最多出现末 4 位。 *@
+<div class="mb-4">
+    <h1 class="font-serif text-2xl font-bold text-ink">公众号同步</h1>
+    <p class="mt-1 text-sm text-muted">把公众号后台的开发接口接入本站：按「接入指引」取得凭据、配置 IP 白名单，在本页加密保存并测试。</p>
+</div>
+
+<nav class="mb-6 flex gap-1 border-b border-black/10 text-sm">
+    <a asp-controller="WeChat" asp-action="Index" class="-mb-px border-b-2 border-transparent px-4 py-2 text-muted hover:text-brand">同步记录</a>
+    <a asp-controller="WeChatSettings" asp-action="Index" class="-mb-px border-b-2 border-brand px-4 py-2 font-medium text-brand">接口配置</a>
+</nav>
+
+<div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    本页仅管理员使用。AppSecret 等同于公众号的接口密码：保存后加密存放在服务器上，页面不再显示明文；不要截图、不要发到聊天群。
+</div>
+
+@if (!available)
+{
+    <div class="mb-6 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand">
+        <strong>未配置存储位置，本页不可保存。</strong>@Model.Location.Problem
+        需由运维在服务器配置 <code>WeChat:CredentialStorePath</code>（发布目录之外的绝对路径，例如 <code>C:\SzaipaData\secure\wechat-credentials.json</code>）
+        并给站点应用池该目录的修改权限。在此之前官方接口只使用配置文件 / 环境变量里的值，站点其他功能不受影响。
+    </div>
+}
+@if (stored.LoadError is not null)
+{
+    <div class="mb-6 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand">@stored.LoadError</div>
+}
+@if (stored.AppSecretUnreadable)
+{
+    <div class="mb-6 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm text-brand">
+        已保存的 AppSecret 无法解密（服务器的加密密钥目录可能被更换或丢失），已按「未设置」处理。请重新填写 AppSecret 并保存。
+    </div>
+}
+@if (Model.Errors.Count > 0)
+{
+    <ul class="mb-6 list-disc space-y-1 rounded-lg border border-brand/30 bg-brand/5 py-3 pl-8 pr-4 text-sm text-brand">
+        @foreach (var error in Model.Errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-5">
+    <div class="min-w-0 space-y-6 lg:col-span-3">
+        @if (Model.ProbeSteps is { } steps)
+        {
+            <section class="rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+                <h2 class="mb-3 text-sm font-medium text-ink">测试结果</h2>
+                @if (Model.WhitelistIp is { } ip)
+                {
+                    <div class="mb-4 rounded-lg border-2 border-brand bg-brand/5 px-4 py-3 text-sm text-brand">
+                        <div class="text-base font-bold">请把 <code class="select-all rounded bg-white px-1.5 py-0.5">@ip</code> 加入公众号 IP 白名单</div>
+                        <div class="mt-1 text-xs">公众号后台「设置与开发 → 基本配置 / 开发接口管理 → IP 白名单」添加上面的 IP，保存后几分钟内生效，再回来点「测试连接」。</div>
+                    </div>
+                }
+                <ul class="divide-y divide-black/5 rounded-lg border border-black/5 text-sm">
+                    @foreach (var step in steps)
+                    {
+                        <li class="flex flex-col gap-1 px-4 py-2.5 sm:flex-row sm:items-baseline sm:gap-3">
+                            <span class="w-14 shrink-0 font-medium @(step.Ok ? "text-emerald-700" : "text-brand")">@(step.Ok ? "可用" : "不可用")</span>
+                            <span class="shrink-0 text-ink sm:w-64">@step.Name</span>
+                            <span class="min-w-0 flex-1 break-all text-xs text-muted">@step.Detail</span>
+                        </li>
+                    }
+                </ul>
+                <p class="mt-3 text-xs text-muted">
+                    40013 / 40125：AppID 或 AppSecret 不对；40164：IP 未加白名单；48001 / 50001：该接口没有权限（未认证号常见），关掉对应来源即可。
+                </p>
+            </section>
+        }
+
+        <section class="rounded-2xl border border-black/5 bg-white shadow-sm">
+            <div class="border-b border-black/5 px-5 py-3 text-sm font-medium text-ink">当前生效</div>
+            <dl class="grid grid-cols-1 gap-x-6 gap-y-3 px-5 py-4 text-sm sm:grid-cols-2">
+                <div>
+                    <dt class="text-xs text-muted">AppID</dt>
+                    <dd class="break-all text-ink">@(string.IsNullOrEmpty(Model.EffectiveAppId) ? "未设置" : Model.EffectiveAppId)</dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-muted">AppSecret</dt>
+                    <dd class="text-ink">
+                        @if (stored.AppSecretLast4 is { } last4)
+                        {
+                            <span>已设置，末 4 位 ****@last4</span><span class="text-xs text-muted">（本页保存）</span>
+                        }
+                        else if (Model.EffectiveSecretSource is { } source)
+                        {
+                            <span>已设置</span><span class="text-xs text-muted">（来自@(source)）</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">未设置</span>
+                        }
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-muted">自动同步</dt>
+                    <dd class="@(Model.EffectiveApiConfigured ? "text-emerald-700" : "text-muted")">
+                        @(Model.EffectiveApiConfigured ? $"运行中，每 {Model.EffectiveSyncIntervalMinutes} 分钟" : Model.EffectiveEnabled ? "已开启，但凭据不全" : "未开启")
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-muted">来源</dt>
+                    <dd class="text-ink">发布记录 @(Model.EffectiveFreePublish ? "开" : "关") · 永久图文素材 @(Model.EffectiveMaterial ? "开" : "关")</dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-muted">旧新闻分界 Id</dt>
+                    <dd class="text-ink">@(Model.EffectiveLegacyNewsMaxId is > 0 ? Model.EffectiveLegacyNewsMaxId.ToString() : "不隐藏旧新闻")</dd>
+                </div>
+                <div>
+                    <dt class="text-xs text-muted">本页最近保存</dt>
+                    <dd class="text-ink">@(stored.UpdatedAt is { } at ? $"{at:yyyy-MM-dd HH:mm} · {stored.UpdatedBy}" : "从未保存（全部来自配置文件）")</dd>
+                </div>
+            </dl>
+            <div class="flex flex-wrap items-center gap-3 border-t border-black/5 px-5 py-3">
+                <form asp-action="Test" method="post">
+                    <button type="submit" class="admin-btn-primary">测试连接</button>
+                </form>
+                <span class="text-xs text-muted">用上面「当前生效」的已保存配置调用微信接口（只读，不显示密钥 / token）。改了表单请先保存再测试。</span>
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-black/5 bg-white p-5 shadow-sm">
+            <h2 class="mb-4 text-sm font-medium text-ink">填写 / 修改</h2>
+            <form asp-action="Save" method="post" autocomplete="off">
+                <fieldset disabled="@(!available)" class="space-y-4">
+                    <div>
+                        <label for="AppId" class="admin-label">开发者 ID（AppID）</label>
+                        <input id="AppId" name="AppId" value="@form.AppId" class="admin-input font-mono" placeholder="wx 开头，共 18 位" maxlength="32" spellcheck="false" />
+                    </div>
+                    <div>
+                        <label for="AppSecret" class="admin-label">开发者密码（AppSecret）</label>
+                        <input id="AppSecret" name="AppSecret" type="password" class="admin-input font-mono" autocomplete="new-password" maxlength="64" spellcheck="false"
+                               placeholder="@(stored.HasAppSecret ? "留空表示不修改" : "粘贴 32 位 AppSecret")" />
+                        <p class="mt-1 text-xs text-muted">
+                            @if (stored.AppSecretLast4 is { } savedLast4)
+                            {
+                                <span>已设置，末 4 位 ****@savedLast4。留空表示不修改；填写新值则替换。</span>
+                            }
+                            else
+                            {
+                                <span>只写：保存后加密存放，页面永远不显示明文。</span>
+                            }
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 rounded-lg border border-black/5 bg-canvas/60 p-4">
+                        <label class="flex items-center gap-2 text-sm text-ink/80">
+                            <input type="checkbox" name="Enabled" value="true" checked="@form.Enabled" class="h-4 w-4 rounded border-black/20 text-brand focus:ring-brand/30" />
+                            启用自动同步（测试连接通过后再开）
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-ink/80">
+                            <input type="checkbox" name="FreePublish" value="true" checked="@form.FreePublish" class="h-4 w-4 rounded border-black/20 text-brand focus:ring-brand/30" />
+                            来源：发布记录（freepublish）
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-ink/80">
+                            <input type="checkbox" name="Material" value="true" checked="@form.Material" class="h-4 w-4 rounded border-black/20 text-brand focus:ring-brand/30" />
+                            来源：永久图文素材（material，含早期群发）
+                        </label>
+                        <input type="hidden" name="Enabled" value="false" />
+                        <input type="hidden" name="FreePublish" value="false" />
+                        <input type="hidden" name="Material" value="false" />
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label for="SyncIntervalMinutes" class="admin-label">同步间隔（分钟，最少 5）</label>
+                            <input id="SyncIntervalMinutes" name="SyncIntervalMinutes" type="number" min="5" max="1440" step="1" value="@form.SyncIntervalMinutes" class="admin-input" />
+                        </div>
+                        <div>
+                            <label for="LegacyNewsMaxId" class="admin-label">旧新闻分界 Id（可空）</label>
+                            <input id="LegacyNewsMaxId" name="LegacyNewsMaxId" type="number" min="0" step="1" value="@form.LegacyNewsMaxId" class="admin-input"
+                                   placeholder="@(Model.ConfiguredLegacyNewsMaxId is { } configuredMax ? $"留空沿用配置文件：{configuredMax}" : "留空 = 沿用配置文件（未配置）")" />
+                            <p class="mt-1 text-xs text-muted">Id 不超过它、且不是公众号导入的旧手录新闻从前台列表隐藏（详情链接仍可打开）。0 = 不隐藏。历史文章补齐后再填。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 pt-1">
+                        <button type="submit" class="admin-btn-primary">加密保存</button>
+                        <span class="text-xs text-muted">保存后立即生效，无需重启。</span>
+                    </div>
+                </fieldset>
+            </form>
+
+            @if (available && stored.Exists)
+            {
+                <div class="mt-5 flex flex-wrap items-center gap-3 border-t border-black/5 pt-4 text-sm">
+                    @if (stored.HasAppSecret || stored.AppSecretUnreadable)
+                    {
+                        <form asp-action="ClearSecret" method="post" onsubmit="return confirm('清除本页保存的 AppSecret？清除后官方接口将改用配置文件里的密钥（没有则停用）。');">
+                            <button type="submit" class="admin-btn-ghost">清除已保存的 AppSecret</button>
+                        </form>
+                    }
+                    <form asp-action="Reset" method="post" onsubmit="return confirm('清空本页保存的全部设置，恢复为配置文件的值？');">
+                        <button type="submit" class="text-muted hover:text-brand">清空本页全部设置</button>
+                    </form>
+                </div>
+            }
+        </section>
+    </div>
+
+    <aside class="order-first min-w-0 lg:order-last lg:col-span-2">
+        <section class="rounded-2xl border border-black/5 bg-white p-5 text-sm leading-relaxed text-ink/80 shadow-sm lg:sticky lg:top-6">
+            <h2 class="mb-3 text-sm font-medium text-ink">接入指引</h2>
+            <ol class="space-y-4">
+                <li>
+                    <div class="font-medium text-ink">1. 找到 AppID 和 AppSecret</div>
+                    <p class="mt-1">登录 <span class="font-mono">mp.weixin.qq.com</span> →「设置与开发 → 基本配置」（新版叫「开发接口管理」）。</p>
+                    <ul class="mt-1 list-disc space-y-1 pl-5 text-xs text-muted">
+                        <li>开发者 ID（AppID）直接可见，复制即可。</li>
+                        <li>开发者密码（AppSecret）只在生成 / 重置时显示一次；当初保存过就直接用那份。</li>
+                    </ul>
+                    <p class="mt-2 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                        找不到再点「重置」：<strong>重置后旧 AppSecret 立即作废</strong>，还在用旧密钥的其他系统（第三方编辑器、小程序后台等）会马上断开。重置前先确认没有别处在用。
+                    </p>
+                </li>
+                <li>
+                    <div class="font-medium text-ink">2. 配置 IP 白名单</div>
+                    <p class="mt-1">同一页面「IP 白名单」添加<strong>服务器出口公网 IP</strong>（调用微信接口那台机器的公网 IP，不是域名、不是内网地址）。</p>
+                    <p class="mt-1 text-xs text-muted">不确定是哪个 IP：先在本页保存后点「测试连接」，未加白名单时微信会返回 40164 并报出调用方 IP，本页会醒目显示。本机调试时可临时加本机公网 IP，测完删掉。</p>
+                </li>
+                <li>
+                    <div class="font-medium text-ink">3. 填到本页并保存</div>
+                    <p class="mt-1">填 AppID、AppSecret，<strong>先不要勾</strong>「启用自动同步」，点「加密保存」。AppSecret 加密存放在服务器，页面只显示末 4 位。</p>
+                </li>
+                <li>
+                    <div class="font-medium text-ink">4. 点「测试连接」</div>
+                    <p class="mt-1">依次检查 access_token、发布记录、素材数量、永久图文素材。token 可用说明凭据和白名单都对了。</p>
+                </li>
+                <li>
+                    <div class="font-medium text-ink">5. 开启自动同步</div>
+                    <p class="mt-1">把测试里「不可用」的来源取消勾选，至少一个来源可用时勾选「启用自动同步」再保存。站点按间隔自动检查新文章，无需重启。</p>
+                </li>
+            </ol>
+            <div class="mt-5 space-y-2 border-t border-black/5 pt-4 text-xs text-muted">
+                <p><span class="font-medium text-ink">未认证的公众号</span>通常没有发布记录 / 素材接口权限（48001 / 50001）。这时以「同步记录」页的<strong>粘贴链接导入</strong>为主，接口只是锦上添花；群发历史也要靠链接导入补齐。</p>
+                <p><span class="font-medium text-ink">群发完成回调</span>默认关闭，本页不提供开关。在公众号后台启用「服务器配置」后，<strong>编辑模式下的自动回复和自定义菜单会失效</strong>；在用自动回复 / 菜单就不要开，靠链接导入 + 定时接口即可。</p>
+            </div>
+        </section>
+    </aside>
+</div>

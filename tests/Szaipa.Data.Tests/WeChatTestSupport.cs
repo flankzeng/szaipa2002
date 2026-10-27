@@ -15,7 +15,58 @@ internal static class WeChatTestSupport
     public static string Fixture(string name) =>
         File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", name), Encoding.UTF8);
 
-    public static IOptions<T> Opts<T>(T value) where T : class => Options.Create(value);
+    /// <summary>同时满足 <see cref="IOptions{TOptions}"/> 与 <see cref="IOptionsMonitor{TOptions}"/> 的固定值配置。</summary>
+    public static TestOptions<T> Opts<T>(T value) where T : class => new(value);
+}
+
+/// <summary>测试用配置：<see cref="Set"/> 模拟后台设置页保存后的配置变化（触发 OnChange）。</summary>
+internal sealed class TestOptions<T> : IOptions<T>, IOptionsMonitor<T> where T : class
+{
+    private readonly List<Action<T, string?>> _listeners = new();
+
+    public TestOptions(T value) => CurrentValue = value;
+
+    public T Value => CurrentValue;
+
+    public T CurrentValue { get; private set; }
+
+    public T Get(string? name) => CurrentValue;
+
+    public void Set(T value)
+    {
+        CurrentValue = value;
+        Action<T, string?>[] listeners;
+        lock (_listeners)
+        {
+            listeners = _listeners.ToArray();
+        }
+
+        foreach (var listener in listeners)
+        {
+            listener(value, Options.DefaultName);
+        }
+    }
+
+    public IDisposable OnChange(Action<T, string?> listener)
+    {
+        lock (_listeners)
+        {
+            _listeners.Add(listener);
+        }
+
+        return new Subscription(() =>
+        {
+            lock (_listeners)
+            {
+                _listeners.Remove(listener);
+            }
+        });
+    }
+
+    private sealed class Subscription(Action dispose) : IDisposable
+    {
+        public void Dispose() => dispose();
+    }
 }
 
 internal sealed class FakeHandler : HttpMessageHandler
