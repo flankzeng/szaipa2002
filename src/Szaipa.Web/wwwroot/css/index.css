@@ -1466,6 +1466,25 @@ a {
         --newsPtag: .74rem;
     }
 
+    /* 首页新闻箭头与新闻列表页一致：贴整行右边缘、约 11.5px（见 public-pages.css 同名说明） */
+    #section06 .news {
+        --newsEnter: .75rem;
+    }
+
+    #section06 .news ul.important {
+        position: relative;
+    }
+
+    #section06 .news .importantTXT {
+        position: static;
+        transform: none;
+    }
+
+    #section06 .news .importantTXT .enter {
+        right: 0;
+        bottom: 1.1rem;
+    }
+
     /* 首页重要新闻简介同样左对齐（两端对齐会把短行的字拉散），宽度与标题一致 */
     #section06 .importantTXT p {
         padding-right: 0;

@@ -486,6 +486,27 @@
         transform: none !important;
     }
 
+    /* 箭头统一：旧版两种行的箭头都贴在整行右边缘、大小一致（约 11.5px）。重要新闻的箭头原相对中间标题列定位，
+       比普通行靠左 24px；改为相对整行定位、贴右边缘，底部与“查看全部”一行对齐。 */
+    .xinwenzhanshi .news {
+        --newsEnter: .75rem;
+    }
+
+    .xinwenzhanshi .news ul.important {
+        position: relative;
+    }
+
+    /* transform（桌面悬停动效）会让标题列成为箭头的定位基准，手机无悬停，去掉 */
+    .xinwenzhanshi .news .importantTXT {
+        position: static;
+        transform: none;
+    }
+
+    .xinwenzhanshi .news .importantTXT .enter {
+        right: 0;
+        bottom: 1.1rem;
+    }
+
     .xinwenzhanshi .importantTXT p {
         padding-right: 0;
         text-align: left;
