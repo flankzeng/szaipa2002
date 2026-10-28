@@ -405,6 +405,7 @@
         margin-left: auto;
         /* 2026-10-28：按旧站手机实际大小还原（标题 13.5px、简介 11.4px），原 1.3rem/1rem 约为旧版 1.5 倍 */
         --newsFontsize: .88rem;
+        --title: 1.5rem; /* 2026-10-28：“新闻动态 | NEWS”与首页各区块标题同为 23px（旧版 22.9px），原 2.2rem=34px */
         --newsPtag: .74rem;
         --newsSpantag: .9rem;
         --newsEnter: 1rem;

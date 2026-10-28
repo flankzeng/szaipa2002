@@ -755,3 +755,29 @@ a:focus {
         font-size: 100%;
     }
 }
+
+/* 2026-10-28 旧站比例（关于我们、章程）：旧版 _newLayout 手机为 viewport initial-scale=0.4 + 根字号 26px，
+   屏幕上 1rem = 10.4px（375 宽）= 屏宽 × 2.773%。这两页的 rem 数值沿用旧版，按此根字号显示才与旧版一致；
+   通用的 clamp(…, 4.1vw, …) 会放大约 1.48 倍（章程正文 23px）。页面用 ViewData["HtmlClass"] 打开。 */
+@media (max-width: 61.9375em) {
+    html.legacy-scale {
+        font-size: 2.773vw;
+    }
+
+    /* 共用的页头菜单、订阅区、备案号与首页保持同样大小（首页根字号约 15.4px，这里根字号 10.4px，按 ×1.48 换算） */
+    html.legacy-scale .bannerLink a {
+        font-size: 1.48rem;
+    }
+
+    html.legacy-scale .emailPosition h1 {
+        font-size: 2.22rem;
+    }
+
+    html.legacy-scale .emailPosition p {
+        font-size: 1.48rem;
+    }
+
+    html.legacy-scale .copyrightM {
+        font-size: 1.18rem;
+    }
+}

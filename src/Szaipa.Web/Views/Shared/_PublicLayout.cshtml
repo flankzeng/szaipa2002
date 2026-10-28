@@ -2,7 +2,8 @@
 }
 <!DOCTYPE html>
 
-<html lang="zh-CN">
+@* HtmlClass：页面可选的根元素类，如 legacy-scale（手机按旧站 0.4 缩放比例显示，见 public-core.css）。 *@
+<html lang="zh-CN" class="@ViewData["HtmlClass"]">
 
 <head>
     <meta charset="utf-8" />
@@ -134,6 +135,8 @@
 
 
     <script src="~/js/public-layout-main.js" asp-append-version="true" defer></script>
+
+<partial name="_SiteNotice" />
 
 <partial name="_LiveEditAssets" />
 </body>

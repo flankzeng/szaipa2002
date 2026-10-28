@@ -1,0 +1,39 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@* 全站临时提示（2026-10-28，用户要求）：新站上线后视觉仍在调整，进站时说明“部分内容缺失属正常”。
+   每个浏览器会话只弹一次；现场编辑态不弹。关闭方法：配置 SiteNotice:Enabled=false 后重启应用池。
+   字号一律用 px：首页与艺术家页的根字号不同（艺术家页手机按旧站比例是 2.653vw），用 rem 会大小不一。 *@
+@if (Configuration.GetValue("SiteNotice:Enabled", true) && !LiveEdit.Active)
+{
+    <div class="site-notice" id="siteNotice" hidden role="dialog" aria-modal="true" aria-labelledby="siteNoticeTitle">
+        <div class="site-notice__panel">
+            <p class="site-notice__title" id="siteNoticeTitle">网站更新中</p>
+            <p class="site-notice__text">本站正在维护更新，视觉效果仍在调整，部分页面内容暂时缺失属正常现象，敬请谅解。</p>
+            <button type="button" class="site-notice__btn" data-site-notice-close>我知道了</button>
+        </div>
+    </div>
+    <style>
+        .site-notice { position: fixed; inset: 0; z-index: 2147482000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, .45); }
+        .site-notice[hidden] { display: none; }
+        .site-notice__panel { box-sizing: border-box; width: min(100%, 360px); padding: 28px 24px 22px; background: #fff; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, .25); }
+        .site-notice__title { margin: 0 0 12px; color: #bf272d; font: 600 18px/1.4 'Szaipa Noto Serif SC', 'Szaipa Noto Serif SC GB', serif; letter-spacing: .08em; }
+        .site-notice__text { margin: 0 0 22px; color: #333; font: 300 14px/1.8 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif; text-align: justify; }
+        .site-notice__btn { min-width: 120px; padding: 8px 20px; border: 1px solid #bf272d; background: #bf272d; color: #fff; font: 14px/1.4 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif; letter-spacing: .1em; cursor: pointer; }
+    </style>
+    <script>
+        (function () {
+            var key = 'szaipa_site_notice_seen';
+            var notice = document.getElementById('siteNotice');
+            var seen = false;
+            try { seen = sessionStorage.getItem(key) === '1'; } catch (e) { /* 隐私模式等：每次都显示 */ }
+            if (seen || !notice) return;
+            notice.hidden = false;
+            function close() {
+                notice.hidden = true;
+                try { sessionStorage.setItem(key, '1'); } catch (e) { /* ignore */ }
+            }
+            notice.querySelector('[data-site-notice-close]').addEventListener('click', close);
+            notice.addEventListener('click', function (event) { if (event.target === notice) close(); });
+            document.addEventListener('keydown', function (event) { if (event.key === 'Escape') close(); });
+        })();
+    </script>
+}

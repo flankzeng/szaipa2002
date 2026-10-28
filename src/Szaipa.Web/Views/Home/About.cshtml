@@ -1,6 +1,7 @@
 @inject Szaipa.Web.Services.IHomeBlocksProvider HomeBlocks
 @{
     ViewData["Title"] = "关于我们";
+    ViewData["HtmlClass"] = "legacy-scale"; // 手机按旧站比例（public-core.css html.legacy-scale）
     Layout = "~/Views/Shared/_PublicLayout.cshtml";
     var partners = await HomeBlocks.GetPartnersAsync(Context.RequestAborted);
 

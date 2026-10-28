@@ -13,7 +13,7 @@
   var bar = document.createElement('div');
   bar.className = 'le-bar';
   bar.innerHTML = '<span class="le-bar__title">现场编辑中</span>' +
-    '<span class="le-bar__hint">点击带虚线框的文字即可修改</span>' +
+    '<span class="le-bar__hint">点虚线框文字修改、拖 ⠿ 排序；保存后立即生效，访客刷新即可看到</span>' +
     '<span class="le-bar__status" aria-live="polite"></span>' +
     '<a class="le-bar__exit" href="/Staff/LiveEdit/Exit" target="_top">退出编辑</a>';
   document.body.appendChild(bar);

@@ -39,8 +39,10 @@ html {
 
 @media (max-width: 61.9375em) {
     html {
-        /* 三个特殊展览页不继承 legacy 窄屏 26px 根字号（legacy 已移除，不再需要 !important）。 */
-        font-size: clamp(93.75%, 4.1vw, 100%);
+        /* 2026-10-28 按旧站比例还原：旧版这三页没有 viewport meta，手机按 980px 排版再缩到屏宽，
+           根字号 26px → 屏幕上 1rem = 屏宽 × 2.653%（375 宽 ≈ 9.95px）。
+           此前的 clamp(93.75%, 4.1vw, 100%) ≈ 15.4px，让整页文字放大约 1.54 倍（标题 41px）。 */
+        font-size: 2.653vw;
     }
 }
 
