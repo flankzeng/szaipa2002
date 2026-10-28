@@ -571,6 +571,12 @@ a {
     font-weight: 200;
     font-family: 'Szaipa Noto Sans SC', 'Szaipa Noto Sans SC GB', sans-serif;
     font-size: var(--newsPtag);
+    /* 2026-10-28：公众号同步的简介较长，首页卡片最多显示 3 行（与新闻列表页一致） */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
 }
 
 .importantTXT div {
@@ -1458,6 +1464,20 @@ a {
     .news {
         --newsFontsize: .88rem;
         --newsPtag: .74rem;
+    }
+
+    /* 新闻日期：旧版日期两行、紧贴标题（日期列 27% 放不下"2026年08月04日"）。
+       改为日期列按内容宽、一行显示，字号比标题小一档（约 11px），与标题之间留 .75rem 间距。 */
+    #section06 .news ul {
+        grid-template-columns: max-content minmax(0, 1fr) minmax(1rem, 6%);
+        column-gap: .75rem;
+    }
+
+    #section06 .news ul>.date {
+        font-size: .72rem;
+        line-height: 1.85;
+        white-space: nowrap;
+        overflow-wrap: normal;
     }
 
     /* 在售艺术品：说明 10.4px、作者名 11.4px、联系方式 8.3px */

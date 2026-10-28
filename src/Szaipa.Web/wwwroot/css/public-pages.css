@@ -358,6 +358,13 @@
     font-display: swap;
     font-weight: 200;
     font-size: var(--newsPtag);
+    /* 2026-10-28：公众号同步的简介平均 100 字（旧手录约 30 字），列表卡片里最多显示 3 行，多余省略，
+       避免每条重要新闻被一大段简介撑得很高；完整内容在详情页。 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
 }
 
 .importantTXT div {
@@ -396,15 +403,18 @@
         width: 84%;
         margin-right: auto;
         margin-left: auto;
-        --newsFontsize: 1.3rem;
-        --newsPtag: 1rem;
+        /* 2026-10-28：按旧站手机实际大小还原（标题 13.5px、简介 11.4px），原 1.3rem/1rem 约为旧版 1.5 倍 */
+        --newsFontsize: .88rem;
+        --newsPtag: .74rem;
         --newsSpantag: .9rem;
         --newsEnter: 1rem;
     }
 
+    /* 日期列按内容宽、一行显示，与标题留 .75rem 间距（原 27% 列宽放不下日期，会折行并贴住标题） */
     .news ul {
         display: grid;
-        grid-template-columns: minmax(0, 27%) minmax(0, 1fr) minmax(1rem, 6%);
+        grid-template-columns: max-content minmax(0, 1fr) minmax(1rem, 6%);
+        column-gap: .75rem;
         align-items: start;
         width: 100%;
         box-sizing: border-box;
@@ -424,8 +434,9 @@
 
     .news ul > .date {
         grid-column: 1;
-        line-height: 1.35;
-        overflow-wrap: anywhere;
+        font-size: .72rem;
+        line-height: 1.85;
+        white-space: nowrap;
     }
 
     .news ul > .title {
