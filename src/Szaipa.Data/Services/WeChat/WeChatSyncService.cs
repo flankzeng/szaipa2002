@@ -455,8 +455,9 @@ public sealed class WeChatSyncService : IWeChatSyncService
         try
         {
             // 1) 第一遍清洗（保留远程图片地址）：算哈希、收集图片清单。无网络、无写盘。
-            var remote = _cleaner.Clean(article.ContentHtml, article.Title);
-            if (remote.Html.Length == 0)
+            // 视频不落地：原位置换成"前往公众号原文观看"的链接；只有视频、没有文字/图片的文章仍跳过。
+            var remote = _cleaner.Clean(article.ContentHtml, article.Title, videoLinkUrl: article.SourceUrl);
+            if (!remote.HasBody)
             {
                 return new WeChatImportOutcome(input, WeChatImportStatus.Skipped, null, article.Title, "已跳过：没有可展示的正文（纯视频或转载他号文章的分享卡片）。");
             }
@@ -509,7 +510,7 @@ public sealed class WeChatSyncService : IWeChatSyncService
             }
 
             // 3) 第二遍清洗：把图片地址改写为本地 URL，失败的图丢弃（绝不热链）。
-            var final = _cleaner.Clean(article.ContentHtml, article.Title, url => map.GetValueOrDefault(url));
+            var final = _cleaner.Clean(article.ContentHtml, article.Title, url => map.GetValueOrDefault(url), article.SourceUrl);
 
             // 4) 落库：News + 同步记录，同一事务。
             await using var transaction = await _db.Database.BeginTransactionAsync(cancellationToken);

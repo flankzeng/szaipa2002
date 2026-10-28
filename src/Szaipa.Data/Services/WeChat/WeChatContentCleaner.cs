@@ -7,8 +7,11 @@ namespace Szaipa.Data.Services.WeChat;
 /// <summary>清洗结果。</summary>
 /// <param name="Html">可直接写入 News.Content 的白名单 HTML。</param>
 /// <param name="ImageUrls">正文里出现的图片原始（远程）地址，去重、保持出现顺序。</param>
-/// <param name="PlainText">清洗后正文的纯文本（摘要兜底用）。</param>
-public sealed record WeChatCleanedContent(string Html, IReadOnlyList<string> ImageUrls, string PlainText);
+/// <param name="PlainText">清洗后正文的纯文本（摘要兜底用，不含视频提示语）。</param>
+/// <param name="VideoCount">正文里被换成「前往公众号原文观看」提示的视频个数。</param>
+/// <param name="HasBody">除视频提示外是否还有文字或图片；false = 纯视频/分享卡片，同步时跳过。</param>
+public sealed record WeChatCleanedContent(
+    string Html, IReadOnlyList<string> ImageUrls, string PlainText, int VideoCount = 0, bool HasBody = true);
 
 /// <summary>
 /// 公众号正文清洗：<b>不是照搬</b>。目标是产出"像手录新闻一样"的干净 HTML，吃前台 <c>.article-body</c> 的排版：
@@ -123,7 +126,9 @@ public sealed class WeChatContentCleaner
     /// 清洗正文片段。<paramref name="imageMapper"/> 为空时 img 保留远程地址（用于算哈希/收集下载清单）；
     /// 非空时由它把远程地址映射为本地 URL，返回 null 表示该图下载失败 → 丢弃。
     /// </summary>
-    public WeChatCleanedContent Clean(string rawHtml, string? articleTitle = null, Func<string, string?>? imageMapper = null)
+    /// <param name="videoLinkUrl">公众号原文链接：视频位置的提示语链到这里；为空则只有文字提示。</param>
+    public WeChatCleanedContent Clean(
+        string rawHtml, string? articleTitle = null, Func<string, string?>? imageMapper = null, string? videoLinkUrl = null)
     {
         var root = MiniHtml.Parse(rawHtml ?? string.Empty);
         var images = new List<string>();
@@ -149,8 +154,94 @@ public sealed class WeChatContentCleaner
         TrimEdges(root);
 
         var html = MiniHtml.SerializeChildren(root).Trim();
-        var plain = Normalize(MiniHtml.InnerText(root));
-        return new WeChatCleanedContent(html, images, plain);
+        var plain = Normalize(MiniHtml.InnerText(root).Replace(VideoSentinel, " ", StringComparison.Ordinal));
+        var videoCount = CountOccurrences(html, VideoSentinel);
+        var hasBody = videoCount == 0
+            ? html.Length > 0
+            : plain.Length > 0 || html.Contains("<img", StringComparison.Ordinal);
+        // 独占一段的提示加 class 供前台排版（newsread.css .wechat-video-note）；其余位置只换文字。
+        html = html
+            .Replace("<p>" + VideoSentinel + "</p>", "<p class=\"wechat-video-note\">" + VideoNoticeHtml(videoLinkUrl) + "</p>", StringComparison.Ordinal)
+            .Replace(VideoSentinel, VideoNoticeHtml(videoLinkUrl), StringComparison.Ordinal);
+        return new WeChatCleanedContent(html, images, plain, videoCount, hasBody);
+    }
+
+    // ---------------------------------------------------------------- 视频 → 原文链接提示
+
+    // 视频不下载、不嵌入：文件太大、要转码，旧站也从不放视频。清洗时在视频原位置放一个占位字符，
+    // 噪声/尾部规则、剪枝都跑完后再换成提示语（避免"公众号"等字样被噪声规则误删）。
+    private const string VideoSentinel = "\uE000WXVIDEO\uE000";
+
+    private static string VideoNoticeHtml(string? linkUrl)
+    {
+        var url = WeChatSourceKey.NormalizeArticleUrl(linkUrl);
+        return url is null
+            ? "本文此处有视频，请到公众号原文观看。"
+            : "本文此处有视频，<a href=\"" + System.Net.WebUtility.HtmlEncode(url) +
+              "\" target=\"_blank\" rel=\"noopener noreferrer\">点击前往公众号原文观看</a>";
+    }
+
+    private static int CountOccurrences(string text, string token)
+    {
+        var count = 0;
+        for (var index = text.IndexOf(token, StringComparison.Ordinal); index >= 0;
+             index = text.IndexOf(token, index + token.Length, StringComparison.Ordinal))
+        {
+            count++;
+        }
+
+        return count;
+    }
+
+    /// <summary>公众号视频：腾讯视频/公众号视频 iframe、video 标签、视频号卡片、insertvideo 插件块。</summary>
+    private static bool IsVideo(HtmlElement element)
+    {
+        var name = element.Name;
+        if (name == "video" || name.Contains("videosnap", StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        if (element.GetAttribute("data-pluginname") is "insertvideo" or "mpvideosnap" or "videosnap"
+            || element.GetAttribute("data-mpvid") is not null)
+        {
+            return true;
+        }
+
+        if (name != "iframe")
+        {
+            return false;
+        }
+
+        var cls = element.GetAttribute("class") ?? string.Empty;
+        var src = element.GetAttribute("data-src") ?? element.GetAttribute("src") ?? string.Empty;
+        return cls.Contains("video_iframe", StringComparison.OrdinalIgnoreCase)
+            || src.Contains("v.qq.com", StringComparison.OrdinalIgnoreCase)
+            || src.Contains("video_player", StringComparison.OrdinalIgnoreCase)
+            || src.Contains("mpvideo", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>把视频元素换成占位段落；紧挨着的多个视频块（插件外壳 + iframe 等）只留一个提示。</summary>
+    private static void ReplaceWithVideoNotice(HtmlElement video)
+    {
+        var parent = video.Parent;
+        if (parent is null)
+        {
+            return;
+        }
+
+        var index = parent.Children.IndexOf(video);
+        var previous = parent.Children.Take(index).LastOrDefault(node => node is HtmlElement || (node is HtmlText text && text.Raw.Trim().Length > 0));
+        if (previous is HtmlElement { Name: "p" } p && MiniHtml.InnerText(p) == VideoSentinel)
+        {
+            MiniHtml.Remove(video);
+            return;
+        }
+
+        var notice = new HtmlElement("p") { Parent = parent };
+        notice.Append(new HtmlText(VideoSentinel));
+        parent.Children[index] = notice;
+        video.Parent = null;
     }
 
     private void CollectRemainingImages(HtmlElement root, List<string> images, HashSet<string> seen)
@@ -217,6 +308,12 @@ public sealed class WeChatContentCleaner
         {
             if (child is not HtmlElement element)
             {
+                continue;
+            }
+
+            if (IsVideo(element))
+            {
+                ReplaceWithVideoNotice(element);
                 continue;
             }
 

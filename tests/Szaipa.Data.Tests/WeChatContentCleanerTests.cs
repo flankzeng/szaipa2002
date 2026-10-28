@@ -37,18 +37,56 @@ public sealed class WeChatContentCleanerTests
     public void Drops_scripts_iframes_svg_event_handlers_and_unsafe_links()
     {
         var result = Clean(
-            "<p onclick=\"evil()\">安全<script>alert(1)</script></p><iframe src=\"https://v.qq.com/x\"></iframe>" +
-            "<svg><path d=\"M0\"/></svg><video src=\"a.mp4\"></video>" +
+            "<p onclick=\"evil()\">安全<script>alert(1)</script></p><iframe src=\"https://evil.example.com/x\"></iframe>" +
+            "<svg><path d=\"M0\"/></svg>" +
             "<p><a href=\"javascript:alert(1)\" onclick=\"x()\">坏链接</a> <a href=\"https://example.com/a?b=1&amp;c=2\">好链接</a></p>");
 
         Assert.DoesNotContain("script", result.Html, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("iframe", result.Html, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("svg", result.Html, StringComparison.OrdinalIgnoreCase);
-        Assert.DoesNotContain("video", result.Html, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("onclick", result.Html, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("javascript:", result.Html, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("坏链接", result.Html); // 坏链接只脱壳，文字保留
         Assert.Contains("<a href=\"https://example.com/a?b=1&amp;c=2\" target=\"_blank\" rel=\"noopener noreferrer\">好链接</a>", result.Html);
+    }
+
+    [Fact]
+    public void Videos_become_a_link_to_the_original_article_at_their_position()
+    {
+        const string source = "https://mp.weixin.qq.com/s/VideoSample01";
+        var result = new WeChatContentCleaner().Clean(
+            "<p>开幕现场。</p>" +
+            "<section data-pluginname=\"insertvideo\"><iframe class=\"video_iframe rich_pages\" data-mpvid=\"wxv_1\" " +
+            "data-src=\"https://mp.weixin.qq.com/mp/readtemplate?t=pages/video_player_tmpl&amp;vid=wxv_1\"></iframe></section>" +
+            "<p>嘉宾致辞。</p><iframe src=\"https://v.qq.com/iframe/preview.html?vid=x\"></iframe>" +
+            "<mp-common-videosnap data-pluginname=\"mpvideosnap\"></mp-common-videosnap><video src=\"a.mp4\"></video>" +
+            "<p>展览持续至月底。</p>",
+            videoLinkUrl: source);
+
+        Assert.Equal(2, result.VideoCount); // 插件外壳+iframe 算一个；相邻的视频号卡片、video 合并为一个
+        Assert.True(result.HasBody);
+        Assert.DoesNotContain("<iframe", result.Html);
+        Assert.DoesNotContain("<video", result.Html);
+        Assert.DoesNotContain("\uE000", result.Html);
+        Assert.Equal(
+            "<p>开幕现场。</p>" +
+            "<p class=\"wechat-video-note\">本文此处有视频，<a href=\"https://mp.weixin.qq.com/s/VideoSample01\" target=\"_blank\" rel=\"noopener noreferrer\">点击前往公众号原文观看</a></p>" +
+            "<p>嘉宾致辞。</p>" +
+            "<p class=\"wechat-video-note\">本文此处有视频，<a href=\"https://mp.weixin.qq.com/s/VideoSample01\" target=\"_blank\" rel=\"noopener noreferrer\">点击前往公众号原文观看</a></p>" +
+            "<p>展览持续至月底。</p>",
+            result.Html);
+        Assert.DoesNotContain("视频", result.PlainText); // 摘要兜底不会变成"本文此处有视频"
+    }
+
+    [Fact]
+    public void Video_only_article_has_no_displayable_body()
+    {
+        var result = new WeChatContentCleaner().Clean(
+            "<p><br></p><iframe class=\"video_iframe\" data-src=\"https://v.qq.com/x\"></iframe>",
+            videoLinkUrl: "https://mp.weixin.qq.com/s/VideoOnly");
+
+        Assert.Equal(1, result.VideoCount);
+        Assert.False(result.HasBody);
     }
 
     [Fact]

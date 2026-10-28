@@ -750,3 +750,20 @@
         -webkit-overflow-scrolling: touch;
     }
 }
+
+/* 公众号视频不放到官网（文件大、费流量，旧站也不放视频）：同步时在视频原位置换成这一段提示，
+   链到公众号原文观看。做成浅灰细框的居中小段，和正文区分开但不抢眼。 */
+.article .article-body .wechat-video-note {
+    margin: 1.5rem 0;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e3e3e3;
+    color: #777;
+    font-size: 0.9rem !important;
+    text-align: center;
+}
+
+.article .article-body .wechat-video-note a {
+    color: #333;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}

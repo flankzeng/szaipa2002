@@ -353,7 +353,7 @@ public sealed class WeChatSyncServiceTests
             SourceKey = WeChatSourceKey.FromIds("MzkwNjIwMDU5Mg==", "100000099", "1"),
             SourceUrl = ShortUrl,
             Title = "开幕花絮",
-            ContentHtml = "<div><p><br></p></div>"
+            ContentHtml = "<div><p><br></p><iframe class=\"video_iframe\" data-src=\"https://v.qq.com/x\"></iframe></div>"
         };
 
         var outcome = await env.Service.ImportArticleAsync(article, Actor, false, CancellationToken.None);
