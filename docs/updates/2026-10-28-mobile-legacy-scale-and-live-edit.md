@@ -38,3 +38,11 @@
 | 现场编辑拖拽排序、新增成员（本次新增功能） | 发布本版本后可用；之后立即生效 |
 | 代码、样式（CSS）、页面模板、本文所有修改 | **需要发布**（打包 → 切换站点目录） |
 | `appsettings.Production.json` 配置（如 SiteNotice、LegacyNewsMaxId） | 改文件后需重启应用池 |
+
+## 6. 发布记录（用户授权“改完后推送上线”）
+- 包：`artifacts/szaipa-automation-2937893-win-x64.zip`，SHA-256 `1c6dfa8514e17613951cbad8a76d3155bb2a0a841191e02a1537a391b07c7f11`，发布审计通过（222 文件）。包含 `8630ac5` 以来的全部修复（链接样式、公众号跳过 / 并发下载、展示封面、视频链接、手机比例、成员拖拽、进站说明）。
+- 测试站 `szaipa-preview` → `C:\SzaipaData\preview-20261028\release-2937893`，页面均 200。
+- 正式站：校验原目录为 `269d7b8` 后，生产配置与 web.config 备份到 `C:\SzaipaData\backup\pre-2937893`（仅 Administrators/SYSTEM，哈希比对一致），IIS 配置备份 `pre-2937893`；解压到 `C:\SzaipaData\releases\2937893`，沿用原生产配置，授予 `IIS AppPool\SzaipaProd` 读取。**2026-10-28 10:24:51 切换**，应用池 Started。
+- 外部检查 15 个页面 / 资源（首页、新闻列表与详情、会员风采、关于、章程、展会列表、展览详情、春语三、艺术家页 1000/1052、健康、后台登录、CSS、JS）均 200，首页带进站说明；最新 stdout 无 `fail:`。
+- **回退**：核对站点为 `2937893` 后，把 `szaipa` 物理目录改回 `C:\SzaipaData\releases\269d7b8`（同一配置），重启 `SzaipaProd`。
+- 会员风采顺序说明：旧站 newvip 即按 Artist.Id 倒序（最新加入在前），新版一致；可在后台「会员风采排序」调整。
