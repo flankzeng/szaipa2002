@@ -553,3 +553,38 @@
         overflow-wrap: anywhere;
     }
 }
+
+/* ==========================================================================
+   2026-10-28 艺术家官网手机 / 平板按旧站比例还原
+   旧站艺术家页（_Artist.cshtml）没有 viewport meta：手机按 980px 宽排版再整体缩放到屏宽，
+   根字号 26px（responsive.css ≤991px），屏幕上 1rem = 26 × 屏宽/980 = 屏宽 × 2.653%。
+   新站 initial-scale=1 + 根字号约 15.4px，本页所有 rem 字号因此放大约 1.55 倍（“作品集”77px）。
+   这里把根字号设回 2.653vw：任何屏宽下都与旧站显示大小一致（375 宽 ≈ 9.95px）。
+   只影响本页（art.css 只由 Art.cshtml 加载）。
+   ========================================================================== */
+@media (max-width: 61.9375em) {
+    html {
+        font-size: 2.653vw;
+    }
+
+    /* 旧站手机与平板共用 ≤991px 一档（"作品集 / 相关展览" 4rem、展览名 2.4rem）；
+       新站只在 768–991 用这一档，手机误用了桌面值（5rem / 2.8rem）。 */
+    :root {
+        --subnavSize: 4rem;
+        --informationHeader: 2.4rem;
+    }
+
+    /* 共享的订阅区与备案号按首页根字号调过；本页根字号不同，按旧站实际大小单独给值
+       （标题 2rem、说明 1.2rem、备案 1rem，即 375 宽下 19.9 / 11.9 / 9.9px）。 */
+    .emailPosition h1 {
+        font-size: 2rem;
+    }
+
+    .emailPosition p {
+        font-size: 1.2rem;
+    }
+
+    .copyrightM {
+        font-size: 1rem;
+    }
+}

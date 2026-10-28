@@ -1,4 +1,3 @@
-﻿@inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @inject Szaipa.Web.Services.IDerivedImageResolver DerivedImageResolver
 @model Szaipa.Data.Models.Home.ArtistProfileSnapshotModel
 @{
@@ -189,7 +188,8 @@
             <div class="col-xs20 col-sm20 col-md20 col-lg20 relative">
                 <div class="touxiang">
                     <div class="line xs-hide sm-hide"> </div>
-                    <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")" style="width: var(--touxiang);border-radius: 100%;"
+                    @* 头像用 480 宽 WebP（质量 80），原先是 q30 预览图，压缩痕迹明显。 *@
+                    <img loading="lazy" decoding="async" src="@ImageVariants.Url($"/Content/ArtImg/Artist/{artist.Path?.Trim()}", 480)" style="width: var(--touxiang);border-radius: 100%;"
                         alt="艺术家头像">
                 </div>
 
@@ -255,15 +255,19 @@
                     }
                     @foreach (var w in Model.Works)
                     {
-                    var workOriginalUrl = $"/Content/ArtImg/Artist/works-narrow/{w.Path}";
+                    var workOriginalUrl = $"/Content/ArtImg/Artist/works-narrow/{w.Path?.Trim()}"; @* 旧库定长字段带尾随空格 *@
                     <div class="swiper-slide">
                         <div class="material JhengLight">
                             <span style="font-family: 'dinLight';"><!-- 120 X 180cm --></span>@LiveEdit.Field("Works", w.Id, "Content", w.Content)
                         </div>
 
                         <a href="@workOriginalUrl">
+                            @* 作品图：原先 src 是 q30w1200 预览图（画质明显变差）；改为 WebP 多尺寸（质量 80），
+                               浏览器按屏宽挑 480/960/1600，手机通常 960 档，流量与画质兼顾。放大镜仍用 2400 档。 *@
                             <img loading="lazy" decoding="async"
-                                src="@ImagePreviewResolver.Resolve(workOriginalUrl)"
+                                src="@ImageVariants.Url(workOriginalUrl, 1600)"
+                                srcset="@ImageVariants.SrcSet(workOriginalUrl, 0)"
+                                sizes="(max-width: 991px) 80vw, 45vw"
                                 data-magnify-src="@ImageVariants.Url(workOriginalUrl, 2400)"
                                 class="zoom" alt="@w.Title">
                         </a>
