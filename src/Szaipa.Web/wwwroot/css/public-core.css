@@ -235,6 +235,21 @@ ul li {
     list-style: none;
 }
 
+/* 2026-10-28：旧站在 bootstrap 之后加载 layui.css，其中 ul/ol/li 的 padding 全部清零；迁移时漏了这条，
+   列表多出浏览器默认的 40px 左缩进（艺术家页第一屏的“艺术家资讯 / 收藏捐赠…”整体右移即因此）。
+   富文本正文里的列表保留缩进，便于阅读。 */
+ul,
+ol {
+    padding-left: 0;
+}
+
+.article-body ul,
+.article-body ol,
+.artist-article ul,
+.artist-article ol {
+    padding-left: 2em;
+}
+
 ul ul,
 ol ul,
 ul ol,
@@ -445,6 +460,32 @@ ol ol {
     .col-xs8  { width: 40%; }   .col-xs7  { width: 35%; }  .col-xs6  { width: 30%; }
     .col-xs5  { width: 25%; }   .col-xs4  { width: 20%; }  .col-xs3  { width: 15%; }
     .col-xs2  { width: 10%; }   .col-xs1  { width: 5%; }
+}
+
+/* 2026-10-28：旧站手机按 937/980px 排版，实际用的是 sm（768–991）栅格。只写了 col-sm*、没写 col-xs* 的列
+   （如“关于我们”的左侧占位列 col-sm2）在新站手机上没有宽度，内容贴到屏幕左边。
+   手机上让这类列沿用 sm 宽度；写了 col-xs* 的列仍按 xs，不受影响。 */
+@media only screen and (max-width: 767px) {
+    .col-sm1:not([class*="col-xs"]) { float: left; width: 5%; }
+    .col-sm2:not([class*="col-xs"]) { float: left; width: 10%; }
+    .col-sm3:not([class*="col-xs"]) { float: left; width: 15%; }
+    .col-sm4:not([class*="col-xs"]) { float: left; width: 20%; }
+    .col-sm5:not([class*="col-xs"]) { float: left; width: 25%; }
+    .col-sm6:not([class*="col-xs"]) { float: left; width: 30%; }
+    .col-sm7:not([class*="col-xs"]) { float: left; width: 35%; }
+    .col-sm8:not([class*="col-xs"]) { float: left; width: 40%; }
+    .col-sm9:not([class*="col-xs"]) { float: left; width: 45%; }
+    .col-sm10:not([class*="col-xs"]) { float: left; width: 50%; }
+    .col-sm11:not([class*="col-xs"]) { float: left; width: 55%; }
+    .col-sm12:not([class*="col-xs"]) { float: left; width: 60%; }
+    .col-sm13:not([class*="col-xs"]) { float: left; width: 65%; }
+    .col-sm14:not([class*="col-xs"]) { float: left; width: 70%; }
+    .col-sm15:not([class*="col-xs"]) { float: left; width: 75%; }
+    .col-sm16:not([class*="col-xs"]) { float: left; width: 80%; }
+    .col-sm17:not([class*="col-xs"]) { float: left; width: 85%; }
+    .col-sm18:not([class*="col-xs"]) { float: left; width: 90%; }
+    .col-sm19:not([class*="col-xs"]) { float: left; width: 95%; }
+    .col-sm20:not([class*="col-xs"]) { float: left; width: 100%; }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -698,10 +739,11 @@ ol ol {
     --artistNewsTitle: 3rem;
 }
 
-/* --- §4.8 艺术家页 平板 768–991 --- */
-/* 影响：同 §4.7（艺术家三页的平板视图）
-   ⚠️ 历史遗留：窄带 768–991，<768 手机沿用桌面值。改 ≤991 会改变手机端展示。 */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* --- §4.8 艺术家页 手机 / 平板 ≤991 --- */
+/* 影响：同 §4.7（艺术家三页的手机与平板视图）
+   2026-10-28 改为 ≤991：旧站艺术家页没有 viewport meta，手机按 980px 排版，用的正是旧 Artist.css
+   这一档（768–991）；此前写成窄带 768–991，手机反而用了桌面值（头像 30%、作品集、栏目条等比例不对）。 */
+@media only screen and (max-width: 991px) {
     :root {
         --touxiang: 25%;
         --xinwenH: 13vh;
@@ -764,20 +806,68 @@ a:focus {
         font-size: 2.773vw;
     }
 
-    /* 共用的页头菜单、订阅区、备案号与首页保持同样大小（首页根字号约 15.4px，这里根字号 10.4px，按 ×1.48 换算） */
+    /* 共用的页头菜单、备案号与首页保持同样大小（首页根字号约 15.4px，这里根字号 10.4px，按 ×1.48 换算）；
+       订阅区按旧站实际大小：标题 2rem（20.8px）、说明 1.2rem（12.5px），与首页一致 */
     html.legacy-scale .bannerLink a {
         font-size: 1.48rem;
     }
 
     html.legacy-scale .emailPosition h1 {
-        font-size: 2.22rem;
+        font-size: 2rem;
     }
 
     html.legacy-scale .emailPosition p {
-        font-size: 1.48rem;
+        font-size: 1.2rem;
     }
 
     html.legacy-scale .copyrightM {
         font-size: 1.18rem;
+    }
+}
+
+/* 2026-10-28 展览详情（普通展览图库 _ExhibitionGallery）手机端左右边距统一：
+   旧版标题区与图库用了不同的栅格和占位列，标题左 38 / 右 19、图片左 28 / 右 37，左右不等。
+   手机上去掉占位列，标题与图库都取屏宽 80% 居中（与首页各区块一致），轮播与图片铺满图库宽度。
+   只作用于展览详情页（html.exhibition-page，见 Publication.cshtml），其他页面的 #section01 不受影响。 */
+@media (max-width: 47.9375em) {
+    /* 区块原为固定高度（--pubSonHeight），缩略图会溢出到下方黑色订阅区；手机上按内容撑开 */
+    html.exhibition-page #section01 {
+        display: flow-root;
+        height: auto !important;
+        padding-bottom: 8vh;
+    }
+
+    html.exhibition-page #section01 > .col-xs1,
+    html.exhibition-page #section01 > .col-xs2 {
+        display: none;
+    }
+
+    html.exhibition-page #section01 > .col-xs17,
+    html.exhibition-page #section01 > .imgCon_Pub {
+        float: none;
+        width: 80%;
+        margin-right: auto;
+        margin-left: auto;
+        transform: none; /* 旧 publication.css 给图库加了 translateX(-10%)，是左右不等的主因 */
+    }
+
+    html.exhibition-page #section01 > .imgCon_Pub .imgCon_PubSon {
+        width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+        transform: none;
+    }
+
+    html.exhibition-page #section01 > .imgCon_Pub .mySwiper3 {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    html.exhibition-page #section01 > .imgCon_Pub .mySwiper3 .swiper-slide img {
+        width: 100%;
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+        transform: none;
     }
 }

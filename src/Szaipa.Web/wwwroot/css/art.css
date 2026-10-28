@@ -567,11 +567,10 @@
         font-size: 2.653vw;
     }
 
-    /* 旧站手机与平板共用 ≤991px 一档（"作品集 / 相关展览" 4rem、展览名 2.4rem）；
-       新站只在 768–991 用这一档，手机误用了桌面值（5rem / 2.8rem）。 */
-    :root {
-        --subnavSize: 4rem;
-        --informationHeader: 2.4rem;
+    /* 简介与“艺术家年表”之间的间距：旧 Artist.css 同一档有 .jieshao { margin-bottom: 15% }，迁移时漏了，
+       新版两块几乎贴在一起（间距 11px，旧版 67px）。 */
+    .jieshao {
+        margin-bottom: 15%;
     }
 
     /* 共享的订阅区与备案号按首页根字号调过；本页根字号不同，按旧站实际大小单独给值

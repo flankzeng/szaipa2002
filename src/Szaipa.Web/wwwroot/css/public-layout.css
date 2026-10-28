@@ -376,14 +376,15 @@ body {
         height: 80vh;
     }
 
+    /* 2026-10-28：按旧站手机实际大小（标题 20.8px、说明 12.5px）；原 1.5rem / 1rem 在 15.4px 根字号下为 23 / 15.4px，偏大 */
     .emailPosition h1 {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
         letter-spacing: 0.03em;
         white-space: nowrap;
     }
 
     .emailPosition p {
-        font-size: 1rem;
+        font-size: .81rem;
         line-height: 1.8em;
     }
 }
@@ -495,9 +496,11 @@ body {
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media only screen and (max-width: 991px) {
+    /* 2026-10-28：旧站手机按 0.4（艺术家页约 0.38）缩放显示，10px 的圆点实际只有 4px；
+       新站 1:1 显示后变成 10px 的大圆点。按旧站实际大小改为 4px。 */
     .mySwiper .swiper-pagination-bullet {
-        width: 10px !important;
-        height: 10px !important;
+        width: 4px !important;
+        height: 4px !important;
     }
 
     .swiper-horizontal>.swiper-pagination-bullets,
