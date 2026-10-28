@@ -909,7 +909,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                 <a href="/Home/NewsRead/@n.Id">
                     @LiveEdit.Field("News", n.Id, "Title", n.Title)
 
-                    <p>@LiveEdit.Field("News", n.Id, "Subtitle", n.Subtitle)</p>
+                    <p>@LiveEdit.FieldExcerpt("News", n.Id, "Subtitle", n.Subtitle, 50)</p>
 
 <div>
                         @{ var newsCoverUrl = ImagePreviewResolver.Resolve($"/Content/newsImg/{n.CoverPath}"); }

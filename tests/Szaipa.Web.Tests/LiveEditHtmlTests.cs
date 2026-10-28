@@ -36,6 +36,18 @@ public sealed class LiveEditHtmlTests
         Assert.Empty(Render(editor.Attr("Publication", null, "Preface", value)));
     }
 
+    [Fact]
+    public void Excerpt_truncates_for_visitors_but_keeps_full_text_while_editing()
+    {
+        var subtitle = new string('字', 60);
+        var visitor = Render(CreateEditor(active: false).FieldExcerpt("News", 7, "Subtitle", subtitle, 50));
+        Assert.Equal(new string('字', 50) + "…", WebUtility.HtmlDecode(visitor));
+        Assert.Equal("短简介", WebUtility.HtmlDecode(Render(CreateEditor(active: false).FieldExcerpt("News", 7, "Subtitle", "短简介", 50))));
+
+        var editing = Render(CreateEditor(active: true).FieldExcerpt("News", 7, "Subtitle", subtitle, 50));
+        Assert.Contains(subtitle, WebUtility.HtmlDecode(editing), StringComparison.Ordinal); // 编辑态给全文
+    }
+
     private static LiveEditHtml CreateEditor(bool active)
     {
         var context = new DefaultHttpContext();

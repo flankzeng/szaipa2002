@@ -83,6 +83,24 @@ public sealed class LiveEditHtml
             : new HtmlString($"<span{((HtmlString)attributes).Value}>{body}</span>");
     }
 
+    /// <summary>
+    /// 列表里的摘要：非编辑态超过 <paramref name="maxLength"/> 字截断并加省略号（新闻简介列表只显示 50 字）；
+    /// 编辑态输出全文，避免在截断后的文字上编辑把原文改短。
+    /// </summary>
+    public IHtmlContent FieldExcerpt(string entity, int? id, string field, string? value, int maxLength)
+    {
+        if (Active || value is null)
+        {
+            return Field(entity, id, field, value);
+        }
+
+        var text = value.Trim();
+        var info = new System.Globalization.StringInfo(text);
+        return new HtmlString(_encoder.Encode(info.LengthInTextElements <= maxLength
+            ? text
+            : info.SubstringByTextElements(0, maxLength).TrimEnd() + "…"));
+    }
+
     /// <summary>数据库字段的编辑标记；id 为空/非正（回退内容）、字段不在白名单或非编辑态时输出空。</summary>
     public IHtmlContent Attr(string entity, int? id, string field, string? editValue = null)
     {

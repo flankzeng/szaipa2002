@@ -33,7 +33,7 @@
                     <li class="col-sm14 col-md13 col-lg13 title importantTXT">
                         <a href="/Home/NewsRead/@news.Id">
                             @LiveEdit.Field("News", news.Id, "Title", news.Title)
-                            <p>@LiveEdit.Field("News", news.Id, "Subtitle", news.Subtitle)</p>
+                            <p>@LiveEdit.FieldExcerpt("News", news.Id, "Subtitle", news.Subtitle, 50)</p>
                             <div>
                                 <img loading="lazy" decoding="async" src="@ImagePreviewResolver.Resolve($"/content/newsImg/{news.CoverPath}")" alt="">
                             </div>
