@@ -1,5 +1,13 @@
 # 交接（HANDOFF）
 
+## 最新交接（2026-10-28，现代网站访问/点击监控完成本地验收）
+
+- 用户确认只改现代 .NET 10，三个 gpt-6-luna 子 Agent 分工，主 Agent 审查整合。`/Staff/SecurityMonitoring` 增加请求分类、页面排行、筛选明细，以及独立的浏览器 view/click 证据；公共布局、艺术家、新闻详情和独立专题均覆盖。
+- 完整构建 0 error、759 测试通过、前端构建通过；本地镜像端到端已验证 2 浏览/1 点击、去重、登录保护、390/1440px。详情及启用/精度/多 worker 边界见 `updates/2026-10-28-traffic-monitoring.md`。
+- 代码本地完成，**未部署生产**，不影响前面发布连接故障的记录。无数据库 schema 修改。上线时需开启 RequestAuditEnabled、核实持久 AuditDirectory 权限和代理来源地址；点击仅从启用后开始记录。
+- 额度停止规则保留：每个大块检查300分钟窗口，剩10%左右收尾，剩5%停止；未完成才按最新 resetsAt 创建当前聊天续跑。此次验收完成时剩20%，没有创建续跑任务。
+- 接手提示：先读本条和监控更新文档；不要把 unknown 或 JS 事件宣称为已确认真人，不重复改旧站或用户未提交内容。若用户要求上线，按现有发布规范与服务器现状执行，不沿用旧连接正常的假设。
+
 > 新 session 接手时：先读 [AGENT_SPEC.md](AGENT_SPEC.md)（协作规范）→ [PROJECT_MAP.md](PROJECT_MAP.md) → [TASKS.md](TASKS.md)（任务看板，含用户已确认的全部决策），再开工。下面的 prompt 可直接粘进新 session（Claude Code / Codex 通用）。
 
 ## 最新交接（2026-10-28 12:06，40966a9 发布重试）

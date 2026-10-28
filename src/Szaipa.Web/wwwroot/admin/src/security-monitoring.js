@@ -223,6 +223,190 @@ function renderAlerts() {
   });
 }
 
+var trafficPage = 1;
+var trafficHasMore = false;
+var trafficLoadId = 0;
+
+function trafficCategoryLabel(category) {
+  if (category === 'bot') return 'Bot';
+  if (category === 'suspectedBot') return '疑似 Bot';
+  return '未判定';
+}
+
+function trafficCell(row, value, className) {
+  var cell = document.createElement('td');
+  cell.className = className || 'border-b border-black/5 px-3 py-2 align-top text-ink/80';
+  cell.textContent = value == null || value === '' ? '—' : String(value);
+  row.appendChild(cell);
+  return cell;
+}
+
+function trafficEmptyRow(tbody, colspan, message) {
+  var row = document.createElement('tr');
+  var cell = document.createElement('td');
+  cell.colSpan = colspan;
+  cell.className = 'px-3 py-5 text-center text-muted';
+  cell.textContent = message;
+  row.appendChild(cell);
+  tbody.replaceChildren(row);
+}
+
+function renderTrafficInsights() {
+  var days = document.getElementById('traffic-insights-days');
+  var category = document.getElementById('traffic-insights-category');
+  var path = document.getElementById('traffic-insights-path');
+  var status = document.getElementById('traffic-insights-status');
+  var rows = document.getElementById('traffic-request-rows');
+  var pages = document.getElementById('traffic-top-pages');
+  if (!rows || !pages) return;
+
+  var loadId = ++trafficLoadId;
+  var query = new URLSearchParams({ days: days ? days.value : '7', page: String(trafficPage), limit: '50' });
+  if (category && category.value) query.set('category', category.value);
+  if (path && path.value.trim()) query.set('path', path.value.trim());
+  status.textContent = '正在加载访问数据…';
+  getJson('/Staff/SecurityMonitoring/TrafficInsights?' + query.toString()).then(function (d) {
+    if (loadId !== trafficLoadId) return;
+    var counts = d.counts || {};
+    setText('traffic-count-total', counts.total);
+    setText('traffic-count-bot', counts.bot);
+    setText('traffic-count-suspected', counts.suspectedBot);
+    setText('traffic-count-unknown', counts.unknown);
+
+    var topPages = Array.isArray(d.topPages) ? d.topPages : [];
+    if (topPages.length === 0) trafficEmptyRow(pages, 3, '此筛选条件下暂无页面数据');
+    else {
+      var pageFragment = document.createDocumentFragment();
+      topPages.forEach(function (p) {
+        var row = document.createElement('tr');
+        row.className = 'border-b border-black/5';
+        trafficCell(row, p.path);
+        trafficCell(row, p.requests);
+        trafficCell(row, (p.bot || 0) + ' / ' + (p.suspectedBot || 0) + ' / ' + (p.unknown || 0));
+        pageFragment.appendChild(row);
+      });
+      pages.replaceChildren(pageFragment);
+    }
+
+    var requestData = d.requests || {};
+    var items = Array.isArray(requestData.items) ? requestData.items : [];
+    if (items.length === 0) trafficEmptyRow(rows, 5, '此筛选条件下暂无访问明细');
+    else {
+      var requestFragment = document.createDocumentFragment();
+      items.forEach(function (item) {
+        var row = document.createElement('tr');
+        row.className = 'border-b border-black/5';
+        trafficCell(row, item.path, 'max-w-[24rem] break-all border-b border-black/5 px-3 py-2 align-top font-mono text-xs text-ink/80');
+        trafficCell(row, fmtTime(item.timestamp));
+        trafficCell(row, item.status);
+        var label = trafficCategoryLabel(item.category);
+        trafficCell(row, label, 'border-b border-black/5 px-3 py-2 align-top text-ink/80');
+        var reasons = Array.isArray(item.reasons) ? item.reasons.join('；') : item.reasons;
+        trafficCell(row, reasons);
+        requestFragment.appendChild(row);
+      });
+      rows.replaceChildren(requestFragment);
+    }
+
+    var currentPage = Number(requestData.page || trafficPage);
+    var limit = Number(requestData.limit || 50);
+    var total = Number(requestData.total || 0);
+    trafficPage = currentPage;
+    trafficHasMore = !!requestData.hasMore;
+    var pageInfo = document.getElementById('traffic-page-info');
+    if (pageInfo) pageInfo.textContent = total + ' 条记录 · 第 ' + currentPage + ' 页';
+    var prev = document.getElementById('traffic-prev');
+    var next = document.getElementById('traffic-next');
+    if (prev) prev.disabled = currentPage <= 1;
+    if (next) next.disabled = !trafficHasMore || items.length === 0;
+
+    var notes = [];
+    if (requestData.truncated) notes.push('明细已截断，当前只展示可读取的部分数据');
+    if (requestData.sourceTruncated || d.sourceTruncated) notes.push(d.truncationNote || '来源日志存在截断，统计可能不完整');
+    if (items.length === 0 && topPages.length === 0) notes.push('当前范围内没有可展示的数据');
+    var classificationNote = d.classificationNote || '分类依据请求特征作自动判定；未判定不代表真人。';
+    status.textContent = classificationNote + ' ' + (notes.length ? notes.join('；') : '数据已更新 · 最近 ' + (d.days || days.value) + ' 天');
+  }).catch(function () {
+    if (loadId !== trafficLoadId) return;
+    setText('traffic-count-total', '—');
+    setText('traffic-count-bot', '—');
+    setText('traffic-count-suspected', '—');
+    setText('traffic-count-unknown', '—');
+    trafficEmptyRow(pages, 3, '访问数据加载失败，请稍后重试');
+    trafficEmptyRow(rows, 5, '访问数据加载失败，请稍后重试');
+    status.textContent = '访问分析加载失败，请检查权限或稍后重试。';
+    var pageInfo = document.getElementById('traffic-page-info');
+    if (pageInfo) pageInfo.textContent = '';
+    var prev = document.getElementById('traffic-prev');
+    var next = document.getElementById('traffic-next');
+    if (prev) prev.disabled = true;
+    if (next) next.disabled = true;
+  });
+}
+
+var interactionLoadId = 0;
+
+function renderInteractionInsights() {
+  var days = document.getElementById('traffic-insights-days');
+  var status = document.getElementById('interaction-insights-status');
+  var pages = document.getElementById('interaction-top-pages');
+  var recentRows = document.getElementById('interaction-recent-rows');
+  if (!pages || !recentRows) return;
+
+  var range = document.getElementById('interaction-insights-range');
+  var selectedDays = days ? days.value : '7';
+  var loadId = ++interactionLoadId;
+  if (range) range.textContent = '时间范围：近 ' + selectedDays + ' 天';
+  status.textContent = '正在加载浏览器交互证据…';
+  getJson('/Staff/SecurityMonitoring/Interactions?days=' + encodeURIComponent(selectedDays) + '&limit=50').then(function (d) {
+    if (loadId !== interactionLoadId) return;
+    setText('interaction-count-views', d.views);
+    setText('interaction-count-clicks', d.clicks);
+    var topPages = Array.isArray(d.topPages) ? d.topPages : [];
+    if (topPages.length === 0) trafficEmptyRow(pages, 3, '此时间范围内暂无页面交互数据');
+    else {
+      var pageFragment = document.createDocumentFragment();
+      topPages.forEach(function (p) {
+        var row = document.createElement('tr');
+        row.className = 'border-b border-black/5';
+        trafficCell(row, p.path, 'max-w-[24rem] break-all border-b border-black/5 px-3 py-2 align-top font-mono text-xs text-ink/80');
+        trafficCell(row, p.views);
+        trafficCell(row, p.clicks);
+        pageFragment.appendChild(row);
+      });
+      pages.replaceChildren(pageFragment);
+    }
+
+    var recent = Array.isArray(d.recent) ? d.recent : [];
+    if (recent.length === 0) trafficEmptyRow(recentRows, 4, '此时间范围内暂无浏览或点击记录');
+    else {
+      var recentFragment = document.createDocumentFragment();
+      recent.forEach(function (item) {
+        var row = document.createElement('tr');
+        row.className = 'border-b border-black/5';
+        trafficCell(row, fmtTime(item.timestamp));
+        trafficCell(row, item.kind === 'click' ? '链接点击' : item.kind === 'view' ? '页面浏览' : '未知行为');
+        trafficCell(row, item.pagePath, 'max-w-[20rem] break-all border-b border-black/5 px-3 py-2 align-top font-mono text-xs text-ink/80');
+        trafficCell(row, item.targetPath, 'max-w-[20rem] break-all border-b border-black/5 px-3 py-2 align-top font-mono text-xs text-ink/80');
+        recentFragment.appendChild(row);
+      });
+      recentRows.replaceChildren(recentFragment);
+    }
+
+    var notes = ['最近最多显示 50 条交互记录；浏览器脚本可模拟这些行为，不能据此确认真人访问。'];
+    if (d.sourceTruncated) notes.unshift('交互日志来源已截断，汇总和明细可能不完整。');
+    if (topPages.length === 0 && recent.length === 0) notes.unshift('当前时间范围无交互数据。');
+    status.textContent = notes.join(' ');
+  }).catch(function () {
+    if (loadId !== interactionLoadId) return;
+    setText('interaction-count-views', '—');
+    setText('interaction-count-clicks', '—');
+    trafficEmptyRow(pages, 3, '交互数据加载失败，请稍后重试');
+    trafficEmptyRow(recentRows, 4, '交互数据加载失败，请稍后重试');
+    status.textContent = '交互证据加载失败，请检查权限或稍后重试。';
+  });
+}
+
 function unblockIp(ip) {
   if (!window.confirm('确认解封 ' + ip + ' ？')) return;
   postJson('/Staff/SecurityMonitoring/Unblock', { ip: ip }).then(function (d) {
@@ -256,6 +440,24 @@ function init() {
   renderLogins();
   renderActions();
   renderAlerts();
+
+  var trafficFilter = document.getElementById('traffic-insights-filter');
+  if (trafficFilter) trafficFilter.addEventListener('submit', function (e) {
+    e.preventDefault();
+    trafficPage = 1;
+    renderTrafficInsights();
+    renderInteractionInsights();
+  });
+  var trafficPrev = document.getElementById('traffic-prev');
+  if (trafficPrev) trafficPrev.addEventListener('click', function () {
+    if (trafficPage > 1) { trafficPage -= 1; renderTrafficInsights(); }
+  });
+  var trafficNext = document.getElementById('traffic-next');
+  if (trafficNext) trafficNext.addEventListener('click', function () {
+    if (trafficHasMore) { trafficPage += 1; renderTrafficInsights(); }
+  });
+  renderTrafficInsights();
+  renderInteractionInsights();
 
   var addForm = document.getElementById('whitelist-add-form');
   if (addForm) {

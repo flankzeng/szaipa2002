@@ -201,6 +201,7 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton(securityMonitoringPaths);
                 services.AddSingleton<ISecurityAuditWriter, SecurityAuditWriter>();
                 services.AddSingleton<ISecurityAuditReader, SecurityAuditReader>();
+                services.AddSingleton<Szaipa.Web.Services.Traffic.ITrafficEventStore, Szaipa.Web.Services.Traffic.TrafficEventStore>();
                 services.AddSingleton<IServerSecurityRepository, ServerSecurityRepository>();
                 services.AddSingleton<ISecurityActionQueue, SecurityActionQueue>();
 

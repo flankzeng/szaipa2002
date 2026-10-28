@@ -1,0 +1,19 @@
+@using Microsoft.AspNetCore.Diagnostics
+@using Microsoft.Extensions.Options
+@using Szaipa.Web.Configuration
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IOptions<SecurityMonitoringOptions> SecurityMonitoringOptions
+@{
+    var httpContext = HttpContextAccessor.HttpContext;
+    var path = httpContext?.Features.Get<IExceptionHandlerFeature>()?.Path
+        ?? httpContext?.Request.Path.Value
+        ?? string.Empty;
+    var isExcludedPath = IsExcluded("/admin") || IsExcluded("/staff") || IsExcluded("/api");
+
+    bool IsExcluded(string prefix) => path.Equals(prefix, StringComparison.OrdinalIgnoreCase)
+        || path.StartsWith(prefix + "/", StringComparison.OrdinalIgnoreCase);
+}
+@if (SecurityMonitoringOptions.Value.RequestAuditEnabled && !isExcludedPath)
+{
+    <script src="~/js/traffic-monitor.js" asp-append-version="true" defer></script>
+}

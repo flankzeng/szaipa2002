@@ -4,6 +4,8 @@
 > 配套文档：[HANDOFF.md](HANDOFF.md)（交接 + 剩余工作 + 模型建议）。
 
 ## 这是什么
+
+2026-10-28 网站监控增强：`Services/Security/TrafficInsightsService.cs` 分类请求；`Services/Traffic/` + `Controllers/TrafficEventsController.cs` 采集有界同源浏览/点击；`Views/Shared/_TrafficMonitor.cshtml` 覆盖公共入口；后台仍为 `/Staff/SecurityMonitoring`。规则、启用与精度边界见 `updates/2026-10-28-traffic-monitoring.md`。
 深圳市艺术产业促进会官网，从 **旧 ASP.NET MVC5（.NET Framework）** 迁到 **ASP.NET Core net10.0**。
 - 旧站：`szaipa2022/`（MVC5，Layui）—— 只读参考，最终弃用；**这台 Mac 上跑不起来**（mono 崩），改它只能改源码、无法运行验证。
 - 新站：`src/`（ASP.NET Core）—— 实际开发目标。

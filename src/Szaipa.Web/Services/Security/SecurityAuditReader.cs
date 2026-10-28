@@ -19,8 +19,35 @@ public sealed class SecurityAuditReader : ISecurityAuditReader
     }
 
     public IReadOnlyList<RequestLogLine> ReadRequests(DateTimeOffset sinceUtc, int maxLines = 100_000)
+        => ReadRequestsWithMetadata(sinceUtc, maxLines).Lines;
+
+    public RequestAuditReadResult ReadRequestsWithMetadata(DateTimeOffset sinceUtc, int maxLines = 100_000)
     {
-        var lines = ReadLinesInRange("requests", sinceUtc.UtcDateTime.Date, maxLines);
+        var reasons = new List<string>();
+        var files = EnumerateRequestFiles(sinceUtc.UtcDateTime.Date, DateTime.UtcNow.Date, reasons);
+        var lines = new List<string>();
+        foreach (var file in files)
+        {
+            if (lines.Count >= maxLines)
+            {
+                reasons.Add($"Request line limit ({maxLines}) reached.");
+                break;
+            }
+
+            var read = ReadFileLines(file, maxLines - lines.Count, out var partialReason);
+            lines.AddRange(read);
+            if (partialReason is not null)
+            {
+                reasons.Add($"{Path.GetFileName(file)}: {partialReason}");
+            }
+
+            if (lines.Count >= maxLines)
+            {
+                reasons.Add($"Request line limit ({maxLines}) reached.");
+                break;
+            }
+        }
+
         var parsed = new List<RequestLogLine>(lines.Count);
         foreach (var line in lines)
         {
@@ -31,7 +58,7 @@ public sealed class SecurityAuditReader : ISecurityAuditReader
             }
         }
 
-        return parsed;
+        return new RequestAuditReadResult(parsed, reasons.Count > 0, reasons.Distinct().ToArray());
     }
 
     public IReadOnlyList<LoginLogLine> ReadLogins(int maxLines = 500)
@@ -66,28 +93,6 @@ public sealed class SecurityAuditReader : ISecurityAuditReader
         return parsed;
     }
 
-    private IReadOnlyList<string> ReadLinesInRange(string prefix, DateTime fromUtc, int maxLines)
-    {
-        var files = EnumerateAuditFiles(prefix);
-        var lines = new List<string>();
-        foreach (var file in files.OrderBy(FileDateFromName))
-        {
-            if (lines.Count >= maxLines)
-            {
-                break;
-            }
-
-            if (FileDateFromName(file) < fromUtc)
-            {
-                continue;
-            }
-
-            lines.AddRange(ReadFileLines(file, maxLines - lines.Count));
-        }
-
-        return lines;
-    }
-
     private IEnumerable<string> EnumerateAuditFiles(string prefix)
     {
         if (!Directory.Exists(_paths.AuditDirectory))
@@ -110,14 +115,48 @@ public sealed class SecurityAuditReader : ISecurityAuditReader
         }
     }
 
-    private List<string> ReadFileLines(string path, int maxLines)
+    private string[] EnumerateRequestFiles(DateTime sinceUtcDate, DateTime todayUtcDate, List<string> partialReasons)
+    {
+        if (!Directory.Exists(_paths.AuditDirectory)) return Array.Empty<string>();
+        try
+        {
+            var files = Directory.EnumerateFiles(_paths.AuditDirectory, "requests-*.log")
+                .Where(path => FileDateFromName(path) >= sinceUtcDate && FileDateFromName(path) <= todayUtcDate)
+                .OrderByDescending(FileDateFromName)
+                .Take(401)
+                .ToArray();
+            if (files.Length > 400)
+            {
+                partialReasons.Add("Request file enumeration limit (400 files) reached.");
+                return files[..400].OrderBy(FileDateFromName).ToArray();
+            }
+
+            return files.OrderBy(FileDateFromName).ToArray();
+        }
+        catch (IOException)
+        {
+            partialReasons.Add("Unable to enumerate request audit files because of an I/O error.");
+            return Array.Empty<string>();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            partialReasons.Add("Unable to enumerate request audit files because access was denied.");
+            return Array.Empty<string>();
+        }
+    }
+
+    private List<string> ReadFileLines(string path, int maxLines) => ReadFileLines(path, maxLines, out _);
+
+    private List<string> ReadFileLines(string path, int maxLines, out string? partialReason)
     {
         var result = new List<string>();
+        partialReason = null;
         try
         {
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
             if (stream.Length > MaxBytesPerFile)
             {
+                partialReason = $"file exceeds {MaxBytesPerFile} byte read limit";
                 return result;
             }
 
@@ -128,16 +167,19 @@ public sealed class SecurityAuditReader : ISecurityAuditReader
                 result.Add(line);
                 if (result.Count >= maxLines)
                 {
+                    partialReason = $"file reached line limit ({maxLines})";
                     break;
                 }
             }
         }
         catch (IOException)
         {
+            partialReason = "I/O error while reading file";
             return result;
         }
         catch (UnauthorizedAccessException)
         {
+            partialReason = "access denied while reading file";
             return result;
         }
 

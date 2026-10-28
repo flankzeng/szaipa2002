@@ -17,13 +17,13 @@ public sealed class ClientIpResolverTests
     }
 
     [Fact]
-    public void PrefersFirstForwardedForHop()
+    public void DoesNotAllowUntrustedForwardedForToForgeAuditIdentity()
     {
         var context = new DefaultHttpContext();
         context.Connection.RemoteIpAddress = IPAddress.Parse("10.0.0.1");
         context.Request.Headers["X-Forwarded-For"] = "198.51.100.9, 10.0.0.5";
 
-        Assert.Equal("198.51.100.9", ClientIpResolver.Resolve(context));
+        Assert.Equal("10.0.0.1", ClientIpResolver.Resolve(context));
     }
 
     [Fact]

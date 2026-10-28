@@ -172,6 +172,79 @@ public sealed class SecurityMonitoringController : Controller
         return Json(new { items = grouped });
     }
 
+    /// <summary>Classified request-audit view. Categories describe evidence in the log and never assert that a request is human.</summary>
+    [HttpGet("TrafficInsights")]
+    public IActionResult TrafficInsights(int days = 7, string? category = null, string? path = null, int page = 1, int limit = 50)
+    {
+        days = Math.Clamp(days, 1, 30);
+        page = Math.Clamp(page, 1, 1_000_000);
+        limit = Math.Clamp(limit, 1, 200);
+        var now = DateTimeOffset.UtcNow;
+        var since = TrafficInsightsService.UtcCalendarStart(now, days);
+        var auditRead = Safe(() => _auditReader.ReadRequestsWithMetadata(since, TrafficInsightsService.SourceLimit))
+            ?? new RequestAuditReadResult(Array.Empty<RequestLogLine>(), true, new[] { "请求审计文件读取失败。" });
+
+        TrafficInsightsResult result;
+        try
+        {
+            result = TrafficInsightsService.Build(
+                auditRead.Lines,
+                since,
+                now,
+                category,
+                path,
+                page,
+                limit,
+                auditRead.IsPartial,
+                auditRead.PartialReasons);
+        }
+        catch (ArgumentException)
+        {
+            return BadRequest(new { error = "category must be bot, suspectedBot, or unknown" });
+        }
+
+        return Json(new
+        {
+            days,
+            sinceUtc = result.SinceUtc,
+            generatedAtUtc = result.GeneratedAtUtc,
+            category = result.Category,
+            path = result.Path,
+            sourceLimit = TrafficInsightsService.SourceLimit,
+            sourceTruncated = result.SourceTruncated,
+            truncationNote = result.SourceTruncated
+                ? "请求审计读取不完整，统计和热门页面可能遗漏请求。详情见 sourcePartialReasons。"
+                : null,
+            sourcePartialReasons = result.SourcePartialReasons,
+            classificationNote = "bot 表示 User-Agent 自报自动化标记，未独立验证；suspectedBot 表示命中可疑信号；unknown 表示证据不足。任何分类都不能证明请求来自真人。",
+            ipNote = "IP 只是请求来源线索；若反向代理转发头未受信任，记录值可能由客户端影响。",
+            counts = new
+            {
+                total = result.Counts.Total,
+                bot = result.Counts.Bot,
+                suspectedBot = result.Counts.SuspectedBot,
+                unknown = result.Counts.Unknown,
+            },
+            topPages = result.TopPages.Select(x => new
+            {
+                x.Path,
+                x.Requests,
+                bot = x.Bot,
+                suspectedBot = x.SuspectedBot,
+                unknown = x.Unknown,
+                x.ErrorCount,
+            }),
+            requests = new
+            {
+                items = result.Items,
+                result.Page,
+                result.Limit,
+                result.Total,
+                result.HasMore,
+            },
+        });
+    }
+
     [HttpGet("StaffLogins")]
     public IActionResult StaffLogins(int limit = 20)
     {

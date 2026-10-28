@@ -63,6 +63,87 @@
     </section>
 </div>
 
+@* 网站访问分析 *@
+<section class="admin-card mb-6" aria-labelledby="traffic-insights-title">
+    <div class="mb-4 flex flex-wrap items-start justify-between gap-4">
+        <div>
+            <h2 id="traffic-insights-title" class="admin-card__title">网站访问分析</h2>
+            <p class="mt-1 max-w-3xl text-xs text-muted">访客分类仅依据请求特征作自动判定。未判定（unknown）不代表真人，也不会计入真人访客。</p>
+        </div>
+        <form id="traffic-insights-filter" class="flex flex-wrap items-end gap-2">
+            <label class="text-xs text-muted">时间范围
+                <select id="traffic-insights-days" class="mt-1 block rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-ink">
+                    <option value="7">近 7 天</option><option value="14">近 14 天</option><option value="30">近 30 天</option>
+                </select>
+            </label>
+            <label class="text-xs text-muted">分类
+                <select id="traffic-insights-category" class="mt-1 block rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-ink">
+                    <option value="">全部分类</option><option value="bot">Bot</option><option value="suspectedBot">疑似 Bot</option><option value="unknown">未判定</option>
+                </select>
+            </label>
+            <label class="text-xs text-muted">路径包含
+                <input id="traffic-insights-path" type="search" maxlength="500" placeholder="例如 /works" class="mt-1 block w-44 rounded-lg border border-black/10 bg-white px-3 py-2 text-sm text-ink outline-none focus:border-brand/50" />
+            </label>
+            <button type="submit" class="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand/90">筛选</button>
+        </form>
+    </div>
+    <div class="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">请求总数</p><p id="traffic-count-total" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">Bot</p><p id="traffic-count-bot" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">疑似 Bot</p><p id="traffic-count-suspected" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">未判定（不等同真人）</p><p id="traffic-count-unknown" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+    </div>
+    <p id="traffic-insights-status" role="status" aria-live="polite" class="mb-4 text-sm text-muted">正在加载访问数据…</p>
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div class="xl:col-span-1">
+            <h3 class="mb-2 text-sm font-semibold text-ink">热门页面</h3>
+            <div class="overflow-x-auto rounded-lg border border-black/5">
+                <table class="w-full text-sm"><thead><tr class="border-b border-black/5 text-left text-xs text-muted"><th class="px-3 py-2">页面</th><th class="px-3 py-2">请求</th><th class="px-3 py-2">Bot / 疑似 / 未判定</th></tr></thead>
+                    <tbody id="traffic-top-pages"><tr><td colspan="3" class="px-3 py-5 text-center text-muted">正在加载…</td></tr></tbody></table>
+            </div>
+        </div>
+        <div class="xl:col-span-2">
+            <div class="mb-2 flex flex-wrap items-center justify-between gap-2"><h3 class="text-sm font-semibold text-ink">最近访问明细</h3><span id="traffic-page-info" class="text-xs text-muted"></span></div>
+            <div class="overflow-x-auto rounded-lg border border-black/5">
+                <table class="w-full min-w-[900px] text-sm"><thead><tr class="border-b border-black/5 text-left text-xs text-muted"><th class="px-3 py-2">页面</th><th class="px-3 py-2">时间</th><th class="px-3 py-2">状态</th><th class="px-3 py-2">类别</th><th class="px-3 py-2">判定理由</th></tr></thead>
+                    <tbody id="traffic-request-rows"><tr><td colspan="5" class="px-3 py-5 text-center text-muted">正在加载…</td></tr></tbody></table>
+            </div>
+            <div class="mt-3 flex justify-end gap-2"><button id="traffic-prev" type="button" class="rounded-md border border-black/10 px-3 py-1.5 text-sm text-ink disabled:opacity-40">上一页</button><button id="traffic-next" type="button" class="rounded-md border border-black/10 px-3 py-1.5 text-sm text-ink disabled:opacity-40">下一页</button></div>
+        </div>
+    </div>
+</section>
+
+<section class="admin-card mb-8" aria-labelledby="interaction-insights-title">
+    <div class="mb-4 flex flex-wrap items-start justify-between gap-4">
+        <div>
+            <h2 id="interaction-insights-title" class="admin-card__title">页面浏览与链接点击</h2>
+            <p class="mt-1 max-w-3xl text-xs text-muted">以下数据来自浏览器 JavaScript 交互证据。浏览器脚本可被自动化模拟，因此点击和浏览记录不能证明是真人操作。</p>
+        </div>
+        <span id="interaction-insights-range" class="text-xs text-muted">与上方时间范围同步</span>
+    </div>
+    <div class="mb-4 grid grid-cols-2 gap-3 md:grid-cols-2">
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">页面浏览（JS 证据）</p><p id="interaction-count-views" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+        <div class="rounded-xl bg-canvas p-3"><p class="text-xs text-muted">链接点击（JS 证据）</p><p id="interaction-count-clicks" class="mt-1 text-2xl font-bold text-ink">—</p></div>
+    </div>
+    <p id="interaction-insights-status" role="status" aria-live="polite" class="mb-4 text-sm text-muted">正在加载交互证据…</p>
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div class="xl:col-span-1">
+            <h3 class="mb-2 text-sm font-semibold text-ink">页面交互概览</h3>
+            <div class="overflow-x-auto rounded-lg border border-black/5">
+                <table class="w-full text-sm"><thead><tr class="border-b border-black/5 text-left text-xs text-muted"><th class="px-3 py-2">页面</th><th class="px-3 py-2">浏览</th><th class="px-3 py-2">点击</th></tr></thead>
+                    <tbody id="interaction-top-pages"><tr><td colspan="3" class="px-3 py-5 text-center text-muted">正在加载…</td></tr></tbody></table>
+            </div>
+        </div>
+        <div class="xl:col-span-2">
+            <h3 class="mb-2 text-sm font-semibold text-ink">最近浏览与点击</h3>
+            <div class="overflow-x-auto rounded-lg border border-black/5">
+                <table class="w-full min-w-[800px] text-sm"><thead><tr class="border-b border-black/5 text-left text-xs text-muted"><th class="px-3 py-2">时间</th><th class="px-3 py-2">行为</th><th class="px-3 py-2">来源页面</th><th class="px-3 py-2">目标路径</th></tr></thead>
+                    <tbody id="interaction-recent-rows"><tr><td colspan="4" class="px-3 py-5 text-center text-muted">正在加载…</td></tr></tbody></table>
+            </div>
+        </div>
+    </div>
+</section>
+
 @* 封禁与白名单 *@
 <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
     <section class="admin-card">
