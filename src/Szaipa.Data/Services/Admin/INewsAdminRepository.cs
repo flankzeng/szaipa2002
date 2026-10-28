@@ -16,4 +16,9 @@ public interface INewsAdminRepository
     Task<bool> UpdateAsync(News input, AdminActor actor, CancellationToken cancellationToken);
 
     Task<bool> DeleteAsync(int id, AdminActor actor, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// 只改"重要"（Important）：true = 前台新闻列表与首页显示封面大卡片，false = 日期+标题普通行。False if not found.
+    /// </summary>
+    Task<bool> SetImportantAsync(int id, bool important, AdminActor actor, CancellationToken cancellationToken);
 }

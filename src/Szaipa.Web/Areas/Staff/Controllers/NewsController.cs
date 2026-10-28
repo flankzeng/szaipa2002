@@ -83,6 +83,16 @@ public sealed class NewsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    /// <summary>列表里直接勾选/取消「展示封面」（= News.Important），不必进编辑页。</summary>
+    [HttpPost("Important/{id:int}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Important(int id, bool important, int page = 1, CancellationToken cancellationToken = default)
+    {
+        var done = await _repository.SetImportantAsync(id, important, CurrentActor(), cancellationToken);
+        TempData[done ? "Success" : "Error"] = done ? (important ? "已设为展示封面。" : "已取消展示封面。") : "未找到该新闻。";
+        return RedirectToAction(nameof(Index), new { page });
+    }
+
     [HttpPost("Delete/{id:int}")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

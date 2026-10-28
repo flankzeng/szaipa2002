@@ -43,7 +43,7 @@ public sealed class WeChatSyncServiceTests
         Assert.Equal(new DateTime(2025, 10, 26, 17, 40, 0), news.Date);             // ← ct 时间戳（北京时间）
         Assert.Equal(2025, news.Year);
         Assert.Equal(0, news.ReadCount);
-        Assert.False(news.Important);
+        Assert.True(news.Important);                                                // 群发头条（idx=1）且有封面 → 展示封面
         Assert.Contains("公众号同步", news.EditRecord);
 
         // 封面：落在 newsImg，CoverPath 只存文件名（与后台 News 上传封面同存法）。
@@ -66,6 +66,27 @@ public sealed class WeChatSyncServiceTests
 
         // 审计：写入 Diary 操作记录。
         Assert.Contains("从公众号导入了 同构第三季开幕 & 艺术家座谈的新闻条目", (await env.Db.Diary.AsNoTracking().SingleAsync()).OperationRecord);
+    }
+
+    [Fact]
+    public async Task Second_article_of_a_push_is_a_normal_row_and_lead_without_cover_is_not_important()
+    {
+        await using var env = new Env();
+        const string second = "https://mp.weixin.qq.com/s/NoiseSample02";
+        env.Pages[second] = env.Pages[ShortUrl].Replace("var idx = \"1\"", "var idx = \"2\"");
+
+        var outcome = Assert.Single(await env.Service.ImportLinksAsync(second, Actor, false, CancellationToken.None));
+
+        Assert.Equal(WeChatImportStatus.Created, outcome.Status);
+        Assert.False((await env.Db.News.AsNoTracking().SingleAsync()).Important); // 次条：日期+标题普通行
+        Assert.Equal(1, (await env.Db.WeChatSyncRecord.AsNoTracking().SingleAsync()).ItemIndex);
+
+        // 头条但图片全下不来（没有封面）：不标重要，否则前台是破图。
+        await using var noCover = new Env { ImageStatus = System.Net.HttpStatusCode.NotFound };
+        await noCover.Service.ImportLinksAsync(ShortUrl, Actor, false, CancellationToken.None);
+        var news = await noCover.Db.News.AsNoTracking().SingleAsync();
+        Assert.Null(news.CoverPath);
+        Assert.False(news.Important);
     }
 
     [Fact]
@@ -206,7 +227,8 @@ public sealed class WeChatSyncServiceTests
         var before = await env.Db.News.AsNoTracking().SingleAsync();
         var hashBefore = (await env.Db.WeChatSyncRecord.AsNoTracking().SingleAsync()).ContentHash;
         var pinned = await env.Db.News.SingleAsync(news => news.Id == before.Id);
-        pinned.Important = true; // 后台置顶写入 News.Important；同步更新不得覆盖。
+        Assert.True(pinned.Important); // 头条导入时自动展示封面
+        pinned.Important = false; // 后台取消「展示封面」写入 News.Important；同步更新不得覆盖。
         await env.Db.SaveChangesAsync();
 
         env.Pages[ShortUrl] = env.Pages[ShortUrl].Replace("感谢各位到场。", "感谢各位到场，作品已更新。");
@@ -217,7 +239,7 @@ public sealed class WeChatSyncServiceTests
         var after = await env.Db.News.AsNoTracking().SingleAsync();
         Assert.Equal(before.Id, after.Id);
         Assert.Equal(before.Date, after.Date);
-        Assert.True(after.Important); // 后台置顶不会被同步冲掉
+        Assert.False(after.Important); // 后台手动取消的封面不会被同步冲回来
         Assert.Contains("作品已更新", after.Content);
         Assert.Contains("更新了此新闻条目", after.EditRecord);
         Assert.NotEqual(hashBefore, (await env.Db.WeChatSyncRecord.AsNoTracking().SingleAsync()).ContentHash);
@@ -471,7 +493,7 @@ public sealed class WeChatSyncServiceTests
         Assert.Equal("同构第三季开幕 & 艺术家座谈", item.Title);
         var diary = (await env.Db.Diary.AsNoTracking().SingleAsync()).OperationRecord;
         Assert.Contains("隐藏了公众号同步新闻", diary);
-        Assert.Contains("置顶了公众号同步新闻", diary);
+        Assert.Contains("设为展示封面了公众号同步新闻", diary);
 
         env.Db.News.RemoveRange(await env.Db.News.ToListAsync());
         await env.Db.SaveChangesAsync();

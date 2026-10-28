@@ -534,7 +534,10 @@ public sealed class WeChatSyncService : IWeChatSyncService
                 news.Date = publishedAt;
                 news.Year = publishedAt.Year;
                 news.ReadCount = 0;
-                news.Important = _options.CurrentValue.NewArticlesImportant;
+                // 一次群发里的头条（ItemIndex 0，单篇群发也是 0）默认标为重要 = 前台带封面大卡片，次条起为普通行；
+                // 没有封面的不标（否则前台是破图）。只在新建时决定，之后后台手动勾选不会被同步冲掉。
+                news.Important = _options.CurrentValue.NewArticlesImportant
+                    || (article.ItemIndex == 0 && !string.IsNullOrEmpty(news.CoverPath));
                 news.EditRecord = $"公众号同步 于 {now:yyyy年MM月dd日 HH:mm:ss} 导入了此新闻条目。/";
                 _db.News.Add(news);
             }

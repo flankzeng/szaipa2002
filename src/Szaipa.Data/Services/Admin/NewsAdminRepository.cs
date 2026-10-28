@@ -93,6 +93,22 @@ public sealed class NewsAdminRepository : INewsAdminRepository
         return true;
     }
 
+    public async Task<bool> SetImportantAsync(int id, bool important, AdminActor actor, CancellationToken cancellationToken)
+    {
+        var news = await _db.News.FirstOrDefaultAsync(n => n.Id == id, cancellationToken);
+        if (news is null)
+        {
+            return false;
+        }
+
+        news.Important = important;
+        var now = DateTime.Now;
+        news.EditRecord += $"{actor.StaffName} 于 {now:yyyy年MM月dd日 HH:mm:ss} {(important ? "设为展示封面（重要）" : "取消展示封面")}了此新闻条目。/";
+        await _operationRecorder.RecordAsync(_db, actor, $"{(important ? "设为展示封面" : "取消展示封面")}了 {news.Title}的新闻条目。", cancellationToken);
+        await _db.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+
     public async Task<bool> DeleteAsync(int id, AdminActor actor, CancellationToken cancellationToken)
     {
         var news = await _db.News.FirstOrDefaultAsync(n => n.Id == id, cancellationToken);

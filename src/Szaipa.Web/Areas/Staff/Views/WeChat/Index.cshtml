@@ -159,7 +159,14 @@
 </section>
 
 <div class="overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
-    <div class="border-b border-black/5 px-5 py-3 text-sm font-medium text-ink">同步记录（共 @list.TotalCount 条）</div>
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-black/5 px-5 py-3">
+        <div class="text-sm font-medium text-ink">同步记录（共 @list.TotalCount 条）</div>
+        @* 历史文章补标：每次群发的头条设为展示封面（新同步的文章已自动这样标）。只勾上，不取消已有勾选。 *@
+        <form asp-action="MarkLeadImportant" method="post" class="inline"
+              onsubmit="return confirm('把每次群发的头条（单篇群发即该篇）设为前台展示封面？只会勾上，不会取消已有的勾选。');">
+            <button type="submit" class="admin-btn-ghost px-3 py-1.5 text-xs" disabled="@(!Model.List.TableAvailable)">按群发头条补标封面</button>
+        </form>
+    </div>
     <table class="w-full text-sm">
         <thead class="border-b border-black/5 bg-canvas/60 text-left text-xs uppercase tracking-wide text-muted">
             <tr>
@@ -202,7 +209,7 @@
                         }
                         @if (item.IsPinned)
                         {
-                            <span class="ml-1 rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">置顶</span>
+                            <span class="ml-1 rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">展示封面</span>
                         }
                     </td>
                     <td class="px-5 py-3">
@@ -213,7 +220,7 @@
                                 <form asp-action="Pin" asp-route-id="@item.RecordId" method="post" class="inline">
                                     <input type="hidden" name="pinned" value="@((!item.IsPinned).ToString().ToLowerInvariant())" />
                                     <input type="hidden" name="page" value="@list.Page" />
-                                    <button type="submit" class="text-muted hover:text-brand">@(item.IsPinned ? "取消置顶" : "置顶")</button>
+                                    <button type="submit" class="text-muted hover:text-brand">@(item.IsPinned ? "取消封面" : "展示封面")</button>
                                 </form>
                             }
                             <form asp-action="Hide" asp-route-id="@item.RecordId" method="post" class="inline">

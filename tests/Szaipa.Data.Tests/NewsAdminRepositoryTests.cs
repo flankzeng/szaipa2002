@@ -127,6 +127,73 @@ public sealed class NewsAdminRepositoryTests
         Assert.Equal(new[] { 1 }, page3.Items.Select(n => n.Id).ToArray());
     }
 
+    [Fact]
+    public async Task SetImportantAsync_toggles_only_the_flag_and_records_it()
+    {
+        await using var fixture = CreateContext();
+        var repository = new NewsAdminRepository(fixture.Context, new OperationRecorder());
+        var id = await repository.CreateAsync(new News { Title = "展讯", Content = "<p>x</p>", CoverPath = "a.jpg" }, Actor, CancellationToken.None);
+
+        Assert.True(await repository.SetImportantAsync(id, true, Actor, CancellationToken.None));
+        var saved = await fixture.Context.News.AsNoTracking().SingleAsync(n => n.Id == id);
+        Assert.True(saved.Important);
+        Assert.Equal("<p>x</p>", saved.Content);
+        Assert.Contains("设为展示封面", saved.EditRecord);
+
+        Assert.True(await repository.SetImportantAsync(id, false, Actor, CancellationToken.None));
+        Assert.False((await fixture.Context.News.AsNoTracking().SingleAsync(n => n.Id == id)).Important);
+        Assert.False(await repository.SetImportantAsync(999, true, Actor, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task MarkLeadArticlesImportantAsync_marks_the_first_visible_article_of_each_push_only()
+    {
+        await using var fixture = CreateContext();
+        var db = fixture.Context;
+        // 群发 A：头条 1、次条 2；群发 B：头条 3 被隐藏 → 次条 4 顶上；群发 C：头条 5 没封面 → 不标；
+        // 单篇 6（url: 键）；7 已被手动标重要的次条保持不变；群发 D 的头条 8 已是重要。
+        db.News.AddRange(
+            new News { Id = 1, Title = "A1", CoverPath = "1.jpg", Important = false },
+            new News { Id = 2, Title = "A2", CoverPath = "2.jpg", Important = false },
+            new News { Id = 3, Title = "B1", CoverPath = "3.jpg", Important = false },
+            new News { Id = 4, Title = "B2", CoverPath = "4.jpg", Important = false },
+            new News { Id = 5, Title = "C1", CoverPath = null, Important = false },
+            new News { Id = 6, Title = "S", CoverPath = "6.jpg", Important = null },
+            new News { Id = 7, Title = "A3", CoverPath = "7.jpg", Important = true },
+            new News { Id = 8, Title = "D1", CoverPath = "8.jpg", Important = true });
+        db.WeChatSyncRecord.AddRange(
+            Record(1, "mp:BIZ==:100:1", 0),
+            Record(2, "mp:BIZ==:100:2", 1),
+            Record(7, "mp:BIZ==:100:3", 2),
+            Record(3, "mp:BIZ==:200:1", 0, hidden: true),
+            Record(4, "mp:BIZ==:200:2", 1),
+            Record(5, "mp:BIZ==:300:1", 0),
+            Record(6, "url:https://mp.weixin.qq.com/s/abc", 0),
+            Record(8, "mp:BIZ==:400:1", 0));
+        await db.SaveChangesAsync();
+        db.ChangeTracker.Clear();
+        var repository = new Szaipa.Data.Services.WeChat.WeChatSyncAdminRepository(db, new OperationRecorder());
+
+        Assert.Equal(3, await repository.MarkLeadArticlesImportantAsync(Actor, CancellationToken.None));
+
+        var important = await db.News.AsNoTracking().Where(n => n.Important == true).Select(n => n.Id).OrderBy(id => id).ToListAsync();
+        Assert.Equal(new[] { 1, 4, 6, 7, 8 }, important);
+        Assert.Equal(0, await repository.MarkLeadArticlesImportantAsync(Actor, CancellationToken.None)); // 幂等
+
+        static WeChatSyncRecord Record(int newsId, string key, int index, bool hidden = false) => new()
+        {
+            SourceKey = key, ItemIndex = index, NewsId = newsId, IsHidden = hidden,
+            ContentHash = "h", SyncedAt = DateTime.Now, Source = "link"
+        };
+    }
+
+    [Theory]
+    [InlineData("mp:BIZ==:100:2", "mp:BIZ==:100")]
+    [InlineData("api:aid-1:0", "api:aid-1")]
+    [InlineData("url:https://mp.weixin.qq.com/s/abc", "url:https://mp.weixin.qq.com/s/abc")]
+    public void PushKey_groups_articles_of_the_same_push(string sourceKey, string expected) =>
+        Assert.Equal(expected, Szaipa.Data.Services.WeChat.WeChatSyncAdminRepository.PushKey(sourceKey));
+
     private static AdminContextFixture CreateContext()
     {
         var connection = new SqliteConnection("DataSource=:memory:");

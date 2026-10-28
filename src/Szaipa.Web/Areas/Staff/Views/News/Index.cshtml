@@ -1,4 +1,5 @@
 @model PagedResult<News>
+@inject Szaipa.Web.Services.IImageVariants ImageVariants
 @{
     ViewData["Title"] = "新闻管理";
 }
@@ -16,7 +17,7 @@
             <tr>
                 <th class="px-5 py-3 font-medium">标题</th>
                 <th class="px-5 py-3 font-medium">日期</th>
-                <th class="px-5 py-3 font-medium">重要</th>
+                <th class="px-5 py-3 font-medium">展示封面</th>
                 <th class="px-5 py-3 text-right font-medium">操作</th>
             </tr>
         </thead>
@@ -25,21 +26,43 @@
             {
                 <tr class="hover:bg-canvas/40">
                     <td class="px-5 py-3">
+                        <div class="flex items-center gap-3">
+                        @* 封面缩略图：勾「展示封面」前先看一眼封面是否合适；没有封面的不能勾（前台会是破图）。 *@
+                        @if (!string.IsNullOrEmpty(n.CoverPath))
+                        {
+                            <img src="@ImageVariants.Url($"/Content/newsImg/{n.CoverPath}", 480)" alt="" loading="lazy" class="h-10 w-16 shrink-0 rounded object-cover" />
+                        }
+                        else
+                        {
+                            <div class="flex h-10 w-16 shrink-0 items-center justify-center rounded bg-canvas text-[10px] text-muted">无封面</div>
+                        }
+                        <div class="min-w-0">
                         <div class="font-medium text-ink">@n.Title</div>
                         @if (!string.IsNullOrEmpty(n.Subtitle))
                         {
                             <div class="mt-0.5 line-clamp-1 text-xs text-muted">@n.Subtitle</div>
                         }
+                        </div>
+                        </div>
                     </td>
                     <td class="px-5 py-3 text-muted">@(n.Date?.ToString("yyyy-MM-dd") ?? "—")</td>
                     <td class="px-5 py-3">
-                        @if (n.Important == true)
+                        @* 勾选即提交（= News.Important）；表单里放的是"切换后的值"，不依赖复选框未勾选时不提交的行为。 *@
+                        @if (n.Important == true || !string.IsNullOrEmpty(n.CoverPath))
                         {
-                            <span class="rounded-full bg-brand/10 px-2 py-0.5 text-xs text-brand">重要</span>
+                            <form asp-action="Important" asp-route-id="@n.Id" method="post" class="inline">
+                                <input type="hidden" name="important" value="@((n.Important != true).ToString().ToLowerInvariant())" />
+                                <input type="hidden" name="page" value="@Model.Page" />
+                                <label class="inline-flex cursor-pointer items-center gap-1.5 text-xs @(n.Important == true ? "text-brand" : "text-muted")">
+                                    <input type="checkbox" checked="@(n.Important == true)" onchange="this.form.submit()"
+                                           class="h-4 w-4 rounded border-black/20 text-brand focus:ring-brand/30" />
+                                    @(n.Important == true ? "展示" : "不展示")
+                                </label>
+                            </form>
                         }
                         else
                         {
-                            <span class="text-xs text-muted">—</span>
+                            <span class="text-xs text-muted" title="先在编辑页上传封面">无封面</span>
                         }
                     </td>
                     <td class="px-5 py-3">

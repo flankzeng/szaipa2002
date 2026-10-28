@@ -32,8 +32,8 @@ public sealed class WeChatOptions
     public string ApiBaseUrl { get; set; } = "https://api.weixin.qq.com";
 
     /// <summary>
-    /// 同步进来的文章是否标为"重要新闻"（News.Important = true）。默认 false：列表里是日期+标题的普通行，
-    /// 在后台"置顶"后才变成带封面的大卡片，和手录新闻的使用习惯一致。
+    /// 同步进来的文章是否<b>全部</b>标为"重要新闻"（News.Important = true，前台带封面大卡片）。默认 false：
+    /// 只有每次群发的头条（含单篇群发）自动标为重要，次条起是日期+标题的普通行；后台可逐篇勾选「展示封面」调整。
     /// </summary>
     public bool NewArticlesImportant { get; set; }
 

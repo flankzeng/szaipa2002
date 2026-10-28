@@ -13,7 +13,7 @@ namespace Szaipa.Web.Areas.Staff.Controllers;
 
 /// <summary>
 /// 公众号文章同步后台：把公众号文章按现有新闻结构导入 News 表（前台版式不变）。
-/// 同步记录列表、批量链接导入、官方接口立即同步（增量/全量回填）、隐藏/置顶、重新抓取。
+/// 同步记录列表、批量链接导入、官方接口立即同步（增量/全量回填）、隐藏/展示封面（按群发头条批量补标）、重新抓取。
 /// 导入后的新闻照常在「新闻」模块里继续编辑。同步记录表尚未建立（未执行 SQL）时只显示提示，不报错。
 /// </summary>
 [Area("Staff")]
@@ -99,8 +99,18 @@ public sealed class WeChatController : Controller
     public async Task<IActionResult> Pin(int id, bool pinned, int page = 1, CancellationToken cancellationToken = default)
     {
         var done = await _repository.SetPinnedAsync(id, pinned, CurrentActor(), cancellationToken);
-        TempData[done ? "Success" : "Error"] = done ? (pinned ? "已置顶（标为重要新闻）。" : "已取消置顶。") : "未找到该同步记录或对应新闻已被删除。";
+        TempData[done ? "Success" : "Error"] = done ? (pinned ? "已设为展示封面（重要新闻）。" : "已取消展示封面。") : "未找到该同步记录或对应新闻已被删除。";
         return RedirectToAction(nameof(Index), new { page });
+    }
+
+    /// <summary>按群发头条批量补标「展示封面」：只把未勾选的头条勾上，不取消任何已有勾选。</summary>
+    [HttpPost("MarkLeadImportant")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MarkLeadImportant(CancellationToken cancellationToken)
+    {
+        var count = await _repository.MarkLeadArticlesImportantAsync(CurrentActor(), cancellationToken);
+        TempData["Success"] = count > 0 ? $"已把 {count} 篇群发头条设为展示封面。" : "所有群发头条都已是展示封面，无需改动。";
+        return RedirectToAction(nameof(Index));
     }
 
     /// <summary>重新抓取：按记录里的文章链接重新解析并覆盖对应新闻（会覆盖后台人工修改）。</summary>
