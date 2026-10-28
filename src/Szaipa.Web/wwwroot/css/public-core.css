@@ -464,28 +464,29 @@ ol ol {
 
 /* 2026-10-28：旧站手机按 937/980px 排版，实际用的是 sm（768–991）栅格。只写了 col-sm*、没写 col-xs* 的列
    （如“关于我们”的左侧占位列 col-sm2）在新站手机上没有宽度，内容贴到屏幕左边。
-   手机上让这类列沿用 sm 宽度；写了 col-xs* 的列仍按 xs，不受影响。 */
+   手机上让这类列沿用 sm 宽度；写了 col-xs* 的列仍按 xs，不受影响。
+   用 :where() 把优先级压到与普通 .col-* 相同，页面里写的布局规则（如新闻列表网格的 width: auto）仍然优先。 */
 @media only screen and (max-width: 767px) {
-    .col-sm1:not([class*="col-xs"]) { float: left; width: 5%; }
-    .col-sm2:not([class*="col-xs"]) { float: left; width: 10%; }
-    .col-sm3:not([class*="col-xs"]) { float: left; width: 15%; }
-    .col-sm4:not([class*="col-xs"]) { float: left; width: 20%; }
-    .col-sm5:not([class*="col-xs"]) { float: left; width: 25%; }
-    .col-sm6:not([class*="col-xs"]) { float: left; width: 30%; }
-    .col-sm7:not([class*="col-xs"]) { float: left; width: 35%; }
-    .col-sm8:not([class*="col-xs"]) { float: left; width: 40%; }
-    .col-sm9:not([class*="col-xs"]) { float: left; width: 45%; }
-    .col-sm10:not([class*="col-xs"]) { float: left; width: 50%; }
-    .col-sm11:not([class*="col-xs"]) { float: left; width: 55%; }
-    .col-sm12:not([class*="col-xs"]) { float: left; width: 60%; }
-    .col-sm13:not([class*="col-xs"]) { float: left; width: 65%; }
-    .col-sm14:not([class*="col-xs"]) { float: left; width: 70%; }
-    .col-sm15:not([class*="col-xs"]) { float: left; width: 75%; }
-    .col-sm16:not([class*="col-xs"]) { float: left; width: 80%; }
-    .col-sm17:not([class*="col-xs"]) { float: left; width: 85%; }
-    .col-sm18:not([class*="col-xs"]) { float: left; width: 90%; }
-    .col-sm19:not([class*="col-xs"]) { float: left; width: 95%; }
-    .col-sm20:not([class*="col-xs"]) { float: left; width: 100%; }
+    .col-sm1:where(:not([class*="col-xs"])) { float: left; width: 5%; }
+    .col-sm2:where(:not([class*="col-xs"])) { float: left; width: 10%; }
+    .col-sm3:where(:not([class*="col-xs"])) { float: left; width: 15%; }
+    .col-sm4:where(:not([class*="col-xs"])) { float: left; width: 20%; }
+    .col-sm5:where(:not([class*="col-xs"])) { float: left; width: 25%; }
+    .col-sm6:where(:not([class*="col-xs"])) { float: left; width: 30%; }
+    .col-sm7:where(:not([class*="col-xs"])) { float: left; width: 35%; }
+    .col-sm8:where(:not([class*="col-xs"])) { float: left; width: 40%; }
+    .col-sm9:where(:not([class*="col-xs"])) { float: left; width: 45%; }
+    .col-sm10:where(:not([class*="col-xs"])) { float: left; width: 50%; }
+    .col-sm11:where(:not([class*="col-xs"])) { float: left; width: 55%; }
+    .col-sm12:where(:not([class*="col-xs"])) { float: left; width: 60%; }
+    .col-sm13:where(:not([class*="col-xs"])) { float: left; width: 65%; }
+    .col-sm14:where(:not([class*="col-xs"])) { float: left; width: 70%; }
+    .col-sm15:where(:not([class*="col-xs"])) { float: left; width: 75%; }
+    .col-sm16:where(:not([class*="col-xs"])) { float: left; width: 80%; }
+    .col-sm17:where(:not([class*="col-xs"])) { float: left; width: 85%; }
+    .col-sm18:where(:not([class*="col-xs"])) { float: left; width: 90%; }
+    .col-sm19:where(:not([class*="col-xs"])) { float: left; width: 95%; }
+    .col-sm20:where(:not([class*="col-xs"])) { float: left; width: 100%; }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

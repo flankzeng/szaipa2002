@@ -475,6 +475,21 @@
     .news .normal {
         padding: 1rem 0 !important;
     }
+
+    /* 2026-10-28 新闻列表手机端：普通行原被 .news ul.normal { padding: 0 !important } 压掉上下留白，
+       分隔线贴着文字；箭头自带 translateX(20%) 被裁掉一半；简介两端对齐在短行上把字拉散。 */
+    .xinwenzhanshi .news ul.normal {
+        padding: 1rem 0 !important;
+    }
+
+    .xinwenzhanshi .news ul > li:last-child img {
+        transform: none !important;
+    }
+
+    .xinwenzhanshi .importantTXT p {
+        padding-right: 0;
+        text-align: left;
+    }
 }
 
 
