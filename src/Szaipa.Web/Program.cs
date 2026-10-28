@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -204,6 +205,10 @@ var hostBuilder = new HostBuilder()
                 services.AddSingleton<Szaipa.Web.Services.Traffic.ITrafficEventStore, Szaipa.Web.Services.Traffic.TrafficEventStore>();
                 services.AddSingleton<IServerSecurityRepository, ServerSecurityRepository>();
                 services.AddSingleton<ISecurityActionQueue, SecurityActionQueue>();
+                // 漏洞扫描拦截与后台登录防爆破（进程内状态，见 ScannerShield / LoginThrottle）。
+                services.TryAddSingleton(TimeProvider.System);
+                services.AddSingleton<ScannerShield>();
+                services.AddSingleton<LoginThrottle>();
 
                 // Data-driven homepage static blocks (核心成员/顾问团队/在售作品) + About 合作伙伴, with built-in fallback.
                 services.AddScoped<IHomeBlocksProvider, HomeBlocksProvider>();
@@ -291,6 +296,9 @@ var hostBuilder = new HostBuilder()
                         "A legacy data source is configured for ReadWrite access, but RuntimeSafety:AllowLiveDatabase is false. " +
                         "This guard prevents accidental writes to the existing Windows-connected database.");
                 }
+
+                // 安全头 + 漏洞扫描拦截放在最前：探测请求不再走静态文件、路由和 MVC。
+                app.UseMiddleware<Szaipa.Web.Middleware.SecurityShieldMiddleware>();
 
                 if (!environment.IsDevelopment())
                 {

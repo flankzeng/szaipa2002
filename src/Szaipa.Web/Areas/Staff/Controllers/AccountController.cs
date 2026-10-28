@@ -27,11 +27,13 @@ public sealed class AccountController : Controller
 {
     private readonly IOptions<AdminWriteOptions> _adminWrite;
     private readonly ISecurityAuditWriter _auditWriter;
+    private readonly LoginThrottle _throttle;
 
-    public AccountController(IOptions<AdminWriteOptions> adminWrite, ISecurityAuditWriter auditWriter)
+    public AccountController(IOptions<AdminWriteOptions> adminWrite, ISecurityAuditWriter auditWriter, LoginThrottle throttle)
     {
         _adminWrite = adminWrite;
         _auditWriter = auditWriter;
+        _throttle = throttle;
     }
 
     // Records every staff sign-in attempt (including invalid-model and unconfigured-DB paths) to the
@@ -64,6 +66,16 @@ public sealed class AccountController : Controller
         if (!ModelState.IsValid)
         {
             WriteLoginAudit(model.StaffName, success: false);
+            return View(model);
+        }
+
+        // 防爆破：同一 IP 或账户短时间内输错过多，锁定期内直接拒绝，不再查库校验。
+        var clientIp = ClientIpResolver.Resolve(HttpContext);
+        if (_throttle.IsLocked(clientIp, model.StaffName, out var remaining))
+        {
+            WriteLoginAudit(model.StaffName, success: false);
+            ModelState.AddModelError(string.Empty,
+                $"尝试次数过多，请 {Math.Max(1, (int)Math.Ceiling(remaining.TotalMinutes))} 分钟后再试。");
             return View(model);
         }
 
@@ -113,10 +125,12 @@ public sealed class AccountController : Controller
         if (staff is null || !StaffPasswordHasher.Verify(model.Password ?? string.Empty, staff.Password))
         {
             WriteLoginAudit(model.StaffName, success: false);
+            _throttle.RecordFailure(clientIp, model.StaffName);
             ModelState.AddModelError(string.Empty, "账户不存在或密码错误！");
             return View(model);
         }
 
+        _throttle.RecordSuccess(clientIp, model.StaffName);
         WriteLoginAudit(model.StaffName, success: true);
         await SignInStaffAsync(staff.Id, staff.StaffName ?? string.Empty);
         return RedirectToAdminHome(returnUrl);
