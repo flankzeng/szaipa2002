@@ -24,6 +24,13 @@ public interface ISortableAdminRepository<T>
 
     Task<bool> SetVisibleAsync(int id, bool visible, AdminActor actor, CancellationToken cancellationToken);
 
+    /// <summary>
+    /// 现场编辑拖拽排序：<paramref name="orderedIds"/> 是页面上看到的新顺序（必须同属一个排序范围）。
+    /// 范围内没出现在页面上的行（如已隐藏的）保持原相对顺序排在后面；整组重编 1..n。
+    /// False = 有 id 不存在或跨了范围。
+    /// </summary>
+    Task<bool> ReorderAsync(IReadOnlyList<int> orderedIds, AdminActor actor, CancellationToken cancellationToken);
+
     /// <summary>Artists (with avatar file name) for the "关联艺术家" dropdown.</summary>
     Task<IReadOnlyList<ArtistAvatarOption>> GetArtistOptionsAsync(CancellationToken cancellationToken);
 }

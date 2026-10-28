@@ -777,7 +777,8 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 }
 
 <!-- CHAPTER05 核心成员(新) -->
-@if (homeBlocks.CoreMembers.Count > 0)
+@* 现场编辑态即使分组为空也输出，便于点「+ 新增成员」。 *@
+@if (homeBlocks.CoreMembers.Count > 0 || LiveEdit.Active)
 {
 <section id="section05" class="col-xs20 col-sm20 col-md20 col-lg20">
     <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
@@ -786,7 +787,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             @LiveEdit.Text("home.core.title", "核心成员")&ensp;<i class="entitle">|</i><span style="font-family: 'dinLightI';">@LiveEdit.Text("home.core.en", "CORE MEMBER")</span>
         </h1>
 
-        <div class="col-sm20 col-md20 col-lg20 member">
+        <div class="col-sm20 col-md20 col-lg20 member" @LiveEdit.SortableGroup("OrgMember", Szaipa.Data.Contexts.Szaipa.OrgGroups.Core)>
             <partial name="_HomeMemberItems" model="homeBlocks.CoreMembers" />
         </div>
     </div>
@@ -794,7 +795,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
 </section>
 }
 
-@if (homeBlocks.AdvisoryMembers.Count > 0)
+@if (homeBlocks.AdvisoryMembers.Count > 0 || LiveEdit.Active)
 {
 <section id="section05guwen" class="col-xs20 col-sm20 col-md20 col-lg20">
     <div class="col-sm2 col-md2 col-lg2">&nbsp;</div>
@@ -803,7 +804,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
             @LiveEdit.Text("home.advisory.title", "顾问团队")&ensp;<i class="entitle">|</i><span style="font-family: 'dinLightI';">@LiveEdit.Text("home.advisory.en", "ADVISORY TEAM")</span>
         </h1>
 
-        <div class="col-sm20 col-md20 col-lg20 member">
+        <div class="col-sm20 col-md20 col-lg20 member" @LiveEdit.SortableGroup("OrgMember", Szaipa.Data.Contexts.Szaipa.OrgGroups.Advisory)>
             <partial name="_HomeMemberItems" model="homeBlocks.AdvisoryMembers" />
         </div>
     </div>

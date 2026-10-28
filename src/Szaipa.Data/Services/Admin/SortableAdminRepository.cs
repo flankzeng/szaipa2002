@@ -143,6 +143,42 @@ public abstract class SortableAdminRepository<T>
         return true;
     }
 
+    public async Task<bool> ReorderAsync(IReadOnlyList<int> orderedIds, AdminActor actor, CancellationToken cancellationToken)
+    {
+        if (orderedIds.Count == 0 || orderedIds.Distinct().Count() != orderedIds.Count)
+        {
+            return false;
+        }
+
+        var first = await Set.FirstOrDefaultAsync(e => e.Id == orderedIds[0], cancellationToken);
+        if (first is null)
+        {
+            return false;
+        }
+
+        var scope = await Set
+            .Where(InScope(ScopeKey(first)))
+            .OrderBy(e => e.Sort)
+            .ThenBy(e => e.Id)
+            .ToListAsync(cancellationToken);
+        var byId = scope.ToDictionary(e => e.Id);
+        if (orderedIds.Any(id => !byId.ContainsKey(id)))
+        {
+            return false;
+        }
+
+        var listed = orderedIds.ToHashSet();
+        var reordered = orderedIds.Select(id => byId[id]).Concat(scope.Where(e => !listed.Contains(e.Id))).ToList();
+        for (var i = 0; i < reordered.Count; i++)
+        {
+            reordered[i].Sort = i + 1;
+        }
+
+        await OperationRecorder.RecordAsync(Db, actor, $"拖拽调整了{Noun}排序（{string.Join("、", orderedIds.Select(id => DisplayName(byId[id])))}）。", cancellationToken);
+        await Db.SaveChangesAsync(cancellationToken);
+        return true;
+    }
+
     public async Task<bool> SetVisibleAsync(int id, bool visible, AdminActor actor, CancellationToken cancellationToken)
     {
         var entity = await Set.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);

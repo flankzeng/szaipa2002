@@ -89,6 +89,28 @@ public sealed class HomeBlocksAdminRepositoryTests
     }
 
     [Fact]
+    public async Task Reorder_applies_the_dragged_order_keeps_hidden_rows_after_and_rejects_cross_group()
+    {
+        await using var fixture = CreateContext();
+        var repository = new OrgMemberAdminRepository(fixture.Context, new OperationRecorder());
+        var a = await repository.CreateAsync(new OrgMember { Name = "A", IsVisible = true }, Actor, default);
+        var b = await repository.CreateAsync(new OrgMember { Name = "B", IsVisible = true }, Actor, default);
+        var hidden = await repository.CreateAsync(new OrgMember { Name = "隐", IsVisible = false }, Actor, default);
+        var c = await repository.CreateAsync(new OrgMember { Name = "C", IsVisible = true }, Actor, default);
+        var advisor = await repository.CreateAsync(new OrgMember { Name = "顾问", GroupName = OrgGroups.Advisory, IsVisible = true }, Actor, default);
+
+        // 页面上只看得到 A B C（隐藏的不在页面），拖成 C A B。
+        Assert.True(await repository.ReorderAsync(new[] { c, a, b }, Actor, default));
+        Assert.Equal(new[] { "C", "A", "B", "隐" }, await NamesInGroup(fixture, OrgGroups.Core));
+
+        Assert.False(await repository.ReorderAsync(new[] { a, advisor }, Actor, default)); // 跨组
+        Assert.False(await repository.ReorderAsync(new[] { a, a }, Actor, default));       // 重复
+        Assert.False(await repository.ReorderAsync(new[] { 999 }, Actor, default));        // 不存在
+        Assert.Equal(new[] { "C", "A", "B", "隐" }, await NamesInGroup(fixture, OrgGroups.Core));
+        Assert.True(hidden > 0);
+    }
+
+    [Fact]
     public async Task Move_renumbers_ties_and_gaps_to_a_contiguous_sequence()
     {
         await using var fixture = CreateContext();

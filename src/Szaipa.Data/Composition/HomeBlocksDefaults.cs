@@ -19,6 +19,8 @@ public static class HomeBlocksDefaults
         new OrgMemberModel("张岚芊", "会长", "艺术家", 1000, "/Content/images/to black/vip-2zlq.png", null, null),
         new OrgMemberModel("姚建伟", "荣誉会长", "教授", 1009, "/Content/images/to black/vip-1yjw.png", null, null),
         new OrgMemberModel("徐赓良", "副会长", "艺术家", 1011, "/Content/ArtImg/Artist/16a38c7aa1b0fc91afc363be8fe2a8b7.png", null, null),
+        // 2026-10-28 补：旧站发布版首页（桌面与手机两份名单）都有唐岐山，整理种子时漏掉。
+        new OrgMemberModel("唐岐山", "副会长", "艺术家", 1052, "/Content/ArtImg/Artist/e1c34366-d745-4064-a377-4879b1693835.png", null, null),
         new OrgMemberModel("陈硕子", "副会长", "艺术家", 1049, "/Content/ArtImg/Artist/629c4dd2-1960-49dc-91ba-abeaf8f7373d.jpg", null, null),
         new OrgMemberModel("王玉波", "监事", "艺术家", 1012, "/Content/images/to black/vip-5wyb.png", null, null),
         new OrgMemberModel("沈敬东", "会员", "艺术家", 1015, "/Content/images/to black/vip-7sjd.png", 824, 824),

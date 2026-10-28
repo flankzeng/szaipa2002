@@ -84,6 +84,19 @@ public sealed class LiveEditHtml
     }
 
     /// <summary>
+    /// 可拖拽排序 / 可新增的列表容器标记（现场编辑态才输出）：<c>data-le-sortable</c> = 实体，
+    /// <c>data-le-group</c> = 排序范围（如 OrgMember 的分组）。live-edit.js 据此加拖拽手柄和「+ 新增」。
+    /// </summary>
+    public IHtmlContent SortableGroup(string entity, string group) =>
+        Active
+            ? new HtmlString($" data-le-sortable=\"{_encoder.Encode(entity)}\" data-le-group=\"{_encoder.Encode(group)}\"")
+            : HtmlString.Empty;
+
+    /// <summary>列表项的排序标记；回退内容（id ≤ 0，库里没有这一行）不可拖。</summary>
+    public IHtmlContent SortableItem(int id) =>
+        Active && id > 0 ? new HtmlString($" data-le-sort-id=\"{id}\"") : HtmlString.Empty;
+
+    /// <summary>
     /// 列表里的摘要：非编辑态超过 <paramref name="maxLength"/> 字截断并加省略号（新闻简介列表只显示 50 字）；
     /// 编辑态输出全文，避免在截断后的文字上编辑把原文改短。
     /// </summary>
