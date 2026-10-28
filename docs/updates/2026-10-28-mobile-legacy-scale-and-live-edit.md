@@ -88,3 +88,9 @@
 - 保留：正式站 `40966a9`、回退版本 `d48b28e`、测试站当前 `release-2937893`、`2026-10-26-automation-deploy.sql`；发布前备份、测试站图片副本与快照库未动。
 - 释放 2.01 GB，C 盘剩余 4.71 GB。删除前脚本再次核对 IIS 正在使用的目录。之后正式站、测试站首页与健康检查均 200。
 - 注意：正式站现在最多只能回退到 `d48b28e`。
+
+## 14. 服务器空间盘点与第二次清理
+- 盘点（跳过目录联接，避免重复计算）：C 盘 60 GB，已用 55.3 GB。最大占用是服务器上运行中的微信，约 13.9 GB（`Documents\WeChat Files` 7.27 GB、`Program Files (x86)\Tencent` 3.69 GB、`ProgramData\Tencent\WeChat` 1.87 GB、`AppData\Roaming\Tencent` 1.10 GB）；其次 SQL Server 程序 7.31 GB、WinSxS 7.6 GB、`web24.05\Content` 2.03 GB（新站图片，在用）。
+- 用户确认后删除：`C:\Windows\LiveKernelReports` 两个 2024 年内核转储（3.39 GB）、Windows 更新下载缓存（停 wuauserv/bits 清空后已重启）、`C:\SzaipaData\installers` 中的 .NET Hosting 安装程序与两个发布包。释放 4.97 GB，**C 盘剩余 9.69 GB**；正式站 200。
+- 微信聊天记录：用户同意清理；由用户在服务器微信「设置 → 通用 → 存储空间」中清理（微信运行中文件被占用，且由用户操作更稳妥）。
+- 待定：`backup\staging-cleanup-20261027`（1.38 GB）、旧站程序文件（约 1 GB，建议观察一段时间再删）、`Desktop\CJT_EF4.8`、Azure Data Studio / Analysis Services（需在程序和功能中卸载）。
