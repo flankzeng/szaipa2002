@@ -851,7 +851,7 @@ var tangqishanCoverSource = DerivedImageResolver.Resolve(tangqishanCoverUrl);
                         }
                         <p>@if (!string.IsNullOrWhiteSpace(work.ArtistName))
                             {
-                                if (work.ArtistId is { } workArtistId)
+                                if (work.ArtistId is { } workArtistId && Szaipa.Web.Services.ArtistLinks.HasHomepage(workArtistId, ViewData[Szaipa.Web.Services.ArtistLinks.ViewDataKey] as IReadOnlySet<int>))
                                 {
                                     <b onclick="location.href='/Home/Art/@workArtistId#section02'">@work.ArtistName 作品</b>
                                 }

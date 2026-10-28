@@ -23,6 +23,24 @@ public sealed class ArtistReadRepositoryTests
     }
 
     [Fact]
+    public async Task Artists_with_homepage_have_works_or_profile_text_and_blank_ones_do_not()
+    {
+        await using var fixture = TestDb.Szaipa();
+        InsertArtist(fixture.Context, 10, "有简介", "a");               // Introduction = 'intro'
+        InsertArtist(fixture.Context, 11, "只有作品", "b");
+        InsertArtist(fixture.Context, 12, "留空", "c");
+        InsertArtist(fixture.Context, 13, "只有职务", "d");
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Artist SET Introduction = '  ' WHERE Id IN (11, 12, 13)");
+        fixture.Context.Database.ExecuteSqlRaw("UPDATE Artist SET Position = '副会长' WHERE Id = 13");
+        InsertWork(fixture.Context, 1, 11);
+        var repository = new ArtistReadRepository(fixture.Context);
+
+        var ids = await repository.GetArtistIdsWithHomepageAsync();
+
+        Assert.Equal(new[] { 10, 11, 13 }, ids.OrderBy(id => id).ToArray());
+    }
+
+    [Fact]
     public async Task GetArtistByIdAsync_maps_fields_and_returns_null_when_missing()
     {
         await using var fixture = TestDb.Szaipa();

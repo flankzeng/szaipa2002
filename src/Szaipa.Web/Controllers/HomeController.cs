@@ -81,6 +81,8 @@ public class HomeController : Controller
             }
 
             snapshot.FeaturedExhibitions = recommendations;
+            ViewData[Szaipa.Web.Services.ArtistLinks.ViewDataKey] = await HttpContext.RequestServices
+                .GetRequiredService<IArtistReadRepository>().GetArtistIdsWithHomepageAsync(cancellationToken);
             return View("Index", snapshot);
         }
 
@@ -155,6 +157,7 @@ public class HomeController : Controller
         {
             var artistRepository = HttpContext.RequestServices.GetRequiredService<IArtistReadRepository>();
             var artists = await artistRepository.GetVipArtistsAsync(cancellationToken);
+            ViewData[Szaipa.Web.Services.ArtistLinks.ViewDataKey] = await artistRepository.GetArtistIdsWithHomepageAsync(cancellationToken);
             return View("Vip", artists);
         }
 

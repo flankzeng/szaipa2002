@@ -55,6 +55,20 @@ public sealed class ArtistReadRepository : IArtistReadRepository
         return VipDisplayOrder.Arrange(artists, artist => artist.Id, displays, includeHidden: false);
     }
 
+    public async Task<IReadOnlySet<int>> GetArtistIdsWithHomepageAsync(CancellationToken cancellationToken = default)
+    {
+        var ids = await _context.Artist
+            .AsNoTracking()
+            .Where(artist =>
+                _context.Works.Any(work => work.ArtistId == artist.Id)
+                || (artist.Introduction != null && artist.Introduction.Trim() != "")
+                || (artist.Position != null && artist.Position.Trim() != "")
+                || (artist.DeedsThings != null && artist.DeedsThings.Trim() != ""))
+            .Select(artist => artist.Id)
+            .ToListAsync(cancellationToken);
+        return ids.ToHashSet();
+    }
+
     public async Task<ArtistDetailModel?> GetArtistByIdAsync(
         int id,
         CancellationToken cancellationToken = default)

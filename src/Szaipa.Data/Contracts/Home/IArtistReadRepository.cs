@@ -12,6 +12,12 @@ public interface IArtistReadRepository
     /// </summary>
     Task<IReadOnlyList<ArtistSummaryModel>> GetVipArtistsAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// 有艺术家首页内容的艺术家 Id：至少有一件作品，或填了简介 / 职务 / 年表之一。
+    /// 其余（留空没设计的）在首页成员卡、会员风采、在售作品里点头像不跳转（href="javascript:;;"）。
+    /// </summary>
+    Task<IReadOnlySet<int>> GetArtistIdsWithHomepageAsync(CancellationToken cancellationToken = default);
+
     Task<ArtistDetailModel?> GetArtistByIdAsync(int id, CancellationToken cancellationToken = default);
 
     Task<ArtistProfileSnapshotModel?> GetArtistProfileAsync(int artistId, CancellationToken cancellationToken = default);

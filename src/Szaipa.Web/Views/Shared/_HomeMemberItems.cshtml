@@ -1,6 +1,6 @@
 @* 首页「核心成员 / 顾问团队」的人物卡片列表。数据来自 OrgMember（后台「组织架构」），缺表或无数据时由
    IHomeBlocksProvider 回退 HomeBlocksDefaults（原手写内容）。输出结构沿用改造前的 a.member-item：
-   关联了艺术家 → 链接到 /Home/Art/{ArtistId}；未关联 → 同样的卡片，只是没有 href。 *@
+   关联了有首页内容的艺术家 → 链接到 /Home/Art/{ArtistId}；未关联或艺术家首页留空 → href="javascript:;;"（点了不跳转）。 *@
 @inject Szaipa.Web.Services.ILegacyImagePreviewResolver ImagePreviewResolver
 @model IReadOnlyList<Szaipa.Data.Models.Home.OrgMemberModel>
 @foreach (var member in Model)
@@ -8,7 +8,7 @@
     var hasRole = !string.IsNullOrWhiteSpace(member.Role);
     var hasTitle = !string.IsNullOrWhiteSpace(member.Title);
     var avatarUrl = string.IsNullOrWhiteSpace(member.AvatarPath) ? null : ImagePreviewResolver.Resolve(member.AvatarPath);
-            <a class="member-item" href="@(member.ArtistId is { } artistId ? $"/Home/Art/{artistId}" : null)" @LiveEdit.SortableItem(member.Id ?? 0)>
+            <a class="member-item" href="@Szaipa.Web.Services.ArtistLinks.Href(member.ArtistId, ViewData[Szaipa.Web.Services.ArtistLinks.ViewDataKey] as IReadOnlySet<int>)" @LiveEdit.SortableItem(member.Id ?? 0)>
                 <div class="relative after">@if (avatarUrl is not null) {<img loading="lazy" decoding="async" src="@avatarUrl" width="@member.ImageWidth" height="@member.ImageHeight" alt="">}</div>
                 <p class="JhengBold">@LiveEdit.Field("OrgMember", member.Id, "Name", member.Name)@if (hasRole || hasTitle) {<br /><span class="JhengLight">@LiveEdit.Field("OrgMember", member.Id, "Role", member.Role)@(hasRole && hasTitle ? Html.Raw("&nbsp;|&nbsp;") : null)@LiveEdit.Field("OrgMember", member.Id, "Title", member.Title)</span>}</p>
             </a>

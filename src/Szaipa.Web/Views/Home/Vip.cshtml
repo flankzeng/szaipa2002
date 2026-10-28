@@ -25,7 +25,7 @@
         <section class="member-grid" aria-label="会员列表">
             @foreach (var artist in Model)
             {
-            <a class="member-card" href="/Home/Art/@artist.Id">
+            <a class="member-card" href="@Szaipa.Web.Services.ArtistLinks.Href(artist.Id, ViewData[Szaipa.Web.Services.ArtistLinks.ViewDataKey] as IReadOnlySet<int>)">
                 <figure>
                     <div class="member-card__image">
                         <img src="@ImagePreviewResolver.Resolve($"/Content/ArtImg/Artist/{artist.Path}")"
