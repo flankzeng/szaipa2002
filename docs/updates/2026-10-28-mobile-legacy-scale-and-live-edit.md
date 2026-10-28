@@ -94,3 +94,8 @@
 - 用户确认后删除：`C:\Windows\LiveKernelReports` 两个 2024 年内核转储（3.39 GB）、Windows 更新下载缓存（停 wuauserv/bits 清空后已重启）、`C:\SzaipaData\installers` 中的 .NET Hosting 安装程序与两个发布包。释放 4.97 GB，**C 盘剩余 9.69 GB**；正式站 200。
 - 微信聊天记录：用户同意清理；由用户在服务器微信「设置 → 通用 → 存储空间」中清理（微信运行中文件被占用，且由用户操作更稳妥）。
 - 待定：`backup\staging-cleanup-20261027`（1.38 GB）、旧站程序文件（约 1 GB，建议观察一段时间再删）、`Desktop\CJT_EF4.8`、Azure Data Studio / Analysis Services（需在程序和功能中卸载）。
+
+## 15. 访客记录核查（清理后用户追问）
+- 旧 MVC 站埋点（`Security/SecurityAuditLog.cs` → `requests-YYYYMMDD.log` / `logins-YYYYMMDD.log`，目录 `C:\Security\audit`）：全盘（除 Windows / Program Files）未找到任何此类文件，`C:\Security\audit` 自 2026-08-04 建立后一直为空；`2026-10-28-historical-traffic-checkpoint.md` 在本次清理之前已记录该目录为空。**埋点日志不是本次清理删除的，服务器上本来就没有。**
+- IIS W3C 访问日志：第 13 节按用户确认删除了 2026-09-28 之前的 2198 个文件（正式站 W3SVC1 1338 个，覆盖数年）。这些是“历史访问日志分析”计划的数据来源之一；删除前只提示了“原始访问记录会没有”，**没有对照该分析任务，属本 agent 疏忽**。服务器无卷影副本、未经回收站，无法在本机恢复；唯一途径是阿里云 ECS 快照（9-28 之后、10-28 20:40 之前的快照可新建云盘挂载后拷回 `C:\inetpub\logs\LogFiles`），需用户在控制台确认是否有快照。
+- 现存：IIS 日志 2026-09-28 至 10-28（W3SVC1 31 个文件 64.5 MB 等），**不得再删**；`C:\Security\security_snapshot.json`（登录 / 封禁汇总，非逐条访问记录）。
