@@ -38,7 +38,7 @@ public static class StaticAssetCachePolicy
         var extension = Path.GetExtension(requestPath ?? string.Empty).ToLowerInvariant();
         return extension switch
         {
-            ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" or ".avif" or ".svg" or ".ico" or ".bmp"
+            ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" or ".avif" or ".svg" or ".ico" or ".bmp" or ".mp4"
                 => ThirtyDays,
             ".woff" or ".woff2" or ".ttf" or ".otf" or ".eot"
                 => ThirtyDays,

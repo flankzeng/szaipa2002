@@ -436,7 +436,9 @@
             line-height: 0;
         }
 
-        .article img {
+        /* video.gif-video：大 GIF 转成的静音循环视频（2026-10-30），版式与正文图片一致。 */
+        .article img,
+        .article video.gif-video {
             width: 45% !important;
             object-fit: contain;
             margin: 3vh auto !important;
@@ -702,7 +704,8 @@
         font-size: 1.2rem !important;
     }
 
-    .article .article-body img {
+    .article .article-body img,
+    .article .article-body video.gif-video {
         display: block;
         width: auto !important;
         max-width: 100%;

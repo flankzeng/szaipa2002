@@ -94,6 +94,39 @@ public sealed class ImageVariantsTests : IDisposable
     }
 
     [Fact]
+    public void Gif_with_converted_mp4_renders_as_a_silent_looping_video()
+    {
+        var wechat = Path.Combine(_content, "WeChat", "2022", "06");
+        Directory.CreateDirectory(wechat);
+        File.WriteAllBytes(Path.Combine(wechat, "anim.gif"), [0x47, 0x49, 0x46]);
+        File.WriteAllBytes(Path.Combine(wechat, "anim.gif.mp4"), [0, 0, 0, 0x18]);
+        File.WriteAllBytes(Path.Combine(wechat, "anim.gif.jpg"), [0xFF, 0xD8]);
+        File.WriteAllBytes(Path.Combine(wechat, "plain.gif"), [0x47, 0x49, 0x46]);
+
+        var html = Create().AddSrcSetToHtml(
+            "<p><img src=\"/Content/WeChat/2022/06/anim.gif\" alt=\"作品 &amp; 动图\" style=\"width: 100%; font-family: 'x'\" loading=\"lazy\"></p>"
+            + "<p><img src=\"/Content/WeChat/2022/06/plain.gif\" alt=\"\"></p>",
+            "100vw");
+
+        Assert.Contains("<video class=\"gif-video\" src=\"/Content/WeChat/2022/06/anim.gif.mp4?v=", html);
+        Assert.Contains("poster=\"/Content/WeChat/2022/06/anim.gif.jpg?v=", html);
+        Assert.Contains(" autoplay muted loop playsinline ", html);
+        Assert.Contains("aria-label=\"作品 &amp; 动图\"", html);
+        Assert.Contains("style=\"width: 100%; font-family: 'x'\"", html);
+        Assert.DoesNotContain("anim.gif\"", html);
+        // 没有转好的 MP4：原样保留 img，也不补 srcset（GIF 不做 WebP 变体）。
+        Assert.Contains("<img src=\"/Content/WeChat/2022/06/plain.gif\" alt=\"\">", html);
+    }
+
+    [Fact]
+    public void Gif_outside_content_or_with_traversal_is_left_alone()
+    {
+        var html = Create().AddSrcSetToHtml("<img src=\"/Content/../secret.gif\"><img src=\"https://x.example/a.gif\">", "100vw");
+
+        Assert.DoesNotContain("<video", html);
+    }
+
+    [Fact]
     public void Disabled_or_unconfigured_production_falls_back_to_originals()
     {
         Assert.Equal("/Content/images/small.jpg", Create(enabled: false).Url("/Content/images/small.jpg", 960));

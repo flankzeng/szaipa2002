@@ -45,7 +45,10 @@ public interface IImageVariants
     /// </summary>
     string? SrcSet(string originalUrl, long minBytes = 40_000);
 
-    /// <summary>给一段富文本 HTML 里指向 /Content 的 &lt;img&gt; 补 srcset/sizes（新闻正文等数据库内容用）。</summary>
+    /// <summary>
+    /// 给一段富文本 HTML 里指向 /Content 的 &lt;img&gt; 补 srcset/sizes（新闻正文等数据库内容用）；
+    /// 已转好 MP4 的大 GIF 换成静音循环播放的 &lt;video&gt;（见 <c>ImageVariants.GifVideoTag</c>）。
+    /// </summary>
     string AddSrcSetToHtml(string? html, string sizes);
 
     /// <summary>取得（必要时生成）变体缓存文件的物理路径；失败返回 null。</summary>
@@ -160,6 +163,10 @@ public sealed class ImageVariants : IImageVariants
 
     private static readonly System.Text.RegularExpressions.Regex ImgTag = new(
         "<img\\b[^>]*>", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+    private static readonly System.Text.RegularExpressions.Regex StyleAttribute = new(
+        "\\sstyle\\s*=\\s*(\"[^\"]*\"|'[^']*')", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+    private static readonly System.Text.RegularExpressions.Regex AltAttribute = new(
+        "\\salt\\s*=\\s*(\"([^\"]*)\"|'([^']*)')", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
     private static readonly System.Text.RegularExpressions.Regex SrcAttribute = new(
         "\\ssrc\\s*=\\s*([\"'])(/Content/[^\"']+)\\1", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
@@ -179,7 +186,18 @@ public sealed class ImageVariants : IImageVariants
             }
 
             var src = SrcAttribute.Match(tag);
-            if (!src.Success || SrcSet(System.Net.WebUtility.HtmlDecode(src.Groups[2].Value)) is not { } srcset)
+            if (!src.Success)
+            {
+                return tag;
+            }
+
+            var url = System.Net.WebUtility.HtmlDecode(src.Groups[2].Value);
+            if (GifVideoTag(tag, url) is { } video)
+            {
+                return video;
+            }
+
+            if (SrcSet(url) is not { } srcset)
             {
                 return tag;
             }
@@ -187,6 +205,38 @@ public sealed class ImageVariants : IImageVariants
             var insert = $" srcset=\"{System.Net.WebUtility.HtmlEncode(srcset)}\" sizes=\"{sizes}\"";
             return tag.Insert(src.Index + src.Length, insert);
         });
+    }
+
+    /// <summary>
+    /// GIF 动图换视频（2026-10-30）：公众号文章里的大 GIF 单张可达 6MB，全站 23 张大 GIF 合计 46.6MB。
+    /// 在本机用 ffmpeg 转成同名旁挂文件 <c>xxx.gif.mp4</c>（H.264，静音）和首帧 <c>xxx.gif.jpg</c>，放在原 GIF 旁边，
+    /// 体积约为原来的 1/6，画面、帧数、时长一致。有旁挂文件的 GIF 输出为自动播放、静音、循环、行内播放的 video，
+    /// 看起来和 GIF 一样；没有旁挂文件（小装饰图、以后新同步的 GIF）原样输出 img。原 GIF 不改不删。
+    /// </summary>
+    private string? GifVideoTag(string imgTag, string url)
+    {
+        var cut = url.IndexOfAny(new[] { '?', '#' });
+        var urlPath = cut < 0 ? url : url[..cut];
+        if (!urlPath.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
+            || !urlPath.StartsWith(ContentPrefix, StringComparison.OrdinalIgnoreCase)
+            || TryResolveContentFile(Uri.UnescapeDataString(urlPath[ContentPrefix.Length..])) is not { } gif
+            || GetVersion(gif + ".mp4") is not { } videoVersion)
+        {
+            return null;
+        }
+
+        var encodedVideo = System.Net.WebUtility.HtmlEncode($"{urlPath}.mp4?v={videoVersion}");
+        var poster = GetVersion(gif + ".jpg") is { } posterVersion
+            ? $" poster=\"{System.Net.WebUtility.HtmlEncode($"{urlPath}.jpg?v={posterVersion}")}\""
+            : string.Empty;
+        var style = StyleAttribute.Match(imgTag) is { Success: true } styleMatch ? " " + styleMatch.Value.Trim() : string.Empty;
+        var alt = AltAttribute.Match(imgTag) is { Success: true } altMatch
+            ? System.Net.WebUtility.HtmlDecode(altMatch.Groups[2].Value + altMatch.Groups[3].Value)
+            : string.Empty;
+        var label = alt.Length > 0
+            ? $" aria-label=\"{System.Net.WebUtility.HtmlEncode(alt)}\""
+            : string.Empty;
+        return $"<video class=\"gif-video\" src=\"{encodedVideo}\"{poster} autoplay muted loop playsinline preload=\"auto\"{label}{style}></video>";
     }
 
     public async Task<string?> GetOrCreateAsync(int width, string relativeContentPath, CancellationToken cancellationToken)
@@ -328,16 +378,18 @@ public sealed class ImageVariants : IImageVariants
 
     private string? TryResolveSource(string relative)
     {
+        var extension = Path.GetExtension(relative);
+        return extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)
+            || extension.Equals(".png", StringComparison.OrdinalIgnoreCase)
+            ? TryResolveContentFile(relative)
+            : null;
+    }
+
+    private string? TryResolveContentFile(string relative)
+    {
         if (_contentRoot is null || string.IsNullOrWhiteSpace(relative) || relative.Contains('\\')
             || relative.Split('/').Any(segment => segment is "" or "." or ".."))
-        {
-            return null;
-        }
-
-        var extension = Path.GetExtension(relative);
-        if (!extension.Equals(".jpg", StringComparison.OrdinalIgnoreCase)
-            && !extension.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)
-            && !extension.Equals(".png", StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }

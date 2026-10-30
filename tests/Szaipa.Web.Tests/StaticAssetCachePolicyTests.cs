@@ -51,6 +51,7 @@ public sealed class StaticAssetCachePolicyTests
     [InlineData("/Content/images/cover.JPEG")]
     [InlineData("/Content/icon/logo.svg")]
     [InlineData("/Content/images/cover.avif")]
+    [InlineData("/Content/WeChat/2022/06/anim.gif.mp4")]
     public void LegacyImagesKeepProductionThirtyDayCache(string path)
     {
         var result = StaticAssetCachePolicy.Select(
