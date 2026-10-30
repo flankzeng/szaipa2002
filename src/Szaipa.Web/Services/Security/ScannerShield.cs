@@ -15,7 +15,7 @@ namespace Szaipa.Web.Services.Security;
 /// </list>
 /// 状态在进程内存中，应用池重启即清空；服务器防火墙层面的封禁仍由 C:\Security\AutoBlock.ps1 负责（需防火墙开启）。
 /// </summary>
-public sealed class ScannerShield
+public sealed partial class ScannerShield
 {
     public const int BanThreshold = 10;
 
@@ -27,14 +27,11 @@ public sealed class ScannerShield
 
     private static readonly TimeSpan WhitelistRefresh = TimeSpan.FromMinutes(5);
 
-    // 只收本站不可能存在的探测路径。刻意不含 /.well-known/（证书自动续期要用）和任何真实页面前缀。
-    private static readonly Regex ScannerPathPattern = new(
+    private const string ScannerPathPattern =
         @"\.(php\d?|phtml|asp|aspx|jsp|cgi|env|ini|bak|sql|swp|old|log)$" +
         @"|/\.(git|env|aws|svn|hg|ds_store|vscode|idea|htaccess|htpasswd)(/|$)" +
         @"|/wp-|/wordpress|phpmyadmin|/pma/|xmlrpc|/cgi-bin/|/vendor/phpunit|/actuator|/boaform|/hnap1" +
-        @"|/druid/|/manager/html|/jenkins|/geoserver|/solr/|/owa/|/autodiscover/",
-        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled,
-        TimeSpan.FromMilliseconds(50));
+        @"|/druid/|/manager/html|/jenkins|/geoserver|/solr/|/owa/|/autodiscover/";
 
     private readonly ConcurrentDictionary<string, HitWindow> _hits = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, DateTimeOffset> _bans = new(StringComparer.Ordinal);
@@ -68,7 +65,13 @@ public sealed class ScannerShield
     }
 
     public static bool IsScannerPath(string? path) =>
-        !string.IsNullOrEmpty(path) && ScannerPathPattern.IsMatch(path);
+        !string.IsNullOrEmpty(path) && ScannerPathRegex().IsMatch(path);
+
+    // 只收本站不可能存在的探测路径。刻意不含 /.well-known/（证书自动续期要用）和任何真实页面前缀。
+    // 2026-10-30：原先用运行时编译 + 50ms 超时，应用池刚启动、CPU 忙时首次匹配（含编译）会超时抛异常，
+    // 让正常页面返回 500。改为编译期源生成；模式只是字面量的并列，没有嵌套量词，匹配耗时与路径长度成正比，不需要超时。
+    [GeneratedRegex(ScannerPathPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
+    private static partial Regex ScannerPathRegex();
 
     public bool IsBanned(string ip)
     {

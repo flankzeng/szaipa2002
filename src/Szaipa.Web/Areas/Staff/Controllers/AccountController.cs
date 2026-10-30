@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Szaipa.Data.Configuration;
 using Szaipa.Data.Contexts.Szaipa;
@@ -19,8 +20,8 @@ namespace Szaipa.Web.Areas.Staff.Controllers;
 
 /// <summary>
 /// Cookie-based sign-in for the staff/admin backend, replacing the legacy <c>StaffController.Login</c>
-/// (<c>Session["Staff"]</c> + MD5). Password verification stays MD5-compatible via
-/// <see cref="StaffPasswordHasher"/> so existing accounts log in unchanged.
+/// (<c>Session["Staff"]</c> + MD5). <see cref="StaffPasswordHasher"/> still accepts the legacy MD5 hashes so
+/// existing accounts log in unchanged, and swaps them for the salted PBKDF2 format on the first successful sign-in.
 /// </summary>
 [Area("Staff")]
 public sealed class AccountController : Controller
@@ -28,12 +29,18 @@ public sealed class AccountController : Controller
     private readonly IOptions<AdminWriteOptions> _adminWrite;
     private readonly ISecurityAuditWriter _auditWriter;
     private readonly LoginThrottle _throttle;
+    private readonly ILogger<AccountController> _logger;
 
-    public AccountController(IOptions<AdminWriteOptions> adminWrite, ISecurityAuditWriter auditWriter, LoginThrottle throttle)
+    public AccountController(
+        IOptions<AdminWriteOptions> adminWrite,
+        ISecurityAuditWriter auditWriter,
+        LoginThrottle throttle,
+        ILogger<AccountController> logger)
     {
         _adminWrite = adminWrite;
         _auditWriter = auditWriter;
         _throttle = throttle;
+        _logger = logger;
     }
 
     // Records every staff sign-in attempt (including invalid-model and unconfigured-DB paths) to the
@@ -122,7 +129,9 @@ public sealed class AccountController : Controller
             return View(model);
         }
 
-        if (staff is null || !StaffPasswordHasher.Verify(model.Password ?? string.Empty, staff.Password))
+        // 账号不存在时 Check 也会跑一遍同样耗时的校验，响应时间不泄露用户名是否存在。
+        var check = StaffPasswordHasher.Check(model.Password ?? string.Empty, staff?.Password);
+        if (staff is null || check == StaffPasswordCheck.Invalid)
         {
             WriteLoginAudit(model.StaffName, success: false);
             _throttle.RecordFailure(clientIp, model.StaffName);
@@ -132,8 +141,29 @@ public sealed class AccountController : Controller
 
         _throttle.RecordSuccess(clientIp, model.StaffName);
         WriteLoginAudit(model.StaffName, success: true);
+        if (check == StaffPasswordCheck.ValidNeedsUpgrade)
+        {
+            await UpgradePasswordHashAsync(db, staff, model.Password ?? string.Empty);
+        }
+
         await SignInStaffAsync(staff.Id, staff.StaffName ?? string.Empty);
         return RedirectToAdminHome(returnUrl);
+    }
+
+    // 旧站 MD5 密码登录成功后，顺手换成加盐的新格式保存。写库失败（如只读调试库）只记日志，不影响本次登录。
+    private async Task UpgradePasswordHashAsync(SzaipaAdminContext db, Szaipa.Data.Contexts.Szaipa.Staff staff, string password)
+    {
+        try
+        {
+            db.Staff.Attach(staff);
+            staff.Password = StaffPasswordHasher.Hash(password);
+            await db.SaveChangesAsync();
+            _logger.LogInformation("后台账号 {StaffId} 的密码已从旧 MD5 格式升级", staff.Id);
+        }
+        catch (Exception exception) when (exception is DbException or DbUpdateException or InvalidOperationException)
+        {
+            _logger.LogWarning(exception, "后台账号 {StaffId} 的密码格式升级失败，下次登录再试", staff.Id);
+        }
     }
 
     private async Task SignInStaffAsync(int staffId, string staffName)
@@ -182,8 +212,7 @@ public sealed class AccountController : Controller
             return View(model);
         }
 
-        // Store the new password in the same lowercase-MD5 form legacy used, so it stays compatible.
-        staff.Password = StaffPasswordHasher.Md5Hex(model.NewPassword ?? string.Empty);
+        staff.Password = StaffPasswordHasher.Hash(model.NewPassword ?? string.Empty);
 
         var recorder = HttpContext.RequestServices.GetRequiredService<IOperationRecorder>();
         var actor = new AdminActor(staff.Id, staff.StaffName ?? string.Empty);

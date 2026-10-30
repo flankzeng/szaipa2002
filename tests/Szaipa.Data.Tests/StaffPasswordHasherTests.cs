@@ -4,8 +4,8 @@ using Xunit;
 namespace Szaipa.Data.Tests;
 
 /// <summary>
-/// Locks in login parity with the legacy <c>Get_MD5(password, "utf-8")</c>: a lowercase 32-char hex MD5 of
-/// the UTF-8 bytes. If this drifts, existing staff accounts can no longer sign in.
+/// Locks in login parity with the legacy <c>Get_MD5(password, "utf-8")</c> (a lowercase 32-char hex MD5 of the
+/// UTF-8 bytes, still accepted and flagged for upgrade) and the salted PBKDF2 <c>p1$</c> format that replaces it.
 /// </summary>
 public sealed class StaffPasswordHasherTests
 {
@@ -19,12 +19,40 @@ public sealed class StaffPasswordHasherTests
     }
 
     [Fact]
-    public void Verify_is_true_for_matching_password_and_false_otherwise()
+    public void Legacy_md5_hash_is_accepted_and_flagged_for_upgrade()
     {
         var stored = StaffPasswordHasher.Md5Hex("s3cret");
 
-        Assert.True(StaffPasswordHasher.Verify("s3cret", stored));
-        Assert.False(StaffPasswordHasher.Verify("wrong", stored));
+        Assert.Equal(StaffPasswordCheck.ValidNeedsUpgrade, StaffPasswordHasher.Check("s3cret", stored));
+        Assert.Equal(StaffPasswordCheck.ValidNeedsUpgrade, StaffPasswordHasher.Check("s3cret", stored.ToUpperInvariant()));
+        Assert.Equal(StaffPasswordCheck.Invalid, StaffPasswordHasher.Check("wrong", stored));
         Assert.False(StaffPasswordHasher.Verify("s3cret", null));
+        Assert.False(StaffPasswordHasher.Verify("s3cret", ""));
+    }
+
+    [Fact]
+    public void New_hash_fits_the_legacy_column_and_verifies()
+    {
+        var stored = StaffPasswordHasher.Hash("密码 s3cret");
+
+        Assert.StartsWith(StaffPasswordHasher.Prefix, stored);
+        Assert.True(stored.Length <= 50, $"Staff.Password is nvarchar(50); got {stored.Length}");
+        Assert.Equal(StaffPasswordCheck.Valid, StaffPasswordHasher.Check("密码 s3cret", stored));
+        Assert.Equal(StaffPasswordCheck.Invalid, StaffPasswordHasher.Check("密码 s3cre", stored));
+    }
+
+    [Fact]
+    public void New_hash_uses_a_fresh_salt_each_time()
+    {
+        Assert.NotEqual(StaffPasswordHasher.Hash("same"), StaffPasswordHasher.Hash("same"));
+    }
+
+    [Theory]
+    [InlineData("p1$")]
+    [InlineData("p1$abc")]
+    [InlineData("p1$!!!$???")]
+    public void Malformed_new_hash_is_rejected(string stored)
+    {
+        Assert.Equal(StaffPasswordCheck.Invalid, StaffPasswordHasher.Check("anything", stored));
     }
 }
